@@ -1,3 +1,8 @@
 #bootstrap install
+--------------------------------------------------------------------------------
 rails g bootstrap:install
 rails g bootstrap:themed controller_name
+
+#rspec
+--------------------------------------------------------------------------------
+ rails g rspec:install

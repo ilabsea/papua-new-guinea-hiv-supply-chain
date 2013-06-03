@@ -19,13 +19,15 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
-  gem 'uglifier', '>= 1.0.3'
-  
+  gem 'uglifier', '>= 1.0.3'  
  
-  gem "therubyracer"
-  gem "less-rails"
+  gem 'therubyracer'
+  gem 'less-rails'
   gem 'twitter-bootstrap-rails'
 end
+
+
+
 
 gem 'jquery-rails'
 
@@ -43,3 +45,8 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'debugger'
+group :test, :development do
+  gem 'rspec-rails', '~> 2.0'
+  gem 'capybara', '~> 2.0.2'
+  gem 'factory_girl_rails', '~> 4.0'
+end
