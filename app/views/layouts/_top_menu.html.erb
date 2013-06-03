@@ -1,0 +1,26 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="<%= root_path() %>"> <%=app_name %> </a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <%
+              [
+                {:label => "Reports", :url => "", :controller => "reports" },
+                {:label => "Users", :url => "" ,    :controller => "users" },
+                
+              ].each do |item|
+                cls = (item[:controller] == controller_name) ? "active" : ""
+              %>
+                  <li class="<%=cls%>"> <%=link_to item[:label], item[:url] %> </li>
+              <% end %>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,3 @@
+#bootstrap install
+rails g bootstrap:install
+rails g bootstrap:themed controller_name
