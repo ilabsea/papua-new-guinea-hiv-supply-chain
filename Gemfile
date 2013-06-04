@@ -6,7 +6,8 @@ gem 'rails', '3.2.13'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mysql2'
-
+gem 'simple_form'
+gem 'devise'
 
 
 
@@ -49,4 +50,5 @@ group :test, :development do
   gem 'rspec-rails', '~> 2.0'
   gem 'capybara', '~> 2.0.2'
   gem 'factory_girl_rails', '~> 4.0'
+  gem 'thin'
 end

@@ -6,3 +6,8 @@ rails g bootstrap:themed controller_name
 #rspec
 --------------------------------------------------------------------------------
  rails g rspec:install
+
+#devise
+--------------------------------------------------------------------------------
+ rails g devise:install
+ rails g devise user

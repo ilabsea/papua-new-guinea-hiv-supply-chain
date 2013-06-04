@@ -1,7 +1,11 @@
 PngHivAids::Application.routes.draw do
+  devise_for :users
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
-  root  :to => "home#index"
+  resources :homes
+  
+  root  :to => "homes#index"
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
