@@ -1,25 +1,28 @@
-<p id="notice"><%= notice %></p>
+<%- model_class = Commodity -%>
 
-<p>
-  <b>Name:</b>
-  <%= @commodity.name %>
-</p>
+<%= page_header "Commodity Detail" %>
 
-<p>
-  <b>Commodity category:</b>
-  <%= @commodity.commodity_category_id %>
-</p>
+<dl class="dl-horizontal">
+  <dt><strong><%= t("Name") %>:</strong></dt>
+  <dd><%= @commodity.name %></dd>
+  <dt><strong><%= t("Category") %>:</strong></dt>
+  <dd><%= @commodity.commodity_category.name %></dd>
+  <dt><strong><%= t("Consumption per client (pack)") %>:</strong></dt>
+  <dd><%= @commodity.consumption_per_client_pack%></dd>
+  <dt><strong><%= t("Consumption per client (unit)") %>:</strong></dt>
+  <dd><%= @commodity.consumption_per_client_unit%></dd>
+</dl>
 
-<p>
-  <b>Consumption per client pack:</b>
-  <%= @commodity.consumption_per_client_pack %>
-</p>
-
-<p>
-  <b>Consumption per client unit:</b>
-  <%= @commodity.consumption_per_client_unit %>
-</p>
-
-
-<%= link_to 'Edit', edit_commodity_path(@commodity) %> |
-<%= link_to 'Back', commodities_path %>
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              commodities_path, :class => 'btn'  %>
+  
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_commodity_path(@commodity), :class => 'btn' %>
+  
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              commodity_path(@commodity),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>
