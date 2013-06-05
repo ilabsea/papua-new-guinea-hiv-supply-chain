@@ -1,4 +1,7 @@
 PngHivAids::Application.routes.draw do
+  resources :provinces
+
+
   devise_for :users
 
   # The priority is based upon order of creation:

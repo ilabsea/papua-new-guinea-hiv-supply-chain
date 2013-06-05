@@ -8,6 +8,7 @@ gem 'rails', '3.2.13'
 gem 'mysql2'
 gem 'simple_form'
 gem 'devise'
+gem 'cancan'
 
 
 

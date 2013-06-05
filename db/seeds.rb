@@ -11,3 +11,6 @@ User.create! :email => "admin@png.com",
              :user_name => "admin",
              :phone_number => "0975553553",
              :display_name => "MoH of PNG"
+           
+
+

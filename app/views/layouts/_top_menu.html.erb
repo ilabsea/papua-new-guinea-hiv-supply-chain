@@ -11,8 +11,9 @@
             <ul class="nav">
               <%
               [
-                {:label => "Reports", :url => "", :controller => "reports" },
+                {:label => "Reports", :url => "",   :controller => "reports" },
                 {:label => "Users", :url => "" ,    :controller => "users" },
+                {:label => "Provinces", :url => provinces_path ,:controller => "provinces" },
                 
               ].each do |item|
                 cls = (item[:controller] == controller_name) ? "active" : ""
