@@ -1,4 +1,7 @@
 PngHivAids::Application.routes.draw do
+  resources :public_holidays
+
+
   devise_for :users
 
   # The priority is based upon order of creation:
