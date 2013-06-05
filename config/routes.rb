@@ -1,5 +1,9 @@
 PngHivAids::Application.routes.draw do
+<<<<<<< HEAD
   resources :provinces
+=======
+  resources :public_holidays
+>>>>>>> b4b9e8b2ebf2f4939b4f1e440d4cdd7f3d3f7d0c
 
 
   devise_for :users

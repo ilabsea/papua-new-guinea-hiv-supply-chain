@@ -14,6 +14,8 @@
                 {:label => "Reports", :url => "",   :controller => "reports" },
                 {:label => "Users", :url => "" ,    :controller => "users" },
                 {:label => "Provinces", :url => provinces_path ,:controller => "provinces" },
+                {:label => "Public Holiday", :url => public_holidays_path(), :controller => "pubic_holidays"}
+
                 
               ].each do |item|
                 cls = (item[:controller] == controller_name) ? "active" : ""
