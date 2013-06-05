@@ -1,0 +1,35 @@
+<%= form_for(@commodity) do |f| %>
+  <% if @commodity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@commodity.errors.count, "error") %> prohibited this commodity from being saved:</h2>
+
+      <ul>
+      <% @commodity.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :commodity_category_id %><br />
+    <%= f.select :commodity_category_id, CommodityCategory.names %>
+  </div>
+  <div class="field">
+    <%= f.label :consumption_per_client_pack %><br />
+    <%= f.number_field :consumption_per_client_pack %>
+  </div>
+  <div class="field">
+    <%= f.label :consumption_per_client_unit %><br />
+    <%= f.number_field :consumption_per_client_unit %>
+  </div>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                commodities_path, :class => 'btn' %>
+  </div>
+<% end %>
