@@ -1,4 +1,7 @@
 PngHivAids::Application.routes.draw do
+  resources :commodities
+
+
   resources :public_holidays
 
 

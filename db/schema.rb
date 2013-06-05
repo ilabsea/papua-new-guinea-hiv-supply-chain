@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130605041131) do
+ActiveRecord::Schema.define(:version => 20130605074429) do
+
+  create_table "commodities", :force => true do |t|
+    t.string   "name"
+    t.integer  "commodity_category_id"
+    t.integer  "consumption_per_client_pack"
+    t.integer  "consumption_per_client_unit"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
 
   create_table "commodity_categories", :force => true do |t|
     t.string   "name"

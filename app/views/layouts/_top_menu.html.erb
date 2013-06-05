@@ -13,7 +13,7 @@
               [
                 {:label => "Reports", :url => "", :controller => "reports" },
                 {:label => "Users", :url => "" ,    :controller => "users" },
-                {:label => "Public Holiday", :url => "public_holidays/index", :controller => "pubic_holidays"}
+                {:label => "Public Holiday", :url => "public_holidays", :controller => "pubic_holidays"}
                 
               ].each do |item|
                 cls = (item[:controller] == controller_name) ? "active" : ""

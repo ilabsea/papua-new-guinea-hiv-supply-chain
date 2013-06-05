@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @commodity.name %>
+</p>
+
+<p>
+  <b>Commodity category:</b>
+  <%= @commodity.commodity_category_id %>
+</p>
+
+<p>
+  <b>Consumption per client pack:</b>
+  <%= @commodity.consumption_per_client_pack %>
+</p>
+
+<p>
+  <b>Consumption per client unit:</b>
+  <%= @commodity.consumption_per_client_unit %>
+</p>
+
+
+<%= link_to 'Edit', edit_commodity_path(@commodity) %> |
+<%= link_to 'Back', commodities_path %>
