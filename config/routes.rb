@@ -1,5 +1,8 @@
 PngHivAids::Application.routes.draw do
 
+  resources :sites
+
+
   resources :provinces
   resources :public_holidays
 

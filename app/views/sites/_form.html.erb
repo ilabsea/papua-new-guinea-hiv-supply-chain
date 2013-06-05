@@ -1,0 +1,35 @@
+<%= simple_form_for @site, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :name %>
+  <%= f.input :lat %>
+  <%= f.input :lng %>
+  <%= f.input :service_type do %>
+    <%= f.select :service_type, Site::SeviceType, :include_blank => 'Select Service' %>
+  <% end %>
+
+
+  <%= f.input :suggestion_order %>
+  <%= f.input :order_frequency %>
+  <%= f.input :number_of_deadline_sumission %>
+  <%= f.input :order_start_at, :as => 'date_time_picker' %>
+  <%= f.input :test_kit_waste_acceptable %>
+  <%= f.input :address, :input_html => { :rows => 3} %>
+  <%= f.input :contact_name %>
+  <%= f.input :mobile %>
+  <%= f.input :land_line_number %>
+  <%= f.input :email %>
+  <%= f.association :province, :include_blank => 'Select Province' %>
+    <div class="form-actions">
+      <%= f.button :submit, :class => 'btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  sites_path, :class => 'btn' %>
+    </div>
+<% end %>
+
+<script>
+  $(function(){
+    $('[data-behaviour~=datepicker]').datepicker({
+      "format" : "yyyy-mm-dd" 
+    });
+  });
+  
+</script>

@@ -4,7 +4,6 @@ module ApplicationHelper
   end
   
   def page_header title, options={},  &block
-    
      left_size  = options[:left] || 8
      right_size = options[:right] || (12 - left_size) 
     
@@ -23,5 +22,8 @@ module ApplicationHelper
             end
         end 
      end
-  end   
+  end
+  
+  
+  
 end
