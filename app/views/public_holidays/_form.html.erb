@@ -19,7 +19,9 @@
     <%= f.label :date %><br />
     <%= f.datetime_select :date %>
   </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                public_holidays_path, :class => 'btn' %>
   </div>
 <% end %>
