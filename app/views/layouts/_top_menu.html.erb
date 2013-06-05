@@ -11,10 +11,11 @@
             <ul class="nav">
               <%
               [
-                {:label => "Reports", :url => "", :controller => "reports" },
+                {:label => "Reports", :url => "",   :controller => "reports" },
                 {:label => "Users", :url => "" ,    :controller => "users" },
-                {:label => "Public Holiday", :url => "public_holidays", :controller => "pubic_holidays"}
-                
+                {:label => "Provinces", :url => provinces_path ,:controller => "provinces" },
+                {:label => "Public Holiday", :url => public_holidays_path(), :controller => "pubic_holidays"},
+                {:label => "Commodity", :url => commodities_path, :controller => "commodity"}
               ].each do |item|
                 cls = (item[:controller] == controller_name) ? "active" : ""
               %>

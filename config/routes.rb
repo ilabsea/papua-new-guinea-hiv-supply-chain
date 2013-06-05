@@ -1,9 +1,8 @@
 PngHivAids::Application.routes.draw do
+
   resources :commodities
-
-
   resources :public_holidays
-
+  resources :provinces
 
   devise_for :users
 

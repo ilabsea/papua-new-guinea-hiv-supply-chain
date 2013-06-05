@@ -28,6 +28,13 @@ ActiveRecord::Schema.define(:version => 20130605074429) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "provinces", :force => true do |t|
+    t.string   "name"
+    t.string   "code"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "public_holidays", :force => true do |t|
     t.string   "name"
     t.datetime "date"

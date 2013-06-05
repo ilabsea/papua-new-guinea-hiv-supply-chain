@@ -2,6 +2,11 @@
 <html>
 <head>
   <title>PngHivAids</title>
+   <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="assets/html5shiv.js"></script>
+    <![endif]-->
+  
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -9,28 +14,35 @@
   <style>
     body{padding-top: 50px;}
   </style>
+  
 </head>
 <body>
   
   <%= render "layouts/top_menu" %>
   <div class="container">
-    <div class="row">
+    <div class="row right" >
       <% if user_signed_in? %>
-         <%= current_user.email %>
-         <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+         <%= current_user.display_name %>
+         <%= link_to "Sign out", destroy_user_session_path, :method => :delete %> |
          <%= link_to "Edit", edit_user_registration_path %>
       <% else %>
-         <%= link_to "Sign up",  new_user_registration_path %>
+         <%= link_to "Sign up",  new_user_registration_path %> |
          <%= link_to "Sign in", new_user_session_path %>
       <% end %>
       
       
-       <p class="notice"> <%= notice %></p>
-       <p class="alert" > <%= alert %> </p>
+       
     </div>
     <div class="row">
-      <!-- <div class="span4"> Side bar</div> -->
+      <div class="span4"> Menu</div> 
       <div class="span8">
+        <%if alert || notice %> 
+            <% css_class = alert.nil? ? "warning" : "notice"   %>        
+            <div class="alert <%= css_class %>" >
+                 <button type="button" class="close" data-dismiss="alert">&times;</button>
+                 <%= alert || notice %>
+            </div>
+        <% end %> 
         <%= yield %>
         
       </div>
@@ -38,6 +50,15 @@
     
     
   </div>
+  
+  <footer>
+    <div class="container">
+      <div class="row"> 
+         <div class="span6">  </div>
+         <div class="span6">  </div>
+      </div>  
+    </div>
+  </footer>
 
 </body>
 </html>
