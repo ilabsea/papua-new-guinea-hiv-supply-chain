@@ -11,19 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20130605015407) do
+ActiveRecord::Schema.define(:version => 20130605034215) do
 
   create_table "provinces", :force => true do |t|
     t.string   "name"
     t.string   "code"
-=======
-ActiveRecord::Schema.define(:version => 20130605034215) do
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "public_holidays", :force => true do |t|
     t.string   "name"
     t.datetime "date"
->>>>>>> b4b9e8b2ebf2f4939b4f1e440d4cdd7f3d3f7d0c
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

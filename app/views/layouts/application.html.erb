@@ -20,23 +20,29 @@
   
   <%= render "layouts/top_menu" %>
   <div class="container">
-    <div class="row">
+    <div class="row right" >
       <% if user_signed_in? %>
          <%= current_user.display_name %>
-         <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+         <%= link_to "Sign out", destroy_user_session_path, :method => :delete %> |
          <%= link_to "Edit", edit_user_registration_path %>
       <% else %>
-         <%= link_to "Sign up",  new_user_registration_path %>
+         <%= link_to "Sign up",  new_user_registration_path %> |
          <%= link_to "Sign in", new_user_session_path %>
       <% end %>
       
       
-       <p class="notice"> <%= notice %></p>
-       <p class="alert" > <%= alert %> </p>
+       
     </div>
     <div class="row">
-      <!-- <div class="span4"> Side bar</div> -->
+      <div class="span4"> Menu</div> 
       <div class="span8">
+        <%if alert || notice %> 
+            <% css_class = alert.nil? ? "warning" : "notice"   %>        
+            <div class="alert <%= css_class %>" >
+                 <button type="button" class="close" data-dismiss="alert">&times;</button>
+                 <%= alert || notice %>
+            </div>
+        <% end %> 
         <%= yield %>
         
       </div>
@@ -48,8 +54,8 @@
   <footer>
     <div class="container">
       <div class="row"> 
-         <div class="span6"> section1 </div>
-         <div class="span6"> section 2 </div>
+         <div class="span6">  </div>
+         <div class="span6">  </div>
       </div>  
     </div>
   </footer>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PngHivAids</title>
+   <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="assets/html5shiv.js"></script>
+    <![endif]-->
+  
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+  <style>
+    body{padding-top: 50px;}
+  </style>
+  
+</head>
+<body>
+  
+  <div class="container">
+    <div class="row-fluid" >
+      
+      <div class="span8">
+        
+      </div>
+      
+      <div class="span4">
+        
+          <div class="well">
+              <%if alert || notice %> 
+                <% css_class = alert.nil? ? "warning" : "notice"   %>        
+                <div class="alert <%= css_class %>" >
+                     <button type="button" class="close" data-dismiss="alert">&times;</button>
+                     <%= alert || notice %>
+                </div>
+              <% end %> 
+              <%= yield %>       
+          </div>
+      </div>
+      
+    </div>
+    
+    
+  </div>
+
+</body>
+</html>
