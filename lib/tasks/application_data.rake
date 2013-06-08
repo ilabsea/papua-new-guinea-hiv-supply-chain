@@ -1,9 +1,8 @@
 namespace :png do
   desc "Load PNG provinces to the database" 
   task :load_provinces => :environment do
-      print "Loading provinces to database\n"
-      
       Province.destroy_all
+      print "Loading provinces to database\n"
       [
         [ 'PG-NCD' , 	'National Capital District' ],
         [ 'PG-CPM',  	'Central province' ],
@@ -30,5 +29,29 @@ namespace :png do
          Province.create!(:name => province[0], :code => province[1])
       end
       print "\n Done loading #{Province.count} provinces\n"
+      
+    
+    
   end
+  
+  desc "Loading Drug category"
+  
+  task :load_categories => :environment do 
+    Category.destroy_all
+    print("\n Loading Category") 
+    [ 
+      ["Drugs", "HIV/AIDS Drugs"],
+      ["Kids" , "HIV/AIDS Kids"]
+      
+    ].each do |category|
+       Category.create!(:name => category[0], :description => category[1] )
+       print("\r loaded: #{category[0]} to database")
+    end
+    
+    print("\n Done loading categories #{Category.count}\n")
+  end
+  
+  
+  
+  
 end

@@ -18,12 +18,10 @@
   <tbody>
     <% @categories.each do |category| %>
       <tr>
-        <td><%= link_to category.name, edit_category_path(category) %></td>
+        <td><%= link_to category.name, category_path(category) %></td>
         <td><%= category.description %></td>
         <td><%=l category.created_at %></td>
         <td>
-          <%= link_to t('Show'), category_path(category), :class => 'btn btn-mini' %>
-          
           <%= link_to t('Edit'),  edit_category_path(category), :class => 'btn btn-mini' %>
           <%= link_to t('Delete'),  category_path(category),
                       :method => :delete,

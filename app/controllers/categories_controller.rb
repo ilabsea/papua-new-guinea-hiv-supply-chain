@@ -3,7 +3,7 @@ class CategoriesController < ApplicationController
   # GET /categories.json
   def index
     @categories = Category.all
-
+    @app_title = "Categories"
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @categories }
@@ -14,7 +14,7 @@ class CategoriesController < ApplicationController
   # GET /categories/1.json
   def show
     @category = Category.find(params[:id])
-
+    @app_title = "Category :" + @category.name
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @category }
@@ -35,6 +35,7 @@ class CategoriesController < ApplicationController
   # GET /categories/1/edit
   def edit
     @category = Category.find(params[:id])
+    @app_title = "Edit: " + @category.name
   end
 
   # POST /categories

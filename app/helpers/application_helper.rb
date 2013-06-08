@@ -3,6 +3,10 @@ module ApplicationHelper
     "PNG HIV/Aids"
   end
   
+  def app_title
+     @app_title.nil? ?  app_name : (@app_title + " &raquo; ").html_safe + app_name
+  end
+  
   def page_header title, options={},  &block
      left_size  = options[:left] || 8
      right_size = options[:right] || (12 - left_size) 
