@@ -1,0 +1,6 @@
+<%  content_for :breadcrumb do %>
+  <%= breadcrumb [ { "Category" => categories_path }, {"New" => nil} ] %>
+<% end %>
+
+<%= page_header "New Drug Category" %>
+<%= render :partial => 'form' %>

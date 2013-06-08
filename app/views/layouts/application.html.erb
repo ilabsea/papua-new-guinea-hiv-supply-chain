@@ -20,19 +20,12 @@
   
   <%= render "layouts/top_menu" %>
   <div class="container">
-    <div class="row right" >
-      <% if user_signed_in? %>
-         <%= current_user.display_name %>
-         <%= link_to "Sign out", destroy_user_session_path, :method => :delete %> |
-         <%= link_to "Edit", edit_user_registration_path %>
-      <% else %>
-         <%= link_to "Sign up",  new_user_registration_path %> |
-         <%= link_to "Sign in", new_user_session_path %>
-      <% end %>
-      
-      
-       
-    </div>
+    
+    <%= render "layouts/user_bar" %>
+    <% if content_for? :breadcrumb %>
+      <div class="row" > <%= yield :breadcrumb %></div>
+    <% end %>
+    
     <div class="row">
       <div class="span3"> Menu</div> 
       <div class="span9">

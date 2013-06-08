@@ -11,10 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+ActiveRecord::Schema.define(:version => 20130608062013) do
 
-#ActiveRecord::Schema.define(:version => 20130605073448) do
+  create_table "categories", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
-ActiveRecord::Schema.define(:version => 20130605074429) do
   create_table "commodities", :force => true do |t|
     t.string   "name"
     t.integer  "commodity_category_id"

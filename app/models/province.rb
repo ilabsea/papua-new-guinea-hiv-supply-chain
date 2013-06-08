@@ -6,4 +6,8 @@ class Province < ActiveRecord::Base
   
   has_many :sites
   
+  def full_description
+    self.name + '(' + self.code + ')'
+  end
+  
 end

@@ -1,4 +1,7 @@
 PngHivAids::Application.routes.draw do
+  resources :categories
+
+
   resources :sites
   resources :provinces
   resources :commodities

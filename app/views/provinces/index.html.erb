@@ -3,6 +3,10 @@
           new_province_path, :class => 'btn btn-primary' %>
 <% end %>
 
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Provinces" => nil}]  %>
+<% end %>
+
 
 <table class="table table-striped">
   <thead>
