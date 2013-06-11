@@ -28,6 +28,12 @@ module ApplicationHelper
      end
   end
   
+  def paginate_records records
+    content_tag :div , :class => "paginator right" do
+      will_paginate records, renderer: BootstrapPagination::Rails
+    end
+  end
+  
   
   def breadcrumb_str options
 		items = []

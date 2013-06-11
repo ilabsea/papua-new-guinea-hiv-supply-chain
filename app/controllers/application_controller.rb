@@ -17,5 +17,9 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def paginate_options
+    { :page => params[:page] || 1 , :per_page => 15 } 
+  end
+  
   
 end

@@ -29,9 +29,6 @@ namespace :png do
          Province.create!(:name => province[0], :code => province[1])
       end
       print "\n Done loading #{Province.count} provinces\n"
-      
-    
-    
   end
   
   desc "Loading Drug category"

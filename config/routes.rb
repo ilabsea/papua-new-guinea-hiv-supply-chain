@@ -7,7 +7,9 @@ PngHivAids::Application.routes.draw do
   resources :commodities
   resources :public_holidays
   resources :provinces
-
+  resources :settings
+  
+  
   devise_for :users
 
   # The priority is based upon order of creation:

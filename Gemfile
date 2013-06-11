@@ -9,7 +9,8 @@ gem 'mysql2'
 gem 'simple_form'
 gem 'devise'
 gem 'cancan'
-
+gem 'refinerycms'
+gem 'will_paginate-bootstrap'
 
 # Gems used only for assets and not required
 # in production environments by default.

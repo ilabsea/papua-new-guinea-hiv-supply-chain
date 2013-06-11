@@ -7,14 +7,14 @@
   <%= breadcrumb [{"Provinces" => nil}]  %>
 <% end %>
 
-
-<table class="table table-striped">
+<%= paginate_records @provinces %>
+<table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
       <th><%= t 'Name' %></th>
       <th><%= t 'Code' %></th>
       <th><%= t 'Created At' %></th>
-      <th><%=  t '.actions', :default => t("helpers.actions") %></th>
+      <th><%= t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
