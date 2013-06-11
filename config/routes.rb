@@ -1,16 +1,21 @@
 PngHivAids::Application.routes.draw do
-  resources :categories
+
+  namespace :admin do
+    resources :sites
+    resources :provinces
+    resources :commodities
+    resources :public_holidays
+    resources :provinces
+    resources :settings
+    resources :categories
+    resources :users
+  end
 
 
-  resources :sites
-  resources :provinces
-  resources :commodities
-  resources :public_holidays
-  resources :provinces
-  resources :settings
-  
-  
   devise_for :users
+  devise_scope :user do
+    get "sign_in", :to => "devise/sessions#new"
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
