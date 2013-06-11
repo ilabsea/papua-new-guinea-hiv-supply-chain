@@ -7,4 +7,6 @@ class Site < ActiveRecord::Base
   
   SeviceType = ["ART", "VCCT"]
 
+  has_many :users
+
 end

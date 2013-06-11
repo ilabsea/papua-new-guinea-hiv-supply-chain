@@ -46,8 +46,6 @@ module Admin
       end
     end
 
-    # DELETE /categories/1
-    # DELETE /categories/1.json
     def destroy
       @category = Category.find(params[:id])
       @category.destroy

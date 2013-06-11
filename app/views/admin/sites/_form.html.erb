@@ -20,8 +20,7 @@
   <%= f.association :province, :include_blank => 'Select Province' %>
     <div class="form-actions">
       <%= f.button :submit, :class => 'btn-primary' %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                  admin_sites_path, :class => 'btn' %>
+      <%= link_to t('Cancel'), admin_sites_path, :class => 'btn' %>
     </div>
 <% end %>
 

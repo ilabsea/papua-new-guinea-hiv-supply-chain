@@ -1,0 +1,10 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [
+    {"Users" => admin_sites_path},
+    {"New" => nil}
+ ]
+%>
+<% end %>
+
+<%= page_header t("New Site") %>
+<%= render :partial => 'form' %>
