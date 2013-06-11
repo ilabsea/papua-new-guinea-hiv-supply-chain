@@ -1,27 +1,18 @@
-<%= form_for(@public_holiday) do |f| %>
-  <% if @public_holiday.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@public_holiday.errors.count, "error") %> prohibited this public_holiday from being saved:</h2>
-
-      <ul>
-      <% @public_holiday.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<%= simple_form_for @public_holiday, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :name %>
+  <%= f.input :date, :as => 'date_time_picker' %>
+    <div class="form-actions">
+      <%= f.button :submit, :class => 'btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  public_holidays_path, :class => 'btn' %>
     </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :date %><br />
-    <%= f.datetime_select :date %>
-  </div>
-  <div class="form-actions">
-    <%= f.button :submit, :class => 'btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                public_holidays_path, :class => 'btn' %>
-  </div>
 <% end %>
+
+<script>
+  $(function(){
+    $('[data-behaviour~=datepicker]').datepicker({
+      "format" : "yyyy-mm-dd" 
+    });
+  });
+  
+</script>
