@@ -3,14 +3,17 @@
           new_commodity_path, :class => 'btn btn-primary' %>
 <% end %>
 
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Commodity" => nil}]  %>
+<% end %>
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= t 'Name' %></th>
-      <th><%= t 'Category' %></th>
-      <th><%= t 'Consumption per client (pack)' %></th>
-      <th><%= t 'Consumption per client (unit)' %></th>
+      <th><%= t("Name") %></th>
+      <th><%= t("Category") %></th>
+      <th><%= t("Consumption per client (pack)") %></th>
+      <th><%= t("Consumption per client (unit)") %></th>
       <th><%=  t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>

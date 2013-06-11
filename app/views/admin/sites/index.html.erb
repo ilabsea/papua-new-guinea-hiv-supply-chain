@@ -3,6 +3,10 @@
             new_admin_site_path, :class => 'btn' %>
 <% end %>
 
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Site" => nil}]  %>
+<% end %>
+
 <table class="table table-striped">
   <thead>
     <tr>
