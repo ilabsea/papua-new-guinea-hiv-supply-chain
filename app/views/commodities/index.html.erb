@@ -3,6 +3,9 @@
           new_commodity_path, :class => 'btn btn-primary' %>
 <% end %>
 
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Commodity" => nil}]  %>
+<% end %>
 
 <table class="table table-striped">
   <thead>

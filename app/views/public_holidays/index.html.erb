@@ -3,6 +3,9 @@
           new_public_holiday_path, :class => 'btn btn-primary' %>
 <% end %>
 
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Public Holiday" => nil}]  %>
+<% end %>
 
 <table class="table table-striped">
   <thead>
