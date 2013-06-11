@@ -1,0 +1,6 @@
+<% content_for :breadcrumb do %>
+	<%= breadcrumb [{ "Users" => admin_users_path }, "Edit- #{@user.user_name}" => false ] %>
+<% end %>
+
+<%= page_header "Edit: #{@user.user_name} "  %>
+<%= render :partial => "form" %>

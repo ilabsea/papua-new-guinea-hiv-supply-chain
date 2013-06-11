@@ -1,0 +1,42 @@
+<% content_for :breadcrumbs  do %>
+  <%= breadcrumb [{
+      "Users" => nil
+    }] %>
+<% end %>
+
+<%= page_header "Users" do %>
+  <%= link_to t("New"), new_admin_user_path, :class => "btn" %>
+<% end %>
+
+<table class="table table-striped well no-border no-padding" >
+  <thead>
+    <tr>
+      <th><%= t("Login")%></th>
+      <th><%= t("Phone")%></th>
+      <th><%= t("Name")%></th>
+      <th><%= t("Email")%></th>
+      <th><%= t("Site")%></th>
+      <th><%= t("Last access")%></th>
+      <th><%= t("Action")%></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user|%>
+      <tr>
+        <td><%= link_to user.user_name, admin_user_path(user) %> </td>
+        <td><%= user.phone_number %> </td>
+        <td><%= user.display_name  %> </td>
+        <td><%= user.email  %> </td>
+        <td><%= user.site.name %> </td>
+        <td><%= user.last_sign_in_at  %> </td>
+        <td class="last">
+          <%= link_to t('Edit'), edit_admin_user_path(user), :class => 'btn btn-mini' %>
+          <%= link_to t('Delete'), admin_user_path(user), :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },:class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  
+</table>
