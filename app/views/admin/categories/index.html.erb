@@ -3,7 +3,7 @@
 <% end %>
 
 <%= page_header t("Drug categories")  do %>
-  <%=link_to "New Drug Category", new_category_path(), :class => 'btn btn-primary' %>
+  <%=link_to "New Drug Category", new_admin_category_path(), :class => 'btn' %>
 <%  end %>
 
 <table class="table table-striped">
@@ -18,12 +18,12 @@
   <tbody>
     <% @categories.each do |category| %>
       <tr>
-        <td><%= link_to category.name, category_path(category) %></td>
+        <td><%= link_to category.name, admin_category_path(category) %></td>
         <td><%= category.description %></td>
         <td><%=l category.created_at %></td>
         <td>
-          <%= link_to t('Edit'),  edit_category_path(category), :class => 'btn btn-mini' %>
-          <%= link_to t('Delete'),  category_path(category),
+          <%= link_to t('Edit'),  edit_admin_category_path(category), :class => 'btn btn-mini' %>
+          <%= link_to t('Delete'),  admin_category_path(category),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger' %>

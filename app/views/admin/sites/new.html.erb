@@ -1,10 +1,8 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [
-    {"Province" => provinces_path},
+    {"Sites" => admin_sites_path},
     {"New" => nil}
  ]
 %>
-<% end %>
-
-<%= page_header t("New Province") %>
+<%= page_header "New site" %>
 <%= render :partial => 'form' %>

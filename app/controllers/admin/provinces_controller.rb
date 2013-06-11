@@ -1,0 +1,57 @@
+module Admin
+  class ProvincesController < Controller
+    # GET /provinces
+    # GET /provinces.json
+    def index
+      @provinces = Province.paginate(paginate_options)
+    end
+
+    # GET /provinces/1
+    # GET /provinces/1.json
+    def show
+      @province = Province.find(params[:id])
+    end
+
+    # GET /provinces/new
+    # GET /provinces/new.json
+    def new
+      @province = Province.new
+    end
+
+    # GET /provinces/1/edit
+    def edit
+      @province = Province.find(params[:id])
+    end
+
+    # POST /provinces
+    # POST /provinces.json
+    def create
+      @province = Province.new(params[:province])
+      if @province.save
+        redirect_to admin_province_path(@province), notice: 'Province was successfully created.'
+      else
+        render action: "new" 
+      end
+    end
+
+    # PUT /provinces/1
+    # PUT /provinces/1.json
+    def update
+      @province = Province.find(params[:id])
+      if @province.update_attributes(params[:province])
+        redirect_to admin_province_path(@province), notice: 'Province was successfully updated.' 
+      else
+        render action: "edit" 
+      end
+    end
+
+    # DELETE /provinces/1
+    # DELETE /provinces/1.json
+    def destroy
+      @province = Province.find(params[:id])
+      @province.destroy
+      redirect_to admin_provinces_url 
+    end
+  end
+end
+

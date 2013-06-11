@@ -1,6 +1,6 @@
 <%= content_for :breadcrumb do %>
   <%= breadcrumb [
-      { 'Provinces' => provinces_path    },
+      { 'Provinces' => admin_provinces_path    },
       { 'Detail : ' + @province.full_description => nil }
     ] %>
 <% end %>
@@ -15,13 +15,13 @@
 
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),
-              provinces_path, :class => 'btn'  %>
+              admin_provinces_path, :class => 'btn'  %>
   
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_province_path(@province), :class => 'btn' %>
+              edit_admin_province_path(@province), :class => 'btn' %>
   
   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              province_path(@province),
+              admin_province_path(@province),
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
