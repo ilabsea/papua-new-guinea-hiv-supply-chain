@@ -1,5 +1,10 @@
-<h1>New public_holiday</h1>
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [
+    {"Public holiday" => public_holidays_path},
+    {"New" => nil}
+ ]
+%>
+<% end %>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', public_holidays_path %>
+<%= page_header t("New Public Holiday") %>
+<%= render :partial => 'form' %>
