@@ -1,13 +1,14 @@
 <%= page_header("Public Holidays", :left => 6, :right => 6) do %>
     <%= link_to t('.new', :default => t("helpers.links.new")),
-          new_public_holiday_path, :class => 'btn btn-primary' %>
+          new_admin_public_holiday_path, :class => 'btn btn-primary' %>
 <% end %>
 
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Public Holiday" => nil}]  %>
 <% end %>
 
-<table class="table table-striped">
+<%= paginate_records @public_holidays %>
+<table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
       <th><%= t 'Name' %></th>
@@ -19,15 +20,15 @@
   <tbody>
     <% @public_holidays.each do |public_holiday| %>
       <tr>
-        <td><%=link_to public_holiday.name, public_holiday_path(public_holiday) %></td>
+        <td><%=link_to public_holiday.name, admin_public_holiday_path(public_holiday) %></td>
         <td><%= public_holiday.date %></td>
         <td><%= public_holiday.created_at %></td>
         <td class="last">
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_public_holiday_path(public_holiday), :class => 'btn btn-mini' %>
+                      edit_admin_public_holiday_path(public_holiday), :class => 'btn btn-mini' %>
           
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      public_holiday_path(public_holiday),
+                      admin_public_holiday_path(public_holiday),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger' %>

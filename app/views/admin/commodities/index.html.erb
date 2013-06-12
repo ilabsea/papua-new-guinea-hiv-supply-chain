@@ -1,13 +1,14 @@
 <%= page_header("Commodities", :left => 6, :right => 6) do %>
     <%= link_to t('.new', :default => t("helpers.links.new")),
-          new_commodity_path, :class => 'btn btn-primary' %>
+          new_admin_commodity_path, :class => 'btn btn-primary' %>
 <% end %>
 
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Commodity" => nil}]  %>
 <% end %>
 
-<table class="table table-striped">
+<%= paginate_records @commodities %>
+<table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
       <th><%= t("Name") %></th>
@@ -20,17 +21,16 @@
   <tbody>
     <% @commodities.each do |commodity| %>
       <tr>
-        <td><%=link_to commodity.name, commodity_path(commodity) %></td>
+        <td><%=link_to commodity.name, admin_commodity_path(commodity) %></td>
         <td><%= commodity.commodity_category.name %></td>
         <td><%= commodity.consumption_per_client_pack %></td>
         <td><%= commodity.consumption_per_client_unit %></td>
-        <td><%= commodity.created_at %></td>
         <td class="last">
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_commodity_path(commodity), :class => 'btn btn-mini' %>
+                      edit_admin_commodity_path(commodity), :class => 'btn btn-mini' %>
           
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      commodity_path(commodity),
+                      admin_commodity_path(commodity),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger' %>

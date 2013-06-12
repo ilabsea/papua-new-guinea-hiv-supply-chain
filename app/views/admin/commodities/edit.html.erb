@@ -1,0 +1,9 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [
+    { 'Commodities' => admin_commodities_path },
+    { 'Edit:' + @commodity.name => nil}
+    ] %>
+<% end  %>
+
+<%=page_header "Edit commodity" %>
+<%= render :partial => 'form' %>

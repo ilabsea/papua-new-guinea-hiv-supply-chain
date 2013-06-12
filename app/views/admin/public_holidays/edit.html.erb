@@ -1,0 +1,9 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [
+    { 'Public Holiday' => admin_public_holidays_path },
+    { 'Edit:' + @public_holiday.name => nil}
+    ] %>
+<% end  %>
+
+<%=page_header "Edit Public Holiday" %>
+<%= render :partial => 'form' %>

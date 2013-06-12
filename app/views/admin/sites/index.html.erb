@@ -1,13 +1,14 @@
 <%=page_header "Sites Listing" do %>
    <%= link_to t('.new', :default => t("helpers.links.new")),
-            new_admin_site_path, :class => 'btn' %>
+            new_admin_site_path, :class => 'btn btn-primary' %>
 <% end %>
 
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Site" => nil}]  %>
 <% end %>
 
-<table class="table table-striped">
+<%= paginate_records @sites %>
+<table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
       <th><%= t("Name") %></th>

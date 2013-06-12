@@ -2,8 +2,7 @@ module Admin
   class CategoriesController < ApplicationController
     
     def index
-      @categories = Category.all
-      @app_title = "Categories"
+      @categories = Category.paginate(paginate_options)
     end
 
 

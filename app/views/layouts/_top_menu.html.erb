@@ -16,11 +16,10 @@
                 {:label => "Users", :url => admin_users_path ,    :controller => "users" },
                 {:label => "Provinces", :url => admin_provinces_path ,:controller => "provinces" },
                 {:label => "Sites", :url => admin_sites_path ,:controller => "sites" },
-                {:label => "Public Holiday", :url => admin_public_holidays_path(), :controller => "pubic_holidays"},
-                {:label => "Public Holiday", :url => admin_public_holidays_path(), :controller => "pubic_holidays"},
+                {:label => "Public Holiday", :url => admin_public_holidays_path(), :controller => "public_holidays"},
                 {:label => "Category", :url => admin_categories_path, :controller => "category"},
                 {:label => "Settings", :url => admin_settings_path, :controller => "setting"},
-                {:label => "Commodity",:url => admin_commodities_path, :controller => "commodity"}
+                {:label => "Commodity",:url => admin_commodities_path, :controller => "commodities"}
 
               ].each do |item|
                 cls = (item[:controller] == controller_name) ? "active" : ""
