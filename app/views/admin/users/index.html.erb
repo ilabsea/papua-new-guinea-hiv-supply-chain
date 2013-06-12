@@ -8,6 +8,7 @@
   <%= link_to t("New"), new_admin_user_path, :class => "btn" %>
 <% end %>
 
+<%= paginate_records @users %>
 <table class="table table-striped well no-border no-padding" >
   <thead>
     <tr>

@@ -1,26 +1,28 @@
 module Admin
   class CommoditiesController < ApplicationController
-    # GET /commodities
-    # GET /commodities.json
     def index
       @commodities = Commodity.paginate(paginate_options)
+      @app_title = "Commodites"
     end
 
     # GET /commodities/1
     # GET /commodities/1.json
     def show
       @commodity = Commodity.find(params[:id])
+      @app_title = "Commodity: #{@commodity.name}"
     end
 
     # GET /commodities/new
     # GET /commodities/new.json
     def new
       @commodity = Commodity.new
+      @app_title = "New Commodity"
     end
 
     # GET /commodities/1/edit
     def edit
       @commodity = Commodity.find(params[:id])
+      @app_title = "Commodity: #{@commodity.name}"
     end
 
     # POST /commodities
@@ -48,9 +50,14 @@ module Admin
     # DELETE /commodities/1
     # DELETE /commodities/1.json
     def destroy
-      @commodity = Commodity.find(params[:id])
-      @commodity.destroy
-      redirect_to admin_commodities_url 
+      begin
+        @commodity = Commodity.find(params[:id])
+        @commodity.destroy
+        redirect_to admin_commodities_url, :notice => "Commodity has been removed" 
+      rescue Exception => e
+        redirect_to admin_commodities_url, :error => e.message         
+      end
+      
     end
   end
 end

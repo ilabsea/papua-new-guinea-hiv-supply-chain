@@ -1,32 +1,29 @@
 module Admin
   class SitesController < Controller
-    # GET /sites
-    # GET /sites.json
+
     def index
       @sites = Site.paginate(paginate_options)
+      @app_title = "Sites"
     end
 
-    # GET /sites/1
-    # GET /sites/1.json
     def show
       @site = Site.find(params[:id])
+      @app_title = "Site: #{@site.name}"
     end
 
-    # GET /sites/new
-    # GET /sites/new.json
+
     def new
       @site = Site.new
+      @app_title = "New Site"
     end
 
-    # GET /sites/1/edit
     def edit
       @site = Site.find(params[:id])
+      @app_title = "Edit site : #{@site.name}"
     end
 
-    # POST /sites
-    # POST /sites.json
+
     def create
-      
       @site = Site.new(params[:site])
 
       if @site.save
@@ -37,8 +34,6 @@ module Admin
 
     end
 
-    # PUT /sites/1
-    # PUT /sites/1.json
     def update
       @site = Site.find(params[:id])
 
@@ -49,13 +44,14 @@ module Admin
       end
 
     end
-
-    # DELETE /sites/1
-    # DELETE /sites/1.json
     def destroy
-      @site = Site.find(params[:id])
-      @site.destroy
-      redirect_to admin_sites_url
+      begin
+        @site = Site.find(params[:id])
+        @site.destroy
+        redirect_to admin_sites_url, :notice => "Site has been removed"
+      rescue Exception => e
+        redirect_to admin_sites_url, :error =>  e.message
+      end
     end
   end
 end  

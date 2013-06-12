@@ -1,26 +1,24 @@
 module Admin
   class PublicHolidaysController < ApplicationController
-    # GET /public_holidays
-    # GET /public_holidays.json
     def index
       @public_holidays = PublicHoliday.paginate(paginate_options)
+      @app_title = "Public holidays"
     end
 
-    # GET /public_holidays/1
-    # GET /public_holidays/1.json
     def show
       @public_holiday = PublicHoliday.find(params[:id])
+      @app_title = "Holiday: #{@public_holiday.name}"
     end
 
-    # GET /public_holidays/new
-    # GET /public_holidays/new.json
     def new
       @public_holiday = PublicHoliday.new
+      @app_title = "New Public holiday"
     end
 
     # GET /public_holidays/1/edit
     def edit
       @public_holiday = PublicHoliday.find(params[:id])
+      @app_title = "Holiday: #{@public_holiday.name}"
     end
 
     # POST /public_holidays
@@ -50,10 +48,13 @@ module Admin
     # DELETE /public_holidays/1
     # DELETE /public_holidays/1.json
     def destroy
-      @public_holiday = PublicHoliday.find(params[:id])
-      @public_holiday.destroy
-
-      redirect_to admin_public_holidays_url 
+      begin
+        @public_holiday = PublicHoliday.find(params[:id])
+        @public_holiday.destroy
+        redirect_to admin_public_holidays_url, :notice => "Holiday has been removed"
+      rescue Exception => ex
+        redirect_to admin_public_holidays_url, :error => ex.message
+      end
     end
   end
 end

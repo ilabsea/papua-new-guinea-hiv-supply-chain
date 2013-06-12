@@ -3,6 +3,7 @@ module Admin
     
     def index
       @categories = Category.paginate(paginate_options)
+      @app_title = "Categories"
     end
 
 
@@ -14,6 +15,7 @@ module Admin
 
     def new
       @category = Category.new
+      @app_title = "New Category"
     end
 
 
@@ -46,9 +48,15 @@ module Admin
     end
 
     def destroy
-      @category = Category.find(params[:id])
-      @category.destroy
-      redirect_to admin_categories_url 
+      begin
+        @category = Category.find(params[:id])
+        @category.destroy
+        redirect_to admin_categories_url , :notice => 'Category has been removed'
+      rescue Exception => ex
+        redirect_to admin_categories_url , :error => ex.message
+      end
+      
+      
     end
   end
 end
