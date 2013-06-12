@@ -3,12 +3,7 @@ module Admin
     # GET /commodities
     # GET /commodities.json
     def index
-      @commodities = Commodity.all
-
-      respond_to do |format|
-        format.html # index.html.erb
-        format.json { render json: @commodities }
-      end
+      @commodities = Commodity.paginate(paginate_options)
     end
 
     # GET /commodities/1

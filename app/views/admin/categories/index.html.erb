@@ -6,6 +6,7 @@
   <%=link_to "New Drug Category", new_admin_category_path(), :class => 'btn' %>
 <%  end %>
 
+<%= paginate_records @categories %>
 <table class="table table-striped well no-border no-padding">
   <thead>
     <tr>

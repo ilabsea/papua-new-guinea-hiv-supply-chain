@@ -3,7 +3,7 @@ module Admin
     # GET /sites
     # GET /sites.json
     def index
-      @sites = Site.all
+      @sites = Site.paginate(paginate_options)
     end
 
     # GET /sites/1

@@ -3,12 +3,7 @@ module Admin
     # GET /public_holidays
     # GET /public_holidays.json
     def index
-      @public_holidays = PublicHoliday.all
-
-      respond_to do |format|
-        format.html # index.html.erb
-        format.json { render json: @public_holidays }
-      end
+      @public_holidays = PublicHoliday.paginate(paginate_options)
     end
 
     # GET /public_holidays/1
