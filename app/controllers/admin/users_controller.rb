@@ -41,8 +41,22 @@ module Admin
 				redirect_to admin_users_path, :notice => "User was removed successfully"
 			rescue
 				redirect_to admin_users_path, :error => "Failed to removed user"
-			end
-			
+			end	
+		end
+
+		def reset
+		  @user = User.find(params[:id])
+		end
+
+		def change
+		  @user = User.find(params[:id])
+		  
+		  if @user.change_password? params[:user]
+		  	redirect_to admin_users_path, :notice => "User password has been reset"
+		  else
+		  	render  :reset
+		  end
+
 		end
 
 

@@ -8,9 +8,19 @@ PngHivAids::Application.routes.draw do
     resources :provinces
     resources :settings
     resources :categories
-    resources :users
-  end
+    resources :users do
 
+      member do
+        get 'reset'   # reset_admin_user_path /admin/users/:id/reset
+        put 'change'
+      end
+
+      collection do
+        get 'account' # account_admin_users_path /admin/users/account
+      end
+
+    end
+  end
 
   devise_for :users
   devise_scope :user do

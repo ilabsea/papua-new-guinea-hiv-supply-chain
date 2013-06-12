@@ -44,12 +44,12 @@ module ApplicationHelper
 			end
 			options.each do |option|
 				option.each do |key, value|
-				  if !value.nil?
+				  if value
 					items << content_tag(:li) do
 						link_to(key, value) + content_tag(:span, char_sep, :class => "divider")
 					end 
 				  else
-					items << content_tag(:li, key, :class =>"active") 
+					  items << content_tag(:li, key, :class =>"active") 
 				  end
 				end
 			end	

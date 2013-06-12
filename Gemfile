@@ -28,7 +28,7 @@ group :assets do
   gem 'twitter-bootstrap-rails'
 end
 
-
+gem 'rack-mini-profiler'
 
 
 gem 'jquery-rails'

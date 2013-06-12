@@ -5,10 +5,9 @@ require 'rspec/rails'
 require 'rspec/autorun'
 #Rspecx : use capybara
 require 'capybara/rspec'
-
  	
 #Rspecx : Use factory girl
-FactoryGirl.find_definitions
+#FactoryGirl.find_definitions
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
