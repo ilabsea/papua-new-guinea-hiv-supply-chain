@@ -24,7 +24,6 @@
         <td><%= commodity.commodity_category.name %></td>
         <td><%= commodity.consumption_per_client_pack %></td>
         <td><%= commodity.consumption_per_client_unit %></td>
-        <td><%= commodity.created_at %></td>
         <td class="last">
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_admin_commodity_path(commodity), :class => 'btn btn-mini' %>
