@@ -9,6 +9,10 @@
   <dt><strong><%= t("Name") %>:</strong></dt>
   <dd><%= @commodity_category.name %></dd>
 
+  <dt><strong><%= t("Type") %>:</strong></dt>
+  <dd><%= @commodity_category.display_type %></dd>
+
+
   <dt><strong><%= t("Created At") %>:</strong></dt>
   <dd><%= time_ago_in_words @commodity_category.created_at %></dd>
 

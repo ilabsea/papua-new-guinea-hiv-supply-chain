@@ -11,15 +11,17 @@
   <thead>
     <tr>
       <th><%= t("Name") %></th>
+      <th><%= t("Type") %></th>
       <th><%= t("Created at") %></th>
-      <th class='action_col_2' ><%=t 'Action' %></th>
+      <th class='action_col2' ><%=t 'Action' %></th>
     </tr>
   </thead>
   <tbody>
     <% @commodity_categories.each do |commodity_category| %>
       <tr>
         <td><%= link_to commodity_category.name, admin_commodity_category_path(commodity_category) %></td>
-        <td><%= commodity_category.created_at %></td>
+        <td><%= commodity_category.display_type %></td>
+        <td><%= l commodity_category.created_at %></td>
         <td>
           <%= link_to t('Edit'),  edit_admin_commodity_category_path(commodity_category), :class => 'btn btn-mini' %>
           <%= link_to t('Delete'),  admin_commodity_category_path(commodity_category),

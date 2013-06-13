@@ -2,7 +2,7 @@ module Admin
   class CommodityCategoriesController < Controller
     
     def index
-      @commodity_categories = CommodityCategory.paginate(paginate_options)
+      @commodity_categories = CommodityCategory.order("com_type").paginate(paginate_options)
       @app_title = "Commodity Categories"
     end
 
