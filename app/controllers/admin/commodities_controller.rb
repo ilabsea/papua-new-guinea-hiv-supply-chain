@@ -1,7 +1,7 @@
 module Admin
-  class CommoditiesController < ApplicationController
+  class CommoditiesController < Controller
     def index
-      @commodities = Commodity.paginate(paginate_options)
+      @commodities = Commodity.includes(:commodity_category).paginate(paginate_options)
       @app_title = "Commodites"
     end
 

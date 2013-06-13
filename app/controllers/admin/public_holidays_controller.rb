@@ -1,5 +1,5 @@
 module Admin
-  class PublicHolidaysController < ApplicationController
+  class PublicHolidaysController < Controller
     def index
       @public_holidays = PublicHoliday.paginate(paginate_options)
       @app_title = "Public holidays"

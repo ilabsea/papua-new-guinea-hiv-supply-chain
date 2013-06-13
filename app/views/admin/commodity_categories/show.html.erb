@@ -1,0 +1,23 @@
+<% content_for :breadcrumb do   %>
+  <%= breadcrumb [{'Commodity Categories'=> admin_commodity_categories_path}, "#{@commodity_category.name}" => nil ] %>
+<% end %>
+
+<%= page_header("Drug : #{@commodity_category.name}") %>
+
+
+<dl class="dl-horizontal">
+  <dt><strong><%= t("Name") %>:</strong></dt>
+  <dd><%= @commodity_category.name %></dd>
+
+  <dt><strong><%= t("Created At") %>:</strong></dt>
+  <dd><%= time_ago_in_words @commodity_category.created_at %></dd>
+
+</dl>
+
+<div class="form-actions">
+  <%= link_to t('Back'), admin_commodity_categories_path, :class => 'btn'  %>
+  <%= link_to t('Edit'), edit_admin_commodity_category_path(@commodity_category), :class => 'btn' %>
+  <%= link_to t('Delete'), admin_commodity_category_path(@commodity_category), :method => 'delete',
+            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+            :class => 'btn btn-danger' %>
+</div>

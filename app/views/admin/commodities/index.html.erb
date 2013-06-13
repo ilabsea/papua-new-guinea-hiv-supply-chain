@@ -15,7 +15,7 @@
       <th><%= t("Category") %></th>
       <th><%= t("Consumption per client (pack)") %></th>
       <th><%= t("Consumption per client (unit)") %></th>
-      <th><%=  t '.actions', :default => t("helpers.actions") %></th>
+      <th class='action_col2'><%=  t 'Action' %></th>
     </tr>
   </thead>
   <tbody>
@@ -26,11 +26,8 @@
         <td><%= commodity.consumption_per_client_pack %></td>
         <td><%= commodity.consumption_per_client_unit %></td>
         <td class="last">
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_admin_commodity_path(commodity), :class => 'btn btn-mini' %>
-          
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      admin_commodity_path(commodity),
+          <%= link_to t('Edit'), edit_admin_commodity_path(commodity), :class => 'btn btn-mini' %>
+          <%= link_to t('Destroy'),   admin_commodity_path(commodity),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger' %>

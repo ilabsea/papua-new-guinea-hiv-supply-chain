@@ -20,7 +20,7 @@
       <th><%= t("Test kit waste acceptable") %></th>
       <th><%= t("Contact name") %></th>
       <th><%= t("Province") %></th>
-      <th ><%=t '.actions', :default => t("helpers.actions") %></th>
+      <th class='action_col2' ><%=t 'Action' %></th>
     </tr>
   </thead>
   <tbody>
@@ -36,12 +36,9 @@
         <td><%= site.contact_name %></td>
         <td><%= site.province.name %></td>
         <td  width="90">
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_admin_site_path(site), :class => 'btn btn-mini' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      admin_site_path(site),:method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
+          <%= link_to t('Edit'), edit_admin_site_path(site), :class => 'btn btn-mini' %>
+          <%= link_to t('Destroy'), admin_site_path(site),:method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>
     <% end %>

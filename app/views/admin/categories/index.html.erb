@@ -10,10 +10,10 @@
 <table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
-      <th><%= t("Name") %></th>
-      <th><%= t("Description") %></th>
-      <th><%= t("Created at") %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      <th><%= t 'Name' %></th>
+      <th><%= t 'Description' %></th>
+      <th><%= t 'Created at' %></th>
+      <th class='action_col2' ><%= t 'Action' %></th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +21,7 @@
       <tr>
         <td><%= link_to category.name, admin_category_path(category) %></td>
         <td><%= category.description %></td>
-        <td><%=l category.created_at %></td>
+        <td><%= l category.created_at %></td>
         <td>
           <%= link_to t('Edit'),  edit_admin_category_path(category), :class => 'btn btn-mini' %>
           <%= link_to t('Delete'),  admin_category_path(category),

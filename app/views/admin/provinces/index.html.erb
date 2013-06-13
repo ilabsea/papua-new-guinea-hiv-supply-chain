@@ -14,7 +14,7 @@
       <th><%= t 'Name' %></th>
       <th><%= t 'Code' %></th>
       <th><%= t 'Created At' %></th>
-      <th><%= t '.actions', :default => t("helpers.actions") %></th>
+      <th class="action_col2" ><%= t 'Action' %></th>
     </tr>
   </thead>
   <tbody>
@@ -24,11 +24,9 @@
         <td><%= province.code %></td>
         <td><%=l province.created_at %></td>
         <td class="last">
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_admin_province_path(province), :class => 'btn btn-mini' %>
+          <%= link_to t('Edit'), edit_admin_province_path(province), :class => 'btn btn-mini' %>
           
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      admin_province_path(province),
+          <%= link_to t('Destroy'), admin_province_path(province),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger' %>

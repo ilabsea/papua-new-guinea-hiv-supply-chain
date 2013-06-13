@@ -1,0 +1,33 @@
+<%content_for :breadcrumb do %>
+ <%= breadcrumb [ "Commodity Categoies" => nil] %>
+<% end %>
+
+<%= page_header t("Commodity Categories")  do %>
+  <%=link_to "New Commodity Category", new_admin_commodity_category_path(), :class => 'btn' %>
+<%  end %>
+
+<%= paginate_records @commodity_categories %>
+<table class="table table-striped well no-border no-padding">
+  <thead>
+    <tr>
+      <th><%= t("Name") %></th>
+      <th><%= t("Created at") %></th>
+      <th class='action_col_2' ><%=t 'Action' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @commodity_categories.each do |commodity_category| %>
+      <tr>
+        <td><%= link_to commodity_category.name, admin_commodity_category_path(commodity_category) %></td>
+        <td><%= commodity_category.created_at %></td>
+        <td>
+          <%= link_to t('Edit'),  edit_admin_commodity_category_path(commodity_category), :class => 'btn btn-mini' %>
+          <%= link_to t('Delete'),  admin_commodity_category_path(commodity_category),
+                :method => :delete,
+                :data => { :confirm => t('.confirm',:default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,9 +1,6 @@
 <%= simple_form_for [:admin , @commodity], :html => { :class => 'form-horizontal' } do |f| %>
   <%= f.input :name %>
-  <%= f.input :commodity_category_id do %>
-    <%= f.select :commodity_category_id, CommodityCategory.names, :include_blank => 'Select Category' %>
-  <% end %>
-
+  <%= f.association :commodity_category, :include_blank => 'Select Commodity Category' %>
 
   <%= f.input :consumption_per_client_pack %>
   <%= f.input :consumption_per_client_unit %>

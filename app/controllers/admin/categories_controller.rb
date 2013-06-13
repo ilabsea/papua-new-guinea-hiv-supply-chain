@@ -1,5 +1,5 @@
 module Admin
-  class CategoriesController < ApplicationController
+  class CategoriesController < Controller
     
     def index
       @categories = Category.paginate(paginate_options)

@@ -14,7 +14,7 @@
       <th><%= t 'Name' %></th>
       <th><%= t 'Date' %></th>
       <th><%= t 'Created At' %></th>
-      <th><%=  t '.actions', :default => t("helpers.actions") %></th>
+      <th class='action_col_2' ><%=  t 'Action' %></th>
     </tr>
   </thead>
   <tbody>
@@ -24,14 +24,10 @@
         <td><%= public_holiday.date %></td>
         <td><%= public_holiday.created_at %></td>
         <td class="last">
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_admin_public_holiday_path(public_holiday), :class => 'btn btn-mini' %>
-          
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      admin_public_holiday_path(public_holiday),
+          <%= link_to t('Edit'), edit_admin_public_holiday_path(public_holiday), :class => 'btn btn-mini' %>
+          <%= link_to t('Destroy'), admin_public_holiday_path(public_holiday),
                       :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>
     <% end %>

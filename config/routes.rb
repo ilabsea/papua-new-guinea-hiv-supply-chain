@@ -8,6 +8,7 @@ PngHivAids::Application.routes.draw do
     resources :provinces
     resources :settings
     resources :categories
+    resources :commodity_categories
     resources :users do
 
       member do
