@@ -16,5 +16,6 @@ FactoryGirl.define do
     mobile "MyString"
     land_line_number "MyString"
     email "MyString"
+    province
   end
 end
