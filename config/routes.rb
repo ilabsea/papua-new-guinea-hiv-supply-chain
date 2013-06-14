@@ -9,6 +9,8 @@ PngHivAids::Application.routes.draw do
     resources :settings
     resources :categories
     resources :commodity_categories
+    resources :units
+
     resources :users do
 
       member do

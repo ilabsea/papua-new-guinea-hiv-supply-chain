@@ -1,0 +1,33 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Units" => false}] %>
+<% end %>
+
+<%= page_header "Units" do %>
+  <%=link_to "New Unit", new_admin_unit_path() , class: 'btn' %>	
+<%end%>
+
+<table class="table table-striped well no-border no-padding">
+	<thead> 
+		<tr>
+			<th> <%= t('Name') %> </th>
+			<th> <%= t('Created at') %></th>
+			<th class='action_col2'> <%= t('Action') %> </th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% @units.each do |unit| %>
+			<tr> 
+				<td><%= link_to unit.name, admin_unit_path(unit) %></td>
+				<td><%= l unit.created_at %></td>
+				<td>
+				  <%=link_to t("Edit"), edit_admin_unit_path(unit), :class => 'btn btn-mini'  %>
+				  <%=link_to t("Destroy"), admin_unit_path(unit) , 
+				  	:method => :delete ,
+				  	:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },:class => 'btn btn-mini btn-danger' %>
+				</td>
+			</tr>
+		<% end %> 
+	</tbody>
+
+</table>
