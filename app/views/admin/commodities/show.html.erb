@@ -9,12 +9,32 @@
 <dl class="dl-horizontal">
   <dt><strong><%= t("Name") %>:</strong></dt>
   <dd><%= @commodity.name %></dd>
+
   <dt><strong><%= t("Category") %>:</strong></dt>
   <dd><%= @commodity.commodity_category.name %></dd>
+
   <dt><strong><%= t("Consumption per client (pack)") %>:</strong></dt>
   <dd><%= @commodity.consumption_per_client_pack%></dd>
+
   <dt><strong><%= t("Consumption per client (unit)") %>:</strong></dt>
   <dd><%= @commodity.consumption_per_client_unit%></dd>
+
+  <dt><strong><%= t("Unit") %>:</strong></dt>
+  <dd><%= @commodity.unit.name %></dd>
+
+  <dt><strong><%= t("Strength/Dosage") %>:</strong></dt>
+  <dd><%= @commodity.strength_dosage%></dd>
+
+  <dt><strong><%= t("Abbreviation") %>:</strong></dt>
+  <dd><%= @commodity.abbreviation%></dd>
+
+  <dt><strong><%= t("Quantity per Package") %>:</strong></dt>
+  <dd><%= @commodity.quantity_per_packg %></dd>
+
+  <dt><strong><%= t("Created at") %>:</strong></dt>
+  <dd><%= l @commodity.created_at %></dd>
+
+
 </dl>
 
 <div class="form-actions">

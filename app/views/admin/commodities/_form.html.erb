@@ -1,9 +1,17 @@
 <%= simple_form_for [:admin , @commodity], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.error_notification %> 
   <%= f.input :name %>
   <%= f.association :commodity_category, :include_blank => 'Select Commodity Category' %>
 
   <%= f.input :consumption_per_client_pack %>
   <%= f.input :consumption_per_client_unit %>
+
+  <%= f.association :unit, :include_blank => "Select Unit of measurement" %>
+  <%= f.input :strength_dosage, :label => "Streng/Dosage" %>
+  <%= f.input :abbreviation %>
+  <%= f.input :quantity_per_packg, :label => "quantity Per Package" %>
+
+
   <div class="form-actions">
     <%= f.button :submit, :class => 'btn-primary' %>
     <%= link_to t('Cancel'), admin_commodities_path, :class => 'btn' %>

@@ -22,12 +22,14 @@
   <dt><strong><%= t("Site") %>:</strong></dt>
   <dd><%= @user.site.name %></dd>
 
+  <dt><strong><%= t("Created At") %>:</strong></dt>
+  <dd><%= l @user.created_at %></dd>
+
+
   <dt><strong><%= t("Last Access At") %>:</strong></dt>
   <dd><%= @user.last_sign_in_at %></dd>
 
-  <dt><strong><%= t("Created At") %>:</strong></dt>
-  <dd><%= @user.created_at %></dd>
-</dl>
+  </dl>
 
 <div class="form-actions">
   <%= link_to t('Back'), admin_users_path, :class => 'btn'  %>

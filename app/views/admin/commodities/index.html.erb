@@ -13,8 +13,12 @@
     <tr>
       <th><%= t("Name") %></th>
       <th><%= t("Category") %></th>
-      <th><%= t("Consumption per client (pack)") %></th>
-      <th><%= t("Consumption per client (unit)") %></th>
+      <th><%= t("Unit") %></th>
+      <th><%= t("Strength Dosage") %></th>
+      <th><%= t("Abbreviation") %></th>
+      <th><%= t("Quantity Per Page") %></th>
+      <th title='Consumtion Per Cient' > CPC (pack) </th>
+      <th title='Consumtion Per Cient' > CPC (unit) </th>
       <th class='action_col2'><%=  t 'Action' %></th>
     </tr>
   </thead>
@@ -23,6 +27,10 @@
       <tr>
         <td><%=link_to commodity.name, admin_commodity_path(commodity) %></td>
         <td><%= commodity.commodity_category.name %></td>
+        <td><%= commodity.unit.name %></td>
+        <td><%= commodity.strength_dosage %></td>
+        <td><%= commodity.abbreviation %></td>
+        <td><%= commodity.quantity_per_packg %></td>
         <td><%= commodity.consumption_per_client_pack %></td>
         <td><%= commodity.consumption_per_client_unit %></td>
         <td class="last">
