@@ -2,8 +2,9 @@
  <%= breadcrumb [ "Commodity Categoies" => nil] %>
 <% end %>
 
-<%= page_header t("Commodity Categories")  do %>
+<%= page_header t("Commodity Categories"), :left => 6, :right => 6 do %>
   <%=link_to "New Commodity Category", new_admin_commodity_category_path(), :class => 'btn' %>
+  <%=link_to "Template", template_admin_commodity_categories_path(:format => :xls ), :class => 'btn' %>
 <%  end %>
 
 <%= paginate_records @commodity_categories %>

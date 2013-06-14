@@ -55,8 +55,23 @@ module Admin
       rescue Exception => ex
         redirect_to admin_commodity_categories_url , :error => ex.message
       end
-      
-      
     end
+
+    def template
+      respond_to do |format|
+         file_name =  "#{Rails.root}/public/data/template.xls"
+         format.xls do 
+           Generator::xls file_name
+           send_file(file_name , 
+                      :filename      =>  "template.xls",
+                      :type          =>  'application/xls',
+                      :disposition  =>  'attachment',
+                      :streaming    =>  true,
+                      :buffer_size  =>  '4096')
+         end
+      end
+    end
+
+
   end
 end

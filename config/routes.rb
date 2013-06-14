@@ -8,7 +8,11 @@ PngHivAids::Application.routes.draw do
     resources :provinces
     resources :settings
     resources :categories
-    resources :commodity_categories
+    resources :commodity_categories do
+      collection do
+        get 'template'
+      end
+    end
     resources :units
 
     resources :users do
