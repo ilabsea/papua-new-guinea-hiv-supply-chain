@@ -6,11 +6,48 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-User.create! :email => "admin@png.com", 
+User.find_or_create_by_user_name( :email => "admin@png.com", 
              :password => "123456",
              :user_name => "admin",
              :phone_number => "0975553553",
-             :display_name => "MoH of PNG"
+             :display_name => "MoH of PNG")
 
-CommodityCategory.create!	:name => "kits"
-CommodityCategory.create! :name => "drugs"
+CommodityCategory.find_or_create_by_name(
+  :name => "ARV Adult 1st Line",
+  :com_type => CommodityCategory::TYPES[0][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "ARV Adult 2nd Line",
+	:com_type => CommodityCategory::TYPES[0][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "ARV Pediatric 1st line",
+	:com_type => CommodityCategory::TYPES[0][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "ARV Pediatric 2nd line",
+	:com_type => CommodityCategory::TYPES[0][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "OI Drugs",
+	:com_type => CommodityCategory::TYPES[0][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "Kits",
+	:com_type => CommodityCategory::TYPES[0][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "HIV Test Kits and Bundles",
+	:com_type => CommodityCategory::TYPES[1][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "BD FACSCount Reagents",
+	:com_type => CommodityCategory::TYPES[1][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "PIMA CD4 Test Reagents/Consumables",
+	:com_type => CommodityCategory::TYPES[1][1])
+
+CommodityCategory.find_or_create_by_name(
+	:name => "EID Consumables",
+	:com_type => CommodityCategory::TYPES[1][1])
