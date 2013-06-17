@@ -1,8 +1,20 @@
 module Admin
   class CommoditiesController < Controller
+
+  set_tab :drugs
+
     def index
-      @commodities = Commodity.includes(:commodity_category).paginate(paginate_options)
-      @app_title = "Commodites"
+        @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", 1).paginate(paginate_options)
+        if (params[:type] == "drugs")
+          @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", 1).paginate(paginate_options)
+          set_tab :drugs
+        elsif (params[:type] == "kits")
+          @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", 2).paginate(paginate_options)
+          set_tab :kits
+        else
+        # @commodities = Commodity.includes(:commodity_category).paginate(paginate_options)
+        end
+        @app_title = "Commodities"
     end
 
     # GET /commodities/1

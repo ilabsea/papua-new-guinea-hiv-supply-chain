@@ -11,6 +11,8 @@ gem 'devise'
 gem 'cancan'
 gem 'refinerycms'
 gem 'will_paginate-bootstrap'
+gem 'tabs_on_rails'
+gem 'debugger', group: [:development, :test]
 
 gem 'spreadsheet'
 
