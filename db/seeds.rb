@@ -51,3 +51,31 @@ CommodityCategory.find_or_create_by_name(
 CommodityCategory.find_or_create_by_name(
 	:name => "EID Consumables",
 	:com_type => CommodityCategory::TYPES[1][1])
+
+
+#Seed unit data
+
+Unit.find_or_create_by_name(
+	:name => "Bolt"
+)
+
+Unit.find_or_create_by_name(
+	:name => "Vials"
+)
+
+Unit.find_or_create_by_name(
+	:name => "Pkt"
+)
+
+Unit.find_or_create_by_name(
+	:name => "Cont"
+)
+
+Unit.find_or_create_by_name(
+	:name => "Roll"
+)
+
+Unit.find_or_create_by_name(
+	:name => "Box"
+)
+
