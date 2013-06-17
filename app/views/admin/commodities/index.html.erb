@@ -7,12 +7,10 @@
   <%= breadcrumb [{"Commodity" => nil}]  %>
 <% end %>
 
-<%= tabs_tag :open_tabs => { :id => "tabs", :class => "navlist" } do |tab| %>
+<%= tabs_tag :open_tabs => { :id => "tabs", :class => "tabrow" } do |tab| %>
   <%= tab.drugs     'Drugs', admin_commodities_path + "?type=drugs" %>
   <%= tab.kits      'Kits', admin_commodities_path + "?type=kits" %>
 <% end %>
-
-<p>The name of current tab is <%= current_tab %>.</p>
 
 <%= paginate_records @commodities %>
 <table class="table table-striped well no-border no-padding">
