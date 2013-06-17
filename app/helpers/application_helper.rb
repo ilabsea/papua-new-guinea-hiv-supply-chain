@@ -14,7 +14,7 @@ module ApplicationHelper
      content_tag :div,:class => "row-fluid list-header" do
         if block_given? 
             content_title = content_tag :div, :class => "span#{left_size} left" do
-              content_tag(:h3, title)
+              content_tag(:h3, title, :class => "header-title")
             end
 
             output = with_output_buffer(&block)
@@ -22,7 +22,7 @@ module ApplicationHelper
             content_title + content_link
         else
             content_tag :div , :class => "row-fluid" do 
-               content_tag(:h3, title)
+               content_tag(:h3, title, :class => "header-title")
             end
         end 
      end
@@ -33,7 +33,6 @@ module ApplicationHelper
       will_paginate records, renderer: BootstrapPagination::Rails
     end
   end
-  
   
   def breadcrumb_str options
 		items = []

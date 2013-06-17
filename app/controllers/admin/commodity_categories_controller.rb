@@ -65,9 +65,9 @@ module Admin
            send_file(file_name , 
                       :filename      =>  "template.xls",
                       :type          =>  'application/xls',
-                      :disposition  =>  'attachment',
-                      :streaming    =>  true,
-                      :buffer_size  =>  '4096')
+                      :disposition   =>  'attachment',
+                      :streaming     =>  true,
+                      :buffer_size   =>  '4096')
          end
       end
     end

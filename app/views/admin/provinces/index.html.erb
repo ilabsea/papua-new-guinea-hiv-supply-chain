@@ -1,6 +1,5 @@
 <%= page_header("Province", :left => 6, :right => 6) do %>
-    <%= link_to t('.new', :default => t("helpers.links.new")),
-          new_admin_province_path, :class => 'btn' %>
+    <%= link_to t('New Province'), new_admin_province_path, :class => 'btn' %>
 <% end %>
 
 <% content_for :breadcrumb do %>
