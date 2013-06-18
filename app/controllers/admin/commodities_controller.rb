@@ -4,12 +4,12 @@ module Admin
   set_tab :drugs
 
     def index
-        @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", 1).paginate(paginate_options)
+        @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[0][1]).paginate(paginate_options)
         if (params[:type] == "drugs")
-          @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", 1).paginate(paginate_options)
+          @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[0][1]).paginate(paginate_options)
           set_tab :drugs
         elsif (params[:type] == "kits")
-          @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", 2).paginate(paginate_options)
+          @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[1][1]).paginate(paginate_options)
           set_tab :kits
         else
         # @commodities = Commodity.includes(:commodity_category).paginate(paginate_options)
