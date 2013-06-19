@@ -35,6 +35,88 @@ class Sheet
 		@sheet.column(column).width = width
 	end
 
+	def draw_table cell1, cell2, cell_datas = {}, options={}
+		row = cell2.row - cell1.row
+		col = cell2.column - cell1.column
+		border = :thin # options[:border]
+
+
+		if(row==1)
+			col.times.each do |c|
+				format_options = cell_datas["0_#{c}_format"] || options
+
+				format = Spreadsheet::Format.new format_options
+				format.left   = :none
+				format.top    = :none
+				format.bottom = :none
+				format.right  = :none
+
+				if c==0
+					format.left   = border
+					format.top    = border
+					format.bottom = border
+				elsif c== col-1
+					format.right  = border
+					format.bottom = border
+					format.top    = border	
+				else
+					format.top    =border
+					format.bottom = border	
+				end	
+
+				data = cell_datas["0_#{c}"] || ""
+				cell = Cell.new(cell1.row, cell1.column + c)
+				set_cell_format cell, format
+				write_data cell, data
+			end	
+			return	
+		end
+
+		row.times.each do |r|
+			col.times.each do |c|
+				format_options = cell_datas["#{r}_#{c}_format"] || options
+				format = Spreadsheet::Format.new format_options
+				cell = Cell.new(cell1.row + r, cell1.column + c)
+
+				format.left   = :none
+				format.top    = :none
+				format.bottom = :none
+				format.right  = :none
+
+				
+
+				if(r==0 && c==0)
+					format.left = border
+					format.top  = border
+				elsif( r == 0 && c == col-1 )
+					format.top   = border
+					format.right = border
+				
+				elsif r==row-1 && c == 0
+					format.left   = border
+					format.bottom = border
+				elsif r==row-1	&& c== col-1
+					format.bottom = border
+					format.right  = border
+
+				elsif r == 0 
+					format.top    = border
+				elsif r==row-1
+					format.bottom = border
+
+				elsif c==0
+					format.left  = border
+				elsif c==col-1
+					format.right = border	
+				end
+
+				data = cell_datas["#{r}_#{c}"] || ""
+				set_cell_format cell, format
+				write_data cell, data
+			end
+		end
+	end
+
 	def box_format(number_of_rows, number_of_columns, format)
 		number_of_rows.times.each do |row|
 			number_of_columns.times.each do |column|
@@ -49,12 +131,14 @@ class Generator
 
 	SHEET_ARV_REQ = "ARVs requsition forms"
 	SHEET_TEST_REQ = "TestRequisitionForm"
-
-
 	attr_accessor :current_sheet, :current_row, :total_column
 
 	def total_column=(total)
 		@total_column = total
+	end
+
+	def draw_table cell1, cell2, cell_datas = {}, options={:border => :thin}
+		@current_sheet.draw_table cell1, cell2, cell_datas,  options
 	end
 
 	def total_column
@@ -70,8 +154,6 @@ class Generator
 	end
 
 	def current_sheet=(sheet)
-		p "current sheet "
-		p sheet
 		@current_sheet = sheet
 	end
 
@@ -111,9 +193,12 @@ class Generator
 		current_sheet.box_format number_of_rows, number_of_columns , format
 	end
 
+	def title_format
+		{:color => :black, :weight => :bold, :size => 14, :border => :thin, :pattern_fg_color=> :xls_color_18, :pattern => 1 }
+	end
+
 	def write_cell_title cell, data
-		format_header  = Spreadsheet::Format.new :color => :black, :weight => :bold, :size => 14, :border => :thin,
-												 :pattern_fg_color=> :xls_color_18, :pattern => 1
+		format_header  = Spreadsheet::Format.new self.title_format
 		current_sheet.write_data cell, data
 		current_sheet.set_cell_format cell, format_header
 		current_sheet.row_height cell.row , 20
@@ -123,8 +208,12 @@ class Generator
 		current_sheet.merge_cells cell1, cell2
 	end
 
+	def body_format
+		{:color => :black, :border => :thin }
+	end
+
 	def write_cell_body cell, data
-		format_content = Spreadsheet::Format.new :color => :black, :border => :thin
+		format_content = Spreadsheet::Format.new self.body_format
 		current_sheet.write_data cell, data
 		current_sheet.set_cell_format cell, format_content
 	end
@@ -142,20 +231,30 @@ class Generator
 		current_sheet.set_cell_format cell, format
 	end
 
+	def write_last_cell data, border_rigth = :thin
+		format = Spreadsheet::Format.new
+		format.left   = :none;
+		format.right  = border_rigth
+		format.top    = border_rigth
+		format.bottom = border_rigth
+		write_cell Cell.new(current_row, self.total_column-1), data
+
+	end
+
 	def _drug_sheet_data
 		#Write Data to Template
 		CommodityCategory.includes(:commodities).drug.each do |commodity_category|
-			write_cell_title Cell.new(current_row, 0), commodity_category.name
-			merge_cells Cell.new(current_row,0), Cell.new(current_row, self.total_column-1)
-
+			draw_table Cell.new(current_row, 0), Cell.new(current_row + 1, self.total_column),{"0_0" =>commodity_category.name}, self.title_format
+			self.row_height current_row, 20
 			move_next
-
 			commodity_category.commodities.each do |commodity|
-				write_cell_body Cell.new(current_row, 0) , commodity.name
-				write_cell_bold Cell.new(current_row, 1) , commodity.strength_dosage
-				write_cell_body Cell.new(current_row, 2) , commodity.abbreviation
-				write_cell_bold Cell.new(current_row, 3) , commodity.quantity_per_packg
-				write_cell_bold Cell.new(current_row, 4) , commodity.unit.name
+				items = [ commodity.name, commodity.strength_dosage, commodity.abbreviation, commodity.quantity_per_packg,
+						commodity.unit.name, '',  '',  '',  '',  '', ''
+				]
+
+				items.each_with_index do |item, index|
+					write_cell_body Cell.new(current_row, index) , item
+				end
 				move_next
 			end
 		end
@@ -163,56 +262,40 @@ class Generator
 
 	def _drug_sheet_header
 
-		# current_row = 0 
-		# write_box_border(sheet, 30, 11)
-
 		merge_cells(Cell.new(current_row ,0), Cell.new(current_row ,4) )
 		write_cell_title Cell.new(current_row, 0) , 'ARV and TEST KIT REQUISITION FOR'	
 
 		merge_cells(Cell.new(current_row,5), Cell.new(current_row, self.total_column-1) )
 		write_cell_title Cell.new(current_row, 5), 'Papua New Guinea National Department of Health'
 
-		head_line_texts = [ '1) Please remember, when submitting orders YOU MUST:' ,
-							'2) Submit the "Surv 2: Monthly Data Collection Sheet" (including total number of patients on each regimen) when requesting ARVs;' ,
-							'3) Submit the "VCT Monthly Summary Sheet" when requesting Test Kits;',
-							'4) Indicate your Current Stock On Hand of ARVs or Test Kits, monthly consumption and earliet expiry of stock',
+		texts = [ '1) Please remember, when submitting orders YOU MUST:', 
+				  '2) Submit the "Surv 2: Monthly Data Collection Sheet" (including total number of patients on each regimen) when requesting ARVs;', 
+				  '3) Submit the "VCT Monthly Summary Sheet" when requesting Test Kits;',
+				  '4) Indicate your Current Stock On Hand of ARVs or Test Kits, monthly consumption and earliet expiry of stock'
 		]
+		move_next
 
-		move_next	
-
-		head_line_texts.each do |text|
-			write_cell_body Cell.new(current_row, 0) , text
-			merge_cells  Cell.new(current_row, 0) , Cell.new(current_row, 8)
+		texts.each do |text|
+			draw_table(Cell.new(current_row, 0), Cell.new(current_row+1, total_column), {'0_0' => text})
 			move_next
-		end	
+		end
 
 		move_next
 		# leave an empty row
-		write_cell_body Cell.new(current_row, 0) , 'FROM (Clinic/Hospital Name):'
-		merge_cells( Cell.new(current_row, 0), Cell.new(current_row, 4)  )
+		draw_table Cell.new(current_row, 0), Cell.new(current_row + 1, 5 ), { '0_0' => 'FROM (Clinic/Hospital Name):' }
 
-		write_cell_body  Cell.new(current_row, 5) , 'Date:'
-		merge_cells( Cell.new(current_row, 5) , Cell.new(current_row, self.total_column-1)  )
+		draw_table Cell.new(current_row, 6), Cell.new(current_row + 1 , self.total_column ), {'0_0' => 'Date:' }
 
 		move_next
-
-		write_cell_body  Cell.new(current_row, 0) , 'Add:'
-		merge_cells Cell.new(current_row, 0) , Cell.new(current_row, 2)
-
-		write_cell_body  Cell.new(current_row, 3) , 'Ph:'
-		merge_cells Cell.new(current_row, 3) , Cell.new(current_row, 4)
-
-		write_cell_body Cell.new(current_row, 5) , 'Fax:'
-		merge_cells Cell.new(current_row, 5) , Cell.new(current_row, 7)
-
-		write_cell_body Cell.new(current_row, 8), 'Email:'
-		merge_cells Cell.new(current_row, 8) , Cell.new(current_row, self.total_column-1)
+		texts = { '0' => 'Add',  '3' => 'Ph:' , '5' => 'Fax:', '8' => 'Email:' }
+		self.total_column.times.each do |i|
+			text = texts["#{i}"] || ''
+			write_cell_body Cell.new(current_row, i), text
+		end
 
 		move_next
-
 		headers = [ 'Drug',	'Strength/Dosage',	'Abbreviation', 'Qty Per Pack', 'Issue Units', 'Stock On Hand',
-			 'Monthly Used',	'Earliest Expiry', 'Quantity Allocated',  'Quantity Issued', 'Check' ]
-
+			 		'Monthly Used',	'Earliest Expiry', 'Quantity Allocated',  'Quantity Issued', 'Check' ]
 
 		headers.each_with_index do |header, column|
 			write_cell_body Cell.new(current_row, column), header
@@ -228,6 +311,7 @@ class Generator
 
 		write_cell_title  Cell.new(current_row, 8) , 'For Office Use Only'
 		merge_cells Cell.new(current_row, 8), Cell.new(current_row, self.total_column-1) 
+		move_next
 
 	end
 
@@ -237,49 +321,34 @@ class Generator
 		merge_cells Cell.new(current_row,0), Cell.new(current_row, 3)
 
 		write_cell Cell.new(current_row, 5), 'Co-note Number(s)'
-		merge_cells Cell.new(current_row, 5), Cell.new(current_row, self.total_column-1)	
 
 		move_next
+		draw_table Cell.new(current_row , 5) , Cell.new(current_row + 4 , self.total_column)
 
-		cell_note_left  = Cell.new(current_row, 5)
-		cell_note_right = Cell.new(current_row + 2,  self.total_column-1)
-		write_cell cell_note_left, "", :border => :thin
-		merge_cells cell_note_left, cell_note_right
-		
-		write_cell Cell.new(current_row, 0), 'Name and Designation'
+		draw_table Cell.new(current_row, 0), Cell.new(current_row+4, 4), cell_datas = {
+			"0_0" => 'Name and Designation',
+			"3_0" => 'Signature',
+			"3_2" => 'Date'
+		}
 
-		move_next 2
-
-		write_cell Cell.new(current_row, 0), 'Signature'
-		merge_cells Cell.new(current_row, 0) , Cell.new(current_row, 1)
-
-		write_cell Cell.new(current_row, 2), 'Date'
-		merge_cells Cell.new(current_row, 2) , Cell.new(current_row, 3)
-
-		move_next
-
+		move_next 4
 		write_cell Cell.new(current_row, 0), 'Authorising Officer :', :weight => :bold
 
 		move_next
 
-		write_cell Cell.new(current_row, 0), ''
-		write_cell Cell.new(current_row, 2), ''
+		draw_table Cell.new(current_row, 0), Cell.new(current_row+2, 4), {
+			'1_0' => 'Supply Authorised Singnature',
+			'1_2' => 'Date'
+		}
 
-		write_cell Cell.new(current_row, 5), 'Recieving Officer:'
-		write_cell Cell.new(current_row, 7), 'Dispatch Officer:'
+		draw_table Cell.new(current_row, 5), Cell.new(current_row+2, self.total_column), {
+			'0_0' => 'Recieving Officer:' ,
+			'0_2' => 'Dispatch Officer:' ,
+			'1_0' => 'Date',
+			'1_2' => 'Date'
+		}
 
-		move_next
-
-		write_cell Cell.new(current_row,0), 'Supply Authorised Singnature'
-		merge_cells Cell.new(current_row,0), Cell.new(current_row, 1)
-
-		write_cell Cell.new(current_row,2), 'Date:'
-		merge_cells Cell.new(current_row,2), Cell.new(current_row, 3)
-
-		write_cell Cell.new(current_row,5), 'Date:'
-		write_cell Cell.new(current_row,7), 'Date:'
-
-		move_next
+		move_next 3
 
 		write_cell Cell.new(current_row, 0), 'Fax Completed Form To 3257172/3013753', :weight => :bold, :horizontal_align => :centre
 		merge_cells Cell.new(current_row, 0), Cell.new(current_row, self.total_column-1)
@@ -302,7 +371,7 @@ class Generator
 		column_width(2,60)
 		_drug_sheet_header
 		_drug_sheet_data
-		_drug_sheet_footer	
+		_drug_sheet_footer
 	end
 
 	def _kit_sheet_header
@@ -386,6 +455,8 @@ Please remember, when submitting orders YOU MUST:
 		write_cell_body Cell.new(current_row, 0) , ''
 		row_height current_row, 30
 
+		draw_table Cell.new(current_row, 0), Cell.new(current_row+3, 3)
+
 		move_next
 		write_cell Cell.new(current_row, 0), 'Name and Designation'
 		
@@ -400,8 +471,8 @@ Please remember, when submitting orders YOU MUST:
 		merge_cells Cell.new(current_row, 1), Cell.new(current_row, 2)
 		write_cell_body Cell.new(current_row, 1) , 'Date'
 
-		merge_cells Cell.new(current_row, 3), Cell.new(current_row, self.total_column-1)
 		write_cell_body Cell.new(current_row, 3 ), 'Contact No'
+		merge_cells Cell.new(current_row, 3), Cell.new(current_row, self.total_column-1)
 
 		move_next 2
 		merge_cells Cell.new(current_row, 0), Cell.new(current_row, 3)
