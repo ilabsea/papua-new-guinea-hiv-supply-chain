@@ -1,16 +1,16 @@
 <%= page_header("Commodities", :left => 6, :right => 6) do %>
-    <%= link_to t('.new', :default => t("helpers.links.new")),
-          new_admin_commodity_path, :class => 'btn' %>
+    <%=link_to "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}", :class => 'btn' %>
 <% end %>
 
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Commodity" => nil}]  %>
 <% end %>
-
-<%= tabs_tag :open_tabs => { :id => "tabs", :class => "tabrow" } do |tab| %>
-  <%= tab.drugs     'Drugs', admin_commodities_path + "?type=drugs" %>
-  <%= tab.kits      'Kits', admin_commodities_path + "?type=kits" %>
-<% end %>
+<ul class="nav nav-tabs">
+  <li class=" <%= params[:type] == 'drugs' ? 'active' : '' %>">
+    <a href="<%= admin_commodities_path(:type => 'drugs') %>">Drugs</a>
+  </li>
+  <li class="<%=params[:type] == 'kits' ? 'active' : '' %>"><a href="<%= admin_commodities_path(:type => 'kits') %>">Kits</a></li>
+</ul>
 
 <%= paginate_records @commodities %>
 <table class="table table-striped well no-border no-padding">
@@ -19,9 +19,11 @@
       <th><%= t("Name") %></th>
       <th><%= t("Category") %></th>
       <th><%= t("Unit") %></th>
-      <th><%= t("Strength Dosage") %></th>
-      <th><%= t("Abbreviation") %></th>
-      <th><%= t("Quantity Per Page") %></th>
+      <% if params[:type] == "drugs" %>
+        <th><%= t("Strength Dosage") %></th>
+        <th><%= t("Abbreviation") %></th>
+        <th><%= t("Quantity Per Page") %></th>
+      <% end %>
       <th title='Consumtion Per Cient' > CPC (pack) </th>
       <th title='Consumtion Per Cient' > CPC (unit) </th>
       <th class='action_col2'><%=  t 'Action' %></th>
@@ -33,14 +35,16 @@
         <td><%=link_to commodity.name, admin_commodity_path(commodity) %></td>
         <td><%= commodity.commodity_category.name %></td>
         <td><%= commodity.unit.name %></td>
-        <td><%= commodity.strength_dosage %></td>
-        <td><%= commodity.abbreviation %></td>
-        <td><%= commodity.quantity_per_packg %></td>
+        <% if params[:type] == "drugs" %>
+          <td><%= commodity.strength_dosage %></td>
+          <td><%= commodity.abbreviation %></td>
+          <td><%= commodity.quantity_per_packg %></td>
+        <% end %>
         <td><%= commodity.consumption_per_client_pack %></td>
         <td><%= commodity.consumption_per_client_unit %></td>
         <td class="last">
-          <%= link_to t('Edit'), edit_admin_commodity_path(commodity), :class => 'btn btn-mini' %>
-          <%= link_to t('Destroy'),   admin_commodity_path(commodity),
+          <%= link_to t('Edit'), edit_admin_commodity_path(commodity, :type => params[:type]), :class => 'btn btn-mini' %>
+          <%= link_to t('Destroy'),   admin_commodity_path(commodity, :type => params[:type]),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger' %>

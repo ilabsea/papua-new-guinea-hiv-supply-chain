@@ -1,6 +1,6 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [
-    { 'Commodities' => admin_commodities_path },
+    { 'Commodities' => admin_commodities_path + "?type=#{params[:type]}"},
     { 'Edit:' + @commodity.name => nil}
     ] %>
 <% end  %>

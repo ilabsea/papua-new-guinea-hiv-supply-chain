@@ -1,16 +1,12 @@
 module Admin
   class CommoditiesController < Controller
 
-  set_tab :drugs
-
     def index
         @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[0][1]).paginate(paginate_options)
         if (params[:type] == "drugs")
           @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[0][1]).paginate(paginate_options)
-          set_tab :drugs
         elsif (params[:type] == "kits")
           @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[1][1]).paginate(paginate_options)
-          set_tab :kits
         else
         # @commodities = Commodity.includes(:commodity_category).paginate(paginate_options)
         end
@@ -27,7 +23,11 @@ module Admin
     # GET /commodities/new
     # GET /commodities/new.json
     def new
-      @commodity = Commodity.new
+      if (params[:type] == "drugs")
+        @commodity = Commodity.new
+      else 
+        @commodity = Commodity.new
+      end
       @app_title = "New Commodity"
     end
 
@@ -41,8 +41,9 @@ module Admin
     # POST /commodities.json
     def create
       @commodity = Commodity.new(params[:commodity])
+      @commodity.commodity_type = params[:type]
       if @commodity.save
-        redirect_to admin_commodity_path(@commodity), notice: 'Commodity was successfully created.'
+        redirect_to admin_commodities_path(:type => params[:type]), notice: 'Commodity was successfully created.'
       else
         render action: "new" 
       end
@@ -52,8 +53,9 @@ module Admin
     # PUT /commodities/1.json
     def update
       @commodity = Commodity.find(params[:id])
+      @commodity.commodity_type = params[:type]
       if @commodity.update_attributes(params[:commodity])
-        redirect_to admin_commodity_path(@commodity), notice: 'Commodity was successfully updated.' 
+        redirect_to admin_commodities_path(:type => params[:type]), notice: 'Commodity was successfully updated.' 
       else
         render action: "edit" 
       end
@@ -65,7 +67,7 @@ module Admin
       begin
         @commodity = Commodity.find(params[:id])
         @commodity.destroy
-        redirect_to admin_commodities_url, :notice => "Commodity has been removed" 
+        redirect_to admin_commodities_url(:type => params[:type]), :notice => "Commodity has been removed" 
       rescue Exception => e
         redirect_to admin_commodities_url, :error => e.message         
       end
