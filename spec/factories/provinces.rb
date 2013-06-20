@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :province do
-    name "MyString"
-    code "MyString"
+    sequence(:name) { |n| "Name #{n}" }
+    sequence(:code) { |n| "Code #{n}" }
   end
 end

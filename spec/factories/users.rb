@@ -19,5 +19,7 @@ FactoryGirl.define do
   	 email
   	 phone_number
   	 site
+     password { "123456" }
+     role { User::ROLES[rand(User::ROLES.size-1)] }
   end
 end
