@@ -69,6 +69,35 @@ class Sheet
 				set_cell_format cell, format
 				write_data cell, data
 			end	
+			return 
+		elsif col==1
+			row.times.each do |r|
+				format_options = cell_datas["#{r}_#{0}_format"] || options
+
+				format = Spreadsheet::Format.new format_options
+				format.left   = :none
+				format.top    = :none
+				format.bottom = :none
+				format.right  = :none
+
+				if r==0
+					format.left   = border
+					format.top    = border
+					format.right = border
+				elsif r== row-1
+					format.right  = border
+					format.bottom = border
+					format.left    = border	
+				else
+					format.left    =border
+					format.right = border	
+				end	
+
+				data = cell_datas["#{r}_#{0}"] || ""
+				cell = Cell.new(cell1.row + r, cell1.column )
+				set_cell_format cell, format
+				write_data cell, data
+			end		
 			return	
 		end
 
@@ -378,50 +407,39 @@ class Generator
 		merge_cells Cell.new(current_row, 0), Cell.new(current_row , self.total_column-1)
 		write_cell_title Cell.new(current_row, 0) , 'HIV TEST KIT REQUISITION FORM'
 		row_height 0, 30
-
-		intro_str = <<-EOD
-Please remember, when submitting orders YOU MUST:
-1) Submit a completed "SURV1: HIV Monthly Testing Summary" AND "CD4 testing Monthly Summary" for the past month.
-2) Indicate on this form your current "Stock On Hand" of all test kits and other supplies;
-3) After receiving your order, please indicate quantity received in last column and fax or email to Logistics Unit
-		EOD
-
 		move_next
 
-		write_cell_body Cell.new(current_row, 0) , intro_str
-		row_height current_row, 60
-		merge_cells Cell.new(current_row, 0), Cell.new(current_row, self.total_column-1)
+		texts = [
+			'Please remember, when submitting orders YOU MUST:',
+			'1) Submit a completed "SURV1: HIV Monthly Testing Summary" AND "CD4 testing Monthly Summary" for the past month.',
+			'2) Indicate on this form your current "Stock On Hand" of all test kits and other supplies;',
+			'3) After receiving your order, please indicate quantity received in last column and fax or email to Logistics Unit'
+		]
 
+		texts.each do |text|
+			draw_table Cell.new(self.current_row, 0), Cell.new(self.current_row+1, self.total_column ), {'0_0' => text}
+			move_next
+		end
+
+		draw_table Cell.new(current_row, 0), Cell.new(current_row + 1, self.total_column), {'0_5' => 'Folio No.'}
 		move_next
 
-		write_cell Cell.new(current_row, 0) , ''
-		merge_cells Cell.new(current_row, 0) , Cell.new(current_row, 4) 
-
-		write_cell Cell.new(current_row, 5) , 'Folio No.', :border => :thin
-		merge_cells Cell.new(current_row, 5) , Cell.new(current_row, self.total_column-1) 
-
-		move_next
-
-		write_cell_body Cell.new(current_row, 0) , 'FROM (Clinic/Hospital Name):'
-		
-		merge_cells Cell.new(current_row, 1), Cell.new(current_row, self.total_column-1)
-		write_cell_body Cell.new(current_row, 1) , 'DATE:'
-
+		draw_table Cell.new(current_row, 0), Cell.new(current_row + 1, self.total_column), 
+		{ '0_0' => 'FROM (Clinic/Hospital Name):', '0_1' =>  'DATE:' }
 		move_next
 
 		headers = [ 'Laboratory Test Kits/Reagents' , 'Issue Units', 'Stock On Hand' , 'Qty Required', 'Quantity Amended' , 'Quantity Issued', 'Check' , 'Quantity Received' ]
-
 		headers.each_with_index do |header, index|
 			write_cell_bold Cell.new(current_row, index), header
 		end
-
 		move_next
 
-		write_cell_bold Cell.new(current_row, 0), 'HIV Test Kits and Bundles'
+		['HIV Test Kits and Bundles', '', '', ''].each_with_index do |text, index|
+			write_cell_body Cell.new(current_row, index), text
+		end
 
-		merge_cells Cell.new(current_row, 4), Cell.new(current_row, 6)
-		write_cell_bold Cell.new(current_row, 4), 'FOR AMS USE ONLY'
-
+		draw_table Cell.new(current_row, 4), Cell.new(current_row+1, 7), {'0_0' => 'FOR AMS USE ONLY'}
+		write_cell_body Cell.new(current_row, self.total_column-1), ''
 		move_next
 	end
 
@@ -432,14 +450,12 @@ Please remember, when submitting orders YOU MUST:
 			write_cell_title Cell.new(current_row, 0), commodity_category.name
 			
 			move_next
-
 			commodity_category.commodities.each do |commodity|
 				items = [ commodity.name, commodity.unit.name, '', '', '', '' , '', '']
 
 				items.each_with_index do |text, index|
 					write_cell_bold Cell.new(current_row, index), text
 				end
-
 				move_next
 			end
 		end
@@ -447,73 +463,66 @@ Please remember, when submitting orders YOU MUST:
 
 	def _kit_sheet_footer
 		#Footer
-		merge_cells Cell.new(current_row, 0 ) , Cell.new(current_row, self.total_column-1)
-		write_cell_bold Cell.new(current_row, 0), 'Requesting officer (please add name, designation, contact number, signature and date):' 
-
 		move_next
 		merge_cells Cell.new(current_row, 0) , Cell.new(current_row, self.total_column-1)
-		write_cell_body Cell.new(current_row, 0) , ''
-		row_height current_row, 30
-
-		draw_table Cell.new(current_row, 0), Cell.new(current_row+3, 3)
-
-		move_next
-		write_cell Cell.new(current_row, 0), 'Name and Designation'
+		write_cell Cell.new(current_row, 0) , 'Requesting officer (please add name, designation, contact number, signature and date):' 
 		
 		move_next
-		merge_cells Cell.new(current_row, 0) , Cell.new(current_row, self.total_column-1 )
+
+
+		draw_table Cell.new(current_row,0), Cell.new(current_row+4, self.total_column-1)
+		draw_table Cell.new(current_row,self.total_column-1), Cell.new(current_row+4, self.total_column)
+
 		row_height current_row, 20
-		write_cell_body Cell.new(current_row, 0) , ''
+		row_height current_row+2, 20
+		
+		move_next
+		write_cell Cell.new(current_row, 0), 'Name and Designation'
+
 
 		move_next
-		write_cell_body Cell.new(current_row, 0) , 'Signature'
+		write_cell Cell.new(current_row, 0), 'Signature'
+		write_cell Cell.new(current_row, 1), 'Date'
+		write_cell Cell.new(current_row, 3), 'Contact No'
 
-		merge_cells Cell.new(current_row, 1), Cell.new(current_row, 2)
-		write_cell_body Cell.new(current_row, 1) , 'Date'
-
-		write_cell_body Cell.new(current_row, 3 ), 'Contact No'
-		merge_cells Cell.new(current_row, 3), Cell.new(current_row, self.total_column-1)
 
 		move_next 2
-		merge_cells Cell.new(current_row, 0), Cell.new(current_row, 3)
-		write_cell_bold Cell.new(current_row, 0), 'Authorising Officer (Please sign and add date, dispatching officer to also add co-note number):'
-
-		merge_cells Cell.new(current_row, 4) , Cell.new(current_row, 6)
-		write_cell_bold Cell.new(current_row, 4) , 'For AMS Use Only'
-
+		draw_table Cell.new(current_row, 0), Cell.new(current_row, self.total_column-1), {
+			'0_0' => 'Authorising Officer (Please sign and add date, dispatching officer to also add co-note number):',
+			'0_6' => 'For AMS Use Only'
+		}
 		write_cell_body Cell.new(current_row, self.total_column-1), ''
 
 		move_next
-		row_height current_row, 30
-		write_cell_body Cell.new(current_row, 0), ''
+		row_height current_row, 20
+		draw_table Cell.new(current_row, 0), Cell.new(current_row + 1 , 7)
 		write_cell_body Cell.new(current_row, self.total_column-1), ''
 
 		move_next
-		write_cell_body Cell.new(current_row, 0) , 'Supply Authorised'
-		write_cell_body Cell.new(current_row, 1) , 'Date'
+		draw_table Cell.new(current_row, 0), Cell.new(current_row+1, self.total_column-1), {
+			'0_0' => 'Supply Authorised',
+			'0_1' => 'Date',
+			'0_3' => 'Dispatching Officer',
+			'0_5' => 'Date'
+		}
 
-		merge_cells Cell.new(current_row, 2), Cell.new(current_row, 4)
-		write_cell Cell.new(current_row, 2) , 'Dispatching Officer', :border => :thin, :horizontal_align => :centre
+		write_cell_body Cell.new(current_row, self.total_column-1), '' 
 
-		merge_cells Cell.new(current_row, 5), Cell.new(current_row, 6)
-		write_cell_body Cell.new(current_row, 5) , 'Date'
-
-		write_cell_body Cell.new(current_row, 7), ''
-
-		move_next
-		row_height current_row, 30
-		write_cell  Cell.new(current_row, 0), 'TNT Connote Number', :align => :bottom
+		move_next 3
+		write_cell Cell.new(current_row, 0) , 'TNT Connote Number'
 
 		move_next
+		texts = [
+			'FAX COMPLETED FORM TO 3013753/3257172' ,
+			'Any queries, please call 3013731/ 71906173'
+		]
 
-		multi_str = <<-EOD
-FAX COMPLETED FORM TO 3013753/3257172
-Any queries, please call 3013731/ 71906173'
-		EOD
-
-		row_height current_row, 60
-		merge_cells Cell.new(current_row, 0) , Cell.new(current_row, self.total_column-1)
-		write_cell Cell.new(current_row, 0) , multi_str, :size => 16, :horizontal_align => :centre, :border => :thin
+		texts.each do |text|
+		  row_height current_row, 25
+		  merge_cells Cell.new(current_row, 0) , Cell.new(current_row, self.total_column-1)
+		  write_cell  Cell.new(current_row, 0) , text, :size => 16, :horizontal_align => :centre
+		  move_next
+		end
 
 	end
 

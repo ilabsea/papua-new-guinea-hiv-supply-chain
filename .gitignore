@@ -16,4 +16,5 @@
 
 #Ignore IDE related files
 /nbproject/*
+/public/data/template.xls
 

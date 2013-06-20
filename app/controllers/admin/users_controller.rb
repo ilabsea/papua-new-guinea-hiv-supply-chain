@@ -13,7 +13,7 @@ module Admin
 		def create
 		   @user = User.new(params[:user])
 		   if(@user.save)
-		   	  redirect_to admin_user_path(@user), :notice => "User was successfully created"
+		   	  redirect_to admin_users_path, :notice => "User was successfully created"
 		   else
 		   	  render :new
 		   end
@@ -24,15 +24,10 @@ module Admin
 		   @app_title = "Edit user: #{@user.user_name}"
 		end
 
-		def show
-		   @user = User.find(params[:id])
-		   @app_title = "Detail: #{@user.user_name}"
-		end
-
 		def update
 			@user = User.find(params[:id])
 			if(@user.update_attributes(params[:user]))
-				redirect_to admin_user_path(@user), :notice => "User was successfully updated"
+				redirect_to admin_users_path, :notice => "User was successfully updated"
 			else
 				render :edit	
 			end

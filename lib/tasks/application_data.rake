@@ -97,7 +97,8 @@ def load_commodities
     ["Zidovudine Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "AZT", "60s"],
     ["Zidovudine Capsules", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "100mg", "AZT", "60s"],
     ["Nevirapine Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "200mg", "NVP", "60s"],
-    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF", "30s"]
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF", "30s"],
+
   ].each do |el|
     Commodity.find_or_create_by_name(:name => el[0], :commodity_category_id => el[1], :unit_id => el[2], :strength_dosage => el[3], :abbreviation => el[4], :quantity_per_packg => el[5])
     print("\n loaded: #{el[0]} to database")
@@ -132,8 +133,8 @@ namespace :png do
      load_commodities
   end
 
-  desc "Loading PNG Data"
-  task :load_data => :environment do
+  desc "Loading PNG Default Data"
+  task :load_default_data => :environment do
     load_provinces
     load_units
     load_categories
