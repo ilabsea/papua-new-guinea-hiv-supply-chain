@@ -1,6 +1,6 @@
 class Setting < ActiveRecord::Base
  
-
+  attr_accessible :value, :name
 
   KEYS = [
   	{ name: :frequency_hours_to_resend_sms , label: "" , :as => :text },
@@ -11,13 +11,17 @@ class Setting < ActiveRecord::Base
 
   MESSAGE_KEYS = [
   	{ name: :message_alerting_site_about_receiving_form, 
-  	  label: "" ,
+  	  label: "Message notification of package deliver to site" ,
   	  params: %w(site consignment shippening_date)
   	} ,
   	{ name: :message_asking_site, 
-  	  label: "", 
+  	  label: "Message check for confirmation of receiving package to site", 
   	  params: %w(site consignment shippening_date)  
-  	}
+  	},
+    { name: :message_deadline, 
+      label: "Message reminder to site who did not submit requisition form by deadline", 
+      params: %w(site deadline_date)  
+    }
   ]	
 
   def self.[](name)

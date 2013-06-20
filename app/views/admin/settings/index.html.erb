@@ -4,3 +4,41 @@
 
 <%= page_header "System setting" %>
 
+<%= form_for [:admin,@setting] do |f| %>
+  <% Setting::MESSAGE_KEYS.each do |el| %>
+  <p class="template_container">
+    <%=label_tag "#{el[:label]}" %>
+    <br/>
+    <% if el[:name] == :message_alerting_site_about_receiving_form %>
+      <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @alert_message_value %></textarea>
+    <% elsif el[:name] == :message_asking_site %>
+      <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @asking_message_value %></textarea>
+    <% else %>
+      <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @deadline_message_value %></textarea>
+    <% end %>
+    <br />
+    <%= parameters_links el %>
+  </p>
+  <% end %>
+
+  <%= f.submit %>
+<% end %>
+
+<style>
+  .template_container {
+    padding-bottom: 10px;
+  }
+</style>
+
+<%= javascript_include_tag "jquery.fieldSelection" %>
+  <script type="text/javascript">
+    $(function() {
+      $('.parameter_link').click(function() {
+        var $this = $(this);
+        var $input = $('#' + $this.attr('data-id'));
+        $input.replaceSelection($this.text());
+        return false;
+      });
+  });
+  </script>
+
