@@ -378,50 +378,39 @@ class Generator
 		merge_cells Cell.new(current_row, 0), Cell.new(current_row , self.total_column-1)
 		write_cell_title Cell.new(current_row, 0) , 'HIV TEST KIT REQUISITION FORM'
 		row_height 0, 30
-
-		intro_str = <<-EOD
-Please remember, when submitting orders YOU MUST:
-1) Submit a completed "SURV1: HIV Monthly Testing Summary" AND "CD4 testing Monthly Summary" for the past month.
-2) Indicate on this form your current "Stock On Hand" of all test kits and other supplies;
-3) After receiving your order, please indicate quantity received in last column and fax or email to Logistics Unit
-		EOD
-
 		move_next
 
-		write_cell_body Cell.new(current_row, 0) , intro_str
-		row_height current_row, 60
-		merge_cells Cell.new(current_row, 0), Cell.new(current_row, self.total_column-1)
+		texts = [
+			'Please remember, when submitting orders YOU MUST:',
+			'1) Submit a completed "SURV1: HIV Monthly Testing Summary" AND "CD4 testing Monthly Summary" for the past month.',
+			'2) Indicate on this form your current "Stock On Hand" of all test kits and other supplies;',
+			'3) After receiving your order, please indicate quantity received in last column and fax or email to Logistics Unit'
+		]
 
+		texts.each do |text|
+			draw_table Cell.new(self.current_row, 0), Cell.new(self.current_row+1, self.total_column ), {'0_0' => text}
+			move_next
+		end
+
+		draw_table Cell.new(current_row, 0), Cell.new(current_row + 1, self.total_column), {'0_5' => 'Folio No.'}
 		move_next
 
-		write_cell Cell.new(current_row, 0) , ''
-		merge_cells Cell.new(current_row, 0) , Cell.new(current_row, 4) 
-
-		write_cell Cell.new(current_row, 5) , 'Folio No.', :border => :thin
-		merge_cells Cell.new(current_row, 5) , Cell.new(current_row, self.total_column-1) 
-
-		move_next
-
-		write_cell_body Cell.new(current_row, 0) , 'FROM (Clinic/Hospital Name):'
-		
-		merge_cells Cell.new(current_row, 1), Cell.new(current_row, self.total_column-1)
-		write_cell_body Cell.new(current_row, 1) , 'DATE:'
-
+		draw_table Cell.new(current_row, 0), Cell.new(current_row + 1, self.total_column), 
+		{ '0_0' => 'FROM (Clinic/Hospital Name):', '0_1' =>  'DATE:' }
 		move_next
 
 		headers = [ 'Laboratory Test Kits/Reagents' , 'Issue Units', 'Stock On Hand' , 'Qty Required', 'Quantity Amended' , 'Quantity Issued', 'Check' , 'Quantity Received' ]
-
 		headers.each_with_index do |header, index|
 			write_cell_bold Cell.new(current_row, index), header
 		end
-
 		move_next
 
-		write_cell_bold Cell.new(current_row, 0), 'HIV Test Kits and Bundles'
+		['HIV Test Kits and Bundles', '', '', ''].each_with_index do |text, index|
+			write_cell_body Cell.new(current_row, index), text
+		end
 
-		merge_cells Cell.new(current_row, 4), Cell.new(current_row, 6)
-		write_cell_bold Cell.new(current_row, 4), 'FOR AMS USE ONLY'
-
+		draw_table Cell.new(current_row, 4), Cell.new(current_row+1, 7), {'0_0' => 'FOR AMS USE ONLY'}
+		write_cell_body Cell.new(current_row, self.total_column-1), ''
 		move_next
 	end
 
