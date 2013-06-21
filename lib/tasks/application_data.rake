@@ -84,6 +84,20 @@ def load_units
   print("\n Done loading unit #{Unit.count}\n")
 end
 
+def load_setting_message
+  print("\n Loading Setting Message")
+  [
+    ["message_alerting_site_about_receiving_form", "Hi {site}, new package has been sent to you on {shipping_date}, consignment {consignment}. Please respond yes when you received the package."],
+    ["message_asking_site", "Hi {site}, did you received package that was sent on {shipping_date}, {consigment} ? Please respond yes if you received."],
+    ["message_deadline", "Hi {site}, you are late to submit requisition form. The deadline was on {dead_line}, please submit as soon as possible."]
+  ].each do |el|
+    Setting.find_or_create_by_name(:name => el[0], :value => el[1])
+    print("\n loaded: #{el[0]} to database")
+  end
+
+  print("\n Done loading setting message #{Setting.count}\n")
+end
+
 def load_commodities
   print("\n Loading Commodities")
   [
@@ -136,6 +150,11 @@ namespace :png do
   desc "Loading Commodities"
   task  :load_commodities => :environment do
      load_commodities
+  end
+
+  desc "Loading Setting Message"
+  task :load_setting_message => :environment do
+      load_setting_message
   end
 
   desc "Loading PNG Default Data"
