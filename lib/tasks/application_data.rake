@@ -89,7 +89,8 @@ def load_setting_message
   [
     ["message_alerting_site_about_receiving_form", "Hi {site}, new package has been sent to you on {shipping_date}, consignment {consignment}. Please respond yes when you received the package."],
     ["message_asking_site", "Hi {site}, did you received package that was sent on {shipping_date}, {consigment} ? Please respond yes if you received."],
-    ["message_deadline", "Hi {site}, you are late to submit requisition form. The deadline was on {dead_line}, please submit as soon as possible."]
+    ["message_deadline", "Hi {site}, you are late to submit requisition form. The deadline was on {dead_line}, please submit as soon as possible."],
+    ["hour", 0]
   ].each do |el|
     Setting.find_or_create_by_name(:name => el[0], :value => el[1])
     print("\n loaded: #{el[0]} to database")
