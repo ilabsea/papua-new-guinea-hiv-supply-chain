@@ -1,6 +1,6 @@
 module Admin::ApplicationHelper
   def app_name
-    "PNG HIV/Aids"
+    "Papua New Guinea National Department Of Health"
   end
   
   def app_title

@@ -1,8 +1,8 @@
-<div class="row right" style="padding: 5px 10px;" >
+<div class="row right" style="padding: 5px 10px;" > 
   <% if user_signed_in? %>
-     <%= current_user.display_name %>
+     Welcome <b><%= current_user.display_name %></b>
      <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
   <% else %>
      <%= link_to "Sign in", new_user_session_path %>
-  <% end %>   
+  <% end %>  
 </div>

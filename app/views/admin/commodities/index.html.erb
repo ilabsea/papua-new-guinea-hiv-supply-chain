@@ -1,5 +1,6 @@
 <%= page_header("Commodities", :left => 6, :right => 6) do %>
     <%=link_to "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}", :class => 'btn' %>
+    <%=link_to "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ), :class => 'btn' %>
 <% end %>
 
 <% content_for :breadcrumb do %>

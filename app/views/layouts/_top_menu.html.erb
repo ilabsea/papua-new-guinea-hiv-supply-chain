@@ -1,4 +1,4 @@
-<!-- <div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -12,11 +12,8 @@
               <%
               [
                 {:label => "Users", :url => admin_users_path ,    :controller => "users" },
-                {:label => "Provinces", :url => admin_provinces_path ,:controller => "provinces" },
                 {:label => "Sites", :url => admin_sites_path ,:controller => "sites" },
                 {:label => "Public Holidays", :url => admin_public_holidays_path(), :controller => "public_holidays"},
-                {:label => "Categories", :url => admin_categories_path, :controller => "categories"},
-                {:label => "Commodity Categories", :url => admin_commodity_categories_path, :controller => "commodity_categories"},
                 {:label => "Settings", :url => admin_settings_path, :controller => "settings"},
                 {:label => "Commodities",:url => admin_commodities_path(:type => 'drugs'), :controller => "commodities"}
 
@@ -30,4 +27,3 @@
         </div>
     </div>
 </div> 
--->

@@ -27,7 +27,8 @@ PngHivAids::Application.routes.draw do
       end
 
     end
-    root :to => 'home#index'
+    root :to => 'settings#index'
+    # root :to => 'home#index'
     # root :to => 'commodities#index', :type => "drugs"
   end
 
