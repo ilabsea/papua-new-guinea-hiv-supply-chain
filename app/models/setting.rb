@@ -1,6 +1,6 @@
 class Setting < ActiveRecord::Base
  
-  attr_accessible :value, :name
+  attr_accessible :value, :name, :hour
 
   KEYS = [
   	{ name: :frequency_hours_to_resend_sms , label: "" , :as => :text },
@@ -22,7 +22,7 @@ class Setting < ActiveRecord::Base
       label: "Message reminder to site who did not submit requisition form by deadline", 
       params: %w(site deadline_date)  
     }
-  ]	
+  ]
 
   def self.[](name)
     setting = Setting.find_by_name(name)

@@ -5,6 +5,7 @@
 <%= page_header "System setting" %>
 
 <%= form_for [:admin,@setting] do |f| %>
+  <p> If site does not confirm package received, send SMS to site every <input type="number" min="1" max="99" name="setting[hour]" style="width: 40px;" value=<%= @hour %> /> Hour <p>
   <% Setting::MESSAGE_KEYS.each do |el| %>
   <p class="template_container">
     <%=label_tag "#{el[:label]}" %>
