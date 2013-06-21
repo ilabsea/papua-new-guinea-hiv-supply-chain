@@ -14,7 +14,6 @@ PngHivAids::Application.routes.draw do
       end
     end
     resources :units
-
     resources :users do
 
       member do
@@ -27,6 +26,7 @@ PngHivAids::Application.routes.draw do
       end
 
     end
+    root :to => 'commodities#index', :type => "drugs"
   end
 
   devise_for :users

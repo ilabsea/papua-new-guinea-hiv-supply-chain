@@ -6,7 +6,7 @@ module Admin
 	  	@deadline_message_value = Setting.find_by_name("message_deadline") ? Setting.find_by_name("message_deadline").value : ""
 	  	@hour = Setting.first.hour
 	  	@setting = Setting.new
-      @app_title = "Settings"  
+      	@app_title = "Settings"  
 	  end
 
 	  def create
