@@ -33,7 +33,7 @@
   <tbody>
     <% @commodities.each do |commodity| %>
       <tr>
-        <td><%=link_to commodity.name, admin_commodity_path(commodity) %></td>
+        <td><%=link_to commodity.name, edit_admin_commodity_path(commodity, :type => params[:type]) %></td>
         <td><%= commodity.commodity_category.name %></td>
         <td><%= commodity.unit.name %></td>
         <% if params[:type] == "drugs" %>

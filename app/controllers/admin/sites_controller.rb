@@ -27,7 +27,7 @@ module Admin
       @site = Site.new(params[:site])
 
       if @site.save
-        redirect_to admin_site_path(@site), notice: 'Site was successfully created.' 
+        redirect_to admin_sites_path, notice: 'Site was successfully created.' 
       else
         render action: "new" 
       end
@@ -38,7 +38,7 @@ module Admin
       @site = Site.find(params[:id])
 
       if @site.update_attributes(params[:site])
-        redirect_to admin_site_path @site, notice: 'Site was successfully updated.' 
+        redirect_to admin_sites_path, notice: 'Site was successfully updated.' 
       else
         render action: "edit" 
       end

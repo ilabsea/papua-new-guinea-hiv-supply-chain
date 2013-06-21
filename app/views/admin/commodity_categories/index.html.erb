@@ -21,7 +21,7 @@
   <tbody>
     <% @commodity_categories.each do |commodity_category| %>
       <tr>
-        <td><%= link_to commodity_category.name, admin_commodity_category_path(commodity_category) %></td>
+        <td><%= link_to commodity_category.name, edit_admin_commodity_category_path(commodity_category) %></td>
         <td><%= commodity_category.display_type %></td>
         <td><%= l commodity_category.created_at %></td>
         <td>

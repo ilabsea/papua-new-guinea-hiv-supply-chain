@@ -26,7 +26,7 @@
   <tbody>
     <% @sites.each do |site| %>
       <tr>
-        <td><%= link_to site.name, admin_site_path(site) %></td>
+        <td><%= link_to site.name, edit_admin_site_path(site) %></td>
         <td><%= site.service_type %></td>
         <td><%= site.suggestion_order %></td>
         <td><%= site.order_frequency %></td>

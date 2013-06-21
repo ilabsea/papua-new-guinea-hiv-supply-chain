@@ -19,7 +19,7 @@
   <tbody>
     <% @provinces.each do |province| %>
       <tr>
-        <td><%=link_to province.name, admin_province_path(province) %></td>
+        <td><%=link_to province.name, edit_admin_province_path(province) %></td>
         <td><%= province.code %></td>
         <td><%=l province.created_at %></td>
         <td class="last">
