@@ -3,7 +3,7 @@
 <% end %>
 
 <%= page_header "Users" do %>
-  <%= link_to t("New"), new_admin_user_path, :class => "btn" %>
+  <%= link_to t("New User"), new_admin_user_path, :class => "btn" %>
 <% end %>
 
 <%= paginate_records @users %>
@@ -36,7 +36,7 @@
           <%= link_to t('Reset'), reset_admin_user_path(user), :class => 'btn btn-mini btn-danger' %>
           <% if current_user.id != user.id %>
           <%= link_to t('Delete'), admin_user_path(user), :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },:class => 'btn btn-mini btn-danger' %>
+                      :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
           <% end %>            
         </td>
       </tr>

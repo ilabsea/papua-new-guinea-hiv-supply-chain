@@ -25,10 +25,8 @@
         <td class="last">
           <%= link_to t('Edit'), edit_admin_province_path(province), :class => 'btn btn-mini' %>
           
-          <%= link_to t('Destroy'), admin_province_path(province),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
+          <%= link_to t('Delete'), admin_province_path(province),
+                      :method => :delete, :confirm  => 'Are you sure?' ,:class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>
     <% end %>

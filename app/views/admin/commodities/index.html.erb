@@ -45,10 +45,8 @@
         <td><%= commodity.consumption_per_client_unit %></td>
         <td class="last">
           <%= link_to t('Edit'), edit_admin_commodity_path(commodity, :type => params[:type]), :class => 'btn btn-mini' %>
-          <%= link_to t('Destroy'),   admin_commodity_path(commodity, :type => params[:type]),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
+          <%= link_to t('Delete'),   admin_commodity_path(commodity, :type => params[:type]),
+                      :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>
     <% end %>

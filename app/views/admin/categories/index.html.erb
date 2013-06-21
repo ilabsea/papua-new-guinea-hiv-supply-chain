@@ -24,10 +24,8 @@
         <td><%= l category.created_at %></td>
         <td>
           <%= link_to t('Edit'),  edit_admin_category_path(category), :class => 'btn btn-mini' %>
-          <%= link_to t('Delete'),  admin_category_path(category),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
+          <%= link_to t('Delete'),  admin_category_path(category), :confirm => t('Are you sure?'),
+                      :method => :delete , :class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>
     <% end %>
