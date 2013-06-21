@@ -1,0 +1,24 @@
+<ul class="thumbnails">
+	<%
+		dashboards = [
+			{:title => "Users", :url => admin_users_path , :tip => "Manage Users"},
+			{:title => "Sites", :url => admin_sites_path , :tip => "Manage Sites"},
+			{:title => "Public Holidays", :url => admin_public_holidays_path , :tip => "Manage Public Holidays in PNG"},
+			{:title => "Commodities", :url => admin_commodities_path , :tip => "Manage Commodities"},
+			{:title => "Settings", :url => admin_settings_path , :tip => "Manage Settings"},
+
+		]
+
+
+	%>
+	<% dashboards.each do |dashboard| %>
+		<li class="span3">
+			<a class="thumbnail" style='text-align: center; text-decoration: none;' href="<%= dashboard[:url] %>" >
+				<img data-src="holder.js/300x200" alt="">
+				<h3><%= dashboard[:title] %> </h3>
+				<p class='gry' style='color:gray;' ><%= dashboard[:tip] %></p>
+			</a>
+		</li>
+	<% end %>
+</ul>
+

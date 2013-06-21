@@ -1,6 +1,7 @@
 PngHivAids::Application.routes.draw do
 
   namespace :admin do
+    resources :home
     resources :sites
     resources :provinces
     resources :commodities
@@ -26,7 +27,8 @@ PngHivAids::Application.routes.draw do
       end
 
     end
-    root :to => 'commodities#index', :type => "drugs"
+    root :to => 'home#index'
+    # root :to => 'commodities#index', :type => "drugs"
   end
 
   devise_for :users
