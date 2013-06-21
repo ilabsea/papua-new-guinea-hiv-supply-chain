@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   ROLES_REVIEWER = "Reviewer"
   ROLES_DATA_ENTRY = "Data Entry"
   ROLES_SITE = "Site"
+  ROLES_AMS  = "AMS"
 
   ROLES = [ ROLES_ADMIN, ROLES_REVIEWER, ROLES_DATA_ENTRY, ROLES_SITE ]
   # Include default devise modules. Others available are:
@@ -28,7 +29,23 @@ class User < ActiveRecord::Base
   belongs_to :site 
 
   def site_role?
-      self.role == User::ROLES_SITE
+     self.site?
+  end
+
+  def admin?
+     self.role == User::ROLES_ADMIN
+  end
+
+  def reviewer?
+     self.role == User::ROLES_REVIEWER
+  end
+
+  def data_entry?
+     self.role == User::ROLES_DATA_ENTRY
+  end
+
+  def site?
+     self.role == User::ROLES_SITE
   end
 
   def change_password? params

@@ -1,4 +1,4 @@
-module ApplicationHelper
+module Admin::ApplicationHelper
   def app_name
     "PNG HIV/Aids"
   end
@@ -39,7 +39,7 @@ module ApplicationHelper
 		char_sep = "&raquo;".html_safe
 		if( !options.nil?  && options.size != 0)
 			items <<  content_tag(:li , :class => "active") do
-				link_to("Home", root_path) + content_tag(:span, char_sep, :class => "divider")
+				link_to("Home", admin_root_path) + content_tag(:span, char_sep, :class => "divider")
 			end
 			options.each do |option|
 				option.each do |key, value|
