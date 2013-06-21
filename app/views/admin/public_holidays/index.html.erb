@@ -20,7 +20,7 @@
   <tbody>
     <% @public_holidays.each do |public_holiday| %>
       <tr>
-        <td><%=link_to public_holiday.name, admin_public_holiday_path(public_holiday) %></td>
+        <td><%=link_to public_holiday.name, edit_admin_public_holiday_path(public_holiday) %></td>
         <td><%= public_holiday.date %></td>
         <td><%= public_holiday.created_at %></td>
         <td class="last">

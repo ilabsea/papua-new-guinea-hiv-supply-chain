@@ -27,7 +27,7 @@ module Admin
       @public_holiday = PublicHoliday.new(params[:public_holiday])
 
       if @public_holiday.save
-        redirect_to admin_public_holiday_path(@public_holiday), notice: 'Public Holiday was successfully created.'
+        redirect_to admin_public_holidays_path, notice: 'Public Holiday was successfully created.'
       else
         render action: "new" 
       end
@@ -39,7 +39,7 @@ module Admin
       @public_holiday = PublicHoliday.find(params[:id])
 
       if @public_holiday.update_attributes(params[:public_holiday])
-        redirect_to admin_public_holiday_path(@public_holiday), notice: 'Province was successfully updated.' 
+        redirect_to admin_public_holidays_path, notice: 'Province was successfully updated.' 
       else
         render action: "edit" 
       end
