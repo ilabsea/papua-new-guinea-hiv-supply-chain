@@ -1,12 +1,20 @@
 PngHivAids::Application.routes.draw do
 
   namespace :admin do
+    resources :requisition_reports do
+      member do
+        post 'import'
+      end
+    end
     resources :home
-    resources :sites
+    
+    resources :sites do
+      resources :requisition_reports
+    end
+
     resources :provinces
     resources :commodities
     resources :public_holidays
-    resources :provinces
     resources :settings
     resources :categories
     resources :commodity_categories do

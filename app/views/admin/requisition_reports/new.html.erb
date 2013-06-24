@@ -1,0 +1,20 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [
+  		 {"Requisition Form" => false}
+  	] %>
+<% end %>
+
+<%= page_header 'Requisition Form Summition' %>
+
+<%=simple_form_for [:admin,@requisition_report], :html => {:class => 'form-horizontal' , :multipart => true} do |f|%>
+  <%= f.error_notification %>
+  <%= f.input :form, :as =>:file %>
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                admin_provinces_path, :class => 'btn' %>
+  </div>
+<% end %>
+
+

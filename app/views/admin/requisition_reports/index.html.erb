@@ -1,0 +1,39 @@
+<%= page_header("Requisition Report form", :left => 6, :right => 6) do %>
+    <%= link_to t('New Requisition Report Summition'), new_admin_requisition_report_path, :class => 'btn' %>
+<% end %>
+
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Requisition Report" => nil}]  %>
+<% end %>
+
+<%= paginate_records @requisition_reports %>
+<table class="table table-striped well no-border no-padding">
+  <thead>
+    <tr>
+      <th><%= t 'Summition' %></th>
+      <th><%= t 'Status' %></th>
+      <th><%= t 'Uploaded At' %></th>
+      <th class="action_col3" ><%= t 'Action' %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @requisition_reports.each do |requisition_report| %>
+      <tr>
+        <td>
+          <%= link_to File.basename(requisition_report.form.current_path) , new_admin_requisition_report_path(requisition_report) %>
+        </td>
+        <td><%=requisition_report.status %></td>
+        <td><%=requisition_report.created_at %></td>
+        <td class="last">
+
+          <%= link_to t('Detail'), edit_admin_requisition_report_path(requisition_report), :class => 'btn btn-mini' %>  
+          <%= link_to t('Import'), import_admin_requisition_report_path(requisition_report), :method => :post,  :class => 'btn btn-mini' %>   
+          <%= link_to t('Delete'), edit_admin_requisition_report_path(requisition_report),
+                      :method => :delete, :confirm  => 'Are you sure?' ,:class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
