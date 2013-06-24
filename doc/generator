@@ -22,5 +22,9 @@ rails g simple_form:install --bootstrap
 --------------------------------------------------------------------------------
  rails g cancan:ability
 
+#carrierwave
+--------------------------------------------------------------------------------
+rails g uploader requisition_report 
+
 
 

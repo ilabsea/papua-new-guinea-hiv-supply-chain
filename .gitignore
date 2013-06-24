@@ -16,5 +16,8 @@
 
 #Ignore IDE related files
 /nbproject/*
+
+#Ignore All uploaded and generated data
 /public/data/*
+/public/uploads/*
 

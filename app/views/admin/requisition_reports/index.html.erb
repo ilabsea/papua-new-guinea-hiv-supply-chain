@@ -11,6 +11,8 @@
   <thead>
     <tr>
       <th><%= t 'Summition' %></th>
+      <th><%= t 'Site' %></th>
+      <th><%= t 'User' %></th>
       <th><%= t 'Status' %></th>
       <th><%= t 'Uploaded At' %></th>
       <th class="action_col3" ><%= t 'Action' %></th>
@@ -22,6 +24,8 @@
         <td>
           <%= link_to File.basename(requisition_report.form.current_path) , new_admin_requisition_report_path(requisition_report) %>
         </td>
+        <td><%=requisition_report.site.name %></td>
+        <td><%=requisition_report.user.display_name %></td>
         <td><%=requisition_report.status %></td>
         <td><%=requisition_report.created_at %></td>
         <td class="last">
