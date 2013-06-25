@@ -21,7 +21,7 @@ module Admin
 	  	Setting.create_or_update_message_deadline(message_deadline, params)
 	  	Setting.create_or_update_frequency_hour(frequency_hour, params)
 
-      redirect_to admin_settings_path, notice: 'Setting was successfully updated.' 
+      redirect_to admin_settings_path, notice: 'Setting has been updated successfully.' 
 
     end
 	end

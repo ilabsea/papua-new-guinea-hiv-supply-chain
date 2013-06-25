@@ -43,7 +43,7 @@ module Admin
       @commodity = Commodity.new(params[:commodity])
       @commodity.commodity_type = params[:type]
       if @commodity.save
-        redirect_to admin_commodities_path(:type => params[:type]), notice: 'Commodity was successfully created.'
+        redirect_to admin_commodities_path(:type => params[:type]), notice: 'Commodity has been created successfully.'
       else
         render action: "new" 
       end
@@ -55,7 +55,7 @@ module Admin
       @commodity = Commodity.find(params[:id])
       @commodity.commodity_type = params[:type]
       if @commodity.update_attributes(params[:commodity])
-        redirect_to admin_commodities_path(:type => params[:type]), notice: 'Commodity was successfully updated.' 
+        redirect_to admin_commodities_path(:type => params[:type]), notice: 'Commodity has been updated successfully.' 
       else
         render action: "edit" 
       end

@@ -43,7 +43,7 @@ module Admin
       begin
         @unit = Unit.find(params[:id])
         @unit.destroy
-        redirect_to admin_units_path, :notice => "Unit has been removed successfully"
+        redirect_to admin_units_path, :notice => "Unit has been removed"
       rescue Exception => e
         redirect_to admin_units_path, :error => e.message
       end

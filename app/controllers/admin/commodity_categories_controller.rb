@@ -29,7 +29,7 @@ module Admin
       @commodity_category = CommodityCategory.new(params[:commodity_category])
 
       if @commodity_category.save
-        redirect_to admin_commodity_categories_path, notice: 'Commodity Category was successfully created.'
+        redirect_to admin_commodity_categories_path, notice: 'Commodity Category has been created successfully.'
       else
         render action: "new" 
       end
@@ -41,7 +41,7 @@ module Admin
       @commodity_category = CommodityCategory.find(params[:id])
 
       if @commodity_category.update_attributes(params[:commodity_category])
-        redirect_to admin_commodity_categories_path, notice: 'Commodity Category was successfully updated.' 
+        redirect_to admin_commodity_categories_path, notice: 'Commodity Category has been updated successfully.' 
       else
         render action: "edit" 
       end
