@@ -22,7 +22,7 @@
     <% @requisition_reports.each do |requisition_report| %>
       <tr>
         <td>
-          <%= link_to File.basename(requisition_report.form.current_path) , new_admin_requisition_report_path(requisition_report) %>
+          <%= link_to File.basename(requisition_report.form.current_path) , download_admin_requisition_report_path(requisition_report) %>
         </td>
         <td><%=requisition_report.site.name %></td>
         <td><%=requisition_report.user.display_name %></td>
@@ -32,7 +32,7 @@
 
           <%= link_to t('Detail'), edit_admin_requisition_report_path(requisition_report), :class => 'btn btn-mini' %>  
           <%= link_to t('Import'), import_admin_requisition_report_path(requisition_report), :method => :post,  :class => 'btn btn-mini' %>   
-          <%= link_to t('Delete'), edit_admin_requisition_report_path(requisition_report),
+          <%= link_to t('Delete'), admin_requisition_report_path(requisition_report),
                       :method => :delete, :confirm  => 'Are you sure?' ,:class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>

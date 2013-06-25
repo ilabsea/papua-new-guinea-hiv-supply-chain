@@ -1,0 +1,43 @@
+<%= page_header("Orders", :left => 6, :right => 6)  %>
+
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Orders" => nil}]  %>
+<% end %>
+
+<%= paginate_records @orders %>
+<table class="table table-striped well no-border no-padding">
+  <thead>
+    <tr>
+      <th><%= t 'Summition Date' %></th>
+      <th><%= t 'Order Date' %></th>
+      <th><%= t 'User' %></th>
+      <th><%= t 'From' %></th>
+
+      <th><%= t 'Reviewer' %></th>
+      <th><%= t 'Reviewed Date' %></th>
+      <th><%= t 'Status' %></th>
+      <th class="action_col៣" ><%= t 'Action' %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%=l order.date_sumbittion %></td>
+        <td><%=l order.order_date %></td>
+        <td title='<%= order.user.phone_number%>'> <%=order.user.display_name %></td>
+        <td><%=order.user_type %></td>
+        <td><%=order.review_user.nil? ? "" : order.review_user.name %></td>
+        <td><%= order.review_date ? l(order.review_date) : '' %></td>
+        <td><%= order.status %></td>
+        <td class="last">
+          <%= link_to t('View Order line'), admin_order_order_lines_path(order), :class => 'btn btn-mini' %>    
+          <%= link_to t('Delete'), admin_order_path(order),:method => :delete,
+                      :confirm =>'Are you sure?', :class => 'btn btn-mini btn-danger' %>    
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
