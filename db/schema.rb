@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130624033500) do
+ActiveRecord::Schema.define(:version => 20130625075712) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -38,6 +38,14 @@ ActiveRecord::Schema.define(:version => 20130624033500) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "com_type"
+  end
+
+  create_table "import_survs", :force => true do |t|
+    t.integer  "surv_type"
+    t.string   "name"
+    t.integer  "import_user"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "provinces", :force => true do |t|
@@ -89,6 +97,23 @@ ActiveRecord::Schema.define(:version => 20130624033500) do
     t.integer  "province_id"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
+  end
+
+  create_table "surv_site_commodities", :force => true do |t|
+    t.integer  "surv_site_id"
+    t.integer  "commodity_id"
+    t.string   "quantity"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "surv_sites", :force => true do |t|
+    t.integer  "import_id"
+    t.integer  "site_id"
+    t.string   "month"
+    t.string   "year"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "units", :force => true do |t|
