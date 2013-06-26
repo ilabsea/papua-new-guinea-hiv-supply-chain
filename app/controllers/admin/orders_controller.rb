@@ -8,7 +8,7 @@ module Admin
  		begin
  			@order = Order.find params[:id]
  			@order.destroy
- 			redirect_to admin_orders_path, :notice => 'Order has been destroy succesfully'
+ 			redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
  		rescue Exception => e
  			redirect_to admin_orders_path, :error =>  e.message
  		end	
