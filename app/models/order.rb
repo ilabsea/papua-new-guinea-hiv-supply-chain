@@ -36,7 +36,6 @@ class Order < ActiveRecord::Base
       requisition_report.save
       return false
   	end
-
   end
 
   def import_order_lines

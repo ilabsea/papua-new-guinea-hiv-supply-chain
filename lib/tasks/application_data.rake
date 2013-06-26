@@ -48,16 +48,16 @@ def load_commodity_categories
   ActiveRecord::Base.connection.execute("TRUNCATE commodity_categories")
   print("\n Loading Commodity Category")
   [
-    ["ARV Adult 1st Line", CommodityCategory::TYPES[0][1]],
-    ["ARV Adult 2nd Line", CommodityCategory::TYPES[0][1]],
-    ["ARV Pediatric 1st line", CommodityCategory::TYPES[0][1]],
-    ["ARV Pediatric 2nd line", CommodityCategory::TYPES[0][1]],
-    ["OI Drugs", CommodityCategory::TYPES[0][1]],
-    ["Kits", CommodityCategory::TYPES[0][1]],
-    ["HIV Test Kits and Bundles", CommodityCategory::TYPES[1][1]],
-    ["BD FACSCount Reagents", CommodityCategory::TYPES[1][1]],
-    ["PIMA CD4 Test Reagents/Consumables", CommodityCategory::TYPES[1][1]],
-    ["EID Consumables", CommodityCategory::TYPES[1][1]]
+    ["ARV Adult 1st Line", CommodityCategory::TYPES_KIT ],
+    ["ARV Adult 2nd Line", CommodityCategory::TYPES_KIT ],
+    ["ARV Pediatric 1st line", CommodityCategory::TYPES_KIT ],
+    ["ARV Pediatric 2nd line", CommodityCategory::TYPES_KIT ],
+    ["OI Drugs", CommodityCategory::TYPES_KIT ],
+    ["Kits", CommodityCategory::TYPES_KIT ],
+    ["HIV Test Kits and Bundles", CommodityCategory::TYPES_DRUG ],
+    ["BD FACSCount Reagents", CommodityCategory::TYPES_DRUG ],
+    ["PIMA CD4 Test Reagents/Consumables", CommodityCategory::TYPES_DRUG ],
+    ["EID Consumables", CommodityCategory::TYPES_DRUG]
   ].each do |el|
       CommodityCategory.find_or_create_by_name(:name => el[0], :com_type => el[1])
       print("\n loaded: #{el[0]} to database")

@@ -11,6 +11,6 @@ User.create!( :email => "admin@png.com",
              :user_name => "admin",
              :phone_number => "0975553553",
              :display_name => "MoH of PNG",
-             :site_id => Site.first.id
+             :role => User::ROLES_ADMIN
              )
-p "create user: #{admin} pwd: 123456"
+p "create user: admin, pwd: 123456"

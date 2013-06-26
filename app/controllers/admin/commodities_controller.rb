@@ -2,14 +2,13 @@ module Admin
   class CommoditiesController < Controller
 
     def index
-        @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[0][1]).paginate(paginate_options)
+        @commodities = Commodity.includes(:commodity_category)
         if (params[:type] == "drugs")
-          @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[0][1]).paginate(paginate_options)
+          @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
         elsif (params[:type] == "kits")
-          @commodities = Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES[1][1]).paginate(paginate_options)
-        else
-        # @commodities = Commodity.includes(:commodity_category).paginate(paginate_options)
+          @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
         end
+        @commodities = @commodities.paginate(paginate_options)
         @app_title = "Commodities"
     end
 
