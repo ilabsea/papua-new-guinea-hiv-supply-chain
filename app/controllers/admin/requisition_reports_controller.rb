@@ -19,6 +19,26 @@ module Admin
 			end
 		end
 
+		def download
+	     	@requisition_report = RequisitionReport.find params[:id]
+	        send_file(@requisition_report.form.current_path , 
+	                      :filename      =>  "template.xls",
+	                      :type          =>  'application/xls',
+	                      :disposition   =>  'attachment',
+	                      :streaming     =>  true,
+	                      :buffer_size   =>  '4096')
+		end
+
+		def destroy
+			begin
+				form = RequisitionReport.find params[:id]
+				form.destroy
+				redirect_to admin_requisition_reports_path, :notice => 'Requistion Form summitted has been deleted'
+			rescue Exception => e
+				redirect_to admin_requisition_reports_path, :error => e.message
+			end
+		end
+
 		def _fill_attribute
 			@requisition_report.site = _site
 			@user ||= current_user
@@ -34,7 +54,12 @@ module Admin
 		end
 
 		def import 
-			
+			requisition_report = RequisitionReport.find params[:id]
+			 if Order.create_from_requisition_report requisition_report
+			 	redirect_to admin_orders_path, :notice => 'Order has been created successfully'
+			 else
+			 	redirect_to admin_requisition_reports_path, :error => 'Failed to import'	
+			 end
 		end
 
 	end

@@ -1,9 +1,13 @@
 PngHivAids::Application.routes.draw do
 
   namespace :admin do
+    resources :orders do
+      resources :order_lines
+    end
     resources :requisition_reports do
       member do
         post 'import'
+        get  'download'
       end
     end
     resources :home

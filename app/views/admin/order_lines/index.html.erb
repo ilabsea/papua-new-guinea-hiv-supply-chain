@@ -1,0 +1,33 @@
+<%= page_header "Order Lists"  %>
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Orders" => admin_orders_path}, {"Order Lines" => nil}]  %>
+<% end %>
+
+<%= paginate_records @order_lines %>
+<table class="table table-striped well no-border no-padding">
+  <thead>
+    <tr>
+      <th><%= t 'Site' %></th>
+      <th><%= t 'Commodity' %></th>
+      <th><%= t 'Sumission Date' %></th>
+      <th><%= t 'Order Date' %></th>
+      <th><%= t 'Stock on Hand' %></th>
+      <th><%= t 'Monthly use' %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @order_lines.each do |order_line| %>
+      <tr>
+        <td><%= @order.site.name %> </td>
+        <td><%= order_line.commodity.name %> </td>
+        <td><%= @order.date_sumbittion %> </td>
+        <td><%= @order.order_date %> </td>
+        <td><%= order_line.stock_on_hand %> </td>
+        <td><%= order_line.monthly_use %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
