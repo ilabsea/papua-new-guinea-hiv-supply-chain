@@ -8,6 +8,8 @@ class Order < ActiveRecord::Base
 
   has_many :order_lines
 
+  default_scope order('created_at DESC')
+
   attr_accessible :date_sumbittion, :is_requisition_form, :order_date, :review_date,  :status
 
   ORDER_STATUS_PENDING   = 'Pending'

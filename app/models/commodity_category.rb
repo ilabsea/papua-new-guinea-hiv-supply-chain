@@ -8,11 +8,11 @@ class CommodityCategory < ActiveRecord::Base
   TYPES = [TYPES_DRUG, TYPES_KIT ]
 
   def self.drug
-  	where "com_type = #{CommodityCategory::TYPES_DRUG}" 
+  	where "com_type = '#{CommodityCategory::TYPES_DRUG}' " 
   end
 
   def self.kit
-  	where "com_type = #{CommodityCategory::TYPES_KIT}" 
+  	where "com_type = '#{CommodityCategory::TYPES_KIT}' " 
   end
 
 end

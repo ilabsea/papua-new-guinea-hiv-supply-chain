@@ -112,8 +112,6 @@ class Sheet
 				format.bottom = :none
 				format.right  = :none
 
-				
-
 				if(r==0 && c==0)
 					format.left = border
 					format.top  = border

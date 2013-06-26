@@ -23,7 +23,7 @@ class OrderLineImport
 				if commodity
 					params = { :commodity 	  => commodity,
 							   :arv_type  	  =>  CommodityCategory::TYPES_KIT,
-							   :stock_on_hand =>  row[4].to_i }
+							   :stock_on_hand =>  row[2].to_i }
 
 					order_lines << @order.order_lines.build(params)
 				else
@@ -52,8 +52,8 @@ class OrderLineImport
 				if commodity
 					params = { :commodity => commodity,
 							   :arv_type  => CommodityCategory::TYPES_DRUG,
-							   :stock_on_hand =>  row[4].to_i,
-							   :monthly_use   =>  row[5].to_i 
+							   :stock_on_hand =>  row[5].to_i,
+							   :monthly_use   =>  row[6].to_i 
 							}
 					order_lines << @order.order_lines.build(params)
 				else
