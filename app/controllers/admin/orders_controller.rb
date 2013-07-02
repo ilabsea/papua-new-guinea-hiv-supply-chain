@@ -1,7 +1,29 @@
 module Admin
  class OrdersController < Controller
  	def index
- 		@orders = Order.order('id desc').paginate(paginate_options)
+ 		@orders = Order.of(current_user).paginate(paginate_options) 
+ 	end
+
+ 	def new 
+ 		@order = Order.new
+ 	end
+
+ 	def create
+ 		raise 'Unable to create order. Only data entry user is able to create order' if !current_user.data_entry?
+ 		@order = Order.new params[:order].slice(:order_date, :date_submittion)
+ 		
+ 		@order.user_data_entry = current_user
+ 		@order.user_place_order_id = params[:order][:user_place_order] if !params[:order][:user_place_order].blank? 
+ 		@order.site_id = params[:order][:site]
+
+ 		@order.status = Order::ORDER_STATUS_PENDING
+ 		@order.is_requisition_form = false
+
+ 		if @order.save
+ 		 	redirect_to admin_orders_path, :notice => 'Order has been created'	
+ 		else
+ 			render :new
+ 		end
  	end
 
  	def destroy

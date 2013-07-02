@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130626035130) do
+ActiveRecord::Schema.define(:version => 20130702105041) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -62,9 +62,8 @@ ActiveRecord::Schema.define(:version => 20130626035130) do
   create_table "orders", :force => true do |t|
     t.integer  "site_id"
     t.boolean  "is_requisition_form"
-    t.datetime "date_sumbittion"
     t.integer  "user_place_order_id"
-    t.datetime "order_date"
+    t.date     "order_date"
     t.integer  "user_data_entry_id"
     t.datetime "review_date"
     t.integer  "review_user_id"
@@ -72,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20130626035130) do
     t.integer  "requisition_report_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+    t.date     "date_submittion"
   end
 
   add_index "orders", ["requisition_report_id"], :name => "index_orders_on_requisition_report_id"

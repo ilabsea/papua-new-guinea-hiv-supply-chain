@@ -8,18 +8,31 @@ class Order < ActiveRecord::Base
 
   has_many :order_lines, :dependent => :destroy
 
+  validates :site, :order_date,:date_submittion, :presence => true
+  validates :user_place_order, :presence => true, :if =>  Proc.new{|f| f.is_requisition_form }
+  validates :user_data_entry,  :presence => true, :unless => Proc.new{|f| f.is_requisition_form }
+
   default_scope order('created_at DESC')
 
-  attr_accessible :date_sumbittion, :is_requisition_form, :order_date, :review_date,  :status
+  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  :status
 
   ORDER_STATUS_PENDING   = 'Pending'
   ORDER_STATUS_COMPLETED = 'Completed'
 
   ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_COMPLETED ]
 
+  def user_site?
+
+  end
+
+  def self.of(user)
+    return Order.all if user.admin?
+    return Order.where(['site_id = :site_id', {:site_id => current_user.site.id}]) if user.site?
+    return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
+  end
 
   def self.create_from_requisition_report requisition_report
-  	order = Order.new :date_sumbittion => requisition_report.created_at,
+  	order = Order.new :date_submittion => requisition_report.created_at,
 											 :is_requisition_form => true,
 											 :order_date => Time.now(), 
 											 :status  => Order::ORDER_STATUS_PENDING
@@ -38,6 +51,11 @@ class Order < ActiveRecord::Base
       requisition_report.save
       return false
   	end
+  end
+
+  def users_from_site
+     site = self.site || Site.new
+     site.users
   end
 
   def import_order_lines

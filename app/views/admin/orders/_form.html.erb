@@ -1,0 +1,56 @@
+<%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :site, :collection => Site.all.map{|site| [site.name, site.id]}, 
+  			  :include_blank => 'Select a Site', :'ng-model' => 'order.site'  %>
+  <%= f.input :user_place_order, :label => 'Site user', 
+  			  :collection => @order.users_from_site.map{|user| [user.user_name, user.id]},
+  			  :include_blank => 'Select a User' %>
+
+  <%= f.input :order_date, :as => 'date_time_picker' %>        
+  <%= f.input :date_submittion, :as => 'date_time_picker' %>        
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                admin_provinces_path, :class => 'btn' %>
+  </div>
+<% end %>
+
+<script>
+  function handleSiteUser(){
+    $('#order_site').on('change', function(){
+       var site = $(this).val();
+       if(!site){
+          removeUsers();
+          return ;
+       }
+
+       var url  = '/admin/sites/' + site + '/users' 
+       $.ajax({
+          url : url,
+          method : 'GET',
+          dataType : 'json',
+          success: function(response){
+             removeUsers();
+             $selectElm = $('#order_user_place_order') ;
+             for(var i=0; i< response.length; i++){
+                   value = response[i][1];
+                   text  = response[i][0];
+                   var option = "<option value='"+ value +"' >" + text + " </option>";
+                   $selectElm.append(option);
+                 }
+          }
+       })
+
+
+    });
+  }
+
+  function removeUsers(){
+      $("#order_user_place_order option[value !='']" ).remove();
+  }
+
+  $(function(){
+    handleSiteUser();
+  });
+</script>

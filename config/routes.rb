@@ -14,6 +14,9 @@ PngHivAids::Application.routes.draw do
     
     resources :sites do
       resources :requisition_reports
+      member do
+        get 'users'
+      end
     end
 
     resources :provinces

@@ -1,4 +1,6 @@
-<%= page_header("Orders", :left => 6, :right => 6)  %>
+<%= page_header("Orders") do  %>
+  <%= link_to 'New Order',  new_admin_order_path(), :class => 'btn' %>
+<% end %>
 
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Orders" => nil}]  %>
@@ -9,6 +11,7 @@
   <thead>
     <tr>
       <th><%= t 'Type' %></th>
+      <th><%= t 'Site' %></th>
       <th><%= t 'Summition Date' %></th>
       <th><%= t 'Order Date' %></th>
       <th><%= t 'User' %></th>
@@ -17,7 +20,7 @@
       <th><%= t 'Reviewer' %></th>
       <th><%= t 'Reviewed Date' %></th>
       <th><%= t 'Status' %></th>
-      <th class="action_col៣" ><%= t 'Action' %></th>
+      <th class="action_col3" ><%= t 'Action' %></th>
     </tr>
   </thead>
 
@@ -25,7 +28,8 @@
     <% @orders.each do |order| %>
       <tr>
         <td><%=order.is_requisition_form ? 'Form Uploading' : 'Data Entry' %></td>
-        <td><%=l order.date_sumbittion %></td>
+        <td><%=order.site.name %></td>
+        <td><%=l order.date_submittion %></td>
         <td><%=l order.order_date %></td>
         <td title='<%= order.user.phone_number%>'> <%=order.user.display_name %></td>
         <td><%=order.user_type %></td>
