@@ -1,13 +1,101 @@
 <%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal' } do |f| %>
   <%= f.error_notification %>
-  <%= f.input :site, :collection => Site.all.map{|site| [site.name, site.id]}, 
-  			  :include_blank => 'Select a Site', :'ng-model' => 'order.site'  %>
-  <%= f.input :user_place_order, :label => 'Site user', 
-  			  :collection => @order.users_from_site.map{|user| [user.user_name, user.id]},
-  			  :include_blank => 'Select a User' %>
+  <div class='row'>
+    <div class='span4' >
+      <%= f.input :site, :collection => Site.all.map{|site| [site.name, site.id]},:include_blank => 'Select a Site'%>
+    </div>
 
-  <%= f.input :order_date, :as => 'date_time_picker' %>        
-  <%= f.input :date_submittion, :as => 'date_time_picker' %>        
+    <div class='span4'>
+      <%= f.input :order_date, :as => 'date_time_picker', :label => 'Order Create' %>   
+    </div>
+
+    <div class='span4'>
+        <%= f.input :date_submittion, :as => 'date_time_picker', :label => 'Order Received' %> 
+    </div>
+  </div>
+
+  <% i = 0 %>
+  <%=f.simple_fields_for :order_lines do |order_line| %>
+    <% if(i < @commodities_kit.size) %>
+        <%=content_for :kit do  %>
+          <tr>
+            <td> <%= @order.order_lines[i].commodity.name%> </td>
+            <td> </td>
+            <td> <%= order_line.input :stock_on_hand, :label=> '&nbsp;',
+                  :wrapper_html => {:class => 'inline-div'}, 
+                  :input_html =>{:class => 'number_text'}, 
+                  :label_html =>{:class => 'none'}  %> 
+            </td>
+            <td> <%= order_line.input :monthly_use, :label=> '&nbsp;' , 
+                  :wrapper_html => {:class => 'inline-div'},
+                  :input_html => {:class => 'number_text'} , 
+                  :label_html =>{:class => 'none'}%> 
+            </td>
+            
+            <td> </td>
+            <td> </td>
+            <td> </td>
+          </tr>  
+        <% end %>    
+    <% else %>  
+        <%=content_for :drug do %>
+          <tr>
+            <td> <%= @order.order_lines[i].commodity.name%> </td>
+            <td> </td>
+            <td> <%= order_line.input :stock_on_hand, :label=> '&nbsp;',
+                    :wrapper_html => {:class => 'inline-div'},
+                    :input_html =>{:class => 'number_text'}, 
+                    :label_html =>{:class => 'none'}  %> </td>
+            <td> <%= order_line.input :monthly_use, :label=> '&nbsp;',
+                    :wrapper_html => {:class => 'inline-div'},
+                    :input_html =>{:class => 'number_text'}, 
+                    :label_html =>{:class => 'none'}   %> 
+            </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+          </tr>
+        <% end %>
+    <% end %>  
+    <% i += 1 %>
+  <% end %>
+
+  <div class="tabbable"> 
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#drug" data-toggle="tab">Drugs</a>
+      </li>
+      <li> 
+        <a href="#kit" data-toggle="tab">Kit</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="drug">
+        <h4> Drug Commodities </h4>
+        <%= table_order_line yield(:drug) %>
+      </div>
+      <div class="tab-pane" id="kit">
+         <h4> Kit Commodities </h4>
+         <%= table_order_line yield(:kit) %>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
   <div class="form-actions">
     <%= f.button :submit, :class => 'btn-primary' %>

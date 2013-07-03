@@ -16,9 +16,10 @@ class Order < ActiveRecord::Base
 
   attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  :status
 
+  accepts_nested_attributes_for :order_lines
+
   ORDER_STATUS_PENDING   = 'Pending'
   ORDER_STATUS_COMPLETED = 'Completed'
-
   ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_COMPLETED ]
 
   def user_site?

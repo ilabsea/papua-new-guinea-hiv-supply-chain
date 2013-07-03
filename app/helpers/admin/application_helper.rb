@@ -61,6 +61,31 @@ module Admin::ApplicationHelper
 	def breadcrumb options=nil
 		content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
 	end
+
+
+  def table_order_line body
+    table = <<-EOD
+      <table class='table table-striped well no-border no-padding'>
+          <thead>
+            <tr>
+              <th width='240'> Commodity </th>
+              <th> # Of Patient on Drug regiment </th>
+              <th> Stock on hand</th>
+              <th> Consumtion</th>
+              <th> System Suggestion</th>
+              <th> Quantity Suggested</th>
+              <th> Entry Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            #{body}
+          </tbody>
+
+      </table>
+    EOD
+
+    table.html_safe
+  end
   
   
   

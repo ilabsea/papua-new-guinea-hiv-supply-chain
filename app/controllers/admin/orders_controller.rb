@@ -6,6 +6,16 @@ module Admin
 
  	def new 
  		@order = Order.new
+ 		@commodities_kit = Commodity.of_kit
+ 		@commodities_drug = Commodity.of_drug
+
+ 		@commodities_kit.each do |commodity|
+ 			@order.order_lines.build(:commodity => commodity)
+ 		end
+
+ 		@commodities_drug.each do |commodity|
+ 			@order.order_lines.build(:commodity => commodity)
+ 		end
  	end
 
  	def create
