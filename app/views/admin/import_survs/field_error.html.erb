@@ -1,0 +1,25 @@
+<% if @import_surv.is_form_error? %>
+	<% if !@import_surv.invalid_fields[:site].empty? %>
+  	<h4> Sites : </h4>
+  	<ul>
+  		<% @import_surv.invalid_fields[:site].each do |el| %>
+  		<li><%= el %></li>
+  		<% end %>
+		</ul>
+	<% end %>
+
+	<% if !@import_surv.invalid_fields[:commodity].empty? %>
+  	<h4> Commodities : </h4>
+  	<ul>
+  		<% @import_surv.invalid_fields[:commodity].each do |el| %>
+  		<li><%= el %></li>
+  		<% end %>
+		</ul>
+	<% end %>
+	<ul/>
+<% end %>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+      admin_import_survs_path+"/new", :class => 'btn btn-primary' %>
+</div>

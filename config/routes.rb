@@ -21,6 +21,7 @@ PngHivAids::Application.routes.draw do
     resources :public_holidays
     resources :settings
     resources :categories
+    resources :import_survs
     resources :commodity_categories do
       collection do
         get 'template'

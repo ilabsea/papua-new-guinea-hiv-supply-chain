@@ -1,0 +1,11 @@
+<% url = @import_surv.new_record? ? admin_import_survs_path() : admin_import_surv_path(@import_surv) %>
+<%= simple_form_for [:admin, @import_surv], :url => url, :html => {:class => 'form-horizontal' , :multipart => true} do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :surv_type, collection: ImportSurv::TYPES %>
+  <%= f.input :form, :as =>:file %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+        admin_import_survs_path, :class => 'btn' %>
+  </div>
+<% end %>
