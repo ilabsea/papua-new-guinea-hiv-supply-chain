@@ -1,0 +1,44 @@
+<tr>
+    <td> 
+      <%= order_line.input :id, :as => 'hidden' %>
+      <%= order_line.input :arv_type, :as => 'hidden' %>
+      <%= order_line.input :commodity_id, :as => 'hidden' %>
+      <%= order_line_record.commodity.name%> 
+    </td>
+
+    <td> <%= order_line_record.commodity.strength_dosage %> </td>
+    
+    <td> 
+      <%= order_line.input :stock_on_hand, :label=> '&nbsp;',
+          :wrapper_html => {:class => 'inline-div'}, 
+          :input_html =>{:class => 'number_text'}, 
+          :label_html =>{:class => 'none'}  
+      %> 
+    </td>
+    
+    <td> 
+      <%= order_line.input :monthly_use, :label=> '&nbsp;' , 
+          :wrapper_html => {:class => 'inline-div'},
+          :input_html => {:class => 'number_text'} , 
+          :label_html =>{:class => 'none'}
+      %> 
+    </td>
+    
+    <td> </td>
+    
+    <td> 
+      <%= order_line.input :quantity_suggested, :label=> '&nbsp;' , 
+          :wrapper_html => {:class => 'inline-div'},
+          :input_html => {:class => 'number_text'} , 
+          :label_html =>{:class => 'none'}
+      %> 
+    </td>
+    
+    <td> 
+      <%= order_line.input :user_data_entry_note, :label=> '&nbsp;' , :as => "string",
+          :wrapper_html => {:class => 'inline-div'},
+          :input_html => {:class => ''} , 
+          :label_html =>{:class => 'none'}
+      %>
+    </td>
+</tr>  

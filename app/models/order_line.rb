@@ -1,8 +1,13 @@
 class OrderLine < ActiveRecord::Base
   belongs_to :order
   belongs_to :commodity
-  attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :quantity_system_calculation, 
-  				  :status, :stock_on_hand, :user_data_entry_note, :user_reviewer_note, :commodity,:arv_type
+  attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, 
+                  :quantity_system_calculation,:status, :stock_on_hand, 
+                  :user_data_entry_note, :user_reviewer_note,:arv_type,
+                  :commodity_id
+
+  validates :stock_on_hand, :quantity_suggested, :monthly_use, :quantity_system_calculation,
+                :numericality => true, :allow_nil => true                
 
 
   class << self

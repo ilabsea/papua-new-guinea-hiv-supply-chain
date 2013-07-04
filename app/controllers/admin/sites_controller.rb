@@ -42,8 +42,8 @@ module Admin
       else
         render action: "edit" 
       end
-
     end
+
     def destroy
       begin
         @site = Site.find(params[:id])
@@ -52,6 +52,11 @@ module Admin
       rescue Exception => e
         redirect_to admin_sites_url, :error =>  e.message
       end
+    end
+    #users from the site
+    def users
+       site = Site.find(params[:id])
+       render :json => site.users.map{|user| [user.user_name, user.id] }
     end
   end
 end  

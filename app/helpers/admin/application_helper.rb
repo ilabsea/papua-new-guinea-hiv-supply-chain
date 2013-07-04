@@ -60,9 +60,7 @@ module Admin::ApplicationHelper
 
 	def breadcrumb options=nil
 		content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
-	end
-  
-  
-  
+	end 
+
   
 end

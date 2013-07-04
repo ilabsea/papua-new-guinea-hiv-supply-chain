@@ -1,6 +1,7 @@
 PngHivAids::Application.routes.draw do
 
   namespace :admin do
+    resources :import_survs
     resources :orders do
       resources :order_lines
     end
@@ -14,6 +15,9 @@ PngHivAids::Application.routes.draw do
     
     resources :sites do
       resources :requisition_reports
+      member do
+        get 'users'
+      end
     end
 
     resources :provinces
@@ -21,7 +25,6 @@ PngHivAids::Application.routes.draw do
     resources :public_holidays
     resources :settings
     resources :categories
-    resources :import_survs
     resources :commodity_categories do
       collection do
         get 'template'
@@ -40,7 +43,7 @@ PngHivAids::Application.routes.draw do
       end
 
     end
-    root :to => 'settings#index'
+    root :to => 'orders#index'
     # root :to => 'home#index'
     # root :to => 'commodities#index', :type => "drugs"
   end
