@@ -139,7 +139,7 @@ class ImportSurv < ActiveRecord::Base
         row = sheet_arv_request.row i
         site = Site.find_by_name(row[0])
         if site
-          surv_site = SurvSite.create!(:import_id => @import_surv.id, :site_id => site.id, :month => row[2], :year => row[3])
+          surv_site = SurvSite.create!(:import_surv_id => @import_surv.id, :site_id => site.id, :month => row[2], :year => row[3])
           for j in 0..arr_commodity.count-1 
             commodity = Commodity.find_by_abbreviation(arr_commodity[j])
             if (commodity)
@@ -169,7 +169,7 @@ class ImportSurv < ActiveRecord::Base
         row = sheet_arv_request.row i
         site = Site.find_by_name(row[0])
         if site
-          surv_site = SurvSite.create!(:import_id => @import_surv.id, :site_id => site.id, :month => row[2], :year => row[3])
+          surv_site = SurvSite.create!(:import_surv_id => @import_surv.id, :site_id => site.id, :month => row[2], :year => row[3])
           for j in 0..arr_commodity.count-1 
             commodity = Commodity.find_by_name(arr_commodity[j])
             if (commodity)
