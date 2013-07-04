@@ -30,7 +30,7 @@ def load_provinces
 end
 
 def load_sites
-    Site.destroy_all
+    ActiveRecord::Base.connection.execute("TRUNCATE sites") 
     print "Loading sites to database\n"
     [
       ['Begabari', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
