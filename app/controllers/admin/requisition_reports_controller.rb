@@ -13,7 +13,11 @@ module Admin
 			@requisition_report = RequisitionReport.new params[:requisition_report]
 			_fill_attribute
 			if @requisition_report.save
-				redirect_to admin_requisition_reports_path(), :notice => 'Requisition Report has been summitted successfully'
+				if Order.create_from_requisition_report @requisition_report
+				  redirect_to admin_requisition_reports_path, :notice => 'Order has been created successfully'
+				else
+				  redirect_to admin_requisition_reports_path, :error => 'Failed to import Order'	
+				end
 			else
 				render :new
 			end
@@ -63,6 +67,10 @@ module Admin
 			else
 			  redirect_to admin_requisition_reports_path, :error => 'Failed to import'	
 			end
+		end
+
+		def _import_requisition_report requisition_report
+
 		end
 
 	end

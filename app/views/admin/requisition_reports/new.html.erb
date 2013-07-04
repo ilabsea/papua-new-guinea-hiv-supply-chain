@@ -11,9 +11,8 @@
   <%= f.input :form, :as =>:file %>
 
   <div class="form-actions">
-    <%= f.button :submit, :class => 'btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                admin_provinces_path, :class => 'btn' %>
+    <%= f.submit 'Submit Requisition Form', :class => 'btn btn-primary' %>
+    <%= link_to 'Cancel', admin_provinces_path, :class => 'btn' %>
   </div>
 <% end %>
 
