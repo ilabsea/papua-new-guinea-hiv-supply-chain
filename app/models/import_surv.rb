@@ -60,7 +60,7 @@ class ImportSurv < ActiveRecord::Base
 
   def is_form_error?
     return false if @invalid_fields.nil?
-    @invalid_fields[:site].size > 0 || @invalid_fields[:commodity] > 0
+    @invalid_fields[:site].size > 0 || @invalid_fields[:commodity].size > 0
   end
 
   def find_non_exist_sites sheet_arv_request
@@ -103,7 +103,7 @@ class ImportSurv < ActiveRecord::Base
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
     min_commodity_column = 27
-    max_commodity_column = 50
+    max_commodity_column = 51
     total_row_data = max_commodity_column - min_commodity_column
     commodity_quantity_index = 27
     @invalid_fields = {}
@@ -134,7 +134,7 @@ class ImportSurv < ActiveRecord::Base
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
     min_commodity_column = 27
-    max_commodity_column = 50
+    max_commodity_column = 51
     commodity_quantity_index = 27
     arr_commodity = []
     header_row = sheet_arv_request.row 1
