@@ -1,6 +1,7 @@
 PngHivAids::Application.routes.draw do
 
   namespace :admin do
+    resources :import_survs
     resources :orders do
       resources :order_lines
     end
