@@ -48,7 +48,7 @@ class Order < ActiveRecord::Base
       OrderLineImport.import order
       return true
   	else
-  		requisition_report.status = RequisitionReport::IMPORT_STATUS_PENDING	
+  		requisition_report.status = RequisitionReport::IMPORT_STATUS_FAILED	
       requisition_report.save
       return false
   	end

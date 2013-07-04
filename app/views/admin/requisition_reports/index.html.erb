@@ -2,10 +2,6 @@
     <%= link_to t('New Requisition Report Summition'), new_admin_requisition_report_path, :class => 'btn' %>
 <% end %>
 
-<% content_for :breadcrumb do %>
-  <%= breadcrumb [{"Requisition Report" => nil}]  %>
-<% end %>
-
 <%= paginate_records @requisition_reports %>
 <table class="table table-striped well no-border no-padding">
   <thead>
@@ -15,7 +11,6 @@
       <th><%= t 'User' %></th>
       <th><%= t 'Status' %></th>
       <th><%= t 'Uploaded At' %></th>
-      <th class="action_col3" ><%= t 'Action' %></th>
     </tr>
   </thead>
   <tbody>
@@ -28,7 +23,6 @@
         <td><%=requisition_report.user.display_name %></td>
         <td><%=requisition_report.status %></td>
         <td><%=requisition_report.created_at %></td>
-        <td class="last">
 
 
     <% 
@@ -36,12 +30,6 @@
        confirm_import  =  'Are you sure to import the form'
        msg = (requisition_report.status == RequisitionReport::IMPORT_STATUS_SUCCESS) ? confirm_warning  : confirm_import
      %>
-    
-          <%= link_to t('Import'), import_admin_requisition_report_path(requisition_report), 
-                  :method => :post, :confirm => msg, :class => 'btn btn-mini' %>   
-          <%= link_to t('Delete'), admin_requisition_report_path(requisition_report),
-                      :method => :delete, :confirm  => 'Are you sure?' ,:class => 'btn btn-mini btn-danger' %>
-        </td>
       </tr>
     <% end %>
   </tbody>

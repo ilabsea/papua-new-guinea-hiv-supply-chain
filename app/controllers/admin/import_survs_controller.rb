@@ -20,7 +20,8 @@ module Admin
 				_fill_attribute
 				if @import_surv.save				
 					ImportSurv.import(@import_surv)
-					redirect_to admin_import_survs_path+"/new", notice: 'SURV Form has been successfully imported.'
+					flash.now[:notice] =  'SURV Form has been successfully imported.']
+					render :new
 				else
 					render :new
 				end
@@ -28,7 +29,7 @@ module Admin
 		end
 
 		def _fill_attribute
-			@import_surv.import_user = current_user.id
+			@import_surv.import_user = current_user
 		end
 	end
 end

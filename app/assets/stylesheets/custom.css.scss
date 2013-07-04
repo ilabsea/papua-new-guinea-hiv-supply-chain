@@ -25,3 +25,27 @@ td:last, td.last {
 	width: 150px;
 	text-align: right;
 }
+
+.control-inline .controls {
+  display: inline;
+}
+.dashboard-item-set{
+  list-style-type:none;
+  font-size: 18px;
+  line-height: 1.4;
+}
+.order_size {
+  font-size: 28px;
+}
+.order_pending{
+  color: red;
+}
+.order_submitted {
+  color: orange;
+}
+.order_approved{
+  color: green;
+}
+.order_in_review{
+  color: gray;
+}
