@@ -1,5 +1,9 @@
 module Admin
   class ImportSurvsController < Controller
+  	def index
+  		@import_survs = ImportSurv.all.paginate(paginate_options)
+  	end
+
   	def new
 			@import_surv = ImportSurv.new
 		end
@@ -16,7 +20,7 @@ module Admin
 				_fill_attribute
 				if @import_surv.save				
 					ImportSurv.import(@import_surv)
-					redirect_to admin_import_survs_path+"/new", notice: 'SURV Form has been successfully imported.'
+					redirect_to  new_admin_import_surv_path(), :notice => 'SURV Form has been successfully imported.'
 				else
 					render :new
 				end
@@ -24,7 +28,7 @@ module Admin
 		end
 
 		def _fill_attribute
-			@import_surv.import_user = current_user.id
+			@import_surv.import_user = current_user
 		end
 	end
 end
