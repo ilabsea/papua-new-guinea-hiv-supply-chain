@@ -10,14 +10,26 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <%
-              [
-                {:label => "Users", :url => admin_users_path ,    :controller => "users" },
-                {:label => "Sites", :url => admin_sites_path ,:controller => "sites" },
-                {:label => "Public Holidays", :url => admin_public_holidays_path(), :controller => "public_holidays"},
-                {:label => "Settings", :url => admin_settings_path, :controller => "settings"},
+              menus = [] 
+              menus +=[ {:label => "Users", :url => admin_users_path ,    :controller => "users" },
+                        {:label => "Commodities",:url => admin_commodities_path(:type => 'drugs'), :controller => "commodities"},
+               ] if current_user.admin? || current_user.data_entry?
+              menus += [
+                {:label => "Sites", :url => admin_sites_path ,:controller => "sites" } ,
                 {:label => "Commodities",:url => admin_commodities_path(:type => 'drugs'), :controller => "commodities"}
+              ] if current_user.admin? ||current_user.data_entry?
 
-              ].each do |item|
+             
+              menus << {:label => "Forms",:url => admin_requisition_reports_path(), :controller => "requisition_reports"}  if current_user.site?
+              
+              menus << {:label => "Orders",:url => admin_orders_path(), :controller => "commodities"}
+
+              menus += [
+                {:label => "Public Holidays", :url => admin_public_holidays_path(), :controller => "public_holidays"},
+                {:label => "Settings", :url => admin_settings_path, :controller => "settings"}
+              ] if current_user.admin?
+
+              menus.each do |item|
                 cls = (item[:controller] == controller_name) ? "active" : ""
               %>
                   <li class="<%=cls%>"> <%=link_to item[:label], item[:url] %> </li>

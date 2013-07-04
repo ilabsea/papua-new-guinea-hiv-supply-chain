@@ -2,63 +2,52 @@
   <%= f.error_notification %>
   <div class='row'>
     <div class='span4' >
-      <%= f.input :site, :collection => Site.all.map{|site| [site.name, site.id]},:include_blank => 'Select a Site'%>
+      <%= f.input :site_id, :collection => Site.all.map{|site| [site.name, site.id]},
+                         :include_blank => 'Select a Site'
+                         %>
     </div>
 
-    <div class='span4'>
-      <%= f.input :order_date, :as => 'date_time_picker', :label => 'Order Create' %>   
+    <div class='span3'>
+      <%= f.input :order_date, :as => 'date_time_picker', 
+                               :label => 'Order Create' ,
+                               :input_html => {:class => 'datepicker-fit'}
+
+                               %>   
     </div>
 
-    <div class='span4'>
-        <%= f.input :date_submittion, :as => 'date_time_picker', :label => 'Order Received' %> 
+    <div class='span3'>
+        <%= f.input :date_submittion, :as => 'date_time_picker', 
+                                      :label => 'Order Received',
+                                      :input_html => { :class  => 'datepicker-fit'} 
+
+                                      %> 
     </div>
+    <div class='span2' style ='text-align:center;' >
+      <%= f.submit 'Save order', :class => 'btn btn-primary' %>
+    </div>
+
   </div>
 
   <% i = 0 %>
   <%=f.simple_fields_for :order_lines do |order_line| %>
-    <% if(i < @commodities_kit.size) %>
-        <%=content_for :kit do  %>
-          <tr>
-            <td> <%= @order.order_lines[i].commodity.name%> </td>
-            <td> </td>
-            <td> <%= order_line.input :stock_on_hand, :label=> '&nbsp;',
-                  :wrapper_html => {:class => 'inline-div'}, 
-                  :input_html =>{:class => 'number_text'}, 
-                  :label_html =>{:class => 'none'}  %> 
-            </td>
-            <td> <%= order_line.input :monthly_use, :label=> '&nbsp;' , 
-                  :wrapper_html => {:class => 'inline-div'},
-                  :input_html => {:class => 'number_text'} , 
-                  :label_html =>{:class => 'none'}%> 
-            </td>
-            
-            <td> </td>
-            <td> </td>
-            <td> </td>
-          </tr>  
+    <% if @order.order_lines[i].arv_type == CommodityCategory::TYPES_DRUG %>
+        <%=content_for :drug do  %>
+          <%= render :partial => "order_line_row_drug", :locals => { 
+              :order_line_record => @order.order_lines[i],
+              :order_line => order_line
+            } %>
         <% end %>    
-    <% else %>  
-        <%=content_for :drug do %>
-          <tr>
-            <td> <%= @order.order_lines[i].commodity.name%> </td>
-            <td> </td>
-            <td> <%= order_line.input :stock_on_hand, :label=> '&nbsp;',
-                    :wrapper_html => {:class => 'inline-div'},
-                    :input_html =>{:class => 'number_text'}, 
-                    :label_html =>{:class => 'none'}  %> </td>
-            <td> <%= order_line.input :monthly_use, :label=> '&nbsp;',
-                    :wrapper_html => {:class => 'inline-div'},
-                    :input_html =>{:class => 'number_text'}, 
-                    :label_html =>{:class => 'none'}   %> 
-            </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-          </tr>
+    <% elsif @order.order_lines[i].arv_type == CommodityCategory::TYPES_KIT %>  
+        <%=content_for :kit do %>
+          <%= render :partial => "order_line_row_kit", :locals => { 
+              :order_line_record => @order.order_lines[i],
+              :order_line => order_line
+            } %>
         <% end %>
     <% end %>  
     <% i += 1 %>
   <% end %>
+
 
   <div class="tabbable"> 
     <ul class="nav nav-tabs">
@@ -66,41 +55,25 @@
         <a href="#drug" data-toggle="tab">Drugs</a>
       </li>
       <li> 
-        <a href="#kit" data-toggle="tab">Kit</a>
+        <a href="#kit" data-toggle="tab">Kits</a>
       </li>
     </ul>
 
     <div class="tab-content">
       <div class="tab-pane active" id="drug">
         <h4> Drug Commodities </h4>
-        <%= table_order_line yield(:drug) %>
+        <%= render :partial => 'order_line_table_drug', :locals => {:body => yield(:drug) } %>
       </div>
       <div class="tab-pane" id="kit">
          <h4> Kit Commodities </h4>
-         <%= table_order_line yield(:kit) %>
+         <%= render :partial => 'order_line_table_kit', :locals => {:body => yield(:kit) } %>
       </div>
     </div>
   </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
   <div class="form-actions">
-    <%= f.button :submit, :class => 'btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                admin_provinces_path, :class => 'btn' %>
+    <%= f.submit 'Save Order', :class => 'btn btn-primary' %>
+    <%= link_to 'Cancel', admin_provinces_path, :class => 'btn' %>
   </div>
 <% end %>
 

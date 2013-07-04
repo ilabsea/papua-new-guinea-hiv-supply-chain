@@ -12,9 +12,9 @@ class Order < ActiveRecord::Base
   validates :user_place_order, :presence => true, :if =>  Proc.new{|f| f.is_requisition_form }
   validates :user_data_entry,  :presence => true, :unless => Proc.new{|f| f.is_requisition_form }
 
-  default_scope order('created_at DESC')
 
-  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  :status
+  default_scope order('order_date DESC, date_submittion DESC')
+  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  :status, :site_id, :order_lines_attributes
 
   accepts_nested_attributes_for :order_lines
 
@@ -27,9 +27,9 @@ class Order < ActiveRecord::Base
   end
 
   def self.of(user)
-    return Order.all if user.admin?
-    return Order.where(['site_id = :site_id', {:site_id => current_user.site.id}]) if user.site?
-    return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
+    return Order.where("1=1") if user.admin? || user.data_entry?
+    return Order.where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
+    # return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
   end
 
   def self.create_from_requisition_report requisition_report
