@@ -30,8 +30,18 @@
         <td><%=requisition_report.created_at %></td>
         <td class="last">
 
+
+    <% 
+       confirm_warning = 'The form has already been imported. Are you sure to reimport it ? [Warning] Re impport the form will automatically delete the previouse imported data '
+       confirm_import  =  'Are you sure to import the form'
+       msg = (requisition_report.status == RequisitionReport::IMPORT_STATUS_SUCCESS) ? confirm_warning  : confirm_import
+     %>
+
+
           <%= link_to t('Detail'), edit_admin_requisition_report_path(requisition_report), :class => 'btn btn-mini' %>  
-          <%= link_to t('Import'), import_admin_requisition_report_path(requisition_report), :method => :post,  :class => 'btn btn-mini' %>   
+    
+          <%= link_to t('Import'), import_admin_requisition_report_path(requisition_report), 
+                  :method => :post, :confirm => msg, :class => 'btn btn-mini' %>   
           <%= link_to t('Delete'), admin_requisition_report_path(requisition_report),
                       :method => :delete, :confirm  => 'Are you sure?' ,:class => 'btn btn-mini btn-danger' %>
         </td>

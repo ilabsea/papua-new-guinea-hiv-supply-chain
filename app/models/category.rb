@@ -3,4 +3,7 @@ class Category < ActiveRecord::Base
   
   validates :name , :presence => true
   validates :name , :uniqueness => true
+
+  TYPES_DRUG = '1'
+  TYPES_KIT  = '2'
 end

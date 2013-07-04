@@ -1,13 +1,25 @@
-<%= page_header "Order Lists"  %>
+<%= page_header 'Order Lists for site: ' + @order.site.name   %>
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Orders" => admin_orders_path}, {"Order Lines" => nil}]  %>
 <% end %>
 
 <%= paginate_records @order_lines %>
+
+<ul class="nav nav-tabs">
+  <li class="<%= params[:type] == CommodityCategory::TYPES_DRUG ? 'active' : '' %>" >
+    <%= link_to CommodityCategory::TYPES_DRUG, 
+                admin_order_order_lines_path(@order, :type => CommodityCategory::TYPES_DRUG) %></li>
+
+  <li class="<%= params[:type] == CommodityCategory::TYPES_KIT ? 'active' : '' %>">
+    <%= link_to CommodityCategory::TYPES_KIT, 
+                admin_order_order_lines_path(@order, :type => CommodityCategory::TYPES_KIT) %>
+  </li>
+</ul>
+
+
 <table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
-      <th><%= t 'Site' %></th>
       <th><%= t 'Commodity' %></th>
       <th><%= t 'Sumission Date' %></th>
       <th><%= t 'Order Date' %></th>
@@ -19,7 +31,6 @@
   <tbody>
     <% @order_lines.each do |order_line| %>
       <tr>
-        <td><%= @order.site.name %> </td>
         <td><%= order_line.commodity.name %> </td>
         <td><%= @order.date_sumbittion %> </td>
         <td><%= @order.order_date %> </td>

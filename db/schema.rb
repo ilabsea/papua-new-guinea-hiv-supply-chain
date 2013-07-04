@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 20130626073516) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "com_type"
+    t.string   "com_type"
   end
 
   create_table "import_survs", :force => true do |t|
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20130626073516) do
     t.string   "status"
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
+    t.string   "arv_type"
   end
 
   add_index "order_lines", ["commodity_id"], :name => "index_order_lines_on_commodity_id"

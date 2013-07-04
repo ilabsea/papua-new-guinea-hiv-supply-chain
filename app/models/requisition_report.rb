@@ -11,6 +11,8 @@ class RequisitionReport < ActiveRecord::Base
    IMPORT_STATUS_PENDING = 'PENDING'
 
    IMPORT_STATUSES = [ IMPORT_STATUS_PENDING, IMPORT_STATUS_FAILED, IMPORT_STATUS_SUCCESS ]
+
+   validates :form, :presence => true
    
    mount_uploader :form, RequisitionReportUploader
 

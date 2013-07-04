@@ -6,7 +6,9 @@ class Order < ActiveRecord::Base
   belongs_to :review_user , :class_name => 'User'
   belongs_to :requisition_report , :class_name => 'RequisitionReport'
 
-  has_many :order_lines
+  has_many :order_lines, :dependent => :destroy
+
+  default_scope order('created_at DESC')
 
   attr_accessible :date_sumbittion, :is_requisition_form, :order_date, :review_date,  :status
 
@@ -36,7 +38,6 @@ class Order < ActiveRecord::Base
       requisition_report.save
       return false
   	end
-
   end
 
   def import_order_lines

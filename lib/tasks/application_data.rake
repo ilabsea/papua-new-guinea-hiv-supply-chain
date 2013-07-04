@@ -105,18 +105,18 @@ def load_commodity_categories
   ActiveRecord::Base.connection.execute("TRUNCATE commodity_categories")
   print("\n Loading Commodity Category")
   [
-    ["ARV Adult 1st Line", CommodityCategory::TYPES[0][1]],
-    ["ARV Adult 2nd Line", CommodityCategory::TYPES[0][1]],
-    ["ARV Pediatric 1st line", CommodityCategory::TYPES[0][1]],
-    ["ARV Pediatric 2nd line", CommodityCategory::TYPES[0][1]],
-    ["OI Drugs", CommodityCategory::TYPES[0][1]],
-    ["Kits", CommodityCategory::TYPES[0][1]],
-    ["HIV Test Kits and Bundles", CommodityCategory::TYPES[1][1]],
-    ["BD FACSCount Reagents", CommodityCategory::TYPES[1][1]],
-    ["PIMA CD4 Test Reagents/Consumables", CommodityCategory::TYPES[1][1]],
-    ["EID Consumables", CommodityCategory::TYPES[1][1]]
+    ["ARV Adult 1st Line", CommodityCategory::TYPES_DRUG ],
+    ["ARV Adult 2nd Line", CommodityCategory::TYPES_DRUG ],
+    ["ARV Pediatric 1st line", CommodityCategory::TYPES_DRUG ],
+    ["ARV Pediatric 2nd line", CommodityCategory::TYPES_DRUG ],
+    ["OI Drugs", CommodityCategory::TYPES_DRUG ],
+    ["Kits", CommodityCategory::TYPES_DRUG ],
+    ["HIV Test Kits and Bundles", CommodityCategory::TYPES_KIT ],
+    ["BD FACSCount Reagents", CommodityCategory::TYPES_KIT ],
+    ["PIMA CD4 Test Reagents/Consumables", CommodityCategory::TYPES_KIT ],
+    ["EID Consumables", CommodityCategory::TYPES_KIT]
   ].each do |el|
-      CommodityCategory.find_or_create_by_name(:name => el[0], :com_type => el[1])
+      CommodityCategory.create!(:name => el[0], :com_type => el[1])
       print("\n loaded: #{el[0]} to database")
   end
 
@@ -178,7 +178,7 @@ def load_commodities
     ["Serodia HIV 1/2 (55x4)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil]
 
   ].each do |el|
-    Commodity.find_or_create_by_name(:name => el[0], :commodity_category_id => el[1], :unit_id => el[2], :strength_dosage => el[3], :abbreviation => el[4], :quantity_per_packg => el[5])
+    Commodity.create!(:name => el[0], :commodity_category_id => el[1], :unit_id => el[2], :strength_dosage => el[3], :abbreviation => el[4], :quantity_per_packg => el[5])
     print("\n loaded: #{el[0]} to database")
   end
 
