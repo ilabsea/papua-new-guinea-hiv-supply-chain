@@ -1,0 +1,8 @@
+<%= content_for :breadcrumb do %>
+	<%= breadcrumb [ {'Orders' => admin_orders_path},
+	 				 {'Edit order, Site : ' + @order.site.name => false}
+	 			] %>
+<% end %>
+
+<%= page_header 'Edit Order of Site : ' + @order.site.name %>
+<%= render 'form' %>

@@ -25,7 +25,10 @@ class User < ActiveRecord::Base
   attr_accessor :login, :current_password
 
   validates :user_name, :phone_number, :email, :uniqueness => true
+  validates :role, :presence => true
   validates :site, :presence => true, :if => :site_role?
+
+  has_many :orders
   belongs_to :site 
 
   def site_role?

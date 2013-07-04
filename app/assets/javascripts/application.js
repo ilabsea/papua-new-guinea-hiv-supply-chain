@@ -15,3 +15,8 @@
 //= require twitter/bootstrap
 //= require bootstrap-datepicker
 //= require_tree .
+//= require bootrap-datetime
+
+//= require angular.min
+// require angle-up
+//= require_tree ./angular

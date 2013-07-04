@@ -3,9 +3,9 @@
   <%= f.error_notification %> 
   <%= f.input :name %>
   <% if params[:type] == 'drugs' %>
-  <%= f.association :commodity_category, collection: CommodityCategory.where(:com_type => 1), :include_blank => 'Select Commodity Category' %>
+  <%= f.association :commodity_category, collection: CommodityCategory.drug, :include_blank => 'Select Commodity Category' %>
   <% else %>
-  <%= f.association :commodity_category, collection: CommodityCategory.where(:com_type => 2), :include_blank => 'Select Commodity Category' %>
+  <%= f.association :commodity_category, collection: CommodityCategory.kit, :include_blank => 'Select Commodity Category' %>
   <% end %>
   <%= f.input :consumption_per_client_pack %>
   <%= f.input :consumption_per_client_unit %>

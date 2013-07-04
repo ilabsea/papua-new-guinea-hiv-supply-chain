@@ -21,7 +21,7 @@ class OrderLineImport
 			if is_commodities? row
 				commodity = Commodity.find_by_name(row[0])
 				if commodity
-					params = { :commodity 	  => commodity,
+					params = { :commodity_id  => commodity.id,
 							   :arv_type  	  =>  CommodityCategory::TYPES_KIT,
 							   :stock_on_hand =>  row[2].to_i }
 
@@ -50,7 +50,7 @@ class OrderLineImport
 			if is_commodities? row
 				commodity = Commodity.find_by_name(row[0])
 				if commodity
-					params = { :commodity => commodity,
+					params = { :commodity_id => commodity.id,
 							   :arv_type  => CommodityCategory::TYPES_DRUG,
 							   :stock_on_hand =>  row[5].to_i,
 							   :monthly_use   =>  row[6].to_i 

@@ -11,13 +11,13 @@ class Commodity < ActiveRecord::Base
   validates :commodity_category_id, :name ,	:unit_id, :presence   =>  true
 
   validate :validate_commodity_type
-
+  #validates :strength_dosage, :abbreviation, :quantity_per_packg, :acceptance => :skip_on_kits_type
   def validate_commodity_type
-	if (self.commodity_type == "drugs")
-		errors.add(:strength_dosage, "can't be blank") if self.strength_dosage.empty?
-		errors.add(:abbreviation, "can't be blank") if self.abbreviation.empty?
-		errors.add(:quantity_per_packg, "can't be blank") if self.quantity_per_packg.empty?
-	end
+  	if (self.commodity_type == "drugs")
+  		errors.add(:strength_dosage, "can't be blank") if self.strength_dosage.empty?
+  		errors.add(:abbreviation, "can't be blank") if self.abbreviation.empty?
+  		errors.add(:quantity_per_packg, "can't be blank") if self.quantity_per_packg.empty?
+  	end
   end
 
   def self.commodity_type
@@ -27,6 +27,16 @@ class Commodity < ActiveRecord::Base
   def self.commodity_type=(value)
     @commodity_type = value
   end
- # validates :strength_dosage, :abbreviation, :quantity_per_packg, :acceptance => :skip_on_kits_type
+
+  def self.of_kit
+    Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
+  end  
+
+  def self.of_drug
+    Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
+  end  
+
+
+ 
 
 end
