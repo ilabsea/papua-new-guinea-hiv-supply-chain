@@ -29,7 +29,7 @@ module Admin
       @category = Category.new(params[:category])
 
       if @category.save
-        redirect_to admin_categories_path, notice: 'Category was successfully created.'
+        redirect_to admin_categories_path, notice: 'Category has been created successfully.'
       else
         render action: "new" 
       end
@@ -41,7 +41,7 @@ module Admin
       @category = Category.find(params[:id])
 
       if @category.update_attributes(params[:category])
-        redirect_to admin_categories_path, notice: 'Category was successfully updated.' 
+        redirect_to admin_categories_path, notice: 'Category has been updated successfully.' 
       else
         render action: "edit" 
       end

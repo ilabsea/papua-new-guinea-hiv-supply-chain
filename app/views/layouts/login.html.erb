@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PngHivAids</title>
+  <title>HIV Supply Chain</title>
    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="assets/html5shiv.js"></script>
@@ -19,13 +19,19 @@
 <body>
   
   <div class="container">
-    <div class="row-fluid" >
-      
-      <div class="span8">
-        
+    <div class="row" >
+      <div class="span1"></div>
+      <div class="span6" style="text-align: center;">
+          <div class="logo">
+   
+            <div>
+              <img src="/assets/logo.jpg" />
+            </div>
+            <h2> HIV Supply Chain </h2>
+          </div>
       </div>
       
-      <div class="span4">
+      <div class="span3">
         
           <div class="well">
               <%if alert || notice %> 
@@ -38,6 +44,7 @@
               <%= yield %>       
           </div>
       </div>
+      <div class="span1"></div>
       
     </div>
     

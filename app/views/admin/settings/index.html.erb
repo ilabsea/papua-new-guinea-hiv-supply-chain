@@ -6,21 +6,21 @@
 
 <%= form_for [:admin,@setting] do |f| %>
   If site does not confirm package received, send SMS to site every 
-  <input type="number" min="0" max="99" name="setting[hour]" style="width: 40px;" value='<%= @hour %>' /> Hour <p>
+  <input type="number" min="0" max="99" name="setting[hour]" style="width: 40px;" value='<%= @hour %>' /> Hour(s) <p>
     
   <% Setting::MESSAGE_KEYS.each do |el| %>
   <p class="template_container">
     <%=label_tag "#{el[:label]}" %>
-    <br/>
     <% if el[:name] == :message_alerting_site_about_receiving_form %>
       <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @alert_message_value %></textarea>
     <% elsif el[:name] == :message_asking_site %>
       <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @asking_message_value %></textarea>
     <% else %>
       <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @deadline_message_value %></textarea>
-    <% end %>
-    <br />
+    <% end %><br/>
     <%= parameters_links el %>
+    <br/>
+    <br/>
   </p>
   <% end %>
   <%= f.button :Save,   :class => 'btn btn-primary' %>

@@ -13,7 +13,7 @@ module Admin
 		def create
 		   @user = User.new(params[:user])
 		   if(@user.save)
-		   	  redirect_to admin_users_path, :notice => "User was successfully created"
+		   	  redirect_to admin_users_path, :notice => "User has been created successfully"
 		   else
 		   	  render :new
 		   end
@@ -27,7 +27,7 @@ module Admin
 		def update
 			@user = User.find(params[:id])
 			if(@user.update_attributes(params[:user]))
-				redirect_to admin_users_path, :notice => "User was successfully updated"
+				redirect_to admin_users_path, :notice => "User has been updated successfully"
 			else
 				render :edit	
 			end
@@ -37,7 +37,7 @@ module Admin
 			begin
 				@user = User.find(params[:id])
 			    @user.destroy
-				redirect_to admin_users_path, :notice => "User was removed successfully"
+				redirect_to admin_users_path, :notice => "User has been removed"
 			rescue Exception => e
 				redirect_to admin_users_path, :error => e.message
 			end	

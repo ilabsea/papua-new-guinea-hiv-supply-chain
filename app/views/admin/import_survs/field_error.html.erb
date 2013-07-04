@@ -1,3 +1,8 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Import Surv" => new_admin_import_surv_path()},
+                  {"Fields Error" => nil}]  %>
+<% end %> 
+
 <% if @import_surv.is_form_error? %>
 	<% if !@import_surv.invalid_fields[:site].empty? %>
   	<h4> Sites : </h4>
@@ -21,5 +26,5 @@
 
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),
-      admin_import_survs_path+"/new", :class => 'btn btn-primary' %>
+      new_admin_import_surv_path(), :class => 'btn btn-primary' %>
 </div>
