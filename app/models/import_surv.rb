@@ -32,15 +32,13 @@ class ImportSurv < ActiveRecord::Base
   def validate_surv1
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
+    header_row = sheet_arv_request.row 0
     min_commodity_column = 4
-    max_commodity_column = 22
+    max_commodity_column = header_row.count
     total_row_data = max_commodity_column - min_commodity_column
     commodity_quantity_index = 4
     @invalid_fields = {}
     arr_commodity = []
-    header_row = sheet_arv_request.row 0
-
-
     total_row_data.times.each do |k|
       index = min_commodity_column + k
       arr_commodity << header_row[index]
@@ -90,24 +88,30 @@ class ImportSurv < ActiveRecord::Base
     return arr_none_exist_commodities
   end
 
+  def find_none_exist_commodities_in_surv2 commodity
+    arr_none_exist_commodities = []
+    commodity.each do |el|
+      arr_none_exist_commodities << el unless Commodity.find_by_abbreviation(el)
+    end
+    return arr_none_exist_commodities
+  end
+
   def validate_surv2
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
+    header_row = sheet_arv_request.row 1
     min_commodity_column = 27
-    max_commodity_column = 51
+    max_commodity_column = header_row.count
     total_row_data = max_commodity_column - min_commodity_column
     commodity_quantity_index = 27
     @invalid_fields = {}
     arr_commodity = []
-    header_row = sheet_arv_request.row 1
-
-
     total_row_data.times.each do |k|
       index = min_commodity_column + k
       arr_commodity << header_row[index] unless header_row[index].nil?
     end
     @invalid_fields[:site] = find_non_exist_sites_in_surv2 sheet_arv_request    
-    @invalid_fields[:commodity] = find_none_exist_commodities arr_commodity
+    @invalid_fields[:commodity] = find_none_exist_commodities_in_surv2 arr_commodity
   end
 
   def self.import import_surv
@@ -124,11 +128,12 @@ class ImportSurv < ActiveRecord::Base
   def self.read_file_surv2
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
+    header_row = sheet_arv_request.row 1
     min_commodity_column = 27
-    max_commodity_column = 51
+    max_commodity_column = header_row.count
     commodity_quantity_index = 27
     arr_commodity = []
-    header_row = sheet_arv_request.row 1
+
     for k in min_commodity_column..max_commodity_column
       arr_commodity << header_row[k]
     end
@@ -155,11 +160,12 @@ class ImportSurv < ActiveRecord::Base
   def self.read_file_surv1
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
+    header_row = sheet_arv_request.row 0
     min_commodity_column = 4
-    max_commodity_column = 22
+    max_commodity_column = header_row.count
     commodity_quantity_index = 4
     arr_commodity = []
-    header_row = sheet_arv_request.row 0
+
     for k in min_commodity_column..max_commodity_column
       arr_commodity << header_row[k]
     end
