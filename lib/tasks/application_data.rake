@@ -38,6 +38,7 @@ def load_sites
       ['Epeanda', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
       ['Ereitave Uvi', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
       ['Good Samaritan', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
+      ['Goroka Paedietrics', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
       ['Heduru', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
       ['Hillary Clinic (Pead)', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
       ['Himara Kigiro', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
@@ -64,6 +65,11 @@ def load_sites
       ['Tabubil', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
       ['Tininga', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
       ['9 mile', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
+      ['AMDCC', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
+      ["Veifa'a", '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
+      ["Vunapope", '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
+      ["Wasaie", '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
+      ["WBC - PMGH", '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id],
       ['St Josephs', '', '', Site::SeviceType[0], 0, 0, 0, "2013-06-27", 0, "adress", "admin", "85512000000", "85512000000", "admin@instedd.org", Province.find_by_code('PG-NCD').id]                          
     ].each do |site|
         print("\r Loading Site : #{site[0]}")
@@ -171,11 +177,48 @@ def load_commodities
     ["Zidovudine Capsules", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "100mg", "AZT", "60s"],
     ["Nevirapine Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "200mg", "NVP", "60s"],
     ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "D4T/3TC/NVP", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "AZT/3TC/NVP", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "D4T/3TC/EFV", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "AZT/3TC/EFV", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "NVP", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "NVP/AZT", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/3TC/EFV", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/3TC/NVP", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/ABC/LPVr", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/AZT/3TC/LPVr", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "ZDV/3TC/NVP", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "ZDV/3TC/EFV", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/NVP", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "Septrin", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "Pep", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "PMTCT", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "Prophylaxis", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "CTX", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "Oth Comb", "30s"],
+    ["Tenofovir Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "INH", "30s"],
+
+
+
     ["Determine HIV 1/2 (100 test) with buffer", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
     ["Statpak HIV 1/2", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil],
     ["Immunocomb HIV 1/2  (100 test)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil],
     ["Microplates (U plates)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["Serodia HIV 1/2 (55x4)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil]
+    ["Serodia HIV 1/2 (55x4)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["DBS Bundles for HIV QA", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["CD4 Reagents", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["CD4 Controls", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["FACS Sheath Fluid (OSMOSOL) (20Litres)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["FACS Clean", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["BD FACS Rinse 5L", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["BD FACSCount Thermal Paper", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["Pipet tips (20ul-200ul)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["Purple tube (EDTA)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["PIMA Reagents", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["PIMA Control Standard Beads", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["PIMA Printer Paper Roll", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["PIMA consumable bundles", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
+    ["DBS Bundles for Early Iinfant Diagnosis testing", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil]
 
   ].each do |el|
     Commodity.create!(:name => el[0], :commodity_category_id => el[1], :unit_id => el[2], :strength_dosage => el[3], :abbreviation => el[4], :quantity_per_packg => el[5])
