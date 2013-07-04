@@ -20,8 +20,7 @@ module Admin
 				_fill_attribute
 				if @import_surv.save				
 					ImportSurv.import(@import_surv)
-					flash.now[:notice] =  'SURV Form has been successfully imported.']
-					render :new
+					redirect_to  new_admin_import_surv_path(), :notice => 'SURV Form has been successfully imported.'
 				else
 					render :new
 				end
