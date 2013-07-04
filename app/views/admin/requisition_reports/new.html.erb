@@ -1,6 +1,6 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [
-  		 {"Requisition Form" => false}
+  		 {"New Requisition Form" => false}
   	] %>
 <% end %>
 
@@ -12,7 +12,7 @@
 
   <div class="form-actions">
     <%= f.submit 'Submit Requisition Form', :class => 'btn btn-primary' %>
-    <%= link_to 'Cancel', admin_provinces_path, :class => 'btn' %>
+    <%= link_to 'Cancel', admin_requisition_reports_path, :class => 'btn' %>
   </div>
 <% end %>
 

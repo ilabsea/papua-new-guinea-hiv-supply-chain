@@ -2,10 +2,6 @@
     <%= link_to t('New Requisition Report Summition'), new_admin_requisition_report_path, :class => 'btn' %>
 <% end %>
 
-<% content_for :breadcrumb do %>
-  <%= breadcrumb [{"Requisition Report" => nil}]  %>
-<% end %>
-
 <%= paginate_records @requisition_reports %>
 <table class="table table-striped well no-border no-padding">
   <thead>

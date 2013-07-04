@@ -1,0 +1,41 @@
+<%=page_header("") %>
+<%=simple_form_for :order , :url => admin_orders_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
+	<div class='row-fluid control-inline'>
+		<div class='span1'></div>
+	    <div class='span4' id='search_start_date'>
+	      <%= f.input :start_date, :as => 'date_time_picker', 
+	                               :label => 'Form summition date' ,
+	                               :label_html => {:class=> 'inline'},
+	                               :input_html => {:class => 'datepicker-fit'}
+	                               %>   
+	    </div>
+
+	    <div class='span2' id='search_end_date'>
+	        <%= f.input :end_date, :as => 'date_time_picker', 
+	                                      :label => 'To',
+	                                      :label_html => { :class => 'inline'},
+	                                      :input_html => { :class  => 'datepicker-fit'} 
+	                                      %> 
+	    </div>
+	    <div class='span5'></div>
+	  </div> 
+<% end %>
+ <ul class='dashboard-item-set'>
+<%
+  [
+  	{ :quantity => 6, :class => :order_pending, :text => 'Orders reviewed and rejected. Pending for you to revise'},
+  	{ :quantity => 17, :class => :order_submitted, :text => 'New orders submitted from site for you to review and make order suggestion'},
+  	{ :quantity => 10, :class => :order_approved, :text => 'Orders approved'},
+  	{ :quantity => 10, :class => :order_in_review, :text => 'Orders reviewed and rejected. Pending for you to revise'},
+
+  ].each do |order| %>
+  	<li> 
+  		<div class='row-fluid'>
+  			<span class='order_size <%=order[:class] %> span1' style='text-align:right;'> <%= order[:quantity] %> </span>
+  			<span class='span11' > <%= order[:text] %> </span>
+  		</div>
+  	</li>	
+
+<% end %>
+
+</ul>
