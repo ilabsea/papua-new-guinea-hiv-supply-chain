@@ -271,6 +271,7 @@ namespace :png do
     load_categories
     load_commodity_categories
     load_commodities
+    load_sites
   end
 
 end

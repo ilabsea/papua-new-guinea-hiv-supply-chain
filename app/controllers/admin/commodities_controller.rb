@@ -4,9 +4,9 @@ module Admin
     def index
         @commodities = Commodity.includes(:commodity_category)
         if (params[:type] == "drugs")
-          @commodities = @commodities.where("commodity_categories.com_type = ?", Category::TYPES_DRUG)
+          @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
         elsif (params[:type] == "kits")
-          @commodities = @commodities.where("commodity_categories.com_type = ?", Category::TYPES_KIT)
+          @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
         end
         @commodities = @commodities.paginate(paginate_options)
         @app_title = "Commodities"
