@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   validates :site, :presence => true, :if => :site_role?
 
   has_many :orders
+  has_many :import_survs
   belongs_to :site 
 
   def site_role?

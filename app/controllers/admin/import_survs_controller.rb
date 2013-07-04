@@ -1,5 +1,9 @@
 module Admin
   class ImportSurvsController < Controller
+  	def index
+  		@import_survs = ImportSurv.all.paginate(paginate_options)
+  	end
+
   	def new
 			@import_surv = ImportSurv.new
 		end

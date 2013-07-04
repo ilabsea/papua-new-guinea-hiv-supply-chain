@@ -4,6 +4,9 @@ class ImportSurv < ActiveRecord::Base
   attr_accessible :import_user, :form, :surv_type
   attr_accessor :invalid_fields
 
+  has_one :surv_site
+  belongs_to :import_user, :class_name => 'User'
+
   validates_format_of :form, :with => %r{\.(xls)$}i, :message => "Only .xls format is excepted"
   validates :import_user, :form, :surv_type, :presence   =>  true
 
@@ -13,6 +16,12 @@ class ImportSurv < ActiveRecord::Base
   TYPES = [ ["SURV 1", TYPES_SURV_1], ["SURV 2", TYPES_SURV_2] ]
 
   mount_uploader :form, RequisitionReportUploader
+
+  def surv_type_display
+     ImportSurv::TYPES.each do |type|
+       return type[0] if(type[1] == self.surv_type)
+     end
+  end
 
   def validate_surv_form 
     file_name = self.form.current_path
@@ -156,7 +165,7 @@ class ImportSurv < ActiveRecord::Base
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
     min_commodity_column = 4
-    max_commodity_column = 22
+    max_commodity_column = 22 
     commodity_quantity_index = 4
     arr_commodity = []
     header_row = sheet_arv_request.row 0
