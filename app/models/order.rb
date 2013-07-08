@@ -22,14 +22,22 @@ class Order < ActiveRecord::Base
   ORDER_STATUS_COMPLETED = 'Completed'
   ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_COMPLETED ]
 
-  def user_site?
-
-  end
-
   def self.of(user)
     return Order.where("1=1") if user.admin? || user.data_entry?
     return Order.where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
     # return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
+  end
+
+  def self.in_between date_start, date_end
+     if(!date_start.blank? && !date_end.blank?)
+       where(['order_date BETWEEN :date_start AND :date_end', :date_start => date_start, :date_end => date_end])
+     elsif !date_start.blank?
+       where(['order_date >= :date_start', :date_start => date_start])
+     elsif !date_end.blank?
+       where(['order_date <= :date_end', :date_end => date_end])
+     else
+       where "1=1"      
+     end
   end
 
   def self.create_from_requisition_report requisition_report

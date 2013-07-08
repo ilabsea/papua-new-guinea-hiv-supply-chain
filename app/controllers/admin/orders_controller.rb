@@ -1,7 +1,9 @@
 module Admin
  class OrdersController < Controller
  	def index
- 		@orders = Order.of(current_user).paginate(paginate_options) 
+ 		@date_start = params[:order][:date_start]
+ 		@date_end   = params[:order][:date_end]
+ 		@orders = Order.of(current_user).in_between(@date_start, @date_end).paginate(paginate_options) 
  		@app_title = 'List of Orders'
  	end
 
