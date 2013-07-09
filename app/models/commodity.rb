@@ -9,7 +9,7 @@ class Commodity < ActiveRecord::Base
   belongs_to :unit
 
   validates :commodity_category_id, :name ,	:unit_id, :presence   =>  true
-  validates :name, :abbreviation, :uniqueness => true
+  validates :name , :uniqueness => true
   validate :validate_commodity_type
 
   def validate_commodity_type
