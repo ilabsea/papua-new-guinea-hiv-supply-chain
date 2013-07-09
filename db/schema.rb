@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130704092829) do
+ActiveRecord::Schema.define(:version => 20130708092224) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -43,9 +43,9 @@ ActiveRecord::Schema.define(:version => 20130704092829) do
   create_table "import_survs", :force => true do |t|
     t.integer  "surv_type"
     t.string   "form"
-    t.integer  "import_user_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "order_lines", :force => true do |t|
@@ -141,18 +141,19 @@ ActiveRecord::Schema.define(:version => 20130704092829) do
   create_table "surv_site_commodities", :force => true do |t|
     t.integer  "surv_site_id"
     t.integer  "commodity_id"
-    t.string   "quantity"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "quantity",     :default => 0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   create_table "surv_sites", :force => true do |t|
     t.integer  "import_surv_id"
     t.integer  "site_id"
     t.string   "month"
-    t.string   "year"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.integer  "year"
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.integer  "surv_site_commodities_count", :default => 0
   end
 
   create_table "units", :force => true do |t|

@@ -224,6 +224,12 @@ class Generator
 		{:color => :black, :weight => :bold, :size => 14, :border => :thin, :pattern_fg_color=> :xls_color_18, :pattern => 1 }
 	end
 
+	def write_cell_lock cell, data
+		format_content = Spreadsheet::Format.new :color => :black, :border => :thin, :pattern_fg_color=> :silver, :pattern => 1 
+		current_sheet.write_data cell, data
+		current_sheet.set_cell_format cell, format_content
+	end
+
 	def write_cell_title cell, data
 		format_header  = Spreadsheet::Format.new self.title_format
 		current_sheet.write_data cell, data
@@ -280,7 +286,7 @@ class Generator
 				]
 
 				items.each_with_index do |item, index|
-					write_cell_body Cell.new(current_row, index) , item
+					item.blank? ?  write_cell_body(Cell.new(current_row, index) , item) : write_cell_lock(Cell.new(current_row, index) , item) 
 				end
 				move_next
 			end
@@ -452,7 +458,7 @@ class Generator
 				items = [ commodity.name, commodity.unit.name, '', '', '', '' , '', '']
 
 				items.each_with_index do |text, index|
-					write_cell_bold Cell.new(current_row, index), text
+				   text.blank? ?  write_cell_bold(Cell.new(current_row, index), text) : write_cell_lock(Cell.new(current_row, index), text)
 				end
 				move_next
 			end

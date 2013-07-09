@@ -1,0 +1,42 @@
+<% i = 0 %>
+  <%=f.simple_fields_for :order_lines do |order_line| %>
+    <% if order.order_lines[i].arv_type == CommodityCategory::TYPES_DRUG %>
+        <%=content_for :drug do  %>
+          <%= render :partial => "order_line_row_drug", :locals => { 
+              :order_line_record => order.order_lines[i],
+              :order_line => order_line
+            } %>
+        <% end %>    
+    <% elsif order.order_lines[i].arv_type == CommodityCategory::TYPES_KIT %>  
+        <%=content_for :kit do %>
+          <%= render :partial => "order_line_row_kit", :locals => { 
+              :order_line_record => order.order_lines[i],
+              :order_line => order_line
+            } %>
+        <% end %>
+    <% end %>  
+    <% i += 1 %>
+  <% end %>
+
+
+  <div class="tabbable"> 
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#drug" data-toggle="tab">Drugs</a>
+      </li>
+      <li> 
+        <a href="#kit" data-toggle="tab">Kits</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="drug">
+        <h4> Drug Commodities </h4>
+        <%= render :partial => 'order_line_table_drug', :locals => {:body => yield(:drug) } %>
+      </div>
+      <div class="tab-pane" id="kit">
+         <h4> Kit Commodities </h4>
+         <%= render :partial => 'order_line_table_kit', :locals => {:body => yield(:kit) } %>
+      </div>
+    </div>
+  </div>

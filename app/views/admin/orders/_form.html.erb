@@ -28,48 +28,7 @@
 
   </div>
 
-  <% i = 0 %>
-  <%=f.simple_fields_for :order_lines do |order_line| %>
-    <% if @order.order_lines[i].arv_type == CommodityCategory::TYPES_DRUG %>
-        <%=content_for :drug do  %>
-          <%= render :partial => "order_line_row_drug", :locals => { 
-              :order_line_record => @order.order_lines[i],
-              :order_line => order_line
-            } %>
-        <% end %>    
-    <% elsif @order.order_lines[i].arv_type == CommodityCategory::TYPES_KIT %>  
-        <%=content_for :kit do %>
-          <%= render :partial => "order_line_row_kit", :locals => { 
-              :order_line_record => @order.order_lines[i],
-              :order_line => order_line
-            } %>
-        <% end %>
-    <% end %>  
-    <% i += 1 %>
-  <% end %>
-
-
-  <div class="tabbable"> 
-    <ul class="nav nav-tabs">
-      <li class="active">
-        <a href="#drug" data-toggle="tab">Drugs</a>
-      </li>
-      <li> 
-        <a href="#kit" data-toggle="tab">Kits</a>
-      </li>
-    </ul>
-
-    <div class="tab-content">
-      <div class="tab-pane active" id="drug">
-        <h4> Drug Commodities </h4>
-        <%= render :partial => 'order_line_table_drug', :locals => {:body => yield(:drug) } %>
-      </div>
-      <div class="tab-pane" id="kit">
-         <h4> Kit Commodities </h4>
-         <%= render :partial => 'order_line_table_kit', :locals => {:body => yield(:kit) } %>
-      </div>
-    </div>
-  </div>
+  <div id='order_lines_tab'> <%= render :partial => 'order_lines', :locals => {:f => f, :order => @order} %> </div>
 
   <div class="form-actions">
     <%= f.submit 'Save Order', :class => 'btn btn-primary' %>
@@ -107,11 +66,50 @@
     });
   }
 
+  function handleLoadOrderLinesTab(){
+    $("#order_site_id").on('change', function(){
+       loadOrderLinesTab();
+
+    });
+
+    $("#order_order_date").on('blur', function(){
+       loadOrderLinesTab();
+
+
+    });
+
+
+  }
+
+
+
+  function loadOrderLinesTab(){
+    site_id = $("#order_site_id").val();
+    date   = $("#order_order_date").val();
+
+    if(!site_id || !date)
+      return ;
+
+    $.ajax({
+        url    : '<%= tab_order_line_admin_orders_path()%>',
+        data   : {'site_id' : site_id, 'date': date},
+        method : 'GET',
+        success: function(response){
+          $('#order_lines_tab').html(response);
+        }
+
+    });
+
+  }
+
+
+
   function removeUsers(){
       $("#order_user_place_order option[value !='']" ).remove();
   }
 
   $(function(){
     handleSiteUser();
+    handleLoadOrderLinesTab();
   });
 </script>

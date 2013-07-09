@@ -10,6 +10,9 @@ class OrderLine < ActiveRecord::Base
                 :numericality => true, :allow_nil => true                
 
 
+  attr_accessor :system_suggestion, :quantity_suggested
+
+
   class << self
   	def drug
   		where ['arv_type = :type ', :type => CommodityCategory::TYPES_DRUG ]

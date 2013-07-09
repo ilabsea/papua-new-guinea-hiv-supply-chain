@@ -69,10 +69,6 @@ module Admin
 			end
 		end
 
-		def _import_requisition_report requisition_report
-
-		end
-
 	end
 
 end

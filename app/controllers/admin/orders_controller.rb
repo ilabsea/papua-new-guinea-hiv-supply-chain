@@ -1,9 +1,9 @@
 module Admin
  class OrdersController < Controller
  	def index
- 		@date_start = params[:order][:date_start]
- 		@date_end   = params[:order][:date_end]
- 		@orders = Order.of(current_user).in_between(@date_start, @date_end).paginate(paginate_options) 
+ 		@date_start = params[:date_start] 
+ 		@date_end   = params[:date_end]
+ 		@orders = Order.includes(:site, :user_data_entry).of(current_user).in_between(@date_start, @date_end).paginate(paginate_options) 
  		@app_title = 'List of Orders'
  	end
 
@@ -11,6 +11,13 @@ module Admin
  		@order = Order.new
  		_build_commodity_order_line(@order)		
  		@app_title = 'Create Order'
+ 	end
+
+ 	def tab_order_line
+ 		@order = Order.new
+ 		@surv_site = SurvSite.find_surv params[:site_id], params[:date]
+ 		_build_commodity_order_line(@order)	
+ 		
  	end
 
  	def create
@@ -60,9 +67,18 @@ module Admin
  	def _build_commodity_order_line order
  		existing_commodities = order.order_lines.map{|order_line| order_line.commodity}
  		commodities = Commodity.includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
+
+
+ 		order.order_lines.each do |order_line|
+ 			order_line.quantity_system_calculation = ''
+ 			order_line.quantity_suggested = ''
+ 		end
+
  		commodities.each do |commodity|
  			order.order_lines.build(:commodity_id  => commodity.id, 
- 									 :arv_type 	=> commodity.commodity_category.com_type)
+ 									:quantity_system_calculation => '',
+ 									:quantity_suggested => '' ,
+ 									:arv_type 	=> commodity.commodity_category.com_type)
  		end
  	end
  end

@@ -1,0 +1,33 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Import Survs" => false}] %>
+<% end %>
+
+<%= page_header "Import Survs" do %>
+  <%=link_to "New Import Surv Form", new_admin_import_surv_path() , class: 'btn' %>	
+<%end%>
+
+<%= paginate_records @import_survs %>
+<table class="table table-striped well no-border no-padding">
+  <thead>
+    <tr>
+      <th> Summition </th>
+      <th> Type </th>
+      <th> Uploaded At </th>
+      <th class='action_col2'> Action </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @import_survs.each do |import_surv| %>
+      <tr>
+        <td>
+          <%= link_to File.basename(import_surv.form.current_path) , download_admin_import_surv_path(import_surv) %>
+        </td>
+        <td><%=import_surv.display_type %></td>
+        <td><%=import_surv.created_at %></td>
+        <td>
+        	<%= link_to 'View detail', admin_import_surv_surv_sites_path(import_surv), :class => 'btn btn-mini' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
