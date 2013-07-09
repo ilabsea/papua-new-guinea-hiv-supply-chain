@@ -432,7 +432,8 @@ class Generator
 		{ '0_0' => 'FROM (Clinic/Hospital Name):', '0_1' =>  'DATE:' }
 		move_next
 
-		headers = [ 'Laboratory Test Kits/Reagents' , 'Issue Units', 'Stock On Hand' , 'Qty Required', 'Quantity Amended' , 'Quantity Issued', 'Check' , 'Quantity Received' ]
+		#headers = [ 'Laboratory Test Kits/Reagents' , 'Issue Units', 'Stock On Hand' , 'Qty Required', 'Quantity Amended' , 'Quantity Issued', 'Check' , 'Quantity Received' ]
+		headers = [ 'Laboratory Test Kits/Reagents' , 'Issue Units', 'Stock On Hand' , 'Monthly Used', 'Earliest Expiry' , 'Quantity Allocated', 'Quantity Issued', 'Check' ]
 		headers.each_with_index do |header, index|
 			write_cell_bold Cell.new(current_row, index), header
 		end

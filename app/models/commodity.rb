@@ -9,9 +9,9 @@ class Commodity < ActiveRecord::Base
   belongs_to :unit
 
   validates :commodity_category_id, :name ,	:unit_id, :presence   =>  true
-
+  validates :name, :abbreviation, :uniqueness => true
   validate :validate_commodity_type
-  #validates :strength_dosage, :abbreviation, :quantity_per_packg, :acceptance => :skip_on_kits_type
+
   def validate_commodity_type
   	if (self.commodity_type == "drugs")
   		errors.add(:strength_dosage, "can't be blank") if self.strength_dosage.empty?
