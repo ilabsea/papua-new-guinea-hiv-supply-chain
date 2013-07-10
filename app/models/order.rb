@@ -13,11 +13,11 @@ class Order < ActiveRecord::Base
   validates :user_data_entry,  :presence => true, :unless => Proc.new{|f| f.is_requisition_form }
 
 
-  default_scope order('order_date DESC, date_submittion DESC')
+  default_scope order('order_date DESC, id DESC')
 
-  attr_accessor :surv_site
+  attr_accessor :surv_sites
   attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
-                  :status, :site_id, :order_lines_attributes,:surv_site
+                  :status, :site_id, :order_lines_attributes,:surv_sites
 
   accepts_nested_attributes_for :order_lines
 
@@ -33,17 +33,17 @@ class Order < ActiveRecord::Base
     # return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
   end
 
-  def surv_site=(surv_site)
-     @surv_site = surv_site
+  def surv_sites=(surv_sites)
+     @surv_sites = surv_sites
   end
 
-  def surv_site
-    @surv_site
+  def surv_sites
+    @surv_sites
   end
 
   def order_lines_calculation
     self.order_lines.each do |order_line|
-      order_line.calculate_quantity_system_calculation self.surv_site
+      order_line.calculate_quantity_system_suggestion self.surv_sites
     end
   end
 

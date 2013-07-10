@@ -9,11 +9,11 @@ class OrderLine < ActiveRecord::Base
   validates :stock_on_hand, :monthly_use, :quantity_system_calculation,
                 :numericality => true, :allow_nil => true                
 
-  validate :quantity_suggested!
+  default_scope order('id DESC')
 
+  attr_accessor :number_of_client, :consumption_per_client_per_month
 
   def quantity_suggested_drug!
-    #CommodityCategory::TYPES_KIT
     site_suggestion = self.order.site.suggestion_order
     calculation = self.calculate_suggested_order
     if calculation > site_suggestion
@@ -22,7 +22,6 @@ class OrderLine < ActiveRecord::Base
   end
 
   def quantity_suggested_kit!
-
     site_suggestion = self.order.site.suggestion_order
     calculation = self.calculate_suggested_order
     if calculation > site_suggestion
@@ -36,10 +35,15 @@ class OrderLine < ActiveRecord::Base
      (100*value)/max
   end              
 
-  def calculate_quantity_system_calculation surv_site
+  def calculate_quantity_system_suggestion surv_sites
+    return nil if surv_sites[self.arv_type].nil?
+    surv_site = surv_sites[self.arv_type]
+
     surv_site.surv_site_commodities.each do |surv_site_commodity|
       if surv_site_commodity.commodity == self.commodity
-          total = surv_site_commodity.quantity.to_i * commodity.consumption_per_client_unit.to_i
+          self.number_of_client = surv_site_commodity.quantity.to_i
+          self.consumption_per_client_per_month = commodity.consumption_per_client_unit.to_i
+          total =  self.consumption_per_client_per_month * self.number_of_client
           system_suggestion = total - self.stock_on_hand.to_i
           self.quantity_system_calculation = system_suggestion
           break

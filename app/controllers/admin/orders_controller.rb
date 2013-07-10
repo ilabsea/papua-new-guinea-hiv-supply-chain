@@ -15,7 +15,7 @@ module Admin
 
  	def tab_order_line
  		@order =  params[:id].blank? ? Order.new() : Order.find(params[:id])
- 		@order.surv_site = SurvSite.find_surv(params[:site_id], Date.parse(params[:date]))
+ 		@order.surv_sites = SurvSite.find_survs(params[:site_id], Date.parse(params[:date]))
  		_build_tab(@order)	
  		render :layout => false
  	end
@@ -26,7 +26,7 @@ module Admin
  		@order.user_data_entry = current_user
  		@order.status = Order::ORDER_STATUS_PENDING
  		@order.is_requisition_form = false
- 		@order.surv_site = SurvSite.find_surv(@order.site.id, @order.order_date)
+ 		@order.surv_sites = SurvSite.find_survs(@order.site.id, @order.order_date)
 
  		if @order.save
  		 	redirect_to admin_orders_path, :notice => 'Order has been created'	
@@ -37,7 +37,7 @@ module Admin
 
  	def edit
  		@order = Order.find params[:id]
- 		@order.surv_site = SurvSite.find_surv @order.site.id, @order.order_date
+ 		@order.surv_sites = SurvSite.find_survs @order.site.id, @order.order_date
  		_build_tab @order
  		@app_title = 'Edit order, Site :' + @order.site.name
  	end
@@ -79,20 +79,6 @@ module Admin
  		commodities.each do |commodity| 
  			order.order_lines.build :commodity_id  => commodity.id, :arv_type => commodity.commodity_category.com_type   
  		end
- 	end
-
- 	def system_calculation(surv_site, commodity_id)
- 		surv_site.surv_site_commodities.each do |surv_site_commodity|
- 			if surv_site_commodity.commodity.id == commodity_id
- 				number_of_patient = surv_site_commodity.quantity
- 				consumstion_per_patient = surv_site_commodity.commodity.consumption_per_client_unit
- 				total_consumtion = number_of_patient.to_i * consumstion_per_patient.to_i
-
- 				system_suggestion =  total_consumtion - order_line.stock_on_hand
- 				return system_suggestion
- 			end
- 		end
- 		return 0
  	end
 
  end

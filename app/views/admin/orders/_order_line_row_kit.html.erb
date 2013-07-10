@@ -6,6 +6,10 @@
       <%= order_line_record.commodity.name%> 
     </td>
 
+    
+    <td> <%= order_line_record.number_of_client %> </td>
+    <td> <%= order_line_record.consumption_per_client_per_month %> </td>
+
     <td> 
       <%= order_line.input :stock_on_hand, :label=> '&nbsp;',
           :wrapper_html => {:class => 'inline-div'}, 
