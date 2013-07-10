@@ -8,15 +8,15 @@ module Admin
  	end
 
  	def new 
- 		@order = Order.new
+ 		@order = Order.new()
  		_build_commodity_order_line(@order)		
  		@app_title = 'Create Order'
  	end
 
  	def tab_order_line
  		@order =  params[:id].blank? ? Order.new() : Order.find(params[:id])
- 		@surv_site = SurvSite.find_surv params[:site_id], Date.parse(params[:date])
- 		_build_tab(@order, @surv_site)	
+ 		@order.surv_site = SurvSite.find_surv(params[:site_id], Date.parse(params[:date]))
+ 		_build_tab(@order)	
  		render :layout => false
  	end
 
@@ -26,6 +26,7 @@ module Admin
  		@order.user_data_entry = current_user
  		@order.status = Order::ORDER_STATUS_PENDING
  		@order.is_requisition_form = false
+ 		@order.surv_site = SurvSite.find_surv(@order.site.id, @order.order_date)
 
  		if @order.save
  		 	redirect_to admin_orders_path, :notice => 'Order has been created'	
@@ -36,8 +37,8 @@ module Admin
 
  	def edit
  		@order = Order.find params[:id]
- 		@surv_site = SurvSite.find_surv @order.site.id, @order.order_date
- 		_build_tab @order, @surv_site
+ 		@order.surv_site = SurvSite.find_surv @order.site.id, @order.order_date
+ 		_build_tab @order
  		@app_title = 'Edit order, Site :' + @order.site.name
  	end
 
@@ -66,21 +67,18 @@ module Admin
  	# don't refer me coz am private
  	private
 
- 	def _build_tab order, surv_site
- 		_build_commodity_order_line order, surv_site
+ 	def _build_tab order
+ 		_build_commodity_order_line order
+ 		order.order_lines_calculation
  	end
 
- 	def _build_commodity_order_line order, surv_site=nil
+ 	def _build_commodity_order_line order
  		existing_commodities = order.order_lines.map{|order_line| order_line.commodity}
  		commodities = Commodity.includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
 
  		commodities.each do |commodity| 
  			order.order_lines.build :commodity_id  => commodity.id, :arv_type => commodity.commodity_category.com_type   
  		end
-
- 		order.order_lines.each do |order_line|
- 			order_line.calculate_quantity_system_calculation surv_site
- 		end if !surv_site.nil?
  	end
 
  	def system_calculation(surv_site, commodity_id)

@@ -85,20 +85,20 @@
 
     if(!site_id || !date)
       return ;
-
+    showLoading();
     $.ajax({
         url    : '<%= tab_order_line_admin_orders_path()%>',
         data   : {'site_id' : site_id, 'date': date, 'id' : order_id, pp: 'disable'},
         method : 'GET',
         success: function(response){
           $('#order_lines_tab').html(response);
+        },
+        complete: function(){
+          hideLoading();
         }
 
     });
-
   }
-
-
 
   function removeUsers(){
       $("#order_user_place_order option[value !='']" ).remove();

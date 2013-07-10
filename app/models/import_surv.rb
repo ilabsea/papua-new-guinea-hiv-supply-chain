@@ -8,30 +8,28 @@ class ImportSurv < ActiveRecord::Base
   attr_accessor :invalid_fields
 
   validates_format_of :form, :with => %r{\.(xls)$}i, :message => "Only .xls format is excepted"
-  validates  :form, :surv_type, :presence   =>  true
+  validates :surv_type, :presence  =>  true
+  validates :form, :presence => true  
 
-  TYPES_SURV_1 = 1
-  TYPES_SURV_2  = 2
+  default_scope order("id DESC")
 
-  TYPES = [ ["SURV 1", TYPES_SURV_1], ["SURV 2", TYPES_SURV_2] ]
+  TYPES_SURV1  = 'SURV1'
+  TYPES_SURV2  = 'SURV2'
+
+  TYPES = [ TYPES_SURV1,  TYPES_SURV2 ]
 
   mount_uploader :form, RequisitionReportUploader
-
-  def display_type
-    TYPES.each do |type|
-      return type[0] if self.surv_type == type[1]
-    end
-    ''
-  end
 
   def validate_surv_form 
     file_name = self.form.current_path
     @book = Spreadsheet.open(file_name)
-    if (self.surv_type == 1)
-      invalid_fields = validate_surv1
-    else
+    if self.surv_type == TYPES_SURV1
+      invalid_fields = validate_surv1 
+    elsif self.surv_type == TYPES_SURV2
       invalid_fields = validate_surv2
     end
+    
+
     invalid_fields
   end
 
@@ -69,7 +67,7 @@ class ImportSurv < ActiveRecord::Base
       if (i>0)
         row = sheet_arv_request.row i
         if !row[0].nil?
-          arr_none_exist_sites << row[0] unless  ImportSurv._site(row[0])
+          arr_none_exist_sites << row[0] unless _site(row[0])
         end
       end
     end
@@ -83,7 +81,7 @@ class ImportSurv < ActiveRecord::Base
       if (i>2)
         row = sheet_arv_request.row i
         if !row[0].nil?
-          arr_none_exist_sites << row[0] unless ImportSurv._site(row[0])
+          arr_none_exist_sites << row[0] unless _site(row[0])
         end
       end
     end
@@ -93,7 +91,7 @@ class ImportSurv < ActiveRecord::Base
   def find_none_exist_commodities commodity
     arr_none_exist_commodities = []
     commodity.each do |el|
-      arr_none_exist_commodities << el unless ImportSurv._commodity{|commodity| commodity.name == el }
+      arr_none_exist_commodities << el unless _commodity{|commodity| commodity.name == el }
     end
     return arr_none_exist_commodities
   end
@@ -101,7 +99,7 @@ class ImportSurv < ActiveRecord::Base
   def find_none_exist_commodities_in_surv2 commodity
     arr_none_exist_commodities = []
     commodity.each do |el|
-      arr_none_exist_commodities << el unless ImportSurv._commodity{|commodity| commodity.abbreviation == el}
+      arr_none_exist_commodities << el unless _commodity{|commodity| commodity.abbreviation == el}
     end
     return arr_none_exist_commodities
   end
@@ -124,18 +122,13 @@ class ImportSurv < ActiveRecord::Base
     @invalid_fields[:commodity] = find_none_exist_commodities_in_surv2 arr_commodity
   end
 
-  def self.import import_surv
-    @import_surv = import_surv
-  	file_name = import_surv.form.current_path
+  def import
+  	file_name = self.form.current_path
   	@book = Spreadsheet.open(file_name)
-    if (import_surv.surv_type == 1)
-      read_file_surv1
-    else
-      read_file_surv2
-    end
+    self.surv_type == TYPES_SURV1 ? read_file_surv1 : read_file_surv2
 	end
 
-  def self.read_file_surv2
+  def read_file_surv2
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
     header_row = sheet_arv_request.row 1
@@ -153,13 +146,18 @@ class ImportSurv < ActiveRecord::Base
       if (i > 2)
         row = sheet_arv_request.row i
         site_name = row[0]
-        site = self._site(site_name)
+        site = _site(site_name)
         if site
-          surv_site = SurvSite.create!(:import_surv_id => @import_surv.id, :site_id => site.id, :month => row[2], :year => row[3])
+          surv_site = SurvSite.create!(:import_surv_id => self.id, 
+                                       :site_id => site.id, 
+                                       :month => row[2], 
+                                       :year => row[3],
+                                       :surv_type => TYPES_SURV2 
+                                       )
           surv_site_commodities = []
           for j in 0..arr_commodity.count-1 
             commodity_abbreviation = arr_commodity[j]
-            commodity = self._commodity{|commodity| commodity.abbreviation == commodity_abbreviation}
+            commodity = _commodity{|commodity| commodity.abbreviation == commodity_abbreviation}
             if (commodity)
               quantity = row[commodity_quantity_index + j]
               surv_site_commodities << SurvSiteCommodity.new( :surv_site_id => surv_site.id, 
@@ -177,7 +175,7 @@ class ImportSurv < ActiveRecord::Base
     end
   end
 
-  def self.read_file_surv1
+  def read_file_surv1
     sheet_arv_request = @book.worksheet 0
     total_rows = sheet_arv_request.count
     header_row = sheet_arv_request.row 0
@@ -194,13 +192,18 @@ class ImportSurv < ActiveRecord::Base
       if (i > 0)
         row = sheet_arv_request.row i
         site_name = row[0]
-        site =  self._site(site_name)
+        site =  _site(site_name)
         if site
           surv_site_commodities = []
-          surv_site = SurvSite.create!(:import_surv_id => @import_surv.id, :site_id => site.id, :month => _full_month(row[2]), :year => row[3])
+          surv_site = SurvSite.create!(:import_surv_id => self.id, 
+                                       :site_id => site.id, 
+                                       :month => _full_month(row[2]), 
+                                       :year => row[3],
+                                       :surv_type => TYPES_SURV1 )
+
           for j in 0..arr_commodity.count-1 
             commodity_name = arr_commodity[j]
-            commodity =  self._commodity{|commodity| commodity.name == commodity_name  }  
+            commodity =  _commodity{|commodity| commodity.name == commodity_name  }  
             if (commodity)
               quantity = row[commodity_quantity_index + j]
               surv_site_commodities << SurvSiteCommodity.new(:surv_site_id => surv_site.id, 
@@ -221,7 +224,7 @@ class ImportSurv < ActiveRecord::Base
 
   private
 
-  def self._full_month month
+  def _full_month month
     months = ['January' , 'February' ,'March' , 'April', 'May', 'June', 'July', 'August', 'September', 'Octomber', 'November', 'December' ]
     months.each do |m|
       return m if m.start_with? month
@@ -229,25 +232,25 @@ class ImportSurv < ActiveRecord::Base
     raise month + " : is not in the list of supported months(#{months.join(', ')})"
   end
 
-  def self._sites
+  def _sites
     @sites ||= Site.all
   end
 
-  def self._site(name)
-    self._sites.each do |site|
+  def _site(name)
+    _sites.each do |site|
       return site if site.name == name
     end
     return nil
   end
 
-  def self._commodity(&block)
-    self._commodities.each do |commodity|
+  def _commodity(&block)
+    _commodities.each do |commodity|
       return commodity if block.call(commodity)
     end
     return nil
   end
 
-  def self._commodities
+  def _commodities
     @commodities ||= Commodity.all
   end
 

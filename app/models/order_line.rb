@@ -6,10 +6,35 @@ class OrderLine < ActiveRecord::Base
                   :user_data_entry_note, :user_reviewer_note,:arv_type,
                   :commodity_id
 
-  validates :stock_on_hand, :quantity_suggested, :monthly_use, :quantity_system_calculation,
+  validates :stock_on_hand, :monthly_use, :quantity_system_calculation,
                 :numericality => true, :allow_nil => true                
 
+  validate :quantity_suggested!
 
+
+  def quantity_suggested_drug!
+    #CommodityCategory::TYPES_KIT
+    site_suggestion = self.order.site.suggestion_order
+    calculation = self.calculate_suggested_order
+    if calculation > site_suggestion
+      errors.add(:quantity_suggested, '(#{calculation}) must be less than or equal to suggestion order of site(#{site_suggestion}) ')
+    end
+  end
+
+  def quantity_suggested_kit!
+
+    site_suggestion = self.order.site.suggestion_order
+    calculation = self.calculate_suggested_order
+    if calculation > site_suggestion
+      errors.add(:quantity_suggested, '(#{calculation}) must be less than or equal to suggestion order of site(#{site_suggestion}) ')
+    end
+  end
+
+  def calculate_suggested_order
+     value = (self.quantity_system_calculation - self.quantity_suggested).abs
+     max = self.quantity_system_calculation > self.quantity_suggested ? self.quantity_system_calculation : self.quantity_suggested
+     (100*value)/max
+  end              
 
   def calculate_quantity_system_calculation surv_site
     surv_site.surv_site_commodities.each do |surv_site_commodity|
@@ -21,6 +46,8 @@ class OrderLine < ActiveRecord::Base
       end
     end
   end
+
+
 
   class << self
   	def drug

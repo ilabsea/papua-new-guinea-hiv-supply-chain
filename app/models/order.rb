@@ -14,7 +14,10 @@ class Order < ActiveRecord::Base
 
 
   default_scope order('order_date DESC, date_submittion DESC')
-  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  :status, :site_id, :order_lines_attributes
+
+  attr_accessor :surv_site
+  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
+                  :status, :site_id, :order_lines_attributes,:surv_site
 
   accepts_nested_attributes_for :order_lines
 
@@ -22,10 +25,26 @@ class Order < ActiveRecord::Base
   ORDER_STATUS_COMPLETED = 'Completed'
   ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_COMPLETED ]
 
+  before_save :order_lines_calculation
+
   def self.of(user)
     return Order.where("1=1") if user.admin? || user.data_entry?
     return Order.where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
     # return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
+  end
+
+  def surv_site=(surv_site)
+     @surv_site = surv_site
+  end
+
+  def surv_site
+    @surv_site
+  end
+
+  def order_lines_calculation
+    self.order_lines.each do |order_line|
+      order_line.calculate_quantity_system_calculation self.surv_site
+    end
   end
 
   def self.in_between date_start, date_end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130708092224) do
+ActiveRecord::Schema.define(:version => 20130710075357) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20130708092224) do
   end
 
   create_table "import_survs", :force => true do |t|
-    t.integer  "surv_type"
+    t.string   "surv_type"
     t.string   "form"
     t.integer  "user_id"
     t.datetime "created_at", :null => false
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(:version => 20130708092224) do
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
     t.integer  "surv_site_commodities_count", :default => 0
+    t.string   "surv_type"
   end
 
   create_table "units", :force => true do |t|

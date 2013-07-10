@@ -14,8 +14,8 @@ module Admin
 				render :field_error
 			else
 				if @import_surv.save				
-					ImportSurv.import(@import_surv)
-					redirect_to admin_import_survs_path, notice: 'SURV Form has been successfully imported.'
+				   @import_surv.import
+				   redirect_to admin_import_survs_path, notice: 'SURV Form has been successfully imported.'
 				else
 					render :new
 				end

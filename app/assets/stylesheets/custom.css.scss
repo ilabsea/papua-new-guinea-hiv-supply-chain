@@ -49,3 +49,17 @@ td:last, td.last {
 .order_in_review{
   color: gray;
 }
+.loading {
+    height: 32px;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -15px;
+    position: fixed;
+    top: 50%;
+    width: 300px;
+    z-index: 1000;
+    display:none;
+}
+.hidden{
+  display:none; 
+}
