@@ -165,63 +165,94 @@ end
 def load_commodities
   ActiveRecord::Base.connection.execute("TRUNCATE commodities")
   print("\n Loading Commodities")
-  [
-    ["Zidovudine + Lamividine + Nevirapine", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300+150+200mg", "AZT/3TC/NVP", "60s"],
-    ["Zidovudine + Lamivudine", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300+150mg", "AZT/3TC", "60s"],
-    ["Tenofovir + Lamivudine + Efavirenz", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300+300+600mg", "TDF/3TC/EFV", "60s"],
-    ["Tenofovir + Lamivudine + Nevirapine", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300+300+200mg", "TDF/3TC/NVP", "60s"],
-    ["Tenofovir + Lamivudine Tablet", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300+300", "TDF/3TC", "60s"],
-    ["Efaviranz Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "600mg", "EFV", "30s"],
-    ["Lamivudine Tablet", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "150mg", "3TC", "60s"],
-    ["Zidovudine Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "AZT", "60s"],
-    ["Zidovudine Capsules", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "100mg", "AZT", "60s"],
-    ["Nevirapine Tablets", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "200mg", "NVP", "60s"],
-    ["TDF", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF", "30s"],
-    ["D4T/3TC/NVP", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "D4T/3TC/NVP", "30s"],
-    ["AZT/3TC/NVP", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "AZT/3TC/NVP", "30s"],
-    ["D4T/3TC/EFV", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "D4T/3TC/EFV", "30s"],
-    ["AZT/3TC/EFV", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "AZT/3TC/EFV", "30s"],
-    ["NVP", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "NVP", "30s"],
-    ["NVP/AZT", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "NVP/AZT", "30s"],
-    ["TDF/3TC/EFV", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/3TC/EFV", "30s"],
-    ["TDF/3TC/NVP", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/3TC/NVP", "30s"],
-    ["TDF/ABC/LPVr", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/ABC/LPVr", "30s"],
-    ["TDF/AZT/3TC/LPVr", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/AZT/3TC/LPVr", "30s"],
-    ["ZDV/3TC/NVP", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "ZDV/3TC/NVP", "30s"],
-    ["ZDV/3TC/EFV", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "ZDV/3TC/EFV", "30s"],
-    ["TDF/NVP", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "TDF/NVP", "30s"],
-    ["Septrin", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "Septrin", "30s"],
-    ["Pep", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "Pep", "30s"],
-    ["PMTCT", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "PMTCT", "30s"],
-    ["Prophylaxis", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "Prophylaxis", "30s"],
-    ["CTX", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "CTX", "30s"],
-    ["Oth Comb", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "Oth Comb", "30s"],
-    ["INH", CommodityCategory.find_by_name("ARV Adult 1st Line").id, Unit.find_by_name("Bott").id, "300mg", "INH", "30s"],
+
+
+  commodities = [
+                  ["Zidovudine + Lamividine + Nevirapine",  "300+150+200mg", "AZT/3TC/NVP", "60s"],
+                  ["Zidovudine + Lamivudine",  "300+150mg", "AZT/3TC", "60s"],
+                  ["Tenofovir + Lamivudine + Efavirenz",  "300+300+600mg", "TDF/3TC/EFV", "60s"],
+                  ["Tenofovir + Lamivudine + Nevirapine",  "300+300+200mg", "TDF/3TC/NVP", "60s"],
+                  ["Tenofovir + Lamivudine Tablet",  "300+300", "TDF/3TC", "60s"],
+                  ["Efaviranz Tablets",  "600mg", "EFV", "30s"],
+                  ["Lamivudine Tablet",  "150mg", "3TC", "60s"],
+                  ["Zidovudine Tablets",  "300mg", "AZT", "60s"],
+                  ["Zidovudine Capsules",  "100mg", "AZT", "60s"],
+                  ["Nevirapine Tablets",  "200mg", "NVP", "60s"],
+                  ["TDF",  "300mg", "TDF", "30s"],
+                  ["D4T/3TC/NVP",  "300mg", "D4T/3TC/NVP", "30s"],
+                  ["AZT/3TC/NVP",  "300mg", "AZT/3TC/NVP", "30s"],
+                  ["D4T/3TC/EFV",  "300mg", "D4T/3TC/EFV", "30s"],
+                  ["AZT/3TC/EFV",  "300mg", "AZT/3TC/EFV", "30s"],
+                  ["NVP",  "300mg", "NVP", "30s"],
+                  ["NVP/AZT",  "300mg", "NVP/AZT", "30s"],
+                  ["TDF/3TC/EFV",  "300mg", "TDF/3TC/EFV", "30s"],
+                  ["TDF/3TC/NVP",  "300mg", "TDF/3TC/NVP", "30s"],
+                  ["TDF/ABC/LPVr",  "300mg", "TDF/ABC/LPVr", "30s"],
+                  ["TDF/AZT/3TC/LPVr",  "300mg", "TDF/AZT/3TC/LPVr", "30s"],
+                  ["ZDV/3TC/NVP",  "300mg", "ZDV/3TC/NVP", "30s"],
+                  ["ZDV/3TC/EFV",  "300mg", "ZDV/3TC/EFV", "30s"],
+                  ["TDF/NVP",  "300mg", "TDF/NVP", "30s"],
+                  ["Septrin",  "300mg", "Septrin", "30s"],
+                  ["Pep",  "300mg", "Pep", "30s"],
+                  ["PMTCT",  "300mg", "PMTCT", "30s"],
+                  ["Prophylaxis",  "300mg", "Prophylaxis", "30s"],
+                  ["CTX",  "300mg", "CTX", "30s"],
+                  ["Oth Comb",  "300mg", "Oth Comb", "30s"],
+                  ["INH",  "300mg", "INH", "30s"],
+                  ["1st Line to 2nd Line",  "300mg", "1st Line to 2nd Line", "30s"],
+                  ["Others (2nd line)",  "300mg", "Others (2nd line)", "30s"],
+                  ["Others",  "300mg", "Others", "30s"] ]
+
+    category = CommodityCategory.find_by_name("ARV Adult 1st Line")
+    unit = Unit.find_by_name("Bott")              
+    commodities.each do |el|
+       Commodity.create!( :name => el[0], 
+                          :commodity_category_id => category.id, 
+                          :unit_id => unit.id, 
+                          :strength_dosage => el[1], 
+                          :abbreviation => el[2], 
+                          :quantity_per_packg => el[3],
+                          :consumption_per_client_unit => rand(100) ,
+                          :quantity_per_packg => rand(100))
+
+       print("\n loaded: #{el[0]} to database")                   
+    end
 
 
 
-    ["Determine HIV 1/2 (100 test) with buffer", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["Statpak HIV 1/2", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil],
-    ["Immunocomb HIV 1/2  (100 test)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil],
-    ["Microplates (U plates)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["Serodia HIV 1/2 (55x4)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["DBS Bundles for HIV QA", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["CD4 Reagents", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["CD4 Controls", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["FACS Sheath Fluid (OSMOSOL) (20Litres)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["FACS Clean", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["BD FACS Rinse 5L", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["BD FACSCount Thermal Paper", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["Pipet tips (20ul-200ul)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["Purple tube (EDTA)", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["PIMA Reagents", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["PIMA Control Standard Beads", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["PIMA Printer Paper Roll", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["PIMA consumable bundles", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil],
-    ["DBS Bundles for Early Iinfant Diagnosis testing", CommodityCategory.find_by_name("HIV Test Kits and Bundles").id, Unit.find_by_name("Pkt").id, nil, nil, nil]
 
-  ].each do |el|
-    Commodity.create!(:name => el[0], :commodity_category_id => el[1], :unit_id => el[2], :strength_dosage => el[3], :abbreviation => el[4], :quantity_per_packg => el[5])
+
+   commodities = [  ["Determine HIV 1/2 (100 test) with buffer",   nil, nil, nil],
+                    ["Statpak HIV 1/2",   nil, nil],
+                    ["Immunocomb HIV 1/2  (100 test)",   nil, nil],
+                    ["Microplates (U plates)",   nil, nil, nil],
+                    ["Serodia HIV 1/2 (55x4)",   nil, nil, nil],
+                    ["DBS Bundles for HIV QA",   nil, nil, nil],
+                    ["CD4 Reagents",   nil, nil, nil],
+                    ["CD4 Controls",   nil, nil, nil],
+                    ["FACS Sheath Fluid (OSMOSOL) (20Litres)",   nil, nil, nil],
+                    ["FACS Clean",   nil, nil, nil],
+                    ["BD FACS Rinse 5L",   nil, nil, nil],
+                    ["BD FACSCount Thermal Paper",   nil, nil, nil],
+                    ["Pipet tips (20ul-200ul)",   nil, nil, nil],
+                    ["Purple tube (EDTA)",   nil, nil, nil],
+                    ["PIMA Reagents",   nil, nil, nil],
+                    ["PIMA Control Standard Beads",   nil, nil, nil],
+                    ["PIMA Printer Paper Roll",   nil, nil, nil],
+                    ["PIMA consumable bundles",   nil, nil, nil],
+                    ["DBS Bundles for Early Iinfant Diagnosis testing",   nil, nil, nil]
+                 ]
+  category = CommodityCategory.find_by_name("HIV Test Kits and Bundles")
+  unit =  Unit.find_by_name("Pkt")               
+  commodities.each do |el|
+    Commodity.create!(:name => el[0], 
+                      :commodity_category_id => category.id, 
+                      :unit_id => unit.id, 
+                      :strength_dosage => el[1], 
+                      :abbreviation => el[2], 
+                      :quantity_per_packg => el[3],
+                      :consumption_per_client_unit => rand(500) ,
+                      :quantity_per_packg => rand(500)   ) 
     print("\n loaded: #{el[0]} to database")
   end
 
@@ -264,6 +295,18 @@ namespace :png do
       load_setting_messages
   end
 
+  def load_users
+    [
+      {:email => "site@png.com", :password => "123456", :user_name => "site", :phone_number => "097550",:display_name => "Site", :role => User::ROLES_SITE , :site_id => Site.first.id },
+      {:email => "entry@png.com", :password => "123456", :user_name => "data", :phone_number => "097551",:display_name => "Data", :role => User::ROLES_DATA_ENTRY }
+    ].each do |options|
+      User.create! options
+      print("\n user #{options[:role]} :#{options[:user_name]} - #{options[:password]} ")
+    end
+    print("\n Done loading user")
+  end
+
+
   desc "Loading PNG Default Data"
   task :load_default_data => :environment do
     load_provinces
@@ -272,6 +315,7 @@ namespace :png do
     load_commodity_categories
     load_commodities
     load_sites
+    load_users
   end
 
 end

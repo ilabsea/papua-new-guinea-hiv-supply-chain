@@ -10,8 +10,17 @@ class OrderLine < ActiveRecord::Base
                 :numericality => true, :allow_nil => true                
 
 
-  attr_accessor :system_suggestion, :quantity_suggested
 
+  def calculate_quantity_system_calculation surv_site
+    surv_site.surv_site_commodities.each do |surv_site_commodity|
+      if surv_site_commodity.commodity == self.commodity
+          total = surv_site_commodity.quantity.to_i * commodity.consumption_per_client_unit.to_i
+          system_suggestion = total - self.stock_on_hand.to_i
+          self.quantity_system_calculation = system_suggestion
+          break
+      end
+    end
+  end
 
   class << self
   	def drug

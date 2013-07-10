@@ -21,8 +21,8 @@
           :label_html =>{:class => 'none'}
       %> 
     </td>
-    
-    <td> </td>
+  
+    <td> <%= order_line_record.quantity_system_calculation %> </td>
 
     <td> 
       <%= order_line.input :quantity_suggested, :label=> '&nbsp;' , 

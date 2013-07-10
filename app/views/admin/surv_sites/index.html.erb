@@ -2,7 +2,7 @@
   <%= breadcrumb [{"Surv Sites" => false}] %>
 <% end %>
 
-<%= page_header "Surv Sites : " + @import_surv.display_type  do %>
+<%= page_header "Surv Sites : " + @import_surv.display_type, :left => 4, :right => 8  do %>
   <%= paginate_records @surv_sites %>
 <% end %>
 

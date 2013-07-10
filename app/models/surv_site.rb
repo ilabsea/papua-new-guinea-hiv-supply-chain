@@ -6,14 +6,11 @@ class SurvSite < ActiveRecord::Base
   has_many :surv_site_commodities
   belongs_to :site
 
-  def find_surv site_id, date_str
-  	date = Date.parse date_str
+  def self.find_surv site_id, date
   	year = date.year	
-  	months = [ '' , 'Jan' , 'Feb' ,'March' , 'April', 'May', 'Jun', 'July', 'August', 'September', 'Octomber', 'November', 'December' ]
+  	months = [ '' , 'January' , 'February' ,'March' , 'April', 'May', 'June', 'July', 'August', 'September', 'Octomber', 'November', 'December' ]
   	month = months[date.month]
-  	where(['site_id = :site_id AND year = :year AND month = :month', :site_id => site_id, :year => year, :month => month ]).first
-
-  	
+  	where(['site_id = :site_id AND year = :year AND month = :month', :site_id => site_id, :year => year, :month => month ]).first  	
   end 
 
 end

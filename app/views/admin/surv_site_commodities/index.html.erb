@@ -6,7 +6,7 @@
   %>
 <% end %>
 
-<%= page_header "Surv Site for Site : " + @surv_site.site.name +  ", #{@surv_site.year}-#{@surv_site.month}" do %>
+<%= page_header "Surv Site for Site : " + @surv_site.site.name +  ", #{@surv_site.year}-#{@surv_site.month}", :left => 4, :right => 8 do %>
 	<%= paginate_records @surv_site_commodities %>
 <% end %>
 

@@ -14,10 +14,10 @@ module Admin
  	end
 
  	def tab_order_line
- 		@order = Order.new
- 		@surv_site = SurvSite.find_surv params[:site_id], params[:date]
- 		_build_commodity_order_line(@order)	
- 		
+ 		@order =  params[:id].blank? ? Order.new() : Order.find(params[:id])
+ 		@surv_site = SurvSite.find_surv params[:site_id], Date.parse(params[:date])
+ 		_build_tab(@order, @surv_site)	
+ 		render :layout => false
  	end
 
  	def create
@@ -36,7 +36,8 @@ module Admin
 
  	def edit
  		@order = Order.find params[:id]
- 		_build_commodity_order_line @order
+ 		@surv_site = SurvSite.find_surv @order.site.id, @order.order_date
+ 		_build_tab @order, @surv_site
  		@app_title = 'Edit order, Site :' + @order.site.name
  	end
 
@@ -64,22 +65,37 @@ module Admin
 
  	# don't refer me coz am private
  	private
- 	def _build_commodity_order_line order
+
+ 	def _build_tab order, surv_site
+ 		_build_commodity_order_line order, surv_site
+ 	end
+
+ 	def _build_commodity_order_line order, surv_site=nil
  		existing_commodities = order.order_lines.map{|order_line| order_line.commodity}
  		commodities = Commodity.includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
 
+ 		commodities.each do |commodity| 
+ 			order.order_lines.build :commodity_id  => commodity.id, :arv_type => commodity.commodity_category.com_type   
+ 		end
 
  		order.order_lines.each do |order_line|
- 			order_line.quantity_system_calculation = ''
- 			order_line.quantity_suggested = ''
- 		end
-
- 		commodities.each do |commodity|
- 			order.order_lines.build(:commodity_id  => commodity.id, 
- 									:quantity_system_calculation => '',
- 									:quantity_suggested => '' ,
- 									:arv_type 	=> commodity.commodity_category.com_type)
- 		end
+ 			order_line.calculate_quantity_system_calculation surv_site
+ 		end if !surv_site.nil?
  	end
+
+ 	def system_calculation(surv_site, commodity_id)
+ 		surv_site.surv_site_commodities.each do |surv_site_commodity|
+ 			if surv_site_commodity.commodity.id == commodity_id
+ 				number_of_patient = surv_site_commodity.quantity
+ 				consumstion_per_patient = surv_site_commodity.commodity.consumption_per_client_unit
+ 				total_consumtion = number_of_patient.to_i * consumstion_per_patient.to_i
+
+ 				system_suggestion =  total_consumtion - order_line.stock_on_hand
+ 				return system_suggestion
+ 			end
+ 		end
+ 		return 0
+ 	end
+
  end
 end

@@ -28,14 +28,15 @@
 
   </div>
 
-  <div id='order_lines_tab'> <%= render :partial => 'order_lines', :locals => {:f => f, :order => @order} %> </div>
+  <div id='order_lines_tab'>
+      <%= render :partial => 'order_lines', :locals => {:f => f, :order => @order} %> 
+  </div>
 
   <div class="form-actions">
     <%= f.submit 'Save Order', :class => 'btn btn-primary' %>
     <%= link_to 'Cancel', admin_provinces_path, :class => 'btn' %>
   </div>
 <% end %>
-
 <script>
   function handleSiteUser(){
     $('#order_site').on('change', function(){
@@ -72,27 +73,22 @@
 
     });
 
-    $("#order_order_date").on('blur', function(){
+    $("#order_order_date").on('change', function(){
        loadOrderLinesTab();
-
-
     });
-
-
   }
-
-
 
   function loadOrderLinesTab(){
     site_id = $("#order_site_id").val();
     date   = $("#order_order_date").val();
+    order_id = '<%=@order.id%>';
 
     if(!site_id || !date)
       return ;
 
     $.ajax({
         url    : '<%= tab_order_line_admin_orders_path()%>',
-        data   : {'site_id' : site_id, 'date': date},
+        data   : {'site_id' : site_id, 'date': date, 'id' : order_id, pp: 'disable'},
         method : 'GET',
         success: function(response){
           $('#order_lines_tab').html(response);

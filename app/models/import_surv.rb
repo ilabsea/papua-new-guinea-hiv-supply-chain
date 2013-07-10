@@ -197,7 +197,7 @@ class ImportSurv < ActiveRecord::Base
         site =  self._site(site_name)
         if site
           surv_site_commodities = []
-          surv_site = SurvSite.create!(:import_surv_id => @import_surv.id, :site_id => site.id, :month => row[2], :year => row[3])
+          surv_site = SurvSite.create!(:import_surv_id => @import_surv.id, :site_id => site.id, :month => _full_month(row[2]), :year => row[3])
           for j in 0..arr_commodity.count-1 
             commodity_name = arr_commodity[j]
             commodity =  self._commodity{|commodity| commodity.name == commodity_name  }  
@@ -220,6 +220,14 @@ class ImportSurv < ActiveRecord::Base
   end
 
   private
+
+  def self._full_month month
+    months = ['January' , 'February' ,'March' , 'April', 'May', 'June', 'July', 'August', 'September', 'Octomber', 'November', 'December' ]
+    months.each do |m|
+      return m if m.start_with? month
+    end
+    raise month + " : is not in the list of supported months(#{months.join(', ')})"
+  end
 
   def self._sites
     @sites ||= Site.all
