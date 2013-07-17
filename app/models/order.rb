@@ -15,7 +15,7 @@ class Order < ActiveRecord::Base
 
   default_scope order('order_date DESC, id DESC')
 
-  attr_accessor :surv_sites
+  attr_accessor :survs
   attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
                   :status, :site_id, :order_lines_attributes,:surv_sites
 
@@ -33,17 +33,18 @@ class Order < ActiveRecord::Base
     # return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
   end
 
-  def surv_sites=(surv_sites)
-     @surv_sites = surv_sites
+  def surv_sites
+    if !@survs
+       @survs = SurvSite.find_survs(self.site.id, self.order_date)
+    end
+    @survs ||= SurvSite.find_survs(self.site.id, self.order_date)
   end
 
-  def surv_sites
-    @surv_sites
-  end
 
   def order_lines_calculation
+    #foreach order_line update field data by current order
     self.order_lines.each do |order_line|
-      order_line.calculate_quantity_system_suggestion self.surv_sites
+      order_line.calculate_quantity_system_suggestion(self)
     end
   end
 

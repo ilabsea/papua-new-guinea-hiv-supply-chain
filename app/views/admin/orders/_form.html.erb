@@ -1,4 +1,4 @@
-<%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
   <div class='row'>
     <div class='span4' >
@@ -37,6 +37,8 @@
     <%= link_to 'Cancel', admin_provinces_path, :class => 'btn' %>
   </div>
 <% end %>
+
+
 <script>
   function handleSiteUser(){
     $('#order_site').on('change', function(){
@@ -59,11 +61,9 @@
                    text  = response[i][0];
                    var option = "<option value='"+ value +"' >" + text + " </option>";
                    $selectElm.append(option);
-                 }
+              }
           }
        })
-
-
     });
   }
 
@@ -78,6 +78,12 @@
     });
   }
 
+  function handleSubmit(){
+    $("#form_order").on('submit', function(){
+      return validateForm();
+    });
+  }
+
   function loadOrderLinesTab(){
     site_id = $("#order_site_id").val();
     date   = $("#order_order_date").val();
@@ -88,7 +94,7 @@
     showLoading();
     $.ajax({
         url    : '<%= tab_order_line_admin_orders_path()%>',
-        data   : {'site_id' : site_id, 'date': date, 'id' : order_id, pp: 'disable'},
+        data   : {'site_id' : site_id, 'order_date': date, 'id' : order_id, pp: 'disable'},
         method : 'GET',
         success: function(response){
           $('#order_lines_tab').html(response);
@@ -96,8 +102,114 @@
         complete: function(){
           hideLoading();
         }
-
     });
+  }
+
+  function handleValidateField(){
+    $(document.body).delegate(".validate_field", 'change', function(){
+        validateCriteria($(this));
+    });
+  }
+
+  function validateForm(){
+    $elmRefs =  $(".stock_on_hand");
+    for(var i=0; i< $elmRefs.length; i++){
+      $elm = $($elmRefs.get(i));
+      if(validateCriteria($elm) == false){
+         return false
+      }
+    }
+    return true;
+  }
+
+  function getOrderLineObject($elm){
+    ref = $elm.attr("data-ref");
+    $datasets =  $("input[data-ref=" + ref + "]");
+    var commodityName = "<b>" + $('#commodity_' + ref).text() + "</b>" ;
+    var options = {
+              commodityName                   : commodityName ,
+              commodityId                     : ref,
+              type_arv                        : $datasets.get(0).value,
+              siteSuggestion                  : $datasets.get(1).value,
+              testKitWasteAcceptable          : $datasets.get(2).value,
+              numberOfClient                  : $datasets.get(3).value,
+              consumtionPerClient             : $datasets.get(4).value,
+              stockOnHand                     : $datasets.get(5).value,
+              monthlyUse                      : $datasets.get(6).value,
+              quantitySuggested               : $datasets.get(7).value
+    }
+    return options;
+  }
+
+  function  validateCriteria($elm){
+    var object = getOrderLineObject($elm)
+    if(object.type_arv == '<%= CommodityCategory::TYPES_DRUG %>'){
+
+        if($.trim(object.stockOnHand) == "" || $.trim(object.quantitySuggested) =="" ){
+          $(".error-drug").hide();
+          return true ;
+        }
+
+        consumtion = object.numberOfClient * object.consumtionPerClient
+        systemSuggestion = consumtion - object.stockOnHand
+        cal = formatNumber((100 * Math.abs( object.quantitySuggested - systemSuggestion ) / Math.max(object.quantitySuggested , systemSuggestion)))
+
+        if(cal <= parseFloat(object.siteSuggestion)){
+          message =  "Commodity: " + object.commodityName +  " Quantity Suggested is acceptable system calculation = " 
+                  + filter(cal) + ", site suggestion = " + filter(object.siteSuggestion) ;
+          green(".error-drug", message);
+          return true;
+        }
+        else{
+          message =  "Commodity: " + object.commodityName + " Quantity Suggested is not acceptable system calculation = " 
+                  + filter(cal) + " must be less than or equal to site suggestion = " + filter(object.siteSuggestion) ;
+          red(".error-drug", message);
+          return false;
+        }
+    }
+    else{
+
+        if($.trim(object.stockOnHand) == "" || $.trim(object.monthlyUse) == "") { 
+          $(".error-kit").hide();
+          return true;
+        }
+
+        consumtion = object.numberOfClient * object.consumtionPerClient
+        systemSuggestion = consumtion - object.stockOnHand 
+        var cal = formatNumber( 100 * (object.monthlyUse - consumtion) / object.monthlyUse )
+
+        if(cal <= parseFloat(object.testKitWasteAcceptable)){
+          message = "Commodity: " + object.commodityName + " Quantity Suggested is acceptable " ; 
+          green(".error-kit", message);
+          return true;
+        }
+        else{
+          message =  "Commodity: " + object.commodityName +  " Quantity Suggested is not acceptable system calculation = " 
+                  +  filter(cal) + " must be less than or equal to site wastage = " + filter(object.testKitWasteAcceptable) ;
+          red(".error-kit", message);
+          return false;
+        }
+    }
+  }
+
+  function formatNumber(cal){
+    return cal.toFixed(2);
+  }
+
+  function filter(number){
+    return "<b>" + number + "% </b>" ;
+  }
+
+  function green(selector, msg){
+    $(selector).removeClass('alert-error');
+    $(selector).html(msg);
+    $(selector).addClass("alert-success").show();
+  }
+
+  function red(selector, msg){
+    $(selector).removeClass('alert-success');
+    $(selector).html(msg);
+    $(selector).addClass("alert-error").show();
   }
 
   function removeUsers(){
@@ -107,5 +219,7 @@
   $(function(){
     handleSiteUser();
     handleLoadOrderLinesTab();
+    handleValidateField();
+    handleSubmit();
   });
 </script>

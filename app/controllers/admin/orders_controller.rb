@@ -14,8 +14,10 @@ module Admin
  	end
 
  	def tab_order_line
- 		@order =  params[:id].blank? ? Order.new() : Order.find(params[:id])
- 		@order.surv_sites = SurvSite.find_survs(params[:site_id], Date.parse(params[:date]))
+ 		# must eager load order_lines, otherwise each orline from order.order_lines will go to sql query
+ 		@order 			  =  params[:id].blank? ? Order.new() : Order.includes(:order_lines).find(params[:id])
+ 		@order.site 	  =  Site.find params[:site_id]
+ 		@order.order_date =  params[:order_date]
  		_build_tab(@order)	
  		render :layout => false
  	end
@@ -26,18 +28,16 @@ module Admin
  		@order.user_data_entry = current_user
  		@order.status = Order::ORDER_STATUS_PENDING
  		@order.is_requisition_form = false
- 		@order.surv_sites = SurvSite.find_survs(@order.site.id, @order.order_date)
 
  		if @order.save
- 		 	redirect_to admin_orders_path, :notice => 'Order has been created'	
+ 		  redirect_to admin_orders_path, :notice => 'Order has been created'	
  		else
- 			render :new
+ 		  render :new
  		end
  	end
 
  	def edit
  		@order = Order.find params[:id]
- 		@order.surv_sites = SurvSite.find_survs @order.site.id, @order.order_date
  		_build_tab @order
  		@app_title = 'Edit order, Site :' + @order.site.name
  	end
@@ -47,9 +47,9 @@ module Admin
  		@order.user_data_entry = current_user if current_user.data_entry?
 
  		if @order.update_attributes params[:order]
- 			redirect_to admin_orders_path, :notice => 'Order has been updated succesfully'
+ 		  redirect_to admin_orders_path, :notice => 'Order has been updated succesfully'
  		else
- 			render :edit
+ 		  render :edit
  		end
 
  	end

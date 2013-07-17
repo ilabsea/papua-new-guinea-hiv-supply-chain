@@ -32,10 +32,17 @@
     <div class="tab-content">
       <div class="tab-pane active" id="drug">
         <h4> Drug Commodities </h4>
+        <div class='alert alert-error error-drug' style='display: none;' >
+           Warning ! Quantity Suggested is not acceptable
+        </div>
         <%= render :partial => 'order_line_table_drug', :locals => {:body => yield(:drug) } %>
       </div>
       <div class="tab-pane" id="kit">
          <h4> Kit Commodities </h4>
+         <div class='alert alert-error error-kit' style='display: none;' >
+           Warning ! Quantity Suggested is not acceptable
+        </div>
+
          <%= render :partial => 'order_line_table_kit', :locals => {:body => yield(:kit) } %>
       </div>
     </div>

@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :unit do
-    name "MyString"
+    name "Gram"
   end
 end
