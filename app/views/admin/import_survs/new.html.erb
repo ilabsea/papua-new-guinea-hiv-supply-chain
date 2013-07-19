@@ -14,7 +14,7 @@
   }
   .form-fixed {
     overflow: scroll;
-    max-height: 450px;
+    max-height: 550px;
   }
   .pos-fixed{
 
@@ -97,7 +97,7 @@
    </div>
   <br />
    <div class='center' >
-      <%= link_to 'Cancel', new_admin_import_surv_path, :class => 'btn' %>
+      <%= link_to 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type), :class => 'btn' %>
       <%= f.button :submit, :value => "Save", :class => 'btn-primary' %>
       
    </div>

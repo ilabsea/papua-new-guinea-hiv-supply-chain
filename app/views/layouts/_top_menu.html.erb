@@ -19,7 +19,7 @@
                 {:label => 'Requisition Template', :url => template_admin_commodity_categories_path(:format =>:xls), :controller => 'commodity_categories' } ]  if current_user.site?
               
               menus += [
-                {:label => "SURV",:url => admin_import_survs_path(), :controller => "import_survs"},
+                {:label => "SURV",:url => admin_import_survs_path(:type => ImportSurv::TYPES_SURV1), :controller => "import_survs"},
                 {:label => "Requisition and order", :url => admin_orders_path(), :controller => "commodities"}
               ] if current_user.data_entry?
 

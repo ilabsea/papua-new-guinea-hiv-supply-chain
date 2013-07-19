@@ -22,6 +22,10 @@ class ImportSurv < ActiveRecord::Base
   mount_uploader :form, RequisitionReportUploader
   accepts_nested_attributes_for :surv_sites
 
+  def self.of_type type
+      ImportSurv.where('surv_type = ? ', type)
+  end
+
   def validate_surv_form 
     file_name = self.form.current_path
     @book = Spreadsheet.open(file_name)

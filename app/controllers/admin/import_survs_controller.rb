@@ -6,6 +6,8 @@ module Admin
   		@sites = Site.all
   		@commodities = Commodity.from_type(@import_surv.arv_type)
 
+  		@app_title = 'New ' + @import_surv.surv_type
+
   		@sites.each do |site|
   		  surv_site = @import_surv.surv_sites.build(:site => site)
   		  @commodities.each do |commodity|
@@ -19,7 +21,7 @@ module Admin
   		@import_surv.user = current_user
 
   		if(@import_surv.save)
-  		  redirect_to admin_import_survs_path, :notice => 'Surv site has been created'
+  		  redirect_to admin_import_survs_path(:type =>@import_surv.surv_type), :notice => 'Surv site has been created'
   		else 
   		  @sites = Site.all
   		  @commodities = Commodity.from_type(@import_surv.arv_type)	
@@ -56,7 +58,8 @@ module Admin
 	end
 
 	def index
-		@import_survs = current_user.import_survs.paginate(paginate_options)
+		@type = params[:type] || ImportSurv::TYPES_SURV1
+		@import_survs = current_user.import_survs.of_type(@type).paginate(paginate_options)
 	end
 
 	def download
