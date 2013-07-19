@@ -11,7 +11,7 @@ class Site < ActiveRecord::Base
   
   SeviceType = ["ART", "VCCT"]
 
-  default_scope order('name ASC')
+  default_scope order('sites.name ASC')
 
   has_many :users
   has_many :requisition_reports

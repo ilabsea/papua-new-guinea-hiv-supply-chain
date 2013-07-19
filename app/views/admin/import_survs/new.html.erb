@@ -1,16 +1,104 @@
 <% content_for :breadcrumb do %>
-  <%= breadcrumb [{"Import Surv" => nil}]  %>
+  <%= breadcrumb [{"Import Survs" => nil}]  %>
 <% end %>	
 
-<%= page_header "Surv Form uploader" %>
+<%= page_header "New #{@import_surv.surv_type}" %>
 
-<% url = @import_surv.new_record? ? admin_import_survs_path() : admin_import_surv_path(@import_surv) %>
-<%= simple_form_for [:admin, @import_surv], :url => url, :html => {:class => 'form-horizontal' , :multipart => true} do |f| %>
+<style>
+  .surv-form .controls {
+    display: inline;
+    margin-left: 5px;
+  }
+  td, th {
+    width: 6em;
+  }
+  .form-fixed {
+    overflow: scroll;
+    max-height: 450px;
+  }
+  .pos-fixed{
+
+  }
+  .pos-site{
+    width: 120px !important;
+  }
+
+  .pos-commodity{
+    width: 150px;
+  }
+
+  .surv-form tr, .surv-form th, .surv-form td {
+    min-width: 90px;
+    font-weight: normal !important;
+  }
+  .site_col {
+    width: 200px;
+  }
+  .number_select{
+    width: 90px;
+  }
+
+</style>
+
+ <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
-  <%= f.input :surv_type, collection: ImportSurv::TYPES, :include_blank => 'Select Surv Type' %>
-  <%= f.input :form, :as =>:file %>
-  <div class="form-actions">
-    <%= f.button :submit, :value => "Import", :class => 'btn-primary' %>
-    <%= link_to 'Cancel', new_admin_import_surv_path, :class => 'btn' %>
-  </div>
-<% end %>
+  <div class='row-fluid form-fixed'  >
+  <%= f.input :surv_type, :as => :hidden %>  
+  <table class='table table-hover surv-form table-fixed-header' >
+    <thead class='header' >
+      <tr >
+         <th class='list-no'>#</th>
+         <th class='pos-site'>Site</th>
+         <th class='pos-fixed'>Month</th>
+         <th class='pos-fixed'>Year</th>
+         <% @commodities.each do |commodity| %>
+            <th class='pos-commodity'><%= commodity.name %></th>
+         <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @site_index = 1 %>
+      <%= f.simple_fields_for :surv_sites  do |surv_site_form| %>
+          <tr>
+            <td class='list-no' ><%=@site_index %></td>
+            <td class='pos-site' > 
+              <%= surv_site_form.object.site.name %>  
+              <%= surv_site_form.input :site_id, :as => :hidden %>
+            </td>
+
+            <td class='pos-fixed' >
+              <%=surv_site_form.input :month, :label => false,
+                                      :collection => SurvSite::MONTHS,
+                                      :include_blank => 'Month?', 
+                                      :input_html => {:class=> 'number_select'} %>
+            </td>
+            <td class='pos-fixed' >
+              <%=surv_site_form.input :year , :label => false, 
+                                      :collection => 2009..2020,
+                                      :include_blank => 'Year?',
+                                      :input_html => {:class=> 'number_select'} %>
+            </td>
+
+      	    <%= surv_site_form.simple_fields_for :surv_site_commodities do |surv_site_commodity_form| %>
+              <td class='pos-commodity'>
+      	  	    <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
+                <%= surv_site_commodity_form.input :quantity, 
+                          :label => false,
+                          :input_html => { :class=> 'number_text'} %>
+              </td>
+      	    <% end %>
+        </tr>
+        <% @site_index +=1 %>
+      <% end %>
+
+    </tbody>
+   </table>
+   </div>
+  <br />
+   <div class='center' >
+      <%= link_to 'Cancel', new_admin_import_surv_path, :class => 'btn' %>
+      <%= f.button :submit, :value => "Save", :class => 'btn-primary' %>
+      
+   </div>
+  <% end %>

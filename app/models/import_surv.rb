@@ -3,13 +3,14 @@ require 'spreadsheet'
 class ImportSurv < ActiveRecord::Base
 
   belongs_to :user
-  has_many :surv_sites
-  attr_accessible :form, :surv_type
-  attr_accessor :invalid_fields
+  has_many :surv_sites, :dependent => :destroy
 
-  validates_format_of :form, :with => %r{\.(xls)$}i, :message => "Only .xls format is excepted"
-  validates :surv_type, :presence  =>  true
-  validates :form, :presence => true  
+  attr_accessor :invalid_fields
+  # validates_format_of :form, :with => %r{\.(xls)$}i, :message => "Only .xls format is excepted"
+  # validates :surv_type, :presence  =>  true
+  # validates :form, :presence => true  
+
+  attr_accessible :surv_type, :surv_sites_attributes
 
   default_scope order("id DESC")
 
@@ -19,6 +20,7 @@ class ImportSurv < ActiveRecord::Base
   TYPES = [ TYPES_SURV1,  TYPES_SURV2 ]
 
   mount_uploader :form, RequisitionReportUploader
+  accepts_nested_attributes_for :surv_sites
 
   def validate_surv_form 
     file_name = self.form.current_path
@@ -28,10 +30,16 @@ class ImportSurv < ActiveRecord::Base
     elsif self.surv_type == TYPES_SURV2
       invalid_fields = validate_surv2
     end
-    
-
     invalid_fields
   end
+
+  def arv_type
+    if self.surv_type == ImportSurv::TYPES_SURV1
+      return CommodityCategory::TYPES_DRUG
+    else
+      return CommodityCategory::TYPES_KIT
+    end  
+  end 
 
   def validate_field
     errors.add(:surv_type, "can't be blank") if self.surv_type.nil?

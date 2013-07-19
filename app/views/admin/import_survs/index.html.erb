@@ -3,14 +3,14 @@
 <% end %>
 
 <%= page_header "Import Survs" do %>
-  <%=link_to "Upload Surv Form", new_admin_import_surv_path() , class: 'btn' %>	
+  <%=link_to "New Surv1", new_admin_import_surv_path(:type => ImportSurv::TYPES_SURV1) , class: 'btn' %> 
+  <%=link_to "New Surv2", new_admin_import_surv_path(:type => ImportSurv::TYPES_SURV2) , class: 'btn' %>	
 <%end%>
 
 <%= paginate_records @import_survs %>
 <table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
-      <th> Summition </th>
       <th> Type </th>
       <th> Uploaded At </th>
       <th class='action_col2'> Action </th>
@@ -19,13 +19,12 @@
   <tbody>
     <% @import_survs.each do |import_surv| %>
       <tr>
-        <td>
-          <%= link_to File.basename(import_surv.form.current_path) , download_admin_import_surv_path(import_surv) %>
-        </td>
         <td><%=import_surv.surv_type %></td>
         <td><%=import_surv.created_at %></td>
         <td>
-        	<%= link_to 'View detail', admin_import_surv_surv_sites_path(import_surv), :class => 'btn btn-mini' %>
+          <%=link_to 'View', admin_import_surv_surv_sites_path(import_surv), :class => 'btn btn-mini' %>
+          <%=link_to 'Show', view_admin_import_surv_path(import_surv), :class => 'btn btn-mini' %>
+
         </td>
       </tr>
     <% end %>

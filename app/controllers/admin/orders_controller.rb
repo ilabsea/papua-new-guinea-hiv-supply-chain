@@ -74,10 +74,12 @@ module Admin
 
  	def _build_commodity_order_line order
  		existing_commodities = order.order_lines.map{|order_line| order_line.commodity}
- 		commodities = Commodity.includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
+ 		commodities = Commodity.order('name asc').includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
 
  		commodities.each do |commodity| 
- 			order.order_lines.build :commodity_id  => commodity.id, :arv_type => commodity.commodity_category.com_type   
+ 		  order.order_lines.build :commodity_id  => commodity.id, 
+ 		  						  :arv_type => commodity.commodity_category.com_type,
+ 		  						  :consumption_per_client_per_month => commodity.consumption_per_client_unit  
  		end
  	end
 

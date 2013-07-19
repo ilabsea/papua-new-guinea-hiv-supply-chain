@@ -5,6 +5,7 @@ PngHivAids::Application.routes.draw do
       resources :surv_sites
       member do
         get 'download'
+        get 'view'
       end
     end
 

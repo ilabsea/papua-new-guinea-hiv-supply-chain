@@ -85,6 +85,8 @@
   }
 
   function loadOrderLinesTab(){
+    var newRecord = <%= @order.new_record? %> ;
+    if(newRecord) return ;
     site_id = $("#order_site_id").val();
     date   = $("#order_order_date").val();
     order_id = '<%=@order.id%>';
@@ -145,9 +147,10 @@
     var object = getOrderLineObject($elm)
     if(object.type_arv == '<%= CommodityCategory::TYPES_DRUG %>'){
 
-        if($.trim(object.stockOnHand) == "" || $.trim(object.quantitySuggested) =="" ){
-          $(".error-drug").hide();
-          return true ;
+        if($.trim(object.stockOnHand) == "" || $.trim(object.quantitySuggested) =="" || 
+           $.trim(object.numberOfClient) == "" || $.trim(object.consumtionPerClient) == "" ) {
+            $(".error-drug").hide();
+            return true ;
         }
 
         consumtion = object.numberOfClient * object.consumtionPerClient
@@ -169,7 +172,7 @@
     }
     else{
 
-        if($.trim(object.stockOnHand) == "" || $.trim(object.monthlyUse) == "") { 
+        if($.trim(object.stockOnHand) == "" || $.trim(object.monthlyUse) == "" || $.trim(object.numberOfClient) == "" || $.trim(object.consumtionPerClient) == "") { 
           $(".error-kit").hide();
           return true;
         }

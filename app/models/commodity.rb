@@ -12,6 +12,8 @@ class Commodity < ActiveRecord::Base
   validates :name , :uniqueness => true
   validate :validate_commodity_type
 
+  default_scope order("commodities.name ASC")
+
   def validate_commodity_type
   	if (self.commodity_type == "drugs")
   		errors.add(:strength_dosage, "can't be blank") if self.strength_dosage.empty?
@@ -34,6 +36,10 @@ class Commodity < ActiveRecord::Base
 
   def self.of_drug
     Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
+  end
+
+  def self.from_type type
+    Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", type)
   end  
 
 

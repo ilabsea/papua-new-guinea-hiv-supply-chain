@@ -7,9 +7,11 @@ class OrderLine < ActiveRecord::Base
 
   validates :stock_on_hand, :monthly_use, :quantity_system_calculation, :numericality => true, :allow_nil => true                
 
-  default_scope order('id DESC')
+  default_scope order('monthly_use DESC')
 
   attr_accessor :site_suggestion, :test_kit_waste_acceptable, :number_of_client, :consumption_per_client_per_month
+
+  validate :quantity_suggested_valid?
 
   def quantity_suggested_valid?
     arv_type == CommodityCategory::TYPES_DRUG ? quantity_suggested_drug? : quantity_suggested_kit?
@@ -69,19 +71,19 @@ class OrderLine < ActiveRecord::Base
 
     surv_site.surv_site_commodities.each do |surv_site_commodity|
       if surv_site_commodity.commodity == self.commodity
+
           self.site_suggestion                  = temp_order.site.suggestion_order
           self.test_kit_waste_acceptable        = temp_order.site.test_kit_waste_acceptable
           self.number_of_client                 = surv_site_commodity.quantity.to_i
-          self.consumption_per_client_per_month = commodity.consumption_per_client_unit.to_i
+
           total                                 =  self.consumption_per_client_per_month * self.number_of_client
           system_suggestion                     = total - self.stock_on_hand.to_i
           self.quantity_system_calculation      = system_suggestion
+          
           break
       end
     end
   end
-
-
 
   class << self
   	def drug

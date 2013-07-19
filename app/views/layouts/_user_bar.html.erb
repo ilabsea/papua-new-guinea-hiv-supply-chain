@@ -1,8 +1,15 @@
-<div class="row right" style="padding: 5px 10px;" > 
+<div class="row-fluid" style="padding: 10px 0px;" > 
+  <div class='span8' > 
+  	<div id='system_loading'>
+  		<%= image_tag 'loading.gif', :alt => 'System loading', :title => 'System loading' %> Waiting for server response
+    </div>
+  </div>
+  <div class='span4 right' >	
   <% if user_signed_in? %>
      Welcome <b><%= current_user.display_name %></b>
      <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
   <% else %>
      <%= link_to "Sign in", new_user_session_path %>
   <% end %>  
+  </div>
 </div>

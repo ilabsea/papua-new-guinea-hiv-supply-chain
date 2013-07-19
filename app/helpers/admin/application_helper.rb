@@ -1,6 +1,6 @@
 module Admin::ApplicationHelper
   def app_name
-    "Papua New Guinea National Department Of Health"
+    "HIV Supply Chain"
   end
   
   def app_title
