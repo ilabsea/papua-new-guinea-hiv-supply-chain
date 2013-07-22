@@ -34,9 +34,6 @@ class Order < ActiveRecord::Base
   end
 
   def surv_sites
-    if !@survs
-       @survs = SurvSite.find_survs(self.site.id, self.order_date)
-    end
     @survs ||= SurvSite.find_survs(self.site.id, self.order_date)
   end
 

@@ -8,7 +8,7 @@
     font-weight: normal !important;
   }
 </style>
-<%= page_header "New Surv Site" %>
+<%= page_header "#{@import_surv.surv_type} for Year: #{@import_surv.year}, Month: #{@import_surv.month}" %>
 
 <div class='row-fluid form-fixed'  >
   <table class='table table-hover surv-form table-fixed-header' >
@@ -16,8 +16,6 @@
       <tr >
          <th class='list-no'>#</th>
          <th class='pos-site'>Site</th>
-         <th class='pos-fixed'>Month</th>
-         <th class='pos-fixed'>Year</th>
          <% @commodities.each do |commodity| %>
             <th class='pos-commodity'><%= commodity.name %></th>
          <% end %>
@@ -33,9 +31,6 @@
               survs = @import_surv.surv_sites.select{|surv_site| surv_site.site == site } 
               surv = survs[0]
             %>  
-            <td class='pos-fixed' > <%= surv.month %> </td>
-            <td class='pos-fixed' > <%= surv.year %>  </td>
-
       	    <% surv.surv_site_commodities.each do |surv_site_commodity| %>
               <td class='pos-commodity'><%= surv_site_commodity.quantity.to_i %> </td>
       	    <% end %>

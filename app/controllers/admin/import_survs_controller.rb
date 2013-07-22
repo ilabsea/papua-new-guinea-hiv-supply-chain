@@ -9,7 +9,7 @@ module Admin
   		@app_title = 'New ' + @import_surv.surv_type
 
   		@sites.each do |site|
-  		  surv_site = @import_surv.surv_sites.build(:site => site)
+  		  surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
   		  @commodities.each do |commodity|
   		  	surv_site.surv_site_commodities.build(:commodity => commodity, :quantity => '' )
   		  end
@@ -28,6 +28,18 @@ module Admin
   		  render :new
   		end	
   	end
+
+  	# DELETE /provinces/1
+    # DELETE /provinces/1.json
+    def destroy
+      begin
+        @province = ImportSurv.find(params[:id])
+        @province.destroy
+        redirect_to admin_import_survs_path(:type => params[:type]), :notice => "Surv site has been removed" 
+      rescue Exception => e
+        redirect_to admin_import_survs_path(:type => params[:type] ), :error =>  e.message 
+      end
+    end
 
   	def view
   		@import_surv = ImportSurv.includes(:surv_sites).find(params[:id])

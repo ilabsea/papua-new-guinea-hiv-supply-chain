@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130710075357) do
+ActiveRecord::Schema.define(:version => 20130722091436) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -44,8 +44,10 @@ ActiveRecord::Schema.define(:version => 20130710075357) do
     t.string   "surv_type"
     t.string   "form"
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.integer  "year"
+    t.string   "month",      :limit => 20
   end
 
   create_table "order_lines", :force => true do |t|
@@ -59,9 +61,14 @@ ActiveRecord::Schema.define(:version => 20130710075357) do
     t.text     "user_data_entry_note"
     t.text     "user_reviewer_note"
     t.string   "status"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                                                                         :null => false
+    t.datetime "updated_at",                                                                         :null => false
     t.string   "arv_type"
+    t.decimal  "site_suggestion",                  :precision => 10, :scale => 0
+    t.decimal  "test_kit_waste_acceptable",        :precision => 10, :scale => 0
+    t.integer  "number_of_client"
+    t.decimal  "consumption_per_client_per_month", :precision => 10, :scale => 0
+    t.boolean  "is_set",                                                          :default => false
   end
 
   add_index "order_lines", ["commodity_id"], :name => "index_order_lines_on_commodity_id"

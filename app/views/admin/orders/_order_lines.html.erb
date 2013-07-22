@@ -1,21 +1,27 @@
-<% i = 0 %>
+<% 
+  @kit  = 1
+  @drug = 1
+%>
   <%=f.simple_fields_for :order_lines do |order_line| %>
-    <% if order.order_lines[i].arv_type == CommodityCategory::TYPES_DRUG %>
+    <% if order_line.object.arv_type == CommodityCategory::TYPES_DRUG %>
         <%=content_for :drug do  %>
           <%= render :partial => "order_line_row_drug", :locals => { 
-              :order_line_record => order.order_lines[i],
-              :order_line => order_line
+              :order_line_record => order_line.object ,
+              :order_line => order_line,
+              :index => @drug
             } %>
+          <% @drug += 1 %>  
         <% end %>    
-    <% elsif order.order_lines[i].arv_type == CommodityCategory::TYPES_KIT %>  
+    <% elsif order_line.object.arv_type == CommodityCategory::TYPES_KIT %>  
         <%=content_for :kit do %>
           <%= render :partial => "order_line_row_kit", :locals => { 
-              :order_line_record => order.order_lines[i],
-              :order_line => order_line
-            } %>
+              :order_line_record => order_line.object,
+              :order_line => order_line,
+              :index => @kit
+            } %>   
         <% end %>
+        <% @kit += 1 %> 
     <% end %>  
-    <% i += 1 %>
   <% end %>
 
 

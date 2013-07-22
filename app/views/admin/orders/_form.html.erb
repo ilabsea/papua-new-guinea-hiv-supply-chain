@@ -86,7 +86,7 @@
 
   function loadOrderLinesTab(){
     var newRecord = <%= @order.new_record? %> ;
-    if(newRecord) return ;
+
     site_id = $("#order_site_id").val();
     date   = $("#order_order_date").val();
     order_id = '<%=@order.id%>';

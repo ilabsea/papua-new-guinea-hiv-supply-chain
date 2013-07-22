@@ -1,17 +1,19 @@
 <tr>
+    <td><%=index%></td>
     <td> 
       <% row_ref = order_line_record.commodity.id %>
       <%= order_line.input :id, :as => 'hidden' %>
+      <%= order_line.input :is_set, :as => 'hidden' %>
       <%= order_line.input :arv_type, :as => 'hidden', :input_html => {:class=>'validate_field', :'data-ref'=> row_ref } %>
-      <%= order_line.input :site_suggestion,:as => 'string', :input_html => {:class=>'validate_field number_text', :'data-ref'=> row_ref } %>
-      <%= order_line.input :test_kit_waste_acceptable,:as => 'string', :input_html => {:class=>'validate_field number_text',:'data-ref'=> row_ref} %>
+      <%= order_line.input :site_suggestion,:as => 'hidden', :input_html => {:class=>'validate_field number_text', :'data-ref'=> row_ref } %>
+      <%= order_line.input :test_kit_waste_acceptable,:as => 'hidden', :input_html => {:class=>'validate_field number_text',:'data-ref'=> row_ref} %>
       <%= order_line.input :commodity_id, :as => 'hidden' %>
       <span id='commodity_<%=row_ref%>' > <%= order_line_record.commodity.name %> </span>
     </td>
 
     <td> 
       <%= order_line_record.number_of_client %> 
-      <%= order_line.input :number_of_client, :as => :string, :input_html => { 
+      <%= order_line.input :number_of_client, :as => :hidden, :input_html => { 
                 :class=> 'validate_field number_text', 
                 :'data-ref' => row_ref
               } %>

@@ -26,6 +26,8 @@
 <table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
+      <th> Year </th>
+      <th> Month </th>
       <th> Type </th>
       <th> Create at </th>
       <th class='action_col2'> Action </th>
@@ -34,11 +36,15 @@
   <tbody>
     <% @import_survs.each do |import_surv| %>
       <tr>
+        <td><%= import_surv.year %></td>
+        <td><%= import_surv.month %></td>
         <td><%= import_surv.surv_type %></td>
         <td><%= l import_surv.created_at %></td>
         <td class='action_col2' >
           <%#=link_to 'View', admin_import_surv_surv_sites_path(import_surv), :class => 'btn btn-mini' %>
           <%=link_to 'Show', view_admin_import_surv_path(import_surv), :class => 'btn btn-mini' %>
+          <%= link_to t('Delete'),   admin_import_surv_path(import_surv, :type => import_surv.surv_type),
+                      :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
 
         </td>
       </tr>

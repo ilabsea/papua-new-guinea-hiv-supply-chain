@@ -10,7 +10,7 @@ class ImportSurv < ActiveRecord::Base
   # validates :surv_type, :presence  =>  true
   # validates :form, :presence => true  
 
-  attr_accessible :surv_type, :surv_sites_attributes
+  attr_accessible :surv_type, :surv_sites_attributes, :year, :month
 
   default_scope order("id DESC")
 
@@ -19,8 +19,25 @@ class ImportSurv < ActiveRecord::Base
 
   TYPES = [ TYPES_SURV1,  TYPES_SURV2 ]
 
+  MONTHS = ['January' ,'February','March' ,'April', 'May', 'June', 'July', 'August', 'September', 'Octomber', 'November', 'December' ]
+  
+  validates :month, inclusion: { :in => MONTHS, :message => "%{value} is not a valid month" }
+  validates :year, :numericality => { :only_integer => true}
+  validate :uniqueness_of_year_month
+
   mount_uploader :form, RequisitionReportUploader
   accepts_nested_attributes_for :surv_sites
+
+
+  def uniqueness_of_year_month
+    import = ImportSurv.where([ 'month = :month AND year = :year and surv_type = :type', 
+                                :month => self.month, :year => self.year, :type => self.surv_type ]).first
+    if(!import.nil? && import.id != self.id)
+      errors.add(:year, "#{self.month}, #{self.year} has already had surv site")
+      errors.add(:month, "#{self.month}, #{self.year} has already had surv site")
+    end
+
+  end
 
   def self.of_type type
       ImportSurv.where('surv_type = ? ', type)

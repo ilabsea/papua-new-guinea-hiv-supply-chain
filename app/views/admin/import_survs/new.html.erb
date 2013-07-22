@@ -16,9 +16,16 @@
     overflow: scroll;
     max-height: 550px;
   }
-  .pos-fixed{
-
+  .pos-fixed label{
+    width: 60px !important
   }
+
+  .pos-fixed .controls{
+    margin-left: 70px !important;
+  }
+
+  
+
   .pos-site{
     width: 120px !important;
   }
@@ -42,18 +49,37 @@
 
  <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
+
+  <%= f.input :surv_type, :as => :hidden %> 
+  <div class='no-bg' style='margin: 0 auto;'>
+    <table>
+      <tr>
+          <td class='pos-fixed' >
+            <%=f.input :month, :collection => ImportSurv::MONTHS, 
+                       :label_html => { :style=> 'width: 50px;'},
+                       :wrapper_html => {:style=> 'margin-left: 70px;'},
+                       :include_blank => 'Select month'
+
+             %>
+          </td>
+          <td class='pos-fixed' >
+            <%=f.input :year ,:collection => 2009..2020,:include_blank => 'Select year' %>
+          </td>
+          <td style='padding-left: 30px; vertical-align:top;'>
+            <%= f.button :submit, :value => "Save", :class => 'btn-primary' %>
+          </td>
+    </table>          
+  </div>
   <div class='row-fluid form-fixed'  >
-  <%= f.input :surv_type, :as => :hidden %>  
+  
   <table class='table table-hover surv-form table-fixed-header' >
     <thead class='header' >
       <tr >
-         <th class='list-no'>#</th>
-         <th class='pos-site'>Site</th>
-         <th class='pos-fixed'>Month</th>
-         <th class='pos-fixed'>Year</th>
-         <% @commodities.each do |commodity| %>
-            <th class='pos-commodity'><%= commodity.name %></th>
-         <% end %>
+        <th class='list-no'>#</th>
+        <th class='pos-site'>Site</th>
+        <% @commodities.each do |commodity| %>
+          <th class='pos-commodity'><%= commodity.name %></th>
+        <% end %>
       </tr>
     </thead>
 
@@ -65,19 +91,6 @@
             <td class='pos-site' > 
               <%= surv_site_form.object.site.name %>  
               <%= surv_site_form.input :site_id, :as => :hidden %>
-            </td>
-
-            <td class='pos-fixed' >
-              <%=surv_site_form.input :month, :label => false,
-                                      :collection => SurvSite::MONTHS,
-                                      :include_blank => 'Month?', 
-                                      :input_html => {:class=> 'number_select'} %>
-            </td>
-            <td class='pos-fixed' >
-              <%=surv_site_form.input :year , :label => false, 
-                                      :collection => 2009..2020,
-                                      :include_blank => 'Year?',
-                                      :input_html => {:class=> 'number_select'} %>
             </td>
 
       	    <%= surv_site_form.simple_fields_for :surv_site_commodities do |surv_site_commodity_form| %>
