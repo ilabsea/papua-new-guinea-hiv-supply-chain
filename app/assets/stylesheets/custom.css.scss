@@ -29,13 +29,18 @@ td:last, td.last {
 .control-inline .controls {
   display: inline;
 }
-.dashboard-item-set{
+.dashboard-item-set li{
   list-style-type:none;
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.8;
+}
+.dashboard-item-set li a {
+  text-decoration: none;
 }
 .order_size {
   font-size: 28px;
+  padding-right: 15px;
+  font-weight: bold;
 }
 .order_pending{
   color: red;

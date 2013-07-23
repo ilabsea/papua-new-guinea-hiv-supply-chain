@@ -34,11 +34,11 @@
 
   ].each do |order| %>
   	<li> 
-  		<div class='row-fluid'>
-		 <a href='<%= admin_orders_path(:type => order[:type]) %>' >
-		 	<span class='order_size <%=order[:class] %> span1' style='text-align:right;'> <%= order[:quantity] %> </span>
-		 </a>	
-  		 <span class='span11' > <%= order[:text] %> </span>
+  		<div>
+			 <a href='<%= admin_orders_path(:type => order[:type]) %>' >
+			 	<span class='order_size <%=order[:class] %>' > <%= order[:quantity] %> </span>
+			 	<span > <%= order[:text] %> </span>
+			 </a>			 
   		</div>
   	</li>	
 
