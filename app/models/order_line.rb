@@ -42,8 +42,9 @@ class OrderLine < ActiveRecord::Base
     return true  if ( stock_on_hand.blank?  || quantity_suggested.blank?)
     cal = cal_drug
     if cal > self.site_suggestion
-        message = "Quantity Suggested is not acceptable system calculation = " + filter(cal) + " must be less than or equal to site suggestion = " + filter(self.site_suggestion)
-        errors.add(:commodity, message)   
+        message = "Invalid!, System calculation = " + filter(cal) + " must be less than or equal to site suggestion = " + filter(self.site_suggestion)
+        errors.add(:stock_on_hand, message) 
+        errors.add(:quantity_suggested, message)    
         return false     
     end
     return true
@@ -53,8 +54,9 @@ class OrderLine < ActiveRecord::Base
     return true if(self.stock_on_hand.blank?  || self.monthly_use.blank?)     
     cal = cal_kit
     if(cal > self.test_kit_waste_acceptable.to_f)
-      message =  "Quantity Suggested is not acceptable system calculation = " + filter(cal) + " must be less than or equal to site wastage = " + filter(self.test_kit_waste_acceptable) 
-      errors.add(:commodity, message) 
+      message =  "Invalid, Sstem calculation = " + filter(cal) + " must be less than or equal to site wastage = " + filter(self.test_kit_waste_acceptable) 
+      errors.add(:stock_on_hand, message) 
+      errors.add(:monthly_use, message) 
       return false
     end
     return true

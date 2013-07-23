@@ -9,7 +9,7 @@ FactoryGirl.define do
     order_date "2013-06-25 10:58:09"
     user_data_entry { create :user_data_entry}
     review_date "2013-06-25 10:58:09"
-    review_user { create :user_reviewer}
+    review_user { create :user_reviewer }
     requisition_report nil
     status Order::ORDER_STATUS_PENDING
   end

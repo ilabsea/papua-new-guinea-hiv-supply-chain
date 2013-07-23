@@ -179,7 +179,7 @@
 
         consumtion = object.numberOfClient * object.consumtionPerClient
         systemSuggestion = consumtion - object.stockOnHand 
-        var cal = formatNumber( 100 * (object.monthlyUse - consumtion) / object.monthlyUse )
+        var cal = formatNumber( 100 * (object.monthlyUse - systemSuggestion) / object.monthlyUse )
 
         if(cal <= parseFloat(object.testKitWasteAcceptable)){
           message = "Commodity: " + object.commodityName + " Quantity Suggested is acceptable " ; 
@@ -223,6 +223,6 @@
     handleSiteUser();
     handleLoadOrderLinesTab();
     handleValidateField();
-    handleSubmit();
+    //handleSubmit();
   });
 </script>

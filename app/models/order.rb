@@ -11,13 +11,16 @@ class Order < ActiveRecord::Base
   validates :site, :order_date,:date_submittion, :presence => true
   validates :user_place_order, :presence => true, :if =>  Proc.new{|f| f.is_requisition_form }
   validates :user_data_entry,  :presence => true, :unless => Proc.new{|f| f.is_requisition_form }
+  validate  :unique_order_in_month_year
 
 
   default_scope order('order_date DESC, id DESC')
 
   attr_accessor :survs
   attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
-                  :status, :site_id, :order_lines_attributes,:surv_sites
+                  :status, :site_id, :order_lines_attributes,:surv_sites, :site, 
+                  :user_place_order, :user_data_entry, :requisition_report
+
 
   accepts_nested_attributes_for :order_lines
 
@@ -26,6 +29,17 @@ class Order < ActiveRecord::Base
   ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_COMPLETED ]
 
   before_save :order_lines_calculation
+
+  def unique_order_in_month_year
+    order = Order.where(['site_id = :site_id AND MONTH(order_date)= :month AND YEAR(order_date)= :year ',
+                   :site_id => self.site.id, :month => self.order_date.month, :year => self.order_date.year
+      ]).first
+
+    if(!order.nil? && order.id != self.id)
+      errors.add(:site_id, "#{order.site.name} has already had an order on #{order.order_date}")
+      errors.add(:order_date, "#{order.site.name} has already had an order on #{order.order_date}")
+    end
+  end
 
   def self.of(user)
     return Order.where("1=1") if user.admin? || user.data_entry?
