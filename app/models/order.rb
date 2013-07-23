@@ -1,3 +1,4 @@
+
 class Order < ActiveRecord::Base
   
   belongs_to :site
@@ -25,8 +26,12 @@ class Order < ActiveRecord::Base
   accepts_nested_attributes_for :order_lines
 
   ORDER_STATUS_PENDING   = 'Pending'
-  ORDER_STATUS_COMPLETED = 'Completed'
-  ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_COMPLETED ]
+  ORDER_STATUS_TO_BE_REVIEWED = 'To Be Reviewed'
+  ORDER_STATUS_APPROVED = 'Approved'
+  ORDER_STATUS_TO_BE_REVISED = 'To Be Revised'
+
+
+  ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_TO_BE_REVIEWED, ORDER_STATUS_APPROVED, ORDER_STATUS_TO_BE_REVISED]
 
   before_save :order_lines_calculation
 
@@ -41,10 +46,13 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def self.of(user)
-    return Order.where("1=1") if user.admin? || user.data_entry?
-    return Order.where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
-    # return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
+  def self.of_status(status)
+    where(['status = :status', :status => status])
+  end
+
+  def self.of_user(user)
+    return where("1=1") if user.admin? || user.data_entry? || user.reviewer?
+    return where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
   end
 
   def surv_sites
@@ -81,16 +89,15 @@ class Order < ActiveRecord::Base
   	order.site 				 = requisition_report.site
   	order.requisition_report = requisition_report
 
-  	if order.save
+  	if order.save(:validate => false)
   		requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
       requisition_report.save
       OrderLineImport.import order
-      return true
   	else
   		requisition_report.status = RequisitionReport::IMPORT_STATUS_FAILED	
       requisition_report.save
-      return false
   	end
+    order
   end
 
   def users_from_site
@@ -109,6 +116,15 @@ class Order < ActiveRecord::Base
 
   def user
   	self.user_place_order || self.user_data_entry
+  end
+
+  def self.total_by_status
+     orders = Order.unscoped.select('COUNT(status) AS total, status').group('status').order('total')
+     statuses = {}
+     orders.each do |order|
+       statuses[order.status] = order.total
+     end
+     statuses
   end
 
 end

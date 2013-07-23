@@ -3,7 +3,14 @@ module Admin
  	def index
  		@date_start = params[:date_start] 
  		@date_end   = params[:date_end]
- 		@orders = Order.includes(:site, :user_data_entry).of(current_user).in_between(@date_start, @date_end).paginate(paginate_options) 
+ 		@orders = Order.includes(:site, :user_data_entry)
+
+ 		if(!params[:type].blank?)
+ 		  @orders = @orders.of_status(params[:type])
+ 		end
+ 		
+ 		@orders = @orders.of_user(current_user).in_between(@date_start, @date_end)
+ 		@orders = @orders.paginate(paginate_options) 
  		@app_title = 'List of Orders'
  	end
 
@@ -26,7 +33,7 @@ module Admin
  		raise 'Unable to create order. Only data entry user is able to create order' if !current_user.data_entry?
  		@order = Order.new params[:order]
  		@order.user_data_entry = current_user
- 		@order.status = Order::ORDER_STATUS_PENDING
+ 		@order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
  		@order.is_requisition_form = false
 
  		if @order.save
@@ -45,6 +52,7 @@ module Admin
  	def update
  	  @order = Order.find params[:id]
  	  @order.user_data_entry = current_user if current_user.data_entry?
+ 	  @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
 
  	  if @order.update_attributes params[:order]
  	    redirect_to admin_orders_path, :notice => 'Order has been updated succesfully'

@@ -37,7 +37,34 @@ describe Order do
   	  end
 
   	end
-
   end
 
+  describe 'total_by_status' do
+    it 'should return order by status correctly' do
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_PENDING
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_PENDING
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_PENDING
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_PENDING
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_PENDING
+
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_TO_BE_REVIEWED
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_TO_BE_REVIEWED
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_TO_BE_REVIEWED
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_TO_BE_REVIEWED
+
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_TO_BE_REVISED
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_TO_BE_REVISED
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_TO_BE_REVISED
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_TO_BE_REVISED
+
+      FactoryGirl.create :order, :status => Order::ORDER_STATUS_APPROVED
+
+      Order.total_by_status ~= {
+        Order::ORDER_STATUS_PENDING => 5,
+        Order::ORDER_STATUS_TO_BE_REVIEWED => 4,
+        Order::ORDER_STATUS_TO_BE_REVISED  => 4,
+        Order::ORDER_STATUS_APPROVED => 1
+      }
+    end
+  end
 end

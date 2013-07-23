@@ -1,4 +1,4 @@
-<%= page_header("Orders") do  %>
+<%= page_header("Requisition and order") do  %>
   <%= link_to 'New Order',  new_admin_order_path(), :class => 'btn' %>
 <% end %>
 
@@ -10,12 +10,11 @@
 <table class="table table-striped well no-border no-padding">
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Type</th>
-      <th>Entry</th>
+      <th>Summition</th>
       <th>Site</th>
-      <th>Summition Date</th>
-      <th>Order Date</th>
+      <th>Id</th>
+      <th>Order Creation</th>
+      <th>Entry</th>      
       <th>Reviewer</th>
       <th>Reviewed Date</th>
       <th>Status</th>
@@ -26,17 +25,17 @@
   <tbody>
     <% @orders.each do |order| %>
       <tr>
+        <td><%=l order.date_submittion %></td>
+        <td><%=order.site.name %></td>
         <td><%= order.id %> </td>
-        <td><%=order.is_requisition_form ? 'Form Uploading' : 'Data Entry' %></td>
+        <td><%=l order.order_date %></td>
         <td title='<%= order.user.phone_number%>'> 
           <%=order.user_data_entry ? order.user_data_entry.display_name : ""  %>
         </td>
-        <td><%=order.site.name %></td>
-        <td><%=l order.date_submittion %></td>
-        <td><%=l order.order_date %></td>
         <td><%=order.review_user.nil? ? "" : order.review_user.name %></td>
         <td><%= order.review_date ? l(order.review_date) : '' %></td>
         <td><%= order.status %></td>
+        
         <td class="last">
           <%= link_to t('Edit'), edit_admin_order_path(order), :class => 'btn btn-mini' %>    
           <%= link_to t('Delete'), admin_order_path(order),:method => :delete,

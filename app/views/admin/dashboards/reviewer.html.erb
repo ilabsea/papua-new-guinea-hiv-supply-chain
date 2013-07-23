@@ -23,22 +23,20 @@
  <ul class='dashboard-item-set'>
 <%
   [
-  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVISED] || 0,  :class => :order_pending, 
-  		:type => Order::ORDER_STATUS_TO_BE_REVISED,   :text => 'Orders reviewed and rejected. Pending for you to revise'},
-  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_PENDING] || 0, :class => :order_submitted,  
-  		:type => Order::ORDER_STATUS_PENDING, :text => 'New orders submitted from site for you to review and make order suggestion'},
-  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_APPROVED] || 0, :class => :order_approved,  
-  		:type => Order::ORDER_STATUS_APPROVED,  :text => 'Orders approved' },
   	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVIEWED] || 0 , :class => :order_in_review, 
-  		:type => Order::ORDER_STATUS_TO_BE_REVIEWED, :text => 'Orders in review'},
+  		:type => Order::ORDER_STATUS_TO_BE_REVIEWED, :text => 'Orders pending for you to review'},
 
+  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVISED] || 0,  :class => :order_pending, 
+  		:type => Order::ORDER_STATUS_TO_BE_REVISED,   :text => 'Orders reviewed and rejected. Pending for correction by data entry'}
+
+  	
   ].each do |order| %>
   	<li> 
   		<div class='row-fluid'>
-		 <a href='<%= admin_orders_path(:type => order[:type]) %>' >
-		 	<span class='order_size <%=order[:class] %> span1' style='text-align:right;'> <%= order[:quantity] %> </span>
-		 </a>	
-  		 <span class='span11' > <%= order[:text] %> </span>
+			 <a href='<%= admin_orders_path(:type => order[:type]) %>' >
+			 	<span class='order_size <%=order[:class] %> span1' style='text-align:right;'> <%= order[:quantity] %> </span>
+			 </a>	
+	  		 <span class='span11' > <%= order[:text] %> </span>
   		</div>
   	</li>	
 

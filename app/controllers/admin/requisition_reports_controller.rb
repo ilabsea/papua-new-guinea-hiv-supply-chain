@@ -1,7 +1,11 @@
 module Admin
 	class RequisitionReportsController < Controller
 		def index
+		  if current_user.site?
 			@requisition_reports = _site.requisition_reports.paginate(paginate_options)
+		  else
+		    @requisition_reports = RequisitionReport.all.paginate(paginate_options)	
+		  end
 		end
 
 		def new
@@ -13,10 +17,12 @@ module Admin
 			@requisition_report = RequisitionReport.new params[:requisition_report]
 			_fill_attribute
 			if @requisition_report.save
-				if Order.create_from_requisition_report @requisition_report
+				order = Order.create_from_requisition_report @requisition_report
+				if order.errors.size
 				  redirect_to admin_requisition_reports_path, :notice => 'Order has been created successfully'
 				else
-				  redirect_to admin_requisition_reports_path, :error => 'Failed to import Order'	
+				  message = order.errors.full_messages.join("<br />")	
+				  redirect_to admin_requisition_reports_path, :error => 'Failed to import Order : ' . message	
 				end
 			else
 				render :new
