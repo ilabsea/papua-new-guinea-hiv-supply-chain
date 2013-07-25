@@ -127,4 +127,19 @@ class Order < ActiveRecord::Base
      statuses
   end
 
+
+
+  def update_status_accepted
+    accepted = true
+    self.order_lines.each do |order_line|
+      if order_line.status != OrderLine::STATUS_APPROVED
+        accepted = false
+        break
+      end
+    end
+
+    if accepted
+      self.status = ORDER::ORDER_STATUS_APPROVED
+    end
+  end
 end

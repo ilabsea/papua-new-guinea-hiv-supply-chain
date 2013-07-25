@@ -4,6 +4,7 @@
       <% row_ref = order_line_record.commodity.id %>
       <%= order_line.input :id, :as => 'hidden' %>
       <%= order_line.input :is_set, :as => 'hidden' %>
+      <%= order_line.input :status, :as => 'hidden', :input_html => {:value =>''} %>
       <%= order_line.input :arv_type, :as => 'hidden', :input_html => {:class=>'validate_field', :'data-ref'=> row_ref } %>
       <%= order_line.input :site_suggestion,:as => 'hidden', :input_html => {:class=>'validate_field number_text', :'data-ref'=> row_ref } %>
       <%= order_line.input :test_kit_waste_acceptable,:as => 'hidden', :input_html => {:class=>'validate_field number_text',:'data-ref'=> row_ref} %>
@@ -60,4 +61,8 @@
           :label_html   => {:class => 'none'}
       %>
     </td>
+    <% if order.status == Order::ORDER_STATUS_TO_BE_REVISED %>
+      <td><%= status(order_line.object.status) %></td>
+      <td><%= order_line.object.user_reviewer_note %></td>
+    <% end %>
 </tr>  

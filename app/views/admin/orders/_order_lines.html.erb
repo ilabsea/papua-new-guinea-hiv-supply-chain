@@ -8,6 +8,7 @@
           <%= render :partial => "order_line_row_drug", :locals => { 
               :order_line_record => order_line.object ,
               :order_line => order_line,
+              :order => order,
               :index => @drug
             } %>
           <% @drug += 1 %>  
@@ -17,6 +18,7 @@
           <%= render :partial => "order_line_row_kit", :locals => { 
               :order_line_record => order_line.object,
               :order_line => order_line,
+              :order => order,
               :index => @kit
             } %>   
         <% end %>
@@ -41,15 +43,14 @@
         <div class='alert alert-error error-drug' style='display: none;' >
            Warning ! Quantity Suggested is not acceptable
         </div>
-        <%= render :partial => 'order_line_table_drug', :locals => {:body => yield(:drug) } %>
+        <%= render :partial => 'order_line_table_drug', :locals => {:order => order ,:body => yield(:drug)} %>
       </div>
       <div class="tab-pane" id="kit">
          <h4> Kit Commodities </h4>
          <div class='alert alert-error error-kit' style='display: none;' >
            Warning ! Quantity Suggested is not acceptable
         </div>
-
-         <%= render :partial => 'order_line_table_kit', :locals => {:body => yield(:kit) } %>
+         <%= render :partial => 'order_line_table_kit', :locals => {:order => order, :body => yield(:kit) } %>
       </div>
     </div>
   </div>

@@ -58,9 +58,52 @@ module Admin::ApplicationHelper
 		items.join("").html_safe
 	end
 
+  def link_button type, text, url, options
+    options[:class] = options[:class] ? " btn #{options[:class]}" : "btn" 
+    icon = content_tag "i", " ", :class => "icon-user  #{type} "
+    link_to (icon + text.html_safe), url, options
+  end
+
+  def link_button_edit text, url, options={}
+    link_button 'icon-edit', text, url, options
+  end
+
+  def link_button_new text, url, options={}
+    link_button 'icon-plus', text, url, options
+  end
+
+  def link_button_delete text, url, options={}
+    link_button 'icon-ban-circle', text, url, options
+  end
+
+  def link_button_search text, url, options={}
+    link_button ' icon-search', text, url, options
+  end
+
+  def link_button_show text, url, options={}
+    link_button 'icon-th-large', text, url, options
+  end
+
+  def link_button_review text, url, options={}
+    link_button 'icon-pencil', text, url, options
+  end
+
+  def link_button_export text, url, options={}
+    link_button 'icon-download-alt', text, url, options
+  end
+
 	def breadcrumb options=nil
 		content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
-	end 
+	end
 
-  
+  def status st
+    text = ""
+    if st == OrderLine::STATUS_APPROVED
+      text = '<i class="icon-ok" > </i>'
+    
+    elsif st == OrderLine::STATUS_REJECTED
+       text = '<i class="icon-minus-sign" > </i>'
+    end
+    text.html_safe
+  end 
 end

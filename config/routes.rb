@@ -16,8 +16,19 @@ PngHivAids::Application.routes.draw do
     resources :orders do
       collection do
         get 'tab_order_line'
+        get 'export'
       end
-      resources :order_lines
+      member do
+        get 'review'
+        
+      end
+
+      resources :order_lines do
+        member do
+          put 'reject'
+          put 'approve'
+        end
+      end
     end
     resources :requisition_reports do
       member do

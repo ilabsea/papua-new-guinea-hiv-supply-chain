@@ -33,7 +33,7 @@
             <% css_class = alert.nil? ? "warning" : "alert-error"   %>        
             <div class="alert <%= css_class %>" >
                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                 <%= alert || notice %>
+                 <%= (alert || notice).html_safe %>
             </div>
         <% end %> 
         <%= yield %>

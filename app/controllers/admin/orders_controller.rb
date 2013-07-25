@@ -15,7 +15,7 @@ module Admin
  	end
 
  	def new 
- 		@order = Order.new()
+ 		@order = Order.new(:status => Order::ORDER_STATUS_PENDING)
  		_build_commodity_order_line(@order)		
  		@app_title = 'Create Order'
  	end
@@ -41,6 +41,10 @@ module Admin
  		else
  		  render :new
  		end
+ 	end
+
+ 	def review
+ 	  @order = Order.includes(:order_lines => :commodity).find params[:id]	
  	end
 
  	def edit
@@ -71,6 +75,17 @@ module Admin
  	  end	
  	end
 
+ 	def export
+ 		file =  "#{Rails.root}/public/data/orders.csv"
+ 		ExportOrder.as_csv file
+ 		send_file(file , 
+	                      :filename      =>  "orders.csv",
+	                      :type          =>  'text/csv',
+	                      :disposition   =>  'attachment',
+	                      :streaming     =>  true,
+	                      :buffer_size   =>  '4096')
+ 	end
+
  	# don't refer me coz am private
  	private
 
@@ -80,7 +95,11 @@ module Admin
  	end
 
  	def _build_commodity_order_line order
- 	  existing_commodities = order.order_lines.map{|order_line| order_line.commodity}
+ 	  existing_commodities = order.order_lines.map do |order_line| 
+ 	  	order_line.arv_type = order_line.commodity.commodity_category.com_type
+ 	  	order_line.consumption_per_client_per_month = order_line.commodity.consumption_per_client_unit 
+ 	  	order_line.commodity
+ 	  end 
  	  commodities = Commodity.order('name asc').includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
 
  	  commodities.each do |commodity| 
@@ -89,6 +108,5 @@ module Admin
  		  						  :consumption_per_client_per_month => commodity.consumption_per_client_unit  
  	  end
  	end
-
- end
+  end
 end

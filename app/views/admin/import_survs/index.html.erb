@@ -4,9 +4,9 @@
 
 <%= page_header "List of Survs" do %>
   <% if @type == ImportSurv::TYPES_SURV1  %>
-    <%=link_to "New Surv1", new_admin_import_surv_path(:type => ImportSurv::TYPES_SURV1) , class: 'btn' %> 
+    <%=link_button_new "New Surv1", new_admin_import_surv_path(:type => ImportSurv::TYPES_SURV1) , class: 'btn' %> 
   <% else %>
-    <%=link_to "New Surv2", new_admin_import_surv_path(:type => ImportSurv::TYPES_SURV2) , class: 'btn' %>	
+    <%=link_button_new "New Surv2", new_admin_import_surv_path(:type => ImportSurv::TYPES_SURV2) , class: 'btn' %>	
   <% end %>
 <%end%>
 
@@ -23,14 +23,14 @@
 </ul>
 
 
-<table class="table table-striped well no-border no-padding">
+<table class="table table-striped ">
   <thead>
     <tr>
       <th> Year </th>
       <th> Month </th>
       <th> Type </th>
       <th> Create at </th>
-      <th class='action_col2'> Action </th>
+      <th class='action_col3'> Action </th>
     </tr>
   </thead>
   <tbody>
@@ -42,8 +42,8 @@
         <td><%= l import_surv.created_at %></td>
         <td class='action_col2' >
           <%#=link_to 'View', admin_import_surv_surv_sites_path(import_surv), :class => 'btn btn-mini' %>
-          <%=link_to 'Show', view_admin_import_surv_path(import_surv), :class => 'btn btn-mini' %>
-          <%= link_to t('Delete'),   admin_import_surv_path(import_surv, :type => import_surv.surv_type),
+          <%=link_button_show 'Show', view_admin_import_surv_path(import_surv), :class => 'btn btn-mini' %>
+          <%= link_button_delete t('Delete'),   admin_import_surv_path(import_surv, :type => import_surv.surv_type),
                       :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
 
         </td>

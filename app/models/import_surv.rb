@@ -55,7 +55,7 @@ class ImportSurv < ActiveRecord::Base
   end
 
   def arv_type
-    if self.surv_type == ImportSurv::TYPES_SURV1
+    if self.surv_type == ImportSurv::TYPES_SURV2
       return CommodityCategory::TYPES_DRUG
     else
       return CommodityCategory::TYPES_KIT

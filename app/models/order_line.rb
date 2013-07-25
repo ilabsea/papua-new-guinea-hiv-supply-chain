@@ -11,9 +11,13 @@ class OrderLine < ActiveRecord::Base
   validate :quantity_suggested_valid?
   before_save :calculate_attribute
 
+  STATUS_APPROVED = 'Approved'
+  STATUS_REJECTED = 'Rejected'
+
+  STATUSES = [STATUS_APPROVED, STATUS_REJECTED]
 
   def calculate_attribute
-    self.quantity_system_calculation =  self.consumption_per_client_per_month.to_i * self.number_of_client
+    self.quantity_system_calculation =  self.consumption_per_client_per_month.to_i * self.number_of_client.to_i
   end
 
   def quantity_suggested_valid?
