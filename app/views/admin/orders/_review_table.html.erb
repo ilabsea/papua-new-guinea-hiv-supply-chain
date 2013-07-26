@@ -1,0 +1,66 @@
+<table class="table table-striped well no-border no-padding" >
+  <thead>
+  	<tr> 
+      <td> Commodity </td>
+      <td> #Patient drug </td>
+      <td> Stock on hand </td>
+      <td> Consumtion</td>
+      <td> System suggestion</td>
+      <td> Quantity Suggested</td>
+      <td> Status</td>
+      <td> Entry Note</td>
+      <td> Reviewer Note</td>
+      <td width='60px;'> Action </td>
+
+  	</tr>
+  </thead>
+
+  <tbody>
+    <% order_lines.each do |order_line| %>
+	    <tr> 
+	      <td> <%= order_line.commodity.name %> </td>
+	      <td> <%= order_line.number_of_client %></td>
+	      <td> <%= order_line.stock_on_hand %> </td>
+	      <td> <%= order_line.monthly_use %></td>
+	      <td> <%= order_line.quantity_system_calculation %> </td>
+
+	      <td> <%= order_line.quantity_suggested %></td>
+        <td> <%= status(order_line.status) %> </td>
+        <td> <%= order_line.user_data_entry_note %> </td>
+	      
+	      <td>
+          <%= form_tag '', :method => :put, :id => "form_#{order_line.id}", :style =>'padding:0px;margin:0px;' do %>
+            <input name='reviewer_note' id='reviewer_note_<%=order_line.id%>' type='text' 
+                   value ='<%= order_line.user_reviewer_note    %>' /> 
+          <% end %>  
+         </td>
+	      <td id='<%=order_line.id %>' > 
+          <%= link_button 'icon-ok', '', approve_admin_order_order_line_path(order, order_line), :title => 'Accept',
+                      :'data-ref' => order_line.id, :method => :put, :class => 'approved intercept btn-mini btn-success' %>           
+
+          <%= link_button 'icon-minus-sign', '', reject_admin_order_order_line_path(order, order_line), :title => 'Reject',
+                      :'data-ref' => order_line.id, :method => :put, :class => 'rejected intercept btn-mini btn-danger' %>  
+
+	      </td>
+	  	</tr>
+
+    <% end %>
+  </tbody>
+</table>
+<script >
+ 
+ function handleButton(){
+  $(".intercept").on('click', function(){ 
+    $elm = $(this);
+    $form = $("#form_" + $elm.attr("data-ref"));
+    $form.attr('action', $elm.attr('href') );
+    $form.submit();
+    return false;
+
+  });
+ }
+
+ $(function(){
+  handleButton();
+ });
+ </script>

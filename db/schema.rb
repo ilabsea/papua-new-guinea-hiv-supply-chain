@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130704092829) do
+ActiveRecord::Schema.define(:version => 20130722091436) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -41,11 +41,13 @@ ActiveRecord::Schema.define(:version => 20130704092829) do
   end
 
   create_table "import_survs", :force => true do |t|
-    t.integer  "surv_type"
+    t.string   "surv_type"
     t.string   "form"
-    t.integer  "import_user_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.integer  "user_id"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.integer  "year"
+    t.string   "month",      :limit => 20
   end
 
   create_table "order_lines", :force => true do |t|
@@ -59,9 +61,14 @@ ActiveRecord::Schema.define(:version => 20130704092829) do
     t.text     "user_data_entry_note"
     t.text     "user_reviewer_note"
     t.string   "status"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                                                                         :null => false
+    t.datetime "updated_at",                                                                         :null => false
     t.string   "arv_type"
+    t.decimal  "site_suggestion",                  :precision => 10, :scale => 0
+    t.decimal  "test_kit_waste_acceptable",        :precision => 10, :scale => 0
+    t.integer  "number_of_client"
+    t.decimal  "consumption_per_client_per_month", :precision => 10, :scale => 0
+    t.boolean  "is_set",                                                          :default => false
   end
 
   add_index "order_lines", ["commodity_id"], :name => "index_order_lines_on_commodity_id"
@@ -141,18 +148,20 @@ ActiveRecord::Schema.define(:version => 20130704092829) do
   create_table "surv_site_commodities", :force => true do |t|
     t.integer  "surv_site_id"
     t.integer  "commodity_id"
-    t.string   "quantity"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "quantity",     :default => 0
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   create_table "surv_sites", :force => true do |t|
     t.integer  "import_surv_id"
     t.integer  "site_id"
     t.string   "month"
-    t.string   "year"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.integer  "year"
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.integer  "surv_site_commodities_count", :default => 0
+    t.string   "surv_type"
   end
 
   create_table "units", :force => true do |t|

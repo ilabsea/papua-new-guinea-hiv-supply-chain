@@ -1,5 +1,8 @@
-<%= page_header("Orders") do  %>
-  <%= link_to 'New Order',  new_admin_order_path(), :class => 'btn' %>
+<%= page_header "Requisition and order"  do  %>
+  <% if current_user.data_entry? %>
+    <%= link_button 'icon-plus' , 'New Order',  new_admin_order_path(), :class => 'btn' %>
+  <% end %>
+  <%= link_button 'icon-download-alt', 'Export Orders',  export_admin_orders_path(), :class => 'btn-primary' %>  
 <% end %>
 
 <% content_for :breadcrumb do %>
@@ -7,46 +10,49 @@
 <% end %>
 
 <%= paginate_records @orders %>
-<table class="table table-striped well no-border no-padding">
+<table class="table table-striped ">
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Type</th>
-      <th>Entry</th>
+      <th>Summition</th>
       <th>Site</th>
-      <th>Summition Date</th>
-      <th>Order Date</th>
+      <th>Id</th>
+      <th>Order Creation</th>
+      <th>Entry</th>      
       <th>Reviewer</th>
       <th>Reviewed Date</th>
       <th>Status</th>
-      <th class="action_col2" ><%= t 'Action' %></th>
+      <th>Action</th>
     </tr>
   </thead>
 
   <tbody>
     <% @orders.each do |order| %>
       <tr>
-        <td><%= order.id %> </td>
-        <td><%=order.is_requisition_form ? 'Form Uploading' : 'Data Entry' %></td>
-        <td title='<%= order.user.phone_number%>'> 
-          <%=order.user_data_entry ? order.user_data_entry.display_name : ""  %>
-        </td>
-        <td><%=order.site.name %></td>
         <td><%=l order.date_submittion %></td>
+        <td><%=order.site.name %></td>
+        <td><%= order.id %> </td>
         <td><%=l order.order_date %></td>
-        <td><%=order.review_user.nil? ? "" : order.review_user.name %></td>
+        <td title='<%= order.user.phone_number%>'> 
+          <%=order.user_data_entry ? order.user_data_entry.user_name : ""  %>
+        </td>
+        <td><%= order.review_user ?  order.review_user.user_name : "" %></td>
         <td><%= order.review_date ? l(order.review_date) : '' %></td>
         <td><%= order.status %></td>
-        <td class="last">
-          <%= link_to t('Edit'), edit_admin_order_path(order), :class => 'btn btn-mini' %>    
-          <%= link_to t('Delete'), admin_order_path(order),:method => :delete,
-                      :confirm =>'Are you sure?', :class => 'btn btn-mini btn-danger' %>    
+        
+        <td class="center">
+          <% if current_user.reviewer? %>
+            <%= link_button_review t('Review'), review_admin_order_path(order), :class => 'btn btn-mini' %> 
+          <% end %> 
+          <% if current_user.data_entry? %>  
+            <%= link_button_edit 'Edit', edit_admin_order_path(order), :class => 'btn btn-mini' %> 
+          <% end %>   
+
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= render 'search' %>
+<%#= render 'search' %>
 
 

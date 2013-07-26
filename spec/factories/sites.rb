@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :site do
-    name "MyString"
+    sequence(:name){|index| "Site#{index}"}
     lat 1.5
     lng 1.5
     service_type "MyString"

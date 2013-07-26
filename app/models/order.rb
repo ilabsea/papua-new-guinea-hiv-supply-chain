@@ -1,3 +1,4 @@
+
 class Order < ActiveRecord::Base
   
   belongs_to :site
@@ -11,25 +12,71 @@ class Order < ActiveRecord::Base
   validates :site, :order_date,:date_submittion, :presence => true
   validates :user_place_order, :presence => true, :if =>  Proc.new{|f| f.is_requisition_form }
   validates :user_data_entry,  :presence => true, :unless => Proc.new{|f| f.is_requisition_form }
+  validate  :unique_order_in_month_year
 
 
-  default_scope order('order_date DESC, date_submittion DESC')
-  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  :status, :site_id, :order_lines_attributes
+  default_scope order('order_date DESC, id DESC')
+
+  attr_accessor :survs
+  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
+                  :status, :site_id, :order_lines_attributes,:surv_sites, :site, 
+                  :user_place_order, :user_data_entry, :requisition_report
+
 
   accepts_nested_attributes_for :order_lines
 
   ORDER_STATUS_PENDING   = 'Pending'
-  ORDER_STATUS_COMPLETED = 'Completed'
-  ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_COMPLETED ]
+  ORDER_STATUS_TO_BE_REVIEWED = 'To Be Reviewed'
+  ORDER_STATUS_APPROVED = 'Approved'
+  ORDER_STATUS_TO_BE_REVISED = 'To Be Revised'
 
-  def user_site?
 
+  ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_TO_BE_REVIEWED, ORDER_STATUS_APPROVED, ORDER_STATUS_TO_BE_REVISED]
+
+  before_save :order_lines_calculation
+
+  def unique_order_in_month_year
+    order = Order.where(['site_id = :site_id AND MONTH(order_date)= :month AND YEAR(order_date)= :year ',
+                   :site_id => self.site.id, :month => self.order_date.month, :year => self.order_date.year
+      ]).first
+
+    if(!order.nil? && order.id != self.id)
+      errors.add(:site_id, "#{order.site.name} has already had an order on #{order.order_date}")
+      errors.add(:order_date, "#{order.site.name} has already had an order on #{order.order_date}")
+    end
   end
 
-  def self.of(user)
-    return Order.where("1=1") if user.admin? || user.data_entry?
-    return Order.where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
-    # return Order.where(['user_data_entry_id = :user_id', {:user_id => user.id}]) if user.data_entry?
+  def self.of_status(status)
+    where(['status = :status', :status => status])
+  end
+
+  def self.of_user(user)
+    return where("1=1") if user.admin? || user.data_entry? || user.reviewer?
+    return where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
+  end
+
+  def surv_sites
+    @survs ||= SurvSite.find_survs(self.site.id, self.order_date)
+  end
+
+
+  def order_lines_calculation
+    #foreach order_line update field data by current order
+    self.order_lines.each do |order_line|
+      order_line.calculate_quantity_system_suggestion(self)
+    end
+  end
+
+  def self.in_between date_start, date_end
+     if(!date_start.blank? && !date_end.blank?)
+       where(['order_date BETWEEN :date_start AND :date_end', :date_start => date_start, :date_end => date_end])
+     elsif !date_start.blank?
+       where(['order_date >= :date_start', :date_start => date_start])
+     elsif !date_end.blank?
+       where(['order_date <= :date_end', :date_end => date_end])
+     else
+       where "1=1"      
+     end
   end
 
   def self.create_from_requisition_report requisition_report
@@ -42,16 +89,15 @@ class Order < ActiveRecord::Base
   	order.site 				 = requisition_report.site
   	order.requisition_report = requisition_report
 
-  	if order.save
+  	if order.save(:validate => false)
   		requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
       requisition_report.save
       OrderLineImport.import order
-      return true
   	else
   		requisition_report.status = RequisitionReport::IMPORT_STATUS_FAILED	
       requisition_report.save
-      return false
   	end
+    order
   end
 
   def users_from_site
@@ -72,4 +118,28 @@ class Order < ActiveRecord::Base
   	self.user_place_order || self.user_data_entry
   end
 
+  def self.total_by_status
+     orders = Order.unscoped.select('COUNT(status) AS total, status').group('status').order('total')
+     statuses = {}
+     orders.each do |order|
+       statuses[order.status] = order.total
+     end
+     statuses
+  end
+
+
+
+  def update_status_accepted
+    accepted = true
+    self.order_lines.each do |order_line|
+      if order_line.status != OrderLine::STATUS_APPROVED
+        accepted = false
+        break
+      end
+    end
+
+    if accepted
+      self.status = Order::ORDER_STATUS_APPROVED
+    end
+  end
 end

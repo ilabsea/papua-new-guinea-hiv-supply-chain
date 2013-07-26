@@ -1,0 +1,28 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [
+  	{"Surv Sites" => admin_import_surv_surv_sites_path(@surv_site.import_surv)},
+  	{"Surv Site Commodites" => false}
+  ] 
+  %>
+<% end %>
+
+<%= page_header "Surv Site for Site : " + @surv_site.site.name +  ", #{@surv_site.year}-#{@surv_site.month}", :left => 4, :right => 8 do %>
+	<%= paginate_records @surv_site_commodities %>
+<% end %>
+
+<table class="table table-striped well no-border no-padding">
+  <thead>
+    <tr>
+      <th> Commodity </th>
+      <th width='60'> Quantity </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @surv_site_commodities.each do |surv_site_commodity| %>
+      <tr>
+        <td><%=surv_site_commodity.commodity.name%></td>
+        <td><%=surv_site_commodity.quantity %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -19,23 +19,28 @@ td:last, td.last {
 }
 .action_col2 {
 	width: 90px ;
-	text-align: right;
+	text-align: center !important;
 }
 .action_col3 {
 	width: 150px;
-	text-align: right;
+	text-align: center !important;
 }
 
 .control-inline .controls {
   display: inline;
 }
-.dashboard-item-set{
+.dashboard-item-set li{
   list-style-type:none;
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.8;
+}
+.dashboard-item-set li a {
+  text-decoration: none;
 }
 .order_size {
   font-size: 28px;
+  padding-right: 15px;
+  font-weight: bold;
 }
 .order_pending{
   color: red;
@@ -48,4 +53,28 @@ td:last, td.last {
 }
 .order_in_review{
   color: gray;
+}
+.loading {
+    height: 32px;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -15px;
+    position: fixed;
+    top: 50%;
+    width: 300px;
+    z-index: 1000;
+    display:none;
+}
+.hidden{
+  display:none; 
+}
+.list-no{
+  width:30px;
+  min-width: 30px !important;
+}
+.center{
+  text-align: center !important;
+}
+.no-bg {
+  background-color: #fff;
 }

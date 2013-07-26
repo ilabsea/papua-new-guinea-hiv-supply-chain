@@ -6,5 +6,6 @@ FactoryGirl.define do
     commodity_category_id 1
     consumption_per_client_pack 1
     consumption_per_client_unit 1
+    unit
   end
 end

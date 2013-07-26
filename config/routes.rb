@@ -1,9 +1,34 @@
 PngHivAids::Application.routes.draw do
 
   namespace :admin do
-    resources :import_survs
+    resources :import_survs do
+      resources :surv_sites
+      member do
+        get 'download'
+        get 'view'
+      end
+    end
+
+    resources :surv_sites do
+      resources :surv_site_commodities
+    end
+
     resources :orders do
-      resources :order_lines
+      collection do
+        get 'tab_order_line'
+        get 'export'
+      end
+      member do
+        get 'review'
+        
+      end
+
+      resources :order_lines do
+        member do
+          put 'reject'
+          put 'approve'
+        end
+      end
     end
     resources :requisition_reports do
       member do

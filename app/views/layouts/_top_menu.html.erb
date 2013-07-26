@@ -11,16 +11,15 @@
             <ul class="nav">
               <%
               menus = [] 
-              menus +=[ {:label => "Users", :url => admin_users_path ,    :controller => "users" },
+              menus += [ {:label => "Users", :url => admin_users_path ,    :controller => "users" },
                         {:label => "Commodities",:url => admin_commodities_path(:type => 'drugs'), :controller => "commodities"},
                ] if current_user.admin?
 
-              menus << {:label => "Requisition Forms",:url => admin_requisition_reports_path(), :controller => "requisition_reports"}  if current_user.site?
+              menus += [ {:label => "Requisition Forms",:url => admin_requisition_reports_path(), :controller => "requisition_reports"},
+                {:label => 'Requisition Template', :url => template_admin_commodity_categories_path(:format =>:xls), :controller => 'commodity_categories' } ]  if current_user.site?
               
-              menus += [
-                {:label => "Import SURV",:url => new_admin_import_surv_path(), :controller => "requisition_reports"},
-                {:label => "Requisition and order", :url => admin_orders_path(), :controller => "commodities"}
-              ] if current_user.data_entry?
+              menus << {:label => "SURV",:url => admin_import_survs_path(:type => ImportSurv::TYPES_SURV1), :controller => "import_survs"} if current_user.data_entry?
+              menus << {:label => "Requisition and order", :url => admin_orders_path(), :controller => "commodities"} if current_user.data_entry? || current_user.reviewer?
 
               menus += [
                 {:label => "Public Holidays", :url => admin_public_holidays_path(), :controller => "public_holidays"},

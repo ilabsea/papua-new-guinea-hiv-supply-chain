@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_many :import_survs
   belongs_to :site 
+  has_many :import_survs
 
   def site_role?
      self.site?

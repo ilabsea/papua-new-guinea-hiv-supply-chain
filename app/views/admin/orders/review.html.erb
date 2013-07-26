@@ -1,0 +1,50 @@
+<%= content_for :breadcrumb do %>
+	<%= breadcrumb [{'Orders' => admin_orders_path}, {'Reviewer' => false}] %>
+<% end %>
+
+<%= page_header 'Reviewer'  %>
+
+<div class='row-fluid'>
+  <span class='span2'> Site </span>
+  <span class='span10'> <%= @order.site.name%> </span>
+</div>
+
+<div class='row-fluid'>
+  <span class='span2'> Order Date </span>
+  <span class='span10'> <%= l @order.order_date %> </span>
+</div>
+
+<div class='row-fluid'>
+  <span class='span2'> Order ID </span>
+  <span class='span10'> <%= @order.id %> </span>
+
+</div>
+
+<% 
+  order_lines_drug = @order.order_lines.select{|order_line| order_line.arv_type == CommodityCategory::TYPES_DRUG}
+  order_lines_kit = @order.order_lines.select{|order_line| order_line.arv_type == CommodityCategory::TYPES_KIT}
+  drug =  @type == CommodityCategory::TYPES_DRUG ? 'active' : '' 
+  kit  =  @type == CommodityCategory::TYPES_KIT  ? 'active' : ''
+%>
+<div class="tabbable"> 
+    <ul class="nav nav-tabs">
+      <li class="<%= drug %>"  >
+        <a href="#drug" data-toggle="tab">Drugs</a>
+      </li>
+      <li class='<%= kit %>'> 
+        <a href="#kit" data-toggle="tab">Kits</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane <%= drug %>" id="drug">
+        <%= render :partial => 'review_table', :locals => {:order_lines => order_lines_drug, :order => @order } %>
+      </div>
+      <div class="tab-pane <%= kit %>" id="kit">
+         <h4> Kit Commodities </h4>
+         <%= render :partial => 'review_table', :locals => {:order_lines => order_lines_kit, :order => @order  } %>
+      </div>
+    </div>
+</div>
+
+

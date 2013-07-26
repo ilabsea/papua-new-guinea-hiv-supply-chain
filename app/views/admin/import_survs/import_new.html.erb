@@ -1,0 +1,16 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Import Surv" => nil}]  %>
+<% end %>	
+
+<%= page_header "Surv Form uploader" %>
+
+<% url = @import_surv.new_record? ? admin_import_survs_path() : admin_import_surv_path(@import_surv) %>
+<%= simple_form_for [:admin, @import_surv], :url => url, :html => {:class => 'form-horizontal' , :multipart => true} do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :surv_type, collection: ImportSurv::TYPES, :include_blank => 'Select Surv Type' %>
+  <%= f.input :form, :as =>:file %>
+  <div class="form-actions">
+    <%= f.button :submit, :value => "Import", :class => 'btn-primary' %>
+    <%= link_to 'Cancel', new_admin_import_surv_path, :class => 'btn' %>
+  </div>
+<% end %>
