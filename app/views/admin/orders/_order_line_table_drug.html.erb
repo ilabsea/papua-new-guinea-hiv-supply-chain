@@ -1,13 +1,19 @@
-<table class='table table-striped well no-border no-padding'>
+<table class='table table-striped' >
     <thead>
       <tr>
-        <th width='260'> Commodity </th>
+        <th> # </th>
+        <th> Commodity </th>
         <th> # Of Patient on Drug regiment </th>
+        <th> Consumtion per month </th>
         <th> Stock on hand</th>
-        <th> Consumtion</th>
+        <th> Monthly use</th>
         <th> System Suggestion</th>
         <th> Quantity Suggested</th>
         <th> Entry Note</th>
+        <% if(order.status == Order::ORDER_STATUS_TO_BE_REVISED )%>
+          <th>Status</th>
+          <th>Reviewer Note</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>

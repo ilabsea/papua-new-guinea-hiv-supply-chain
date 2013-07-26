@@ -1,0 +1,34 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Surv Sites" => false}] %>
+<% end %>
+
+<%= page_header "Surv Sites : " + @import_surv.surv_type, :left => 4, :right => 8  do %>
+  <%= paginate_records @surv_sites %>
+<% end %>
+
+<table class="table table-striped well no-border no-padding">
+  <thead>
+    <tr>
+      <th> Site </th>
+      <th> Year </th>
+      <th> Month </th>
+      <th> Type </th>
+      <th> Total </th>
+      <th class='action_col2'> Action </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @surv_sites.each do |surv_site| %>
+      <tr>
+        <td><%=surv_site.site.name%></td>
+        <td><%=surv_site.year %></td>
+        <td><%=surv_site.month %></td>
+        <td><%=surv_site.surv_type %></td>
+        <td><%=surv_site.surv_site_commodities_count %></td>
+        <td>
+        	<%= link_to 'View detail', admin_surv_site_surv_site_commodities_path(surv_site), :class => 'btn btn-mini' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

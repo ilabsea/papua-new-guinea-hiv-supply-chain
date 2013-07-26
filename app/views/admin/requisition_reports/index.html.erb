@@ -1,9 +1,9 @@
 <%= page_header("Requisition Report form", :left => 6, :right => 6) do %>
-    <%= link_to t('New Requisition Report Summition'), new_admin_requisition_report_path, :class => 'btn' %>
+    <%= link_button_new 'New Requisition Report', new_admin_requisition_report_path, :class => 'btn' %>
 <% end %>
 
 <%= paginate_records @requisition_reports %>
-<table class="table table-striped well no-border no-padding">
+<table class="table table-striped">
   <thead>
     <tr>
       <th><%= t 'Summition' %></th>

@@ -1,0 +1,46 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Import Survs" => nil}]  %>
+<% end %>	
+
+<style>
+.surv-form tr, .surv-form th, .surv-form td {
+    min-width: 90px;
+    font-weight: normal !important;
+  }
+</style>
+<%= page_header "#{@import_surv.surv_type} for Year: #{@import_surv.year}, Month: #{@import_surv.month}" %>
+
+<div class='row-fluid form-fixed'  >
+  <table class='table table-hover surv-form table-fixed-header' >
+    <thead class='header' >
+      <tr >
+         <th class='list-no'>#</th>
+         <th class='pos-site'>Site</th>
+         <% @commodities.each do |commodity| %>
+            <th class='pos-commodity'><%= commodity.name %></th>
+         <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @sites.each_with_index do |site, index| %>
+        <tr>
+            <td class='list-no'> <%= index+1 %> </td>
+            <td class='pos-site' > <%= site.name %> </td>
+            <% 
+              survs = @import_surv.surv_sites.select{|surv_site| surv_site.site == site } 
+              surv = survs[0]
+            %>  
+      	    <% surv.surv_site_commodities.each do |surv_site_commodity| %>
+              <td class='pos-commodity'><%= surv_site_commodity.quantity.to_i %> </td>
+      	    <% end %>
+        </tr>
+      <% end %>
+
+    </tbody>
+   </table>
+</div>
+<br />
+
+<div> <%= link_to 'Back to Survs', admin_import_surv_path, :class => 'btn' %> </div>
+

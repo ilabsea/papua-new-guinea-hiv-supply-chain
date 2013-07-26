@@ -22,4 +22,37 @@ FactoryGirl.define do
      password { "123456" }
      role { User::ROLES[rand(User::ROLES.size-1)] }
   end
+
+  factory :user_site, :class => User do
+    user_name
+     email
+     phone_number
+     site
+     password { "123456" }
+     role  User::ROLES_SITE 
+  end
+
+  factory :user_admin, :class => User do
+    user_name
+     email
+     phone_number
+     password { "123456" }
+     role  User::ROLES_ADMIN
+  end
+
+  factory :user_data_entry, :class => User do
+    user_name
+     email
+     phone_number
+     password { "123456" }
+     role  User::ROLES_DATA_ENTRY
+  end
+
+  factory :user_reviewer, :class => User do
+    user_name
+     email
+     phone_number
+     password { "123456" }
+     role  User::ROLES_REVIEWER
+  end
 end

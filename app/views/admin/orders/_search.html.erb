@@ -1,4 +1,4 @@
-<div class='well' >
+<div class='well' style='background-color: #fff;' >
 	<%=simple_form_for :order , :url => admin_orders_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
 		<style type="text/css">
 			#search_order {
@@ -17,16 +17,16 @@
 		</style>
 		<div class='row-fluid'>
 		    <div class='span3' id='search_start_date'>
-		      <%= f.input :start_date, :as => 'date_time_picker', 
+		      <%= f.input :date_start, :as => 'date_time_picker', 
 		                               :label => 'From Date' ,
-		                               :input_html => {:class => 'datepicker-fit'}
+		                               :input_html => {:class => 'datepicker-fit', :value => @date_start, :name => 'date_start'}
 		                               %>   
 		    </div>
 
 		    <div class='span3' id='search_end_date'>
-		        <%= f.input :end_date, :as => 'date_time_picker', 
+		        <%= f.input :date_end, :as => 'date_time_picker', 
 		                                      :label => 'To Date',
-		                                      :input_html => { :class  => 'datepicker-fit'} 
+		                                      :input_html => { :class  => 'datepicker-fit', :value => @date_end, :name => 'date_end'} 
 		                                      %> 
 		    </div>
 		    <div class='span6' style ='text-align:left;' >

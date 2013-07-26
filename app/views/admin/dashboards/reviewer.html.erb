@@ -1,0 +1,44 @@
+<%=page_header("Dashboard Summary") %>
+<%=simple_form_for :order , :url => admin_orders_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
+	<div class='row-fluid control-inline'>
+		<div class='span1'></div>
+	    <div class='span4' id='search_start_date'>
+	      <%= f.input :start_date, :as => 'date_time_picker', 
+	                               :label => 'Form summition date' ,
+	                               :label_html => {:class=> 'inline'},
+	                               :input_html => {:class => 'datepicker-fit'}
+	                               %>   
+	    </div>
+
+	    <div class='span2' id='search_end_date'>
+	        <%= f.input :end_date, :as => 'date_time_picker', 
+	                                      :label => 'To',
+	                                      :label_html => { :class => 'inline'},
+	                                      :input_html => { :class  => 'datepicker-fit'} 
+	                                      %> 
+	    </div>
+	    <div class='span5'></div>
+	  </div> 
+<% end %>
+ <ul class='dashboard-item-set'>
+<%
+  [
+  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVIEWED] || 0 , :class => :order_in_review, 
+  		:type => Order::ORDER_STATUS_TO_BE_REVIEWED, :text => 'Orders pending for you to review'},
+
+  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVISED] || 0,  :class => :order_pending, 
+  		:type => Order::ORDER_STATUS_TO_BE_REVISED,   :text => 'Orders reviewed and rejected. Pending for correction by data entry'}
+
+  	
+  ].each do |order| %>
+  	<li> 
+  	  <div >
+	    <a href='<%= admin_orders_path(:type => order[:type]) %>' >
+		  <span class='order_size <%=order[:class] %>' >  <%= order[:quantity] %></span>
+		  <span > <%= order[:text] %> </span>
+		</a>	
+	  </div>
+  	</li>	
+<% end %>
+
+</ul>

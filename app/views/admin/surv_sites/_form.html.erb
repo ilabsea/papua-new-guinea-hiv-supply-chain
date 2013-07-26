@@ -1,0 +1,21 @@
+<%= simple_form_for [:admin, @surv_site], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
+  <%= f.error_notification %>
+  <table >
+    <thead>
+      <tr> 
+        <th>Commodity</th>
+      </tr>
+
+    </thead>
+  <%=simple_fields_for :surv_site_commodities do |surv_site_commodity| %>
+     <%=surv_site_commodity.input :commodity, :as => :hidden %>
+     <%=surv_site_commodity.input :commodity, :as => :hidden %>
+     <%=surv_site_commodity.input :quantity  %>
+     <%=debug surv_site_commodity %>
+  <% end %>
+
+</table>
+
+  <%= f.submit 'Save Surv Site' , :class => 'btn btn-primary' %>
+
+<% end %>    

@@ -1,4 +1,4 @@
-<%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
   <div class='row'>
     <div class='span4' >
@@ -28,47 +28,8 @@
 
   </div>
 
-  <% i = 0 %>
-  <%=f.simple_fields_for :order_lines do |order_line| %>
-    <% if @order.order_lines[i].arv_type == CommodityCategory::TYPES_DRUG %>
-        <%=content_for :drug do  %>
-          <%= render :partial => "order_line_row_drug", :locals => { 
-              :order_line_record => @order.order_lines[i],
-              :order_line => order_line
-            } %>
-        <% end %>    
-    <% elsif @order.order_lines[i].arv_type == CommodityCategory::TYPES_KIT %>  
-        <%=content_for :kit do %>
-          <%= render :partial => "order_line_row_kit", :locals => { 
-              :order_line_record => @order.order_lines[i],
-              :order_line => order_line
-            } %>
-        <% end %>
-    <% end %>  
-    <% i += 1 %>
-  <% end %>
-
-
-  <div class="tabbable"> 
-    <ul class="nav nav-tabs">
-      <li class="active">
-        <a href="#drug" data-toggle="tab">Drugs</a>
-      </li>
-      <li> 
-        <a href="#kit" data-toggle="tab">Kits</a>
-      </li>
-    </ul>
-
-    <div class="tab-content">
-      <div class="tab-pane active" id="drug">
-        <h4> Drug Commodities </h4>
-        <%= render :partial => 'order_line_table_drug', :locals => {:body => yield(:drug) } %>
-      </div>
-      <div class="tab-pane" id="kit">
-         <h4> Kit Commodities </h4>
-         <%= render :partial => 'order_line_table_kit', :locals => {:body => yield(:kit) } %>
-      </div>
-    </div>
+  <div id='order_lines_tab'>
+      <%= render :partial => 'order_lines', :locals => {:f => f, :order => @order} %> 
   </div>
 
   <div class="form-actions">
@@ -76,6 +37,11 @@
     <%= link_to 'Cancel', admin_provinces_path, :class => 'btn' %>
   </div>
 <% end %>
+
+
+
+
+
 
 <script>
   function handleSiteUser(){
@@ -99,12 +65,158 @@
                    text  = response[i][0];
                    var option = "<option value='"+ value +"' >" + text + " </option>";
                    $selectElm.append(option);
-                 }
+              }
           }
        })
+    });
+  }
 
+  function handleLoadOrderLinesTab(){
+    $("#order_site_id").on('change', function(){
+       loadOrderLinesTab();
 
     });
+
+    $("#order_order_date").on('change', function(){
+       loadOrderLinesTab();
+    });
+  }
+
+  function handleSubmit(){
+    $("#form_order").on('submit', function(){
+      return validateForm();
+    });
+  }
+
+  function loadOrderLinesTab(){
+    var newRecord = <%= @order.new_record? %> ;
+
+    site_id = $("#order_site_id").val();
+    date   = $("#order_order_date").val();
+    order_id = '<%=@order.id%>';
+
+    if(!site_id || !date)
+      return ;
+    showLoading();
+    $.ajax({
+        url    : '<%= tab_order_line_admin_orders_path()%>',
+        data   : {'site_id' : site_id, 'order_date': date, 'id' : order_id, pp: 'disable'},
+        method : 'GET',
+        success: function(response){
+          $('#order_lines_tab').html(response);
+        },
+        complete: function(){
+          hideLoading();
+        }
+    });
+  }
+
+  function handleValidateField(){
+    $(document.body).delegate(".validate_field", 'change', function(){
+        validateCriteria($(this));
+    });
+  }
+
+  function validateForm(){
+    $elmRefs =  $(".stock_on_hand");
+    for(var i=0; i< $elmRefs.length; i++){
+      $elm = $($elmRefs.get(i));
+      if(validateCriteria($elm) == false){
+         return false
+      }
+    }
+    return true;
+  }
+
+  function getOrderLineObject($elm){
+    ref = $elm.attr("data-ref");
+    $datasets =  $("input[data-ref=" + ref + "]");
+    var commodityName = "<b>" + $('#commodity_' + ref).text() + "</b>" ;
+    var options = {
+              commodityName                   : commodityName ,
+              commodityId                     : ref,
+              type_arv                        : $datasets.get(0).value,
+              siteSuggestion                  : $datasets.get(1).value,
+              testKitWasteAcceptable          : $datasets.get(2).value,
+              numberOfClient                  : $datasets.get(3).value,
+              consumtionPerClient             : $datasets.get(4).value,
+              stockOnHand                     : $datasets.get(5).value,
+              monthlyUse                      : $datasets.get(6).value,
+              quantitySuggested               : $datasets.get(7).value
+    }
+    return options;
+  }
+
+  function  validateCriteria($elm){
+    var object = getOrderLineObject($elm)
+    if(object.type_arv == '<%= CommodityCategory::TYPES_DRUG %>'){
+
+        if($.trim(object.stockOnHand) == "" || $.trim(object.quantitySuggested) =="" || 
+           $.trim(object.numberOfClient) == "" || $.trim(object.consumtionPerClient) == "" ) {
+            $(".error-drug").hide();
+            return true ;
+        }
+
+        consumtion = object.numberOfClient * object.consumtionPerClient
+        systemSuggestion = consumtion - object.stockOnHand
+        cal = formatNumber((100 * Math.abs( object.quantitySuggested - systemSuggestion ) / Math.max(object.quantitySuggested , systemSuggestion)))
+
+        if(cal <= parseFloat(object.siteSuggestion)){
+          message =  "Commodity: " + object.commodityName +  " Quantity Suggested is acceptable system calculation = " 
+                  + filter(cal) + ", site suggestion = " + filter(object.siteSuggestion) ;
+          green(".error-drug", message);
+          return true;
+        }
+        else{
+          message =  "Commodity: " + object.commodityName + " Quantity Suggested is not acceptable system calculation = " 
+                  + filter(cal) + " must be less than or equal to site suggestion = " + filter(object.siteSuggestion) ;
+          red(".error-drug", message);
+          return false;
+        }
+    }
+    else{
+
+        if($.trim(object.stockOnHand) == "" || $.trim(object.monthlyUse) == "" || $.trim(object.numberOfClient) == "" || $.trim(object.consumtionPerClient) == "") { 
+          $(".error-kit").hide();
+          return true;
+        }
+
+        consumtion = object.numberOfClient * object.consumtionPerClient
+        systemSuggestion = consumtion - object.stockOnHand 
+        var cal = formatNumber( 100 * (object.monthlyUse - systemSuggestion) / object.monthlyUse )
+
+        if(cal <= parseFloat(object.testKitWasteAcceptable)){
+          message = "Commodity: " + object.commodityName + " Quantity Suggested is acceptable " ; 
+          green(".error-kit", message);
+          return true;
+        }
+        else{
+          message =  "Commodity: " + object.commodityName +  " Quantity Suggested is not acceptable system calculation = " 
+                  +  filter(cal) + " must be less than or equal to site wastage = " + filter(object.testKitWasteAcceptable) ;
+          red(".error-kit", message);
+          return false;
+        }
+    }
+  }
+
+  function formatNumber(cal){
+    return cal.toFixed(2);
+  }
+
+  function filter(number){
+    return "<b>" + number + "% </b>" ;
+  }
+
+  function green(selector, msg){
+    $(selector).removeClass('alert-error');
+    $(selector).html(msg);
+    $(selector).addClass("alert-success").show();
+  }
+
+  function red(selector, msg){
+    $(selector).removeClass('alert-success');
+    $(selector).html(msg);
+    $(selector).addClass("alert-error").show();
   }
 
   function removeUsers(){
@@ -113,5 +225,8 @@
 
   $(function(){
     handleSiteUser();
+    handleLoadOrderLinesTab();
+    handleValidateField();
+    //handleSubmit();
   });
 </script>

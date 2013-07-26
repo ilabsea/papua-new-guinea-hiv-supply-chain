@@ -1,0 +1,6 @@
+<%= content_for :breadcrumb do %>
+	<%= breadcrumb [{'Surv Sites' => admin_surv_sites_path}, {'New Surv sites' => false}] %>
+<% end %>
+
+<%= page_header 'New Surv Site' %>
+<%= render 'form' %>

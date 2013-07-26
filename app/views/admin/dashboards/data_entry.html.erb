@@ -1,4 +1,4 @@
-<%=page_header("") %>
+<%=page_header("Dashboard Summary") %>
 <%=simple_form_for :order , :url => admin_orders_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
 	<div class='row-fluid control-inline'>
 		<div class='span1'></div>
@@ -23,16 +23,22 @@
  <ul class='dashboard-item-set'>
 <%
   [
-  	{ :quantity => 6, :class => :order_pending, :text => 'Orders reviewed and rejected. Pending for you to revise'},
-  	{ :quantity => 17, :class => :order_submitted, :text => 'New orders submitted from site for you to review and make order suggestion'},
-  	{ :quantity => 10, :class => :order_approved, :text => 'Orders approved'},
-  	{ :quantity => 10, :class => :order_in_review, :text => 'Orders reviewed and rejected. Pending for you to revise'},
+  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVISED] || 0,  :class => :order_pending, 
+  		:type => Order::ORDER_STATUS_TO_BE_REVISED,   :text => 'Orders reviewed and rejected. Pending for you to revise'},
+  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_PENDING] || 0, :class => :order_submitted,  
+  		:type => Order::ORDER_STATUS_PENDING, :text => 'New orders submitted from site for you to review and make order suggestion'},
+  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_APPROVED] || 0, :class => :order_approved,  
+  		:type => Order::ORDER_STATUS_APPROVED,  :text => 'Orders approved' },
+  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVIEWED] || 0 , :class => :order_in_review, 
+  		:type => Order::ORDER_STATUS_TO_BE_REVIEWED, :text => 'Orders in review'},
 
   ].each do |order| %>
   	<li> 
-  		<div class='row-fluid'>
-  			<span class='order_size <%=order[:class] %> span1' style='text-align:right;'> <%= order[:quantity] %> </span>
-  			<span class='span11' > <%= order[:text] %> </span>
+  		<div>
+			 <a href='<%= admin_orders_path(:type => order[:type]) %>' >
+			 	<span class='order_size <%=order[:class] %>' > <%= order[:quantity] %> </span>
+			 	<span > <%= order[:text] %> </span>
+			 </a>			 
   		</div>
   	</li>	
 
