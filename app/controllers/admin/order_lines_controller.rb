@@ -23,7 +23,8 @@ module Admin
       @order.review_date = Time.now
       @order.save
 
-      redirect_to review_admin_order_path(@order, :anchor =>@order_line.id ), :notice => "Order for  commodity: <b> #{@order_line.commodity.name}</b> has been approved"
+      redirect_to review_admin_order_path(@order, :anchor =>@order_line.id, :type => @order_line.arv_type), 
+          :notice => "Order for  commodity: <b> #{@order_line.commodity.name}</b> has been approved"
 
 
     end
@@ -42,7 +43,8 @@ module Admin
       @order.review_date = Time.now
       @order.save
       # redirect_to admin_orders_path(:type => Order::ORDER_STATUS_TO_BE_REVISED),
-      redirect_to review_admin_order_path(@order,:anchor =>@order_line.id ),:notice => "Order for Site : <b> #{@order.site.name}</b> has been rejected"
+      redirect_to review_admin_order_path(@order,:anchor =>@order_line.id, :type => @order_line.arv_type ),
+          :notice => "Order for Site : <b> #{@order.site.name}</b> has been rejected"
     end
 
   end

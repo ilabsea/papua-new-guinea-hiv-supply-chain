@@ -44,6 +44,7 @@ module Admin
  	end
 
  	def review
+ 	  @type = params[:type] || CommodityCategory::TYPES_DRUG 
  	  @order = Order.includes(:order_lines => :commodity).find params[:id]	
  	end
 

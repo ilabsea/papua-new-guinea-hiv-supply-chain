@@ -139,7 +139,7 @@ class Order < ActiveRecord::Base
     end
 
     if accepted
-      self.status = ORDER::ORDER_STATUS_APPROVED
+      self.status = Order::ORDER_STATUS_APPROVED
     end
   end
 end

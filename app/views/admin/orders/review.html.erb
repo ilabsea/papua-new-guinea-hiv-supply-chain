@@ -23,22 +23,24 @@
 <% 
   order_lines_drug = @order.order_lines.select{|order_line| order_line.arv_type == CommodityCategory::TYPES_DRUG}
   order_lines_kit = @order.order_lines.select{|order_line| order_line.arv_type == CommodityCategory::TYPES_KIT}
+  drug =  @type == CommodityCategory::TYPES_DRUG ? 'active' : '' 
+  kit  =  @type == CommodityCategory::TYPES_KIT  ? 'active' : ''
 %>
 <div class="tabbable"> 
     <ul class="nav nav-tabs">
-      <li class="active">
+      <li class="<%= drug %>"  >
         <a href="#drug" data-toggle="tab">Drugs</a>
       </li>
-      <li> 
+      <li class='<%= kit %>'> 
         <a href="#kit" data-toggle="tab">Kits</a>
       </li>
     </ul>
 
     <div class="tab-content">
-      <div class="tab-pane active" id="drug">
+      <div class="tab-pane <%= drug %>" id="drug">
         <%= render :partial => 'review_table', :locals => {:order_lines => order_lines_drug, :order => @order } %>
       </div>
-      <div class="tab-pane" id="kit">
+      <div class="tab-pane <%= kit %>" id="kit">
          <h4> Kit Commodities </h4>
          <%= render :partial => 'review_table', :locals => {:order_lines => order_lines_kit, :order => @order  } %>
       </div>
