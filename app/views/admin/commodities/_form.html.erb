@@ -8,7 +8,7 @@
 <%= simple_form_for [:admin , @commodity], :url => url,:html => { :class => 'form-horizontal' } do |f| %>
   <%= f.error_notification %> 
   <%= f.input :name %>
-  <% if params[:type] == 'drugs' %>
+  <% if params[:type] == CommodityCategory::TYPES_DRUG %>
   <%= f.association :commodity_category, collection: CommodityCategory.drug, :include_blank => 'Select Commodity Category' %>
   <% else %>
   <%= f.association :commodity_category, collection: CommodityCategory.kit, :include_blank => 'Select Commodity Category' %>
@@ -22,7 +22,6 @@
     <%= f.input :abbreviation, :required => true %>
     <%= f.input :quantity_per_packg, :label => "quantity Per Package", :required => true %>
   <% end %>
-
 
   <div class="form-actions">
     <%= link_button_cancel 'Cancel', admin_commodities_path(:type => params[:type]) %>

@@ -11,6 +11,8 @@ class Commodity < ActiveRecord::Base
   validates :commodity_category_id, :name ,	:unit_id, :presence   =>  true
   validates :name , :uniqueness => true
   validate :validate_commodity_type
+  validates :consumption_per_client_pack, :consumption_per_client_unit, :numericality => true
+
 
   default_scope order("commodities.name ASC")
 
@@ -41,8 +43,4 @@ class Commodity < ActiveRecord::Base
   def self.from_type type
     Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", type)
   end  
-
-
- 
-
 end
