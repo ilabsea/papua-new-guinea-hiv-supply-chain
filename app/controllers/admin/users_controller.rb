@@ -50,10 +50,10 @@ module Admin
 
 		def change
 		  @user = User.find(params[:id])
-		  if @user.change_password? params[:user]
-		  	redirect_to admin_users_path, :notice => "User password has been reset"
-		  else
-		  	render  :reset
+		  @changed_password = @user.random_password!
+
+		  if !@changed_password
+		  	redirect_to edit_admin_user_path(@user), :error => "Failed to reset password for this user. Please try again"
 		  end
 		end
 	end

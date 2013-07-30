@@ -53,6 +53,16 @@ class User < ActiveRecord::Base
      self.role == User::ROLES_SITE
   end
 
+  def random_password!
+      random_password =  User.regen_password
+      self.password = random_password
+      self.save ? random_password : false
+  end
+
+  def self.regen_password
+      Devise.friendly_token.first(8)
+  end
+
   def change_password? params
       self.current_password = params[:current_password]
 
