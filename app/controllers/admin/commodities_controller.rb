@@ -3,9 +3,10 @@ module Admin
 
     def index
         @commodities = Commodity.includes(:commodity_category)
-        if (params[:type] == "drugs")
+        params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
+        if (params[:type] ==  CommodityCategory::TYPES_DRUG)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
-        elsif (params[:type] == "kits")
+        elsif (params[:type] == CommodityCategory::TYPES_KIT)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
         end
         @commodities = @commodities.paginate(paginate_options)

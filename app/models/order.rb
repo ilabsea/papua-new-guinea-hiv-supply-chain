@@ -119,15 +119,24 @@ class Order < ActiveRecord::Base
   end
 
   def self.total_by_status
-     orders = Order.unscoped.select('COUNT(status) AS total, status').group('status').order('total')
+    Order.unscoped.select('COUNT(status) AS total, status').group('status').order('total')
+  end
+
+  def self.total_by_status_date start_date, end_date
+     orders = Order.unscoped
+     if !start_date.blank? && !end_date.blank?
+        orders = orders.where(['order_date BETWEEN :start_date AND :end_date', :start_date => start_date, :end_date => end_date ])
+        orders = orders.select('COUNT(status) AS total, status').group('status').order('total')
+     else
+        orders = self.total_by_status
+     end
+
      statuses = {}
      orders.each do |order|
        statuses[order.status] = order.total
      end
      statuses
   end
-
-
 
   def update_status_accepted
     accepted = true

@@ -3,7 +3,7 @@
 <% end %>
 
 <%= page_header "Users" do %>
-  <%= link_to t("New User"), new_admin_user_path, :class => "btn" %>
+  <%= link_button_new "New User", new_admin_user_path, :class => "btn" %>
 <% end %>
 
 <%= paginate_records @users %>
@@ -32,10 +32,10 @@
         <td><%= user.site ? user.site.name : '' %> </td>
         <td><%= user.last_sign_in_at  %> </td>
         <td class="last">
-          <%= link_to t('Edit'), edit_admin_user_path(user), :class => 'btn btn-mini' %>
-          <%= link_to t('Reset'), reset_admin_user_path(user), :class => 'btn btn-mini btn-danger' %>
+          <%= link_button_edit 'Edit', edit_admin_user_path(user), :class => 'btn btn-success' %>
+          <%= link_button_reset 'Reset', reset_admin_user_path(user), :class => 'btn btn-mini btn-warning' %>
           <% if current_user.id != user.id %>
-          <%= link_to t('Delete'), admin_user_path(user), :method => :delete,
+          <%= link_button_delete 'Delete'  , admin_user_path(user), :method => :delete,
                       :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
           <% end %>            
         </td>

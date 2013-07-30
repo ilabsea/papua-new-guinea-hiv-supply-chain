@@ -25,7 +25,7 @@
 
 
   <div class="form-actions">
-    <%= f.button :submit, :class => 'btn-primary' %>
-    <%= link_to t('Cancel'), admin_commodities_path, :class => 'btn' %>
+    <%= link_button_cancel 'Cancel', admin_commodities_path(:type => params[:type]) %>
+    <%= button_save ' Save ' %>
   </div>
 <% end %>

@@ -11,8 +11,8 @@
   <%= f.input :form, :as =>:file %>
 
   <div class="form-actions">
-    <%= f.submit 'Submit Requisition Form', :class => 'btn btn-primary' %>
-    <%= link_to 'Cancel', admin_requisition_reports_path, :class => 'btn' %>
+  	<%= link_button_cancel 'Cancel', admin_requisition_reports_path %>
+    <%= button_save ' Save ' %>
   </div>
 <% end %>
 

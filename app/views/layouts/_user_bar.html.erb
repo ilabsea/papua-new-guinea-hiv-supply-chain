@@ -6,8 +6,8 @@
   </div>
   <div class='span4 right' >	
   <% if user_signed_in? %>
-     Welcome <b> <%= current_user.display_name %> </b>
-     <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+     Welcome,  <i class='icon-user'> <%= current_user.display_name %> </i>
+     <%= link_button_signout  "Sign out", destroy_user_session_path, :method => :delete, :class => 'btn btn-mini btn-danger' %>
   <% else %>
      <%= link_to "Sign in", new_user_session_path %>
   <% end %>  

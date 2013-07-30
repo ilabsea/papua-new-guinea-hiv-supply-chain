@@ -1,16 +1,18 @@
 <%= page_header("Commodities", :left => 6, :right => 6) do %>
-    <%=link_to "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}", :class => 'btn' %>
-    <%=link_to "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ), :class => 'btn' %>
+    <%=link_button_new "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}", :class => 'btn' %>
+    <%=link_button_export "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ), :class => 'btn btn-primary' %>
 <% end %>
 
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Commodity" => nil}]  %>
-<% end %>
+<% end %> 
 <ul class="nav nav-tabs">
-  <li class=" <%= params[:type] == 'drugs' ? 'active' : '' %>">
-    <a href="<%= admin_commodities_path(:type => 'drugs') %>">Drugs</a>
+  <li class=" <%= params[:type] == CommodityCategory::TYPES_DRUG ? 'active' : '' %>">
+    <%= link_to CommodityCategory::TYPES_DRUG, admin_commodities_path(:type =>  CommodityCategory::TYPES_DRUG ) %>
   </li>
-  <li class="<%=params[:type] == 'kits' ? 'active' : '' %>"><a href="<%= admin_commodities_path(:type => 'kits') %>">Kits</a></li>
+  <li class="<%=params[:type] ==  CommodityCategory::TYPES_KIT ? 'active' : '' %>">
+    <%= link_to CommodityCategory::TYPES_KIT , admin_commodities_path(:type =>  CommodityCategory::TYPES_KIT ) %>
+  </li>
 </ul>
 
 <%= paginate_records @commodities %>
@@ -44,9 +46,9 @@
         <td><%= commodity.consumption_per_client_pack %></td>
         <td><%= commodity.consumption_per_client_unit %></td>
         <td class="last">
-          <%= link_to t('Edit'), edit_admin_commodity_path(commodity, :type => params[:type]), :class => 'btn btn-mini' %>
-          <%= link_to t('Delete'),   admin_commodity_path(commodity, :type => params[:type]),
-                      :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+          <%= link_button_edit 'Edit', edit_admin_commodity_path(commodity, :type => params[:type]) %>
+          <%= link_button_delete 'Delete' ,   admin_commodity_path(commodity, :type => params[:type]),
+                      :method => :delete, :confirm => 'Are you sure?' %>
         </td>
       </tr>
     <% end %>

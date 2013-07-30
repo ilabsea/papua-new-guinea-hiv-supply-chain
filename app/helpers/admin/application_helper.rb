@@ -39,7 +39,7 @@ module Admin::ApplicationHelper
 		char_sep = "&raquo;".html_safe
 		if( !options.nil?  && options.size != 0)
 			items <<  content_tag(:li , :class => "active") do
-				link_to("Home", admin_root_path) + content_tag(:span, char_sep, :class => "divider")
+				link_to_home("Home", admin_root_path) + content_tag(:span, char_sep, :class => "divider")
 			end
 			options.each do |option|
 				option.each do |key, value|
@@ -53,26 +53,34 @@ module Admin::ApplicationHelper
 				end
 			end	
 		else
-			items << content_tag(:li, "Home", :class => "active")	
+      icon = content_tag "i", " ", :class => "icon-user  icon-home"
+			items << content_tag(:li, icon + "Home", :class => "active")	
 		end
 		items.join("").html_safe
 	end
 
   def link_button type, text, url, options
     options[:class] = options[:class] ? " btn #{options[:class]}" : "btn" 
-    icon = content_tag "i", " ", :class => "icon-user  #{type} "
+    icon = content_tag "i", " ", :class => "#{type} "
     link_to (icon + text.html_safe), url, options
   end
 
+  def link_button_save text, url, options={}
+    link_button 'icon-ok', text, url, options
+  end
+
   def link_button_edit text, url, options={}
+    options[:class] = options[:class].nil? ? "btn btn-mini btn-info" : "btn btn-mini btn-info #{options[:class] }"
     link_button 'icon-edit', text, url, options
   end
 
   def link_button_new text, url, options={}
+    options[:class] = options[:class].nil? ? "btn" : "btn #{options[:class] }"
     link_button 'icon-plus', text, url, options
   end
 
   def link_button_delete text, url, options={}
+    options[:class] = options[:class].nil? ? "btn btn-mini btn-danger" : "btn btn-mini btn-danger #{options[:class] }"
     link_button 'icon-ban-circle', text, url, options
   end
 
@@ -90,6 +98,30 @@ module Admin::ApplicationHelper
 
   def link_button_export text, url, options={}
     link_button 'icon-download-alt', text, url, options
+  end
+
+  def link_button_reset text, url, options={}
+    link_button 'icon-repeat', text, url, options
+  end
+
+  def link_button_cancel text, url, options={}
+    options[:class] = options[:class] ? "btn #{options[:class] }" : "btn"  
+    link_button 'icon-remove', text, url, options
+  end
+
+  def link_button_signout text, url, options={}
+    link_button 'icon-arrow-right', text, url, options
+  end
+
+  def link_to_home text, url, options={}
+    icon = content_tag "i", " ", :class => "icon-home"
+    link_to (icon + text.html_safe), url, options
+  end
+
+  def button_save text, klass=''
+    content_tag :button, :class => "btn btn-primary #{klass}" do
+     content_tag "i", text , :class => 'icon-ok'
+   end
   end
 
 	def breadcrumb options=nil

@@ -9,7 +9,7 @@
   <%= f.association :site, :include_blank => "Select a site" %>
   <%= f.input :role, :collection => User::ROLES, :include_blank => "Select a role" %>
   <div class="form-actions">
-    <%= f.button :submit, :class => 'btn-primary' %>
-    <%= link_to t('Cancel'),  admin_users_path, :class => 'btn' %>
+    <%= link_button_cancel 'Cancel',  admin_users_path %>
+    <%= button_save ' Save '  %>
   </div>
 <% end %>

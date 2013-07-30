@@ -2,8 +2,7 @@
   <%= f.input :name %>
   <%= f.input :date, :as => 'date_time_picker' %>
     <div class="form-actions">
-      <%= f.button :submit, :class => 'btn-primary' %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                  admin_public_holidays_path, :class => 'btn' %>
+      <%= link_button_cancel 'Cancel', admin_public_holidays_path, :class => 'btn' %>
+      <%= button_save ' Save ' %>            
     </div>
 <% end %>

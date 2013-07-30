@@ -66,7 +66,7 @@
             <%=f.input :year ,:collection => 2009..2020,:include_blank => 'Select year' %>
           </td>
           <td style='padding-left: 30px; vertical-align:top;'>
-            <%= f.button :submit, :value => "Save", :class => 'btn-primary' %>
+            <%= button_save " Save " %>
           </td>
     </table>          
   </div>
@@ -110,8 +110,7 @@
    </div>
   <br />
    <div class='center' >
-      <%= link_to 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type), :class => 'btn' %>
-      <%= f.button :submit, :value => "Save", :class => 'btn-primary' %>
-      
+      <%= link_button_cancel 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type) %>
+      <%= button_save  " Save " %> 
    </div>
   <% end %>

@@ -1,5 +1,5 @@
 <%= page_header("Public Holidays", :left => 6, :right => 6) do %>
-    <%= link_to 'New Public Holiday', new_admin_public_holiday_path, :class => 'btn' %>
+    <%= link_button_new 'New Public Holiday', new_admin_public_holiday_path, :class => 'btn' %>
 <% end %>
 
 <% content_for :breadcrumb do %>
@@ -23,8 +23,9 @@
         <td><%= public_holiday.date %></td>
         <td><%= public_holiday.created_at %></td>
         <td class="last">
-          <%= link_to t('Edit'), edit_admin_public_holiday_path(public_holiday), :class => 'btn btn-mini' %>
-          <%= link_to t('Delete'), admin_public_holiday_path(public_holiday),
+          
+          <%= link_button_edit  'Edit', edit_admin_public_holiday_path(public_holiday), :class => 'btn btn-mini' %>
+          <%= link_button_delete 'Delete', admin_public_holiday_path(public_holiday),
                       :method => :delete,:confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>
