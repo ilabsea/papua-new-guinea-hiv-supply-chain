@@ -1,0 +1,24 @@
+<script>
+  function handleDateField(){
+    $(".date-field").on('change', function(){
+      $items  =	$(".date-field")
+      var hasData = true
+      for(var i=0; i< $items.length; i++){
+      	 if( $.trim($items.get(i).value) == "" ){
+      	 	hasData = false ;
+      	 	break;
+      	 }
+      }
+      if(hasData){
+      	$("#search_order").submit();
+      }
+
+    });
+
+  } 
+
+  $(function(){
+ 	  handleDateField();
+  });
+
+</script>

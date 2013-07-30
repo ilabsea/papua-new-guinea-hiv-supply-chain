@@ -1,25 +1,5 @@
 <%=page_header("Dashboard Summary") %>
-<%=simple_form_for :order , :url => admin_orders_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
-	<div class='row-fluid control-inline'>
-		<div class='span1'></div>
-	    <div class='span4' id='search_start_date'>
-	      <%= f.input :start_date, :as => 'date_time_picker', 
-	                               :label => 'Form summition date' ,
-	                               :label_html => {:class=> 'inline'},
-	                               :input_html => {:class => 'datepicker-fit'}
-	                               %>   
-	    </div>
-
-	    <div class='span2' id='search_end_date'>
-	        <%= f.input :end_date, :as => 'date_time_picker', 
-	                                      :label => 'To',
-	                                      :label_html => { :class => 'inline'},
-	                                      :input_html => { :class  => 'datepicker-fit'} 
-	                                      %> 
-	    </div>
-	    <div class='span5'></div>
-	  </div> 
-<% end %>
+<%= render 'date_form' %>
  <ul class='dashboard-item-set'>
 <%
   [
@@ -42,3 +22,4 @@
 <% end %>
 
 </ul>
+<%= render 'date_field' %>

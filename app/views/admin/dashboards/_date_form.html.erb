@@ -1,0 +1,21 @@
+<%=simple_form_for :order , :url => admin_root_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
+	<div class='row-fluid control-inline'>
+		<div class='span1'></div>
+	    <div class='span4' id='search_start_date'>
+	      <%= f.input :start_date, :as => 'date_time_picker', 
+	                               :label => 'Form summition date' ,
+	                               :label_html => {:class=> 'inline'},
+	                               :input_html => {:class => 'datepicker-fit date-field', :value => params[:start], :name => 'start'}
+	                               %>   
+	    </div>
+
+	    <div class='span2' id='search_end_date'>
+	        <%= f.input :end_date, :as => 'date_time_picker', 
+	                                      :label => 'To',
+	                                      :label_html => { :class => 'inline'},
+	                                      :input_html => { :class  => 'datepicker-fit date-field', :value => params[:end], :name => 'end' } 
+	                                      %> 
+	    </div>
+	    <div class='span5'></div>
+	  </div> 
+<% end %>
