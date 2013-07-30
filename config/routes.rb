@@ -57,7 +57,6 @@ PngHivAids::Application.routes.draw do
     end
     resources :units
     resources :users do
-
       member do
         get 'reset'   # reset_admin_user_path /admin/users/:id/reset
         put 'change'

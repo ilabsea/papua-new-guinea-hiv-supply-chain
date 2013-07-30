@@ -10,14 +10,14 @@
 <table class="table table-hover" >
   <thead>
     <tr>
-      <th><%= t("Login")%></th>
-      <th><%= t("Phone")%></th>
-      <th><%= t("Name")%></th>
-      <th><%= t("Email")%></th>
-      <th><%= t("Role")%></th>
-      <th><%= t("Site")%></th>
-      <th><%= t("Last access")%></th>
-      <th  class="action_col3" ><%= t("Action")%></th>
+      <th>Login</th>
+      <th>Phone</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Site</th>
+      <th>Last access</th>
+      <th  class="action_col2" ><%= t("Action")%></th>
     </tr>
   </thead>
 
@@ -33,7 +33,6 @@
         <td><%= user.last_sign_in_at  %> </td>
         <td class="last">
           <%= link_button_edit 'Edit', edit_admin_user_path(user), :class => 'btn btn-success' %>
-          <%= link_button_reset 'Reset', reset_admin_user_path(user), :class => 'btn btn-mini btn-warning' %>
           <% if current_user.id != user.id %>
           <%= link_button_delete 'Delete'  , admin_user_path(user), :method => :delete,
                       :confirm => 'Are you sure to delete?', :class => 'btn btn-mini btn-danger' %>
