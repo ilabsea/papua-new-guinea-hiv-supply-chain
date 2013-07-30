@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
   
   def paginate_options
-    { :page => params[:page] || 1 , :per_page => 15 } 
+    { :page => params[:page] || 1 , :per_page => 10 } 
   end
 
   def after_sign_out_path_for(resource_or_scope)

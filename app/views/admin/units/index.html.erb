@@ -3,15 +3,15 @@
 <% end %>
 
 <%= page_header "Units" do %>
-  <%=link_to "New Unit", new_admin_unit_path() , class: 'btn' %>	
+  <%=link_button_new "New Unit", new_admin_unit_path() %>	
 <%end%>
 
 <table class="table table-striped well no-border no-padding">
 	<thead> 
 		<tr>
-			<th> <%= t('Name') %> </th>
-			<th> <%= t('Created at') %></th>
-			<th class='action_col2'> <%= t('Action') %> </th>
+			<th> Name </th>
+			<th> Creation date </th>
+			<th class='action_col2'> Action</th>
 		</tr>
 	</thead>
 
@@ -21,9 +21,9 @@
 				<td><%= link_to unit.name, admin_unit_path(unit) %></td>
 				<td><%= l unit.created_at %></td>
 				<td>
-				  <%=link_to t("Edit"), edit_admin_unit_path(unit), :class => 'btn btn-mini'  %>
-				  <%=link_to t("Destroy"), admin_unit_path(unit) , 
-				  	:method => :delete , :confirm => 'Are you sure?',:class => 'btn btn-mini btn-danger' %>
+				  <%=link_button_edit  "Edit", edit_admin_unit_path(unit), :class => 'btn btn-mini'  %>
+				  <%=link_button_delete "Destroy", admin_unit_path(unit) ,
+				  			 :method => :delete , :confirm => 'Are you sure to delete?',:class => 'btn btn-mini btn-danger' %>
 				</td>
 			</tr>
 		<% end %> 

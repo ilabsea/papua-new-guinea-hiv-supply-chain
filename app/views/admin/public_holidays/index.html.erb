@@ -10,9 +10,9 @@
 <table class="table table-striped no-border no-padding">
   <thead>
     <tr>
-      <th><%= t 'Name' %></th>
-      <th><%= t 'Date' %></th>
-      <th class='action_col2' ><%=  t 'Action' %></th>
+      <th>Name</th>
+      <th>Date</th>
+      <th class='action_col2' >Action</th>
     </tr>
   </thead>
   <tbody>
@@ -23,7 +23,7 @@
         <td class="last"> 
           <%= link_button_edit  'Edit', edit_admin_public_holiday_path(public_holiday), :class => 'btn btn-mini' %>
           <%= link_button_delete 'Delete', admin_public_holiday_path(public_holiday),
-                      :method => :delete,:confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+                      :method => :delete,:confirm => 'Are you sure to delete?', :class => 'btn btn-mini btn-danger' %>
         </td>
       </tr>
     <% end %>

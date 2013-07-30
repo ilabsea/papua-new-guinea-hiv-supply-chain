@@ -6,7 +6,7 @@
   <%= paginate_records @surv_sites %>
 <% end %>
 
-<table class="table table-striped well no-border no-padding">
+<table class="table table-hover">
   <thead>
     <tr>
       <th> Site </th>
@@ -26,7 +26,7 @@
         <td><%=surv_site.surv_type %></td>
         <td><%=surv_site.surv_site_commodities_count %></td>
         <td>
-        	<%= link_to 'View detail', admin_surv_site_surv_site_commodities_path(surv_site), :class => 'btn btn-mini' %>
+        	<%= link_button_edit ' View detail', admin_surv_site_surv_site_commodities_path(surv_site) %>
         </td>
       </tr>
     <% end %>

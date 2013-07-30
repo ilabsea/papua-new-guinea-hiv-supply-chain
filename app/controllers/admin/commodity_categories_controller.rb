@@ -2,7 +2,12 @@ module Admin
   class CommodityCategoriesController < Controller
     
     def index
-      @commodity_categories = CommodityCategory.order("com_type").paginate(paginate_options)
+      params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
+      if(params[:type] == CommodityCategory::TYPES_DRUG)
+        @commodity_categories = CommodityCategory.drug.paginate(paginate_options)
+      else
+        @commodity_categories = CommodityCategory.kit.paginate(paginate_options)
+      end
       @app_title = "Commodity Categories"
     end
 
@@ -14,7 +19,7 @@ module Admin
 
 
     def new
-      @commodity_category = CommodityCategory.new
+      @commodity_category = CommodityCategory.new(:com_type => params[:type])
       @app_title = "New Category"
     end
 
@@ -29,7 +34,7 @@ module Admin
       @commodity_category = CommodityCategory.new(params[:commodity_category])
 
       if @commodity_category.save
-        redirect_to admin_commodity_categories_path, notice: 'Commodity Category has been created successfully.'
+        redirect_to admin_commodity_categories_path(:type =>@commodity_category.com_type ), notice: 'Commodity Category has been created successfully.'
       else
         render action: "new" 
       end
@@ -41,7 +46,7 @@ module Admin
       @commodity_category = CommodityCategory.find(params[:id])
 
       if @commodity_category.update_attributes(params[:commodity_category])
-        redirect_to admin_commodity_categories_path, notice: 'Commodity Category has been updated successfully.' 
+        redirect_to admin_commodity_categories_path(:type => @commodity_category.com_type), notice: 'Commodity Category has been updated successfully.' 
       else
         render action: "edit" 
       end
@@ -51,9 +56,9 @@ module Admin
       begin
         @commodity_category = CommodityCategory.find(params[:id])
         @commodity_category.destroy
-        redirect_to admin_commodity_categories_url , :notice => 'Commodity Category has been removed'
+        redirect_to admin_commodity_categories_path(:type => params[:type]) , :notice => 'Commodity Category has been removed'
       rescue Exception => ex
-        redirect_to admin_commodity_categories_url , :error => ex.message
+        redirect_to admin_commodity_categories_path(:type => params[:type]) , :error => ex.message
       end
     end
 

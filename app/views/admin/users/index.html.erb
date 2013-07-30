@@ -7,7 +7,7 @@
 <% end %>
 
 <%= paginate_records @users %>
-<table class="table table-striped well no-border no-padding" >
+<table class="table table-hover" >
   <thead>
     <tr>
       <th><%= t("Login")%></th>
@@ -36,7 +36,7 @@
           <%= link_button_reset 'Reset', reset_admin_user_path(user), :class => 'btn btn-mini btn-warning' %>
           <% if current_user.id != user.id %>
           <%= link_button_delete 'Delete'  , admin_user_path(user), :method => :delete,
-                      :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+                      :confirm => 'Are you sure to delete?', :class => 'btn btn-mini btn-danger' %>
           <% end %>            
         </td>
       </tr>

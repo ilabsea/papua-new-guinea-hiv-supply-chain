@@ -3,17 +3,16 @@
 <% end %>
 
 <%= page_header t("Drug categories")  do %>
-  <%=link_to "New Drug Category", new_admin_category_path(), :class => 'btn' %>
+  <%=link_button_new "New Drug Category", new_admin_category_path() %>
 <%  end %>
 
 <%= paginate_records @categories %>
-<table class="table table-striped well no-border no-padding">
+<table class="table table-hover">
   <thead>
     <tr>
-      <th><%= t 'Name' %></th>
-      <th><%= t 'Description' %></th>
-      <th><%= t 'Created at' %></th>
-      <th class='action_col2' ><%= t 'Action' %></th>
+      <th>Name</th>
+      <th>Description</th>
+      <th class='action_col2' >Action</th>
     </tr>
   </thead>
   <tbody>
@@ -21,11 +20,10 @@
       <tr>
         <td><%= link_to category.name, edit_admin_category_path(category) %></td>
         <td><%= category.description %></td>
-        <td><%= l category.created_at %></td>
         <td>
-          <%= link_to t('Edit'),  edit_admin_category_path(category), :class => 'btn btn-mini' %>
-          <%= link_to t('Delete'),  admin_category_path(category), :confirm => t('Are you sure?'),
-                      :method => :delete , :class => 'btn btn-mini btn-danger' %>
+          <%= link_button_edit 'Edit',  edit_admin_category_path(category) %>
+          <%= link_button_delete 'Delete',  admin_category_path(category), :confirm => 'Are you sure to delete?',
+                      :method => :delete  %>
         </td>
       </tr>
     <% end %>

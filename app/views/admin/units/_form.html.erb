@@ -2,7 +2,7 @@
 	<%= f.error_notification %>
 	<%= f.input "name" %>
 	<div class="form-actions">
-	    <%= f.button :submit, :class => 'btn-primary' %>
-	    <%= link_to t('Cancel'),  admin_units_path, :class => 'btn' %>
+	    <%= link_button_cancel 'Cancel',  admin_units_path, :class => 'btn' %>
+	    <%= button_save ' Save' %>
   	</div>
 <% end %>
