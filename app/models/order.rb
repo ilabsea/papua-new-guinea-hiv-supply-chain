@@ -130,8 +130,11 @@ class Order < ActiveRecord::Base
      else
         orders = self.total_by_status
      end
+     self.total_by_status_as_hash orders
+  end
 
-     statuses = {}
+  def self.total_by_status_as_hash orders
+    statuses = {}
      orders.each do |order|
        statuses[order.status] = order.total
      end

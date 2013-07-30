@@ -298,8 +298,8 @@ namespace :png do
   def load_users
     [
       {:email => "site@png.com", :password => "123456", :user_name => "site", :phone_number => "097550",:display_name => "Site", :role => User::ROLES_SITE , :site_id => Site.first.id },
-      {:email => "entry@png.com", :password => "123456", :user_name => "data", :phone_number => "097551",:display_name => "Data", :role => User::ROLES_DATA_ENTRY }
-      {:email => "reviewer@png.com", :password => "123456", :user_name => "reviewer", :phone_number => "097552",:display_name => "Reviewer", :role => User::ROLES_REVIEWER }
+      {:email => "entry@png.com", :password => "123456", :user_name => "data", :phone_number => "097551",:display_name => "Data", :role => User::ROLES_DATA_ENTRY },
+      {:email => "reviewer@png.com", :password => "123456", :user_name => "reviewer", :phone_number => "097552",:display_name => "Reviewer", :role => User::ROLES_REVIEWER },
       {:email => "ams@png.com", :password => "123456", :user_name => "ams", :phone_number => "097553",:display_name => "AMS", :role => User::ROLES_AMS }
     ].each do |options|
       User.create! options
