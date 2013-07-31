@@ -58,12 +58,13 @@ PngHivAids::Application.routes.draw do
     resources :units
     resources :users do
       member do
-        get 'reset'   # reset_admin_user_path /admin/users/:id/reset
-        put 'change'
+        put 'reset'
       end
 
       collection do
         get 'account' # account_admin_users_path /admin/users/account
+        get 'new_password'
+        put 'change'
       end
 
     end

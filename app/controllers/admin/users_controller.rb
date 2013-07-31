@@ -43,12 +43,20 @@ module Admin
 			end	
 		end
 
-		def reset
-		  @user = User.find(params[:id])
-		  @app_title = "Reset password"
+		def new_password
+
 		end
 
 		def change
+			if(current_user.change_password? params[:user])
+				sign_in(current_user, :bypass => true)
+				redirect_to new_password_admin_users_path, :notice => 'Your password has been reset successfully'
+			else	
+				render :new_password
+			end
+		end
+
+		def reset
 		  @user = User.find(params[:id])
 		  @changed_password = @user.random_password!
 
