@@ -2,13 +2,12 @@
   <%= breadcrumb [{"Surv Sites" => false}] %>
 <% end %>
 
-<%= page_header "Surv Sites : " + @import_surv.surv_type, :left => 4, :right => 8  do %>
-  <%= paginate_records @surv_sites %>
-<% end %>
+<%= page_header "Surv Sites : " + @import_surv.surv_type  %>
 
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th class='nth-table'> # </th>
       <th> Site </th>
       <th> Year </th>
       <th> Month </th>
@@ -18,8 +17,9 @@
     </tr>
   </thead>
   <tbody>
-    <% @surv_sites.each do |surv_site| %>
+    <% @surv_sites.each_with_index do |surv_site, index| %>
       <tr>
+        <td><%=current_entries + index %></td>
         <td><%=surv_site.site.name%></td>
         <td><%=surv_site.year %></td>
         <td><%=surv_site.month %></td>
@@ -32,3 +32,4 @@
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @surv_sites %>

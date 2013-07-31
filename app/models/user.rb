@@ -49,6 +49,10 @@ class User < ActiveRecord::Base
      self.role == User::ROLES_DATA_ENTRY
   end
 
+  def ams?
+    self.role == User::ROLES_AMS
+  end
+
   def site?
      self.role == User::ROLES_SITE
   end

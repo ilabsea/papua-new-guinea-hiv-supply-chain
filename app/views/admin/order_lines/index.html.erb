@@ -17,7 +17,7 @@
 </ul>
 
 
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
       <th>Commodity</th>
@@ -40,5 +40,6 @@
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @order_lines %>
 
 

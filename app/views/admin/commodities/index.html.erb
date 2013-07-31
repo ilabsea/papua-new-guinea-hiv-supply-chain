@@ -15,10 +15,10 @@
   </li>
 </ul>
 
-<%= paginate_records @commodities %>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Category</th>
       <th>Unit</th>
@@ -33,8 +33,9 @@
     </tr>
   </thead>
   <tbody>
-    <% @commodities.each do |commodity| %>
+    <% @commodities.each_with_index do |commodity, index| %>
       <tr>
+        <td><%=current_entries + index %></td>
         <td><%=link_to commodity.name, edit_admin_commodity_path(commodity, :type => params[:type]) %></td>
         <td><%= commodity.commodity_category.name %></td>
         <td><%= commodity.unit.name %></td>
@@ -54,3 +55,5 @@
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @commodities %>
+

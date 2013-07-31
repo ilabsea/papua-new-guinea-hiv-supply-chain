@@ -1,9 +1,0 @@
-<% content_for :breadcrumb do %>
-  <%= breadcrumb [{"Users" => admin_users_path},{"Reset: #{@user.user_name}" => nil } ] %>
-<% end %>
-
-<%= page_header "Reset password user" %>
-
-<p style='color:gray;font-size: 14px;'>
-   <b> <%= @user.user_name %> </b>'s password has been reset to : <b> <%= @changed_password %> </b>
-</p>

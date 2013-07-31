@@ -6,18 +6,19 @@
   <%= breadcrumb [{"Public Holiday" => nil}]  %>
 <% end %>
 
-<%= paginate_records @public_holidays %>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th>#</th>
       <th>Name</th>
       <th>Date</th>
       <th class='action_col2' >Action</th>
     </tr>
   </thead>
   <tbody>
-    <% @public_holidays.each do |public_holiday| %>
+    <% @public_holidays.each_with_index do |public_holiday, index| %>
       <tr>
+        <td><%=current_entries + index %></td>
         <td><%=link_to public_holiday.name, edit_admin_public_holiday_path(public_holiday) %></td>
         <td><%= public_holiday.date %></td>
         <td class="last"> 
@@ -29,3 +30,4 @@
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @public_holidays %>

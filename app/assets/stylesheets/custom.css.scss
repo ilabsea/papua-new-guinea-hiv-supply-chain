@@ -6,7 +6,7 @@
   text-align : right;
 }
 .top-15{
-   margin-top: 15px;
+   margin: 10px 0px;
 }
 td:last, td.last {
   text-align: right  !important;
@@ -81,4 +81,26 @@ td:last, td.last {
 .link-seperator{
   color:#ccc; 
   line-height: 1;  
+}
+.user-bar{
+  /*position:fixed;*/
+}
+.content-start{
+  /*margin-top: 36px;*/
+}
+.nth-table{
+  width: 20px;
+}
+.header-title{
+  font-size: 18px;
+  margin_bottom: 5px;
+  padding: 0px;
+  line-height: 1;
+}
+.list-header{
+  padding: 0px;
+  margin:0px;
+}
+.pagination{
+  margin: 0px !important;
 }

@@ -6,18 +6,19 @@
   <%= breadcrumb [{"Provinces" => nil}]  %>
 <% end %>
 
-<%= paginate_records @provinces %>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Code</th>
       <th class="action_col2" >Action</th>
     </tr>
   </thead>
   <tbody>
-    <% @provinces.each do |province| %>
+    <% @provinces.each_with_index do |province, index| %>
       <tr>
+        <td><%=current_entries + index %></td>
         <td><%=link_to province.name, edit_admin_province_path(province) %></td>
         <td><%= province.code %></td>
         <td class="last">
@@ -29,5 +30,6 @@
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @provinces %>
 
 

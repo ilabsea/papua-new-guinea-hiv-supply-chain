@@ -9,7 +9,13 @@ class Ability
 
     if user.admin?
       can :manage, :all  
-    else
+    elsif user.site?
+
+    elsif user.data_entry?
+    
+    elsif user.reviewer?
+
+    elsif user.ams?    
       can :read, :all
     end
     

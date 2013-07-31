@@ -9,10 +9,10 @@
   <%= breadcrumb [{"Orders" => nil}]  %>
 <% end %>
 
-<%= paginate_records @orders %>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th class='nth-table'>#</th>
       <th>Summition</th>
       <th>Site</th>
       <th>Id</th>
@@ -26,8 +26,9 @@
   </thead>
 
   <tbody>
-    <% @orders.each do |order| %>
+    <% @orders.each_with_index do |order, index| %>
       <tr>
+        <td><%= current_entries + index %></td>
         <td><%=l order.date_submittion %></td>
         <td><%=order.site.name %></td>
         <td><%= order.id %> </td>
@@ -52,7 +53,7 @@
     <% end %>
   </tbody>
 </table>
-
+<%= render_paginate_for @orders %>
 <%#= render 'search' %>
 
 

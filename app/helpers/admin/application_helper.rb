@@ -33,6 +33,27 @@ module Admin::ApplicationHelper
       will_paginate records, renderer: BootstrapPagination::Rails
     end
   end
+
+  def paginate_entries records
+    if require_paginate_for? records
+      content_tag :div, :class => 'paginator paginator-entry badge right' do
+        pluralize(records.length, 'record')  + ' of ' + records.total_entries.to_s + ' in total'
+      end 
+    end
+  end
+
+  def render_paginate_for records
+    content_tag(:div, :class => 'row-fluid') do
+     [ 
+      content_tag(:div, :class => 'span4') do
+        paginate_entries records
+      end,
+      content_tag(:div, :class => 'span8') do
+        paginate_records records
+      end
+      ].join("").html_safe 
+    end
+  end
   
   def breadcrumb_str options
 		items = []

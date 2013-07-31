@@ -6,9 +6,11 @@
   <%=link_button_new "New Unit", new_admin_unit_path() %>	
 <%end%>
 
-<table class="table table-hover">
+
+<table class="table table-hover table-bordered">
 	<thead> 
 		<tr>
+			<th class='nth-table'> # </th>
 			<th> Name </th>
 			<th> Creation date </th>
 			<th class='action_col2'> Action</th>
@@ -16,8 +18,9 @@
 	</thead>
 
 	<tbody>
-		<% @units.each do |unit| %>
+		<% @units.each_with_index do |unit, index| %>
 			<tr> 
+				<td><%= current_entries + index %></td>
 				<td><%= link_to unit.name, admin_unit_path(unit) %></td>
 				<td><%= l unit.created_at %></td>
 				<td>
@@ -28,5 +31,5 @@
 			</tr>
 		<% end %> 
 	</tbody>
-
 </table>
+<%= render_paginate_for  @units %>

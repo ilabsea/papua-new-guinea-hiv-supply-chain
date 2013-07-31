@@ -6,10 +6,10 @@
   <%= link_button_new "New User", new_admin_user_path, :class => "btn" %>
 <% end %>
 
-<%= paginate_records @users %>
-<table class="table table-hover" >
+<table class="table table-hover table-bordered" >
   <thead>
     <tr>
+      <th class='nth-table'>#</th>
       <th>Login</th>
       <th>Phone</th>
       <th>Name</th>
@@ -22,8 +22,9 @@
   </thead>
 
   <tbody>
-    <% @users.each do |user|%>
+    <% @users.each_with_index do |user, index|%>
       <tr>
+        <td><%= index + current_entries %> </td>
         <td><%= link_to user.user_name, edit_admin_user_path(user) %> </td>
         <td><%= user.phone_number %> </td>
         <td><%= user.display_name  %> </td>
@@ -42,3 +43,4 @@
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @users %>

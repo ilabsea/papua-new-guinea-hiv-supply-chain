@@ -2,10 +2,10 @@
     <%= link_button_new 'New Requisition Report', new_admin_requisition_report_path, :class => 'btn' %>
 <% end %>
 
-<%= paginate_records @requisition_reports %>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th class='nth-table'> # </th>
       <th> Summition </th>
       <th> Site </th>
       <th> User </th>
@@ -14,10 +14,11 @@
     </tr>
   </thead>
   <tbody>
-    <% @requisition_reports.each do |requisition_report| %>
+    <% @requisition_reports.each_with_index do |requisition_report, index| %>
       <tr>
+        <td><%=current_entries + index %></td>
         <td>
-          <%= link_to File.basename(requisition_report.form.current_path) , download_admin_requisition_report_path(requisition_report) %>
+          <%=link_to File.basename(requisition_report.form.current_path) , download_admin_requisition_report_path(requisition_report) %>
         </td>
         <td><%=requisition_report.site.name %></td>
         <td><%=requisition_report.user.display_name %></td>
@@ -34,5 +35,6 @@
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @requisition_reports %>
 
 

@@ -6,10 +6,10 @@
   <%= breadcrumb [{"Sites" => nil}]  %>
 <% end %>
 
-<%= paginate_records @sites %>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Service</th>
       <th>Suggestion Order Valid Within(%)</th>
@@ -23,8 +23,9 @@
     </tr>
   </thead>
   <tbody>
-    <% @sites.each do |site| %>
+    <% @sites.each_with_index do |site, index| %>
       <tr>
+        <td><%= current_entries + index %></td>
         <td><%= link_to site.name, edit_admin_site_path(site) %></td>
         <td><%= site.service_type %></td>
         <td><%= site.suggestion_order %></td>
@@ -43,5 +44,5 @@
     <% end %>
   </tbody>
 </table>
-
+<%= render_paginate_for @sites %>
 

@@ -16,18 +16,20 @@
     <%= link_to CommodityCategory::TYPES_KIT , admin_commodity_categories_path(:type =>  CommodityCategory::TYPES_KIT ) %>
   </li>
 </ul>
-<%= paginate_records @commodity_categories %>
-<table class="table table-hover">
+
+<table class="table table-hover table-bordered">
   <thead>
     <tr>
+      <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Type</th>
       <th class='action_col2' >Action</th>
     </tr>
   </thead>
   <tbody>
-    <% @commodity_categories.each do |commodity_category| %>
+    <% @commodity_categories.each_with_index do |commodity_category, index| %>
       <tr>
+        <td><%= current_entries + index %></td>
         <td><%= link_to commodity_category.name, edit_admin_commodity_category_path(commodity_category) %></td>
         <td><%= commodity_category.com_type %></td>
         <td>
@@ -39,3 +41,4 @@
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @commodity_categories %>
