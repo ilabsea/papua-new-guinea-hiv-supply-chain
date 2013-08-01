@@ -44,7 +44,7 @@ module Admin
 		end
 
 		def new_password
-
+			@app_title = 'Change Password'
 		end
 
 		def change
@@ -57,7 +57,7 @@ module Admin
 		end
 
 		def profile
-
+			@app_title = 'Update Profile'
 		end
 
 		def update_profile
@@ -68,8 +68,6 @@ module Admin
 		     render :profile  	  
 		   end
 		end
-
-
 
 		def reset
 		  @user = User.find(params[:id])

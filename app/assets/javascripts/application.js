@@ -10,14 +10,18 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
+
 //= require bootstrap-datepicker
+
 //= require custom
-//= require_tree .
 //= require bootrap-datetime
 
-//= require angular.min
+//= require_tree .
+
+// require angular.min
 // require angle-up
-//= require_tree ./angular
+// require_tree ./angular
