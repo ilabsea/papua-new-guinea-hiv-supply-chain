@@ -1,16 +1,19 @@
 <div class="row user-bar"> 
-  <div class='span8' > 
+  <div class='span7' > 
   	<div id='system_loading'>
   		<%= image_tag 'loading.gif', :alt => 'System loading', :title => 'System loading' %> Waiting for server response
     </div>
   </div>
-  <div class='span4 right' >	
+  <div class='span5 right' >	
     <div style='padding:10px; margin-top:-14px;' class='well' >
       <% if user_signed_in? %>
-         Welcome,  <i class='icon-user'> <%= current_user.display_name %> </i>
-         <%= link_to "Change password", new_password_admin_users_path() %> 
-         <span class='link-seperator'> | </span> 
-         <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
+        Welcome,  <i class='icon-user'> <%= current_user.display_name %> </i>
+        <%= link_to "Change password", new_password_admin_users_path() %> 
+        <span class='link-seperator'> | </span> 
+        <%= link_to "Profile", profile_admin_users_path %>       
+        <span class='link-seperator'> | </span> 
+        <%= link_to "Sign out", destroy_user_session_path, :method => :delete  %>
+
       <% else %>
          <%= link_to "Sign in", new_user_session_path %>
       <% end %>  

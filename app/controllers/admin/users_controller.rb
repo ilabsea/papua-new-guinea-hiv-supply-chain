@@ -56,6 +56,21 @@ module Admin
 			end
 		end
 
+		def profile
+
+		end
+
+		def update_profile
+		   attributes = params[:user].slice(:phone_number, :display_name, :email, :site_id)
+		   if current_user.update_attributes attributes
+		     redirect_to profile_admin_users_path, :notice => 'Your profile has been updated successfully'
+		   else
+		     render :profile  	  
+		   end
+		end
+
+
+
 		def reset
 		  @user = User.find(params[:id])
 		  @changed_password = @user.random_password!

@@ -65,6 +65,8 @@ PngHivAids::Application.routes.draw do
         get 'account' # account_admin_users_path /admin/users/account
         get 'new_password'
         put 'change'
+        get 'profile'
+        put 'update_profile'
       end
 
     end
