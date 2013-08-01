@@ -8,6 +8,14 @@ class OrderLineImport
 		load_arv_test
 	end
 
+	def self.find_commodity_by_name name
+		@commodities ||= Commodity.all
+		@commodities.each do |commodity|
+			return commodity if commodity.name == name
+		end
+		nil
+	end
+
 	def self.load_arv_test
 		sheet_arv_test = @book.worksheet 1
 		arv_header = 10
@@ -19,12 +27,13 @@ class OrderLineImport
 			row = sheet_arv_test.row index
 
 			if is_commodities? row
-				commodity = Commodity.find_by_name(row[0])
+				commodity = find_commodity_by_name(row[0])
 				if commodity
 					params = { :commodity_id  => commodity.id,
 							   :arv_type  	  =>  CommodityCategory::TYPES_KIT,
 							   :stock_on_hand =>  row[2].to_i,
-							   :monthly_use	  => row[3].to_i 
+							   :monthly_use	  => row[3].to_i,
+							   :skip_bulk_insert => true 
 							}
 
 					order_lines << @order.order_lines.build(params)
@@ -35,7 +44,7 @@ class OrderLineImport
 				end													  
 			end
 		end
-		OrderLine.import order_lines # import
+		bulk_import order_lines
 	end
 
 	def self.load_arv_req
@@ -50,12 +59,13 @@ class OrderLineImport
 			row = sheet_arv_request.row index
 
 			if is_commodities? row
-				commodity = Commodity.find_by_name(row[0])
+				commodity = find_commodity_by_name(row[0])
 				if commodity
 					params = { :commodity_id => commodity.id,
 							   :arv_type  => CommodityCategory::TYPES_DRUG,
 							   :stock_on_hand =>  row[5].to_i,
-							   :monthly_use   =>  row[6].to_i 
+							   :monthly_use   =>  row[6].to_i,
+							   :skip_bulk_insert => true  
 							}
 					order_lines << @order.order_lines.build(params)
 				else
@@ -65,7 +75,15 @@ class OrderLineImport
 				end													  
 			end
 		end
-		OrderLine.import order_lines # import
+		bulk_import order_lines
+		
+	end
+
+	def self.bulk_import order_lines
+		order_lines.each do |order_line|
+			order_line.save(:validate =>false)
+		end
+		#OrderLine.import order_lines # failed to create record without validation
 	end
 
 	def self.is_category? row

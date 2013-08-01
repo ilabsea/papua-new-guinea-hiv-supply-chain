@@ -2,7 +2,7 @@ class OrderLine < ActiveRecord::Base
   belongs_to :order
   belongs_to :commodity
   attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :quantity_system_calculation, :status, 
-                  :stock_on_hand, :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :is_set, 
+                  :stock_on_hand, :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :is_set, :skip_bulk_insert,
                   :site_suggestion, :test_kit_waste_acceptable, :number_of_client, :consumption_per_client_per_month
 
   validates :stock_on_hand, :monthly_use, :quantity_system_calculation, :numericality => true, :allow_nil => true                
@@ -11,16 +11,27 @@ class OrderLine < ActiveRecord::Base
   validate :quantity_suggested_valid?
   before_save :calculate_attribute
 
+  attr_accessor :skip_bulk_insert
+
   STATUS_APPROVED = 'Approved'
   STATUS_REJECTED = 'Rejected'
 
   STATUSES = [STATUS_APPROVED, STATUS_REJECTED]
+
+  def skip_bulk_insert=(val)
+    @skip_bulk_insert = val
+  end
+
+  def skip_bulk_insert
+    @skip_bulk_insert
+  end
 
   def calculate_attribute
     self.quantity_system_calculation =  self.consumption_per_client_per_month.to_i * self.number_of_client.to_i
   end
 
   def quantity_suggested_valid?
+    return true if skip_bulk_insert
     arv_type == CommodityCategory::TYPES_DRUG ? quantity_suggested_drug? : quantity_suggested_kit?
   end
 

@@ -11,7 +11,7 @@
 <%= page_header "#{@import_surv.surv_type} for Year: #{@import_surv.year}, Month: #{@import_surv.month}" %>
 
 <div class='row-fluid form-fixed'  >
-  <table class='table table-hover surv-form table-fixed-header' >
+  <table class='table table-hover surv-form table-fixed-header table-bordered' >
     <thead class='header' >
       <tr >
          <th class='list-no'>#</th>
@@ -42,5 +42,5 @@
 </div>
 <br />
 
-<div> <%= link_to 'Back to Survs', admin_import_surv_path, :class => 'btn' %> </div>
+<div> <%= link_button_cancel  'Back to Survs', admin_import_survs_path, :class => 'btn' %> </div>
 
