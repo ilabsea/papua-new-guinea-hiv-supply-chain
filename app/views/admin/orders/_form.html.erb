@@ -71,6 +71,22 @@
     });
   }
 
+  function handleSystemSuggestion(){
+    $(".stock_on_hand").on('keyup', function(){
+      $elm = $(this);
+      var ref =  $elm.attr('data-ref'); 
+      var systemCalcId = "#quantity_system_calculation_" + ref
+      $systemCal = $(systemCalcId);
+
+      var consumtion = $("#consumption_per_client_per_month_" + ref ).val()
+      var numberOfClient = $("#number_of_client_" + ref ).val()
+
+      var value = parseFloat(consumtion) * parseFloat(numberOfClient) - parseFloat($elm.val())
+      $systemCal.html(value);
+
+    })
+  }
+
   function handleLoadOrderLinesTab(){
     $("#order_site_id").on('change', function(){
        loadOrderLinesTab();
@@ -227,6 +243,7 @@
     handleSiteUser();
     handleLoadOrderLinesTab();
     handleValidateField();
+    handleSystemSuggestion();
     //handleSubmit();
   });
 </script>

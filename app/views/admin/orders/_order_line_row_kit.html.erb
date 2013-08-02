@@ -16,14 +16,16 @@
     <td> 
       <%= order_line_record.number_of_client %> 
       <%= order_line.input :number_of_client, :as => :hidden, :input_html => { 
-                           :class=> 'validate_field number_text', 
+                           :class=> 'validate_field number_text',
+                           :id => "number_of_client_#{row_ref}", 
                            :'data-ref' => row_ref } %>
     </td>
 
     <td> 
       <%= order_line_record.consumption_per_client_per_month %> 
       <%= order_line.input :consumption_per_client_per_month, :as => :hidden, :input_html => { 
-                              :class=> :validate_field,
+                              :class=> 'validate_field' ,
+                              :id => "consumption_per_client_per_month_#{row_ref}",
                               :'data-ref' => row_ref
                             } %>
     </td>
@@ -39,7 +41,7 @@
     <td> 
       <%= order_line.input :monthly_use, :label=> '&nbsp;' , 
           :wrapper_html => {:class => 'inline-div'},
-          :input_html   => {:class => 'validate_field number_text', :'data-ref' => row_ref} , 
+          :input_html   => {:class => 'validate_field number_text monthly_use', :'data-ref' => row_ref} , 
           :label_html   => {:class => 'none'}
       %> 
     </td>

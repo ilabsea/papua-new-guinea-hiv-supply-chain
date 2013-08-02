@@ -27,7 +27,9 @@ class OrderLine < ActiveRecord::Base
   end
 
   def calculate_attribute
-    self.quantity_system_calculation =  self.consumption_per_client_per_month.to_i * self.number_of_client.to_i
+    total                            =  self.consumption_per_client_per_month.to_i * self.number_of_client.to_i
+    self.quantity_system_calculation = total - self.stock_on_hand.to_i
+      
   end
 
   def quantity_suggested_valid?
@@ -56,7 +58,7 @@ class OrderLine < ActiveRecord::Base
   def quantity_suggested_drug?
     return true  if ( stock_on_hand.blank?  || quantity_suggested.blank?)
     cal = cal_drug
-    if cal > self.site_suggestion
+    if cal > self.site_suggestion.to_f
         message = "Invalid!, System calculation = " + filter(cal) + " must be less than or equal to site suggestion = " + filter(self.site_suggestion)
         errors.add(:stock_on_hand, message) 
         errors.add(:quantity_suggested, message)    
@@ -93,9 +95,6 @@ class OrderLine < ActiveRecord::Base
             self.site_suggestion             = temp_order.site.suggestion_order
             self.test_kit_waste_acceptable   = temp_order.site.test_kit_waste_acceptable
             self.number_of_client            = surv_site_commodity.quantity.to_i
-            total                            =  self.consumption_per_client_per_month.to_i * self.number_of_client
-            system_suggestion                = total - self.stock_on_hand.to_i
-            self.quantity_system_calculation = system_suggestion 
             self.is_set = true 
             break
           end
