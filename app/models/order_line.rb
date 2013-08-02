@@ -27,9 +27,12 @@ class OrderLine < ActiveRecord::Base
   end
 
   def calculate_attribute
+      calculate_system_suggestion
+  end
+
+  def calculate_system_suggestion
     total                            =  self.consumption_per_client_per_month.to_i * self.number_of_client.to_i
     self.quantity_system_calculation = total - self.stock_on_hand.to_i
-      
   end
 
   def quantity_suggested_valid?
