@@ -1,23 +1,25 @@
-<table class="table table-striped well no-border no-padding" >
+<table class="table table-bordered" >
   <thead>
   	<tr> 
-      <td> Commodity </td>
-      <td> #Patient drug </td>
-      <td> Stock on hand </td>
-      <td> Consumtion</td>
-      <td> System suggestion</td>
-      <td> Quantity Suggested</td>
-      <td> Status</td>
-      <td> Entry Note</td>
-      <td> Reviewer Note</td>
-      <td width='60px;'> Action </td>
+      <th> # </th>
+      <th> Commodity </th>
+      <th> #Patient drug </th>
+      <th> Stock on hand </th>
+      <th> Consumtion</th>
+      <th> System suggestion</th>
+      <th> Quantity Suggested</th>
+      <th> Status</th>
+      <th> Entry Note</th>
+      <th> Reviewer Note</th>
+      <th width='60px;'> Action </th>
 
   	</tr>
   </thead>
 
   <tbody>
-    <% order_lines.each do |order_line| %>
+    <% order_lines.each_with_index do |order_line, index| %>
 	    <tr> 
+        <td> <%= index+1 %></td>
 	      <td> <%= order_line.commodity.name %> </td>
 	      <td> <%= order_line.number_of_client %></td>
 	      <td> <%= order_line.stock_on_hand %> </td>

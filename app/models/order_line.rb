@@ -74,7 +74,7 @@ class OrderLine < ActiveRecord::Base
     return true if(self.stock_on_hand.blank?  || self.monthly_use.blank?)     
     cal = cal_kit
     if(cal > self.test_kit_waste_acceptable.to_f)
-      message =  "Invalid, Sstem calculation = " + filter(cal) + " must be less than or equal to site wastage = " + filter(self.test_kit_waste_acceptable) 
+      message =  "Invalid, System calculation = " + filter(cal) + " must be less than or equal to site wastage = " + filter(self.test_kit_waste_acceptable) 
       errors.add(:stock_on_hand, message) 
       errors.add(:monthly_use, message) 
       return false
