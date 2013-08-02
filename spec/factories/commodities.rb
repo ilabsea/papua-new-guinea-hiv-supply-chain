@@ -2,10 +2,11 @@
 
 FactoryGirl.define do
   factory :commodity do
-    name "MyString"
-    commodity_category_id 1
+    sequence(:name){|index| "Site#{index}"}
+    commodity_category
     consumption_per_client_pack 1
     consumption_per_client_unit 1
+    commodity_type { CommodityCategory::TYPES_KIT} 
     unit
   end
 end

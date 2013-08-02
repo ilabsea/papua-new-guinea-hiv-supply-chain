@@ -1,9 +1,9 @@
 class OrderLine < ActiveRecord::Base
   belongs_to :order
   belongs_to :commodity
-  attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :quantity_system_calculation, :status, 
+  attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :quantity_system_calculation, :status, :order,
                   :stock_on_hand, :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :is_set, :skip_bulk_insert,
-                  :site_suggestion, :test_kit_waste_acceptable, :number_of_client, :consumption_per_client_per_month
+                  :site_suggestion, :test_kit_waste_acceptable, :number_of_client, :consumption_per_client_per_month,:commodity
 
   validates :stock_on_hand, :monthly_use, :quantity_system_calculation, :numericality => true, :allow_nil => true                
 

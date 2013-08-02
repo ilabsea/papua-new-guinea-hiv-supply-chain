@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :unit do
-    name "Gram"
+    sequence(:name){|index| "Unit#{index}"}  
   end
 end

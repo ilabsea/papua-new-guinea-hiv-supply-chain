@@ -2,14 +2,15 @@ class Commodity < ActiveRecord::Base
 
   attr_accessor :commodity_type
 
-  attr_accessible :commodity_category_id, :consumption_per_client_pack, :consumption_per_client_unit, :name,
-  				  :unit_id, :strength_dosage, :abbreviation, :quantity_per_packg	
+  attr_accessible :commodity_category_id, :commodity_category, :consumption_per_client_pack, :consumption_per_client_unit, :name,
+  				  :unit_id, :strength_dosage, :abbreviation, :quantity_per_packg, :commodity_type	
 
   belongs_to :commodity_category
   belongs_to :unit
+  has_many :order_lines
 
   validates :commodity_category_id, :name ,	:unit_id, :presence   =>  true
-  validates :name , :uniqueness => true
+  #validates :name , :uniqueness => true
   validate :validate_commodity_type
   validates :consumption_per_client_pack, :consumption_per_client_unit, :numericality => true
 
@@ -17,10 +18,10 @@ class Commodity < ActiveRecord::Base
   default_scope order("commodities.name ASC")
 
   def validate_commodity_type
-  	if (self.commodity_type == "drugs")
-  		errors.add(:strength_dosage, "can't be blank") if self.strength_dosage.empty?
-  		errors.add(:abbreviation, "can't be blank") if self.abbreviation.empty?
-  		errors.add(:quantity_per_packg, "can't be blank") if self.quantity_per_packg.empty?
+  	if (self.commodity_type == CommodityCategory::TYPES_DRUG )
+  		errors.add(:strength_dosage, "can't be blank") if self.strength_dosage.blank?
+  		errors.add(:abbreviation, "can't be blank") if self.abbreviation.blank?
+  		errors.add(:quantity_per_packg, "can't be blank") if self.quantity_per_packg.blank?
   	end
   end
 
