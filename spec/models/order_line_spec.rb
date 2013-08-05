@@ -61,6 +61,8 @@ describe OrderLine do
       @order_line_kit.cal_kit.should eq 25
     end
 
+    
+
     it "should not add errors when stock_on_hand is blank" do
       @order_line_kit.stock_on_hand = ""
       @order_line_kit.quantity_suggested_kit?.should eq true
