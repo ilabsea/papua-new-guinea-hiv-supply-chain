@@ -55,7 +55,7 @@ class OrderLine < ActiveRecord::Base
   def cal_kit
     consumtion = self.number_of_client.to_i * self.consumption_per_client_per_month.to_i
     system_suggestion = consumtion - self.stock_on_hand.to_i
-    100 * (self.monthly_use - system_suggestion) / self.monthly_use
+    100 * (self.monthly_use - system_suggestion) / system_suggestion
   end
 
   def quantity_suggested_drug?
@@ -71,7 +71,7 @@ class OrderLine < ActiveRecord::Base
   end
 
   def quantity_suggested_kit?
-    return true if(self.stock_on_hand.blank?  || self.monthly_use.blank?)     
+    return true if(self.stock_on_hand.blank?  || self.monthly_use.blank? || self.number_of_client.to_i ==0 || self.consumption_per_client_per_month.to_i ==0 )     
     cal = cal_kit
     if(cal > self.test_kit_waste_acceptable.to_f)
       message =  "Invalid, System calculation = " + filter(cal) + " must be less than or equal to site wastage = " + filter(self.test_kit_waste_acceptable) 

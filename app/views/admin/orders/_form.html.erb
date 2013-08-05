@@ -163,8 +163,18 @@
     return options;
   }
 
+  function drugErrorMessage(name, siteSuggestion){
+    return "<b>" + name + "</b>: Quantity Suggested is not within " + filter(siteSuggestion) + " of population consumption";
+  }
+
+  function kitErrorMessage(name, wastage){
+    return "<b>" + name + "</b>: Monthly use declared by site is greater than " + filter(wastage)  + " of acceptable wastage";
+  }
+
   function  validateCriteria($elm){
-    var object = getOrderLineObject($elm)
+     $(".error-drug").hide();
+     $(".error-kit").hide();
+    var object = getOrderLineObject($elm);
     if(object.type_arv == '<%= CommodityCategory::TYPES_DRUG %>'){
 
         if($.trim(object.stockOnHand) == "" || $.trim(object.quantitySuggested) =="" || 
@@ -179,13 +189,13 @@
 
         if(cal <= parseFloat(object.siteSuggestion)){
           message =  "Commodity: " + object.commodityName +  " Quantity Suggested is acceptable system calculation = " 
-                  + filter(cal) + ", site suggestion = " + filter(object.siteSuggestion) ;
+                  + filter(cal) + ", site suggestion = " + filter(object.siteSuggestion) ;  
           green(".error-drug", message);
+          $(".error-drug").hide();
           return true;
         }
         else{
-          message =  "Commodity: " + object.commodityName + " Quantity Suggested is not acceptable system calculation = " 
-                  + filter(cal) + " must be less than or equal to site suggestion = " + filter(object.siteSuggestion) ;
+          message = drugErrorMessage(object.commodityName, object.siteSuggestion);        
           red(".error-drug", message);
           return false;
         }
@@ -199,16 +209,16 @@
 
         consumtion = object.numberOfClient * object.consumtionPerClient
         systemSuggestion = consumtion - object.stockOnHand 
-        var cal = formatNumber( 100 * (object.monthlyUse - systemSuggestion) / object.monthlyUse )
+        var cal = formatNumber( 100 * (object.monthlyUse - systemSuggestion) / systemSuggestion )
 
         if(cal <= parseFloat(object.testKitWasteAcceptable)){
           message = "Commodity: " + object.commodityName + " Quantity Suggested is acceptable " ; 
           green(".error-kit", message);
+          $(".error-kit").hide();
           return true;
         }
         else{
-          message =  "Commodity: " + object.commodityName +  " Quantity Suggested is not acceptable system calculation = " 
-                  +  filter(cal) + " must be less than or equal to site wastage = " + filter(object.testKitWasteAcceptable) ;
+          message = kitErrorMessage(object.commodityName, object.testKitWasteAcceptable);        
           red(".error-kit", message);
           return false;
         }

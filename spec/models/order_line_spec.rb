@@ -58,7 +58,7 @@ describe OrderLine do
     end
 
     it "should return for cal_kit" do
-      @order_line_kit.cal_kit.should eq 20
+      @order_line_kit.cal_kit.should eq 25
     end
 
     it "should not add errors when stock_on_hand is blank" do
@@ -75,8 +75,8 @@ describe OrderLine do
 
     it "should add errors when kit calculation is bigger than test_kit_waste_acceptable" do
       @order_line_kit.quantity_suggested_kit?.should eq false
-      @order_line_kit.errors.full_messages[0].should eq "Stock on hand Invalid, System calculation = 20% must be less than or equal to site wastage = 5%"
-      @order_line_kit.errors.full_messages[1].should eq "Monthly use Invalid, System calculation = 20% must be less than or equal to site wastage = 5%"
+      @order_line_kit.errors.full_messages[0].should eq "Stock on hand Invalid, System calculation = 25% must be less than or equal to site wastage = 5%"
+      @order_line_kit.errors.full_messages[1].should eq "Monthly use Invalid, System calculation = 25% must be less than or equal to site wastage = 5%"
     end
 
     it  "should not add errors when kit calculation is less then or equal waste acceptable" do
