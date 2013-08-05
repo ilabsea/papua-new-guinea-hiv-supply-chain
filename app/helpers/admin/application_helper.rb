@@ -134,6 +134,10 @@ module Admin::ApplicationHelper
     link_button 'icon-arrow-right', text, url, options
   end
 
+  def link_button_download text, url, options={}
+    link_button 'icon-download-alt', text, url, options
+  end
+
   def link_to_home text, url, options={}
     icon = content_tag "i", " ", :class => "icon-home"
     link_to (icon + text.html_safe), url, options

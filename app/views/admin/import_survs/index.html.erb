@@ -41,7 +41,7 @@
         <td><%= l import_surv.created_at %></td>
         <td class='action_col2' >
           <%#=link_to 'View', admin_import_surv_surv_sites_path(import_surv), :class => 'btn btn-mini' %>
-          <%=link_button_show 'Show', view_admin_import_surv_path(import_surv), :class => 'btn btn-mini' %>
+          <%=link_button_show 'Show', view_admin_import_surv_path(import_surv, :type => import_surv.surv_type), :class => 'btn btn-mini' %>
           <%= link_button_delete t('Delete'),   admin_import_surv_path(import_surv, :type => import_surv.surv_type),
                       :method => :delete, :confirm => 'Are you sure to delete?', :class => 'btn btn-mini btn-danger' %>
         </td>

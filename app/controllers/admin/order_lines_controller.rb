@@ -1,6 +1,7 @@
 module Admin
   class OrderLinesController < Controller
   	def index
+      params[:type] ||= CommodityCategory::TYPES_DRUG
   		@order = Order.find params[:order_id]
   		if params[:type] == CommodityCategory::TYPES_DRUG
   			@order_lines = @order.order_lines.drug.paginate(paginate_options)
