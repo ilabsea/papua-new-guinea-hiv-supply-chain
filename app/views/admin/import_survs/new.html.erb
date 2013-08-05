@@ -1,5 +1,5 @@
 <% content_for :breadcrumb do %>
-  <%= breadcrumb [{"Import Survs" => nil}]  %>
+  <%= breadcrumb [{"Survs" => admin_import_survs_path(:type => params[:type])}, {"New" => nil}]  %>
 <% end %>	
 
 <%= page_header "New #{@import_surv.surv_type}" %>
