@@ -2,7 +2,7 @@ module Admin
   class CommoditiesController < Controller
 
     def index
-        @commodities = Commodity.includes(:commodity_category)
+        @commodities = Commodity.includes(:commodity_category, :unit)
         params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
         if (params[:type] ==  CommodityCategory::TYPES_DRUG)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
@@ -13,15 +13,13 @@ module Admin
         @app_title = "Commodities"
     end
 
-    # GET /commodities/1
-    # GET /commodities/1.json
+
     def show
       @commodity = Commodity.find(params[:id])
       @app_title = "Commodity: #{@commodity.name}"
     end
 
-    # GET /commodities/new
-    # GET /commodities/new.json
+
     def new
       if (params[:type] == "drugs")
         @commodity = Commodity.new
@@ -31,14 +29,12 @@ module Admin
       @app_title = "New Commodity"
     end
 
-    # GET /commodities/1/edit
+
     def edit
       @commodity = Commodity.find(params[:id])
       @app_title = "Commodity: #{@commodity.name}"
     end
 
-    # POST /commodities
-    # POST /commodities.json
     def create
       @commodity = Commodity.new(params[:commodity])
       @commodity.commodity_type = params[:type]

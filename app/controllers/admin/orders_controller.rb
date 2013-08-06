@@ -22,7 +22,7 @@ module Admin
 
  	def tab_order_line
  		# must eager load order_lines, otherwise each orline from order.order_lines will go to sql query
- 		@order 			  =  params[:id].blank? ? Order.new() : Order.includes(:order_lines).find(params[:id])
+ 		@order 			  =  params[:id].blank? ? Order.new() : _order
  		@order.site 	  =  Site.find params[:site_id]
  		@order.order_date =  params[:order_date]
  		_build_tab(@order)	
@@ -45,17 +45,19 @@ module Admin
 
  	def review
  	  @type = params[:type] || CommodityCategory::TYPES_DRUG 
- 	  @order = Order.includes(:order_lines => :commodity).find params[:id]	
+ 	  @order = _order
  	end
 
+
+
  	def edit
- 	  @order = Order.find params[:id]
+ 	  @order = _order
  	  _build_tab @order
  	  @app_title = 'Edit order, Site :' + @order.site.name
  	end
 
  	def update
- 	  @order = Order.find params[:id]
+ 	  @order = _order
  	  @order.user_data_entry = current_user if current_user.data_entry?
  	  @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
 
@@ -90,6 +92,10 @@ module Admin
  	# don't refer me coz am private
  	private
 
+ 	def _order
+ 		@order = Order.includes(:order_lines => :commodity).find params[:id]	
+ 	end
+
  	def _build_tab order
  		_build_commodity_order_line order
  		order.order_lines_calculation
@@ -97,13 +103,13 @@ module Admin
 
  	def _build_commodity_order_line order
  	  existing_commodities = order.order_lines.map do |order_line| 
- 	  	order_line.arv_type = order_line.commodity.commodity_category.com_type
- 	  	order_line.consumption_per_client_per_month = order_line.commodity.consumption_per_client_unit 
+ 	  	order_line.arv_type = order_line.commodity.commodity_category.com_type if order_line.arv_type.blank?
+ 	  	order_line.consumption_per_client_per_month = order_line.commodity.consumption_per_client_unit  if order_line.consumption_per_client_per_month.blank? 
  	  	order_line.commodity
  	  end 
- 	  commodities = Commodity.order('name asc').includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
+ 	  non_existing_commodities = Commodity.order('name asc').includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
 
- 	  commodities.each do |commodity| 
+ 	  non_existing_commodities.each do |commodity| 
  	    order.order_lines.build :commodity_id  => commodity.id, 
  		  						  :arv_type		 => commodity.commodity_category.com_type,
  		  						  :consumption_per_client_per_month => commodity.consumption_per_client_unit  

@@ -1,0 +1,50 @@
+<%= page_header "Shipments", :left => 4, :right => 8  do  %>
+  <div class='row-fluid'>
+    <%= link_button_download 'Down load as Excel',  new_admin_shipment_path(), :class => 'btn btn-primary' %>
+  </div>
+  
+<% end %>
+
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Shipments" => nil}]  %>
+<% end %>
+
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th class='nth-table'>#</th>
+      <th>Site</th>
+      <th>Consignment</th>
+      <th>Date Shipped</th>
+      <th>SMS Notified clinic (times)</th>      
+      <th>Last notified date to clinic</th>
+      <th>Shipment confirmed received</th>
+      <th>Package lost</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @shipments.each_with_index do |shipment, index| %>
+      <tr>
+        <td><%= current_entries + index %></td>
+        <td><%=shipment.site.name %></td>
+        <td><%=shipment.consignment_number %></td>
+        <td><%= l shipment.shipment_date %> </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        
+        <td class="center">
+          
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render_paginate_for @shipments %>
+<%#= render 'search' %>
+
+

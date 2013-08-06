@@ -45,6 +45,7 @@ PngHivAids::Application.routes.draw do
       end
     end
 
+    resources :shipments
     resources :provinces
     resources :commodities
     resources :public_holidays

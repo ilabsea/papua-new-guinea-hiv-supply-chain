@@ -91,6 +91,8 @@ class OrderLine < ActiveRecord::Base
   def calculate_quantity_system_suggestion temp_order
     return false if self.is_set
     surv_sites = temp_order.surv_sites
+    p "surv_sites----------:"
+    p surv_sites
     surv_sites.each do |type, surv_site| 
       if surv_site
         surv_site.surv_site_commodities.each do |surv_site_commodity|

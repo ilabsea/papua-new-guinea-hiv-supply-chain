@@ -80,7 +80,7 @@ module Admin::ApplicationHelper
 		items.join("").html_safe
 	end
 
-  def link_button type, text, url, options
+  def link_button type, text, url, options={}
     options[:class] = options[:class] ? " btn #{options[:class]}" : "btn" 
     icon = content_tag "i", " ", :class => "#{type} "
     link_to (icon + text.html_safe), url, options
@@ -118,7 +118,7 @@ module Admin::ApplicationHelper
   end
 
   def link_button_export text, url, options={}
-    link_button 'icon-download-alt', text, url, options
+    link_button_download text, url, options
   end
 
   def link_button_reset text, url, options={}
@@ -135,6 +135,7 @@ module Admin::ApplicationHelper
   end
 
   def link_button_download text, url, options={}
+    options = options.merge(:'data-skip-loading' => true)
     link_button 'icon-download-alt', text, url, options
   end
 
@@ -144,7 +145,7 @@ module Admin::ApplicationHelper
   end
 
   def button_save text, klass=''
-    content_tag :button, :class => "btn btn-primary #{klass}" do
+    content_tag :button, :class => "btn btn-primary #{klass}", :'data-system-loading' => true do
      content_tag "i", text , :class => 'icon-ok'
    end
   end

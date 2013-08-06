@@ -2,7 +2,7 @@ module Admin
   class SitesController < Controller
 
     def index
-      @sites = Site.paginate(paginate_options)
+      @sites = Site.includes(:province).paginate(paginate_options)
       @app_title = "Sites"
     end
 
