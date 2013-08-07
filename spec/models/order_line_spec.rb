@@ -5,13 +5,15 @@ describe OrderLine do
   describe 'validate quantity_suggested with type drug ' do
   	before(:each) do
   		@order = FactoryGirl.create :order
+      @commodity = FactoryGirl.create(:commodity)
       @order_line_drug = @order.order_lines.build arv_type: CommodityCategory::TYPES_DRUG,
                             site_suggestion: 50 , 
                             test_kit_waste_acceptable: 5, 
                             number_of_client: 20, 
                             consumption_per_client_per_month: 30,
                             stock_on_hand:  100,
-                            quantity_suggested: 200
+                            quantity_suggested: 200,
+                            commodity: @commodity
   	end
 
   	it "should return 60 for order_line cal_drug" do
@@ -32,9 +34,7 @@ describe OrderLine do
 
     it "should have add errors to model when drug_calculation is bigger than site suggestion" do
       @order_line_drug.quantity_suggested_drug?.should eq false
-      @order_line_drug.errors.full_messages[0].should eq "Stock on hand Invalid!, System calculation = 60% must be less than or equal to site suggestion = 50%"
-      @order_line_drug.errors.full_messages[1].should eq "Quantity suggested Invalid!, System calculation = 60% must be less than or equal to site suggestion = 50%"
-
+      @order_line_drug.errors.full_messages[0].should eq "Quantity suggested <b>#{@commodity.name}</b>: Quantity Suggested is not within 50% of population consumption"
     end
 
     it "should not add errors when drug_calculation is less than or iqual to site_suggestion" do
@@ -47,13 +47,15 @@ describe OrderLine do
   describe 'validate quantity_suggested with type kit ' do
     before(:each) do
       @order = FactoryGirl.create :order
+      @commodity = FactoryGirl.create(:commodity)
       @order_line_kit = @order.order_lines.build( arv_type: CommodityCategory::TYPES_KIT,
                                                   site_suggestion: 50 , 
                                                   test_kit_waste_acceptable: 5, 
                                                   number_of_client: 20, 
                                                   consumption_per_client_per_month: 30,
                                                   stock_on_hand:  200,
-                                                  monthly_use: 500
+                                                  monthly_use: 500,
+                                                  commodity: @commodity
         )
     end
 
@@ -77,8 +79,8 @@ describe OrderLine do
 
     it "should add errors when kit calculation is bigger than test_kit_waste_acceptable" do
       @order_line_kit.quantity_suggested_kit?.should eq false
-      @order_line_kit.errors.full_messages[0].should eq "Stock on hand Invalid, System calculation = 25% must be less than or equal to site wastage = 5%"
-      @order_line_kit.errors.full_messages[1].should eq "Monthly use Invalid, System calculation = 25% must be less than or equal to site wastage = 5%"
+      @order_line_kit.errors.full_messages[0].should eq "Monthly use <b>#{@commodity.name}</b>: Monthly use declared by site is greater than 5% of acceptable wastage"
+      # @order_line_kit.errors.full_messages[1].should eq "Monthly use Invalid, System calculation = 25% must be less than or equal to site wastage = 5%"
     end
 
     it  "should not add errors when kit calculation is less then or equal waste acceptable" do

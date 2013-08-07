@@ -50,8 +50,9 @@
     
   </div>
 
-  <div class='loading breadcrumb'> 
-    <%=image_tag 'loading.gif', :alt => '' %> <span id='loading_text' > Waiting for server response </span>
+  <div id='system_loading' class='loading well'> 
+    <%= image_tag 'loading.gif', :alt => 'System loading', :title => 'System loading' %> 
+    <span id='loading_text' > Waiting for server response </span>
   </div>
   
   <footer>

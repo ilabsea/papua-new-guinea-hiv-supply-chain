@@ -160,7 +160,7 @@ module Admin::ApplicationHelper
       text = '<i class="icon-ok" > </i>'
     
     elsif st == OrderLine::STATUS_REJECTED
-       text = '<i class="icon-minus-sign" > </i>'
+       text = '<i class="icon-minus-sign" ></i>'
     end
     text.html_safe
   end 

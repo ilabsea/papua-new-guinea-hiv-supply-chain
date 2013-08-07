@@ -4,20 +4,12 @@
 
 <%= page_header 'Reviewer'  %>
 
-<div class='row-fluid'>
-  <span class='span2'> Site </span>
-  <span class='span10'> <%= @order.site.name%> </span>
-</div>
-
-<div class='row-fluid'>
-  <span class='span2'> Order Date </span>
-  <span class='span10'> <%= l @order.order_date %> </span>
-</div>
-
-<div class='row-fluid'>
-  <span class='span2'> Order ID </span>
-  <span class='span10'> <%= @order.id %> </span>
-
+<div class='well' style='background-color: #fff;' >
+  <div class='row-fluid'>
+    <div class='span3'> Site : <b> <%= @order.site.name%> </b> </div>
+    <div class='span3'> Order ID : <b> <%= @order.id %> </b> </div>
+    <div class='span6'> </div>
+  </div>
 </div>
 
 <% 
@@ -29,19 +21,22 @@
 <div class="tabbable"> 
     <ul class="nav nav-tabs">
       <li class="<%= drug %>"  >
-        <a href="#drug" data-toggle="tab">Drugs</a>
+        <a href="#drug" data-toggle="tab" data-skip-loading="true" >Drugs</a>
       </li>
       <li class='<%= kit %>'> 
-        <a href="#kit" data-toggle="tab">Kits</a>
+        <a href="#kit" data-toggle="tab" data-skip-loading="true" >Kits</a>
       </li>
     </ul>
 
     <div class="tab-content">
       <div class="tab-pane <%= drug %>" id="drug">
+        <h4> Drug Commodities </h4>
+        <div class='alert alert-error' id='error-drug' style='display: none;' ></div>
         <%= render :partial => 'review_table', :locals => {:order_lines => order_lines_drug, :order => @order } %>
       </div>
       <div class="tab-pane <%= kit %>" id="kit">
          <h4> Kit Commodities </h4>
+         <div class='alert alert-error' id='error-kit' style='display: none;' ></div>
          <%= render :partial => 'review_table', :locals => {:order_lines => order_lines_kit, :order => @order  } %>
       </div>
     </div>

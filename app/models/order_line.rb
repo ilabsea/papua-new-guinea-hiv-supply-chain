@@ -5,7 +5,8 @@ class OrderLine < ActiveRecord::Base
                   :stock_on_hand, :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :is_set, :skip_bulk_insert,
                   :site_suggestion, :test_kit_waste_acceptable, :number_of_client, :consumption_per_client_per_month,:commodity
 
-  validates :stock_on_hand, :monthly_use, :quantity_system_calculation, :numericality => true, :allow_nil => true                
+  validates :stock_on_hand, :monthly_use, :quantity_system_calculation, :numericality => true, :allow_nil => true   
+  validates :quantity_suggested, :numericality => true ,:allow_blank => true         
 
   default_scope order('monthly_use DESC')
   validate :quantity_suggested_valid?
@@ -62,9 +63,9 @@ class OrderLine < ActiveRecord::Base
     return true  if ( stock_on_hand.blank?  || quantity_suggested.blank?)
     cal = cal_drug
     if cal > self.site_suggestion.to_f
-        message = "Invalid!, System calculation = " + filter(cal) + " must be less than or equal to site suggestion = " + filter(self.site_suggestion)
-        errors.add(:stock_on_hand, message) 
-        errors.add(:quantity_suggested, message)    
+        message = "<b>" + self.commodity.name + "</b>: Quantity Suggested is not within " + filter(self.site_suggestion) + " of population consumption"
+        errors.add(:quantity_suggested, message)
+        errors.add(:stock_on_hand, message)      
         return false     
     end
     return true
@@ -74,9 +75,9 @@ class OrderLine < ActiveRecord::Base
     return true if(self.stock_on_hand.blank?  || self.monthly_use.blank? || self.number_of_client.to_i ==0 || self.consumption_per_client_per_month.to_i ==0 )     
     cal = cal_kit
     if(cal > self.test_kit_waste_acceptable.to_f)
-      message =  "Invalid, System calculation = " + filter(cal) + " must be less than or equal to site wastage = " + filter(self.test_kit_waste_acceptable) 
-      errors.add(:stock_on_hand, message) 
+      message = "<b>" + self.commodity.name + "</b>: Monthly use declared by site is greater than " + filter(self.test_kit_waste_acceptable)  + " of acceptable wastage" 
       errors.add(:monthly_use, message) 
+      errors.add(:stock_on_hand, message) 
       return false
     end
     return true
@@ -91,8 +92,6 @@ class OrderLine < ActiveRecord::Base
   def calculate_quantity_system_suggestion temp_order
     return false if self.is_set
     surv_sites = temp_order.surv_sites
-    p "surv_sites----------:"
-    p surv_sites
     surv_sites.each do |type, surv_site| 
       if surv_site
         surv_site.surv_site_commodities.each do |surv_site_commodity|

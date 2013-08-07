@@ -127,13 +127,6 @@
     });
   }
 
-  function hideLoading(){
-    systemLoading().hide();
-  }
-  function showLoading(){
-    systemLoading().show();
-  }
-
   function handleValidateField(){
     $(document.body).delegate(".validate_field", 'change', function(){
         validateCriteria($(this));

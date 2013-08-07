@@ -48,6 +48,18 @@ function systemLoading() {
   return $("#system_loading");
 };
 
+function hideLoading(){
+    systemLoading().hide();
+}
+
+function showLoading(){
+    systemLoading().show();
+}
+
+$(window).bind("unload", function() {
+  systemLoading().hide();
+});
+
 $(function() {
   systemLoading().hide();
   attachSystemLoading();

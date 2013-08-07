@@ -26,23 +26,24 @@
 	      <td> <%= order_line.monthly_use %></td>
 	      <td> <%= order_line.quantity_system_calculation %> </td>
 
-	      <td> <%= order_line.quantity_suggested %></td>
-        <td> <%= status(order_line.status) %> </td>
+	      <td> <%= number_field_tag :quantity_suggested, order_line.quantity_suggested, 
+                      :id => "quantity_suggested_#{order_line.id}",  
+                      :class => :number_text %>  </td>
+        <td> <span id='status_<%=order_line.id%>' ><%= status(order_line.status) %> </span> </td>
         <td> <%= order_line.user_data_entry_note %> </td>
-	      
-	      <td>
-          <%= form_tag '', :method => :put, :id => "form_#{order_line.id}", :style =>'padding:0px;margin:0px;' do %>
-            <input name='reviewer_note' id='reviewer_note_<%=order_line.id%>' type='text' 
-                   value ='<%= order_line.user_reviewer_note    %>' /> 
-          <% end %>  
-         </td>
+	      <td> <%= text_field_tag :reviewer_note, order_line.user_reviewer_note, :id => "user_reviewer_note_#{order_line.id}" %> </td>
 	      <td id='<%=order_line.id %>' > 
-          <%= link_button 'icon-ok', '', approve_admin_order_order_line_path(order, order_line), :title => 'Accept',
-                      :'data-ref' => order_line.id, :method => :put, :class => 'approved intercept btn-mini btn-success' %>           
+          <%= link_button 'icon-ok', '', approve_admin_order_order_line_url(order, order_line), 
+                      :title => 'Accept',
+                      :'data-ref' => order_line.id, 
+                      :method => :put, 
+                      :class => 'approved intercept btn-mini btn-success' %>           
 
-          <%= link_button 'icon-minus-sign', '', reject_admin_order_order_line_path(order, order_line), :title => 'Reject',
-                      :'data-ref' => order_line.id, :method => :put, :class => 'rejected intercept btn-mini btn-danger' %>  
-
+          <%= link_button 'icon-minus-sign', '', reject_admin_order_order_line_url(order, order_line), 
+                      :title => 'Reject',
+                      :'data-ref' => order_line.id, 
+                      :method => :put, 
+                      :class => 'rejected intercept btn-mini btn-danger' %>  
 	      </td>
 	  	</tr>
 
@@ -52,13 +53,58 @@
 <script >
  
  function handleButton(){
-  $(".intercept").on('click', function(){ 
+  $(".intercept").on('click', function(e){ 
     $elm = $(this);
-    $form = $("#form_" + $elm.attr("data-ref"));
-    $form.attr('action', $elm.attr('href') );
-    $form.submit();
-    return false;
+    id = $elm.attr("data-ref");
+    quantity_suggested = $("#quantity_suggested_" + id ).val();
+    user_reviewer_note = $("#user_reviewer_note_" + id).val();
+    data = { "order_line[quantity_suggested]" : quantity_suggested, "order_line[user_reviewer_note]" : user_reviewer_note  }
+    url = $elm.attr("href")
+    status_approved= '<%=status(OrderLine::STATUS_APPROVED ) %>' ;
+    status_rejected = '<%=status(OrderLine::STATUS_REJECTED ) %>' ;
 
+    showLoading();
+    $.ajax({
+      url : url,
+      type: 'PUT',
+      data: data,
+      dataType: 'json',
+      success: function(response){
+        console.log(response);
+        if(response["code"] == "failed"){
+          if(response["arv_type"] == "Drug"){
+            $("#error-drug").html(response["error"]);
+            $("#error-drug").show();
+            $("#quantity_suggested_" + id ).css("color", "red");   
+          }
+          else{
+            $("#error-kit").html(response["error"]);
+            $("#error-kit").show();
+            $("#quantity_suggested_" + id ).css("color", "red");
+          }
+        }
+
+        else{
+          if(response["type"] == "approved")
+            $("#status_"+id).html(status_approved);
+          else
+            $("#status_"+id).html(status_rejected);
+
+          if(response["arv_type"] == "Drug"){
+            $("#error-drug").html();
+            $("#error-drug").hide();
+            $("#quantity_suggested_" + id ).css("color", "black");
+          }
+          else{
+            $("#error-kit").html();
+            $("#error-kit").hide();
+            $("#quantity_suggested_" + id ).css("color", "black");
+          }
+        }
+        hideLoading();
+      }
+    });
+    return false;
   });
  }
 
