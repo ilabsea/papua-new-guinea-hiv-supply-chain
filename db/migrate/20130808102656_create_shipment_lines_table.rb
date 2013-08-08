@@ -5,6 +5,8 @@ class CreateShipmentLinesTable < ActiveRecord::Migration
   		t.integer :quantity_suggested
   		t.integer :quantity_issued
   		t.integer :quantity_received
+  		t.integer :order_line_id
+      t.string :remark
   		t.timestamps
   	end
   end

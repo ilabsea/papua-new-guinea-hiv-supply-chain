@@ -2,8 +2,9 @@ class Shipment < ActiveRecord::Base
 	belongs_to :order
 	belongs_to :user
 	belongs_to :site
+	has_one :order_line
 
-	has_many :shipment_lines
+	has_many :shipment_lines, :dependent => :destroy
 
 	attr_accessible :shipment_date, :consignment_number
 
@@ -12,6 +13,7 @@ class Shipment < ActiveRecord::Base
 	STATUS_PENDING = 'Pending'
 
 	validates :consignment_number, :shipment_date, :presence => true
+	validates :consignment_number, :numericality => true
 
 	SHIPMENT_STATUSES = [STATUS_PENDING, STATUS_LOST, STATUS_RECEIVED]
 
@@ -23,9 +25,18 @@ class Shipment < ActiveRecord::Base
 		order_lines = OrderLine.find(session_shipments.map{|session_shipment| session_shipment.order_line_id})
 		session_shipments.each do |session_shipment|
 		   self.shipment_lines.build(:quantity_issued =>session_shipment.quantity, 
-		   	     :quantity_suggested => _quantity_suggested(order_lines, session_shipment.order_line_id ))
+		   		 					 :order_line_id => session_shipment.order_line_id,
+		   		 					 :remark => session_shipment.remark,
+		   	     					 :quantity_suggested => _quantity_suggested(order_lines, session_shipment.order_line_id )
+		   	     					 )
 		end
 		self.save
+	end
+
+	def update_order_lines
+		self.shipment_lines.each do |shipment_lines|
+
+		end
 	end
 
 	def _quantity_suggested  order_lines , order_line_id

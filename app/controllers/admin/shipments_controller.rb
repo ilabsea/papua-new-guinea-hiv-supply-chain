@@ -61,6 +61,7 @@ module Admin
            response[:status] = :success
            response[:message] = 'Shipment has been created' 
            #clean up session after successfully created
+           @shipment.update_order_lines
            session[:shipment] = nil
          else
           response[:status] = :failed
@@ -103,7 +104,7 @@ module Admin
 
             #already exist then update it  
             else
-              session[:shipmen].delete(search)
+              session[:shipment].delete(search)
               session[:shipment] << session_shipment
             end  
             response = { :status => :success}  

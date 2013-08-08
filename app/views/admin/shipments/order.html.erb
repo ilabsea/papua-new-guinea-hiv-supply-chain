@@ -84,11 +84,14 @@
   }
 
   function highLightRowSuccess(id){
-    $tr = $("#tr_" + id + " td " ).addClass("row-success").removeClass('row-error');
+    $("#tr_" + id + " td " ).addClass("row-success").removeClass('row-error');
+    $('#quantity_' + id).css({border: 'black', 'color' : '#333' })
   }
 
   function highLightRowFailure(id){
-    $tr = $("#tr_" + id + " td " ).addClass("row-error").removeClass('row-success');
+    $("#tr_" + id + " td " ).addClass("row-error").removeClass('row-success');
+    $('#quantity_' + id).css('color' , 'red' )
+
   }
 
   function hideError(){

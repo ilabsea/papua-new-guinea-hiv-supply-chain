@@ -141,6 +141,8 @@ ActiveRecord::Schema.define(:version => 20130808102656) do
     t.integer  "quantity_suggested"
     t.integer  "quantity_issued"
     t.integer  "quantity_received"
+    t.integer  "order_line_id"
+    t.string   "remark"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
   end
