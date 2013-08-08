@@ -20,6 +20,7 @@ FactoryGirl.define do
   	 phone_number
   	 site
      password { "123456" }
+     display_name "XXX"
      role { User::ROLES[rand(User::ROLES.size-1)] }
   end
 
@@ -29,6 +30,7 @@ FactoryGirl.define do
      phone_number
      site
      password { "123456" }
+     display_name "Site"
      role  User::ROLES_SITE 
   end
 
@@ -37,6 +39,7 @@ FactoryGirl.define do
      email
      phone_number
      password { "123456" }
+     display_name "admin"
      role  User::ROLES_ADMIN
   end
 
@@ -45,6 +48,7 @@ FactoryGirl.define do
      email
      phone_number
      password { "123456" }
+     display_name "data"
      role  User::ROLES_DATA_ENTRY
   end
 
@@ -53,6 +57,7 @@ FactoryGirl.define do
      email
      phone_number
      password { "123456" }
+     display_name "reviewer"
      role  User::ROLES_REVIEWER
   end
 end

@@ -24,7 +24,9 @@ class User < ActiveRecord::Base
   
   attr_accessor :login, :current_password
 
-  validates :user_name, :phone_number, :email, :uniqueness => true
+  validates :user_name, :phone_number, :display_name, :presence => true
+  validates :user_name, :phone_number,:uniqueness => true
+  validates :email, :uniqueness => true, :allow_blank => true
   validates :role, :presence => true
   validates :site, :presence => true, :if => :site_role?
 
@@ -65,6 +67,10 @@ class User < ActiveRecord::Base
 
   def self.regen_password
       Devise.friendly_token.first(8)
+  end
+
+  def email_required?
+    false
   end
 
   def change_password? params
