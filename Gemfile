@@ -9,9 +9,8 @@ gem 'mysql2'
 gem 'simple_form'
 gem 'devise'
 gem 'cancan'
-gem 'refinerycms'
+
 gem 'will_paginate-bootstrap'
-gem 'tabs_on_rails'
 gem 'debugger', group: [:development, :test]
 
 gem 'spreadsheet'
@@ -35,7 +34,7 @@ group :assets do
   gem "angular-rails"
 end
 
-gem 'rack-mini-profiler'
+#gem 'rack-mini-profiler'
 
 
 gem 'jquery-rails'

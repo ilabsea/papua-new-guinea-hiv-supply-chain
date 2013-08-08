@@ -1,3 +1,4 @@
+# encoding: utf-8
 class OrderLine < ActiveRecord::Base
   belongs_to :order
   belongs_to :commodity
