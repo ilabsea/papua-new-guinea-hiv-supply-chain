@@ -13,7 +13,14 @@ PngHivAids::Application.routes.draw do
       resources :surv_site_commodities
     end
 
+    resources :shipments do
+      collection do
+        get 'order'
+      end
+    end
+
     resources :orders do
+      resources :shipments
       collection do
         get 'tab_order_line'
         get 'export'
@@ -45,7 +52,7 @@ PngHivAids::Application.routes.draw do
       end
     end
 
-    resources :shipments
+    
     resources :provinces
     resources :commodities
     resources :public_holidays

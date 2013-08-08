@@ -33,13 +33,13 @@
         <td> <%= order_line.user_data_entry_note %> </td>
 	      <td> <%= text_field_tag :reviewer_note, order_line.user_reviewer_note, :id => "user_reviewer_note_#{order_line.id}" %> </td>
 	      <td id='<%=order_line.id %>' > 
-          <%= link_button 'icon-ok', '', approve_admin_order_order_line_url(order, order_line), 
+          <%= link_button_tick '', approve_admin_order_order_line_url(order, order_line), 
                       :title => 'Accept',
                       :'data-ref' => order_line.id, 
                       :method => :put, 
                       :class => 'approved intercept btn-mini btn-success' %>           
 
-          <%= link_button 'icon-minus-sign', '', reject_admin_order_order_line_url(order, order_line), 
+          <%= link_button_minus '', reject_admin_order_order_line_url(order, order_line), 
                       :title => 'Reject',
                       :'data-ref' => order_line.id, 
                       :method => :put, 

@@ -8,6 +8,7 @@ class Order < ActiveRecord::Base
   belongs_to :requisition_report , :class_name => 'RequisitionReport'
 
   has_many :order_lines, :dependent => :destroy
+  has_many :shipments
 
   validates :site, :order_date,:date_submittion, :presence => true
   validates :user_place_order, :presence => true, :if =>  Proc.new{|f| f.is_requisition_form }
@@ -15,7 +16,7 @@ class Order < ActiveRecord::Base
   validate  :unique_order_in_month_year
 
 
-  default_scope order('order_date DESC, id DESC')
+  default_scope order('orders.order_date DESC, orders.id DESC')
 
   attr_accessor :survs
   attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
@@ -141,6 +142,10 @@ class Order < ActiveRecord::Base
        statuses[order.status] = order.total
      end
      statuses
+  end
+
+  def self.approved
+    where("orders.status = :status", :status => Order::ORDER_STATUS_APPROVED)
   end
 
   def update_status_accepted

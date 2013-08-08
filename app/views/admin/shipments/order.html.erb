@@ -1,0 +1,60 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [
+    {"Shipments" => admin_shipments_path() },
+    {"New" => nil}
+ ]
+%>
+<% end %>
+
+<%= page_header t("New Shipment")  %>
+
+<div class='row-fluid' >
+  <div class='span6 left' >	
+	<%= form_tag '' do |f| %>
+	  <%= select_tag :site_id, options_for_select(@sites, params[:site]), :prompt => "Select a site" %>
+	<% end %>
+   </div>
+
+   <div class='span6 right'>
+   	<%= link_button_new 'Create Shipment', '#shippement_line', :data => {:skip_loading=> true, :toggle => :modal}  %>
+   </div>	
+</div>
+
+
+<%= render "dialog" %>
+
+
+
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th><input type='checkbox' id='order_line_check_all'  /> </th>
+      <th>Site</th>
+      <th>Order Id </th>
+      <th>Commodity</th>      
+      <th>Amount</th>
+      <th>Approved Date</th>
+      <th>Quantity Dispatch </th>
+      <th>AMS remark </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @order_lines.each_with_index do |order_line, index| %>
+      <tr>
+        <td><input type='checkbox' class='order_line_check'  /> </td>
+        <td><%= order_line.order.site.name %></td>
+        <td><%= order_line.order.id %></td>
+        <td><%= order_line.commodity.name %></td>
+        <td><%= order_line.quantity_suggested %></td>
+        <td><%= l order_line.updated_at %></td>
+        <td><input type='number' class= 'number_text' name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> </td>
+        <td><input type='text' class='' name='order_line[remark]' id='order_line[ams_remark]' /> </td> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render_paginate_for @order_lines %>
+
+
+

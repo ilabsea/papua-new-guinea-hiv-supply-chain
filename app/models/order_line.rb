@@ -87,7 +87,15 @@ class OrderLine < ActiveRecord::Base
      value = (self.quantity_system_calculation - self.quantity_suggested).abs
      max = self.quantity_system_calculation > self.quantity_suggested ? self.quantity_system_calculation : self.quantity_suggested
      (100*value)/max
-  end              
+  end 
+
+  def self.items site_id
+    order_lines = OrderLine.includes(:commodity, :order => :site ).joins(:order).where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
+    if !site_id.blank?
+      order_lines = order_lines.where("orders.site_id = :site_id", :site_id => site_id )
+    end
+    order_lines
+  end             
 
   def calculate_quantity_system_suggestion temp_order
     return false if self.is_set

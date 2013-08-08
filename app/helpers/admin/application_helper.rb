@@ -37,7 +37,8 @@ module Admin::ApplicationHelper
   def paginate_entries records
     if require_paginate_for? records
       content_tag :div, :class => 'paginator paginator-entry badge right' do
-        pluralize(records.length, 'record')  + ' of ' + records.total_entries.to_s + ' in total'
+        #pluralize(records.length, 'record')  + ' of ' + records.total_entries.to_s + ' in total'
+        "#{records.length} / #{records.total_entries}"
       end 
     end
   end
@@ -134,6 +135,14 @@ module Admin::ApplicationHelper
     link_button 'icon-arrow-right', text, url, options
   end
 
+  def link_button_tick text, url, options={}
+    link_button 'icon-ok', text, url, options
+  end
+
+  def link_button_minus text, url, options={}
+    link_button 'icon-minus-sign' , text, url, options
+  end
+
   def link_button_download text, url, options={}
     options = options.merge(:'data-skip-loading' => true)
     link_button 'icon-download-alt', text, url, options
@@ -147,7 +156,7 @@ module Admin::ApplicationHelper
   def button_save text, klass=''
     content_tag :button, :class => "btn btn-primary #{klass}", :'data-system-loading' => true do
      content_tag "i", text , :class => 'icon-ok'
-   end
+    end
   end
 
 	def breadcrumb options=nil

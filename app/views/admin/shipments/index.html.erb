@@ -1,6 +1,7 @@
 <%= page_header "Shipments", :left => 4, :right => 8  do  %>
   <div class='row-fluid'>
-    <%= link_button_download 'Down load as Excel',  new_admin_shipment_path(), :class => 'btn btn-primary' %>
+    <%= link_button_new 'New Shipment',  new_admin_order_shipment_path(@order) %>
+    <%= link_button_download 'Down load as Excel',  new_admin_order_shipment_path(@order), :class => 'btn btn-primary' %>
   </div>
   
 <% end %>

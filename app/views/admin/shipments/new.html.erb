@@ -1,0 +1,11 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [
+    {"Shipments" => admin_order_shipments_path(@order) },
+    {"New" => nil}
+ ]
+%>
+<% end %>
+
+<%= page_header t("New Shipment") %>
+<%= render :partial => 'form' %>
+

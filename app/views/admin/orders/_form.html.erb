@@ -44,32 +44,6 @@
 
 
 <script>
-  function handleSiteUser(){
-    $('#order_site').on('change', function(){
-       var site = $(this).val();
-       if(!site){
-          removeUsers();
-          return ;
-       }
-
-       var url  = '/admin/sites/' + site + '/users' 
-       $.ajax({
-          url : url,
-          method : 'GET',
-          dataType : 'json',
-          success: function(response){
-             removeUsers();
-             $selectElm = $('#order_user_place_order') ;
-             for(var i=0; i< response.length; i++){
-                   value = response[i][1];
-                   text  = response[i][0];
-                   var option = "<option value='"+ value +"' >" + text + " </option>";
-                   $selectElm.append(option);
-              }
-          }
-       })
-    });
-  }
 
   function handleSystemSuggestion(){
     $(".stock_on_hand").on('keyup', function(){
@@ -90,7 +64,6 @@
   function handleLoadOrderLinesTab(){
     $("#order_site_id").on('change', function(){
        loadOrderLinesTab();
-
     });
 
     $("#order_order_date").on('change', function(){
@@ -243,10 +216,6 @@
     $(selector).removeClass('alert-success');
     $(selector).html(msg);
     $(selector).addClass("alert-error").show();
-  }
-
-  function removeUsers(){
-      $("#order_user_place_order option[value !='']" ).remove();
   }
 
   $(function(){
