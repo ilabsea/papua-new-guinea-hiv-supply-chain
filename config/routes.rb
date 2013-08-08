@@ -16,11 +16,13 @@ PngHivAids::Application.routes.draw do
     resources :shipments do
       collection do
         get 'order'
+        post 'add_session'
+        post 'create_shipment'
       end
     end
 
     resources :orders do
-      resources :shipments
+      #resources :shipments
       collection do
         get 'tab_order_line'
         get 'export'

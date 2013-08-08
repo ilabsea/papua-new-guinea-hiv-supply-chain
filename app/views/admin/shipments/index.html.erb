@@ -1,7 +1,7 @@
 <%= page_header "Shipments", :left => 4, :right => 8  do  %>
   <div class='row-fluid'>
-    <%= link_button_new 'New Shipment',  new_admin_order_shipment_path(@order) %>
-    <%= link_button_download 'Down load as Excel',  new_admin_order_shipment_path(@order), :class => 'btn btn-primary' %>
+    <%= link_button_new 'New Shipment',  order_admin_shipments_path() %>
+    <%= link_button_download 'Down load as Excel',  order_admin_shipments_path(), :class => 'btn btn-primary' %>
   </div>
   
 <% end %>
@@ -35,11 +35,9 @@
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        
+        <td></td>   
         <td class="center">
-          
+          <%= link_button_show 'Detail', admin_shipment_path(shipment), :class => 'btn-mini btn-success' %>
         </td>
       </tr>
     <% end %>

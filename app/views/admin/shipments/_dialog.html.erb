@@ -1,15 +1,67 @@
 
 <!-- Modal -->
-<div id="shippement_line" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Modal header</h3>
+<%= simple_form_for [:admin, @shipment], :html => { :class => 'form-horizontal' }  do |f| %>
+  <div id="shippement_line" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Create Shipment</h3>
+    </div>
+
+    <div class="modal-body">
+      <div id='shipment_message' style='display:none;' class='alert' > </div>
+      <%= f.input :shipment_date, :as => :date_time_picker, :input_html => {:class => 'datepicker-fit date-field'} %>
+      <%= f.input :consignment_number, :input_html => { :style => 'width: 110px;'}  %>  
+    </div>
+
+    <div class="modal-footer">
+      <%= link_button_cancel ' Close ', "javascript:void()", :'aria-hidden' => true, :data=> {'dismiss' => :modal, :skip_loading => true}  %>
+      <%= link_button_save ' Save ', 'javascript:void(0)' , :id => 'shipment_save', :class =>'btn-primary' , :data => {:skip_loading => true} %>
+    </div>
+
   </div>
-  <div class="modal-body">
-    <p>One fine body…</p>
-  </div>
-  <div class="modal-footer">
-    <%= link_button_cancel ' Close ', "javascript:void()", :'aria-hidden' => true, :data=> {'dismiss' => :modal, :skip_loading => true}  %>
-    <%= button_save ' Save ' %>
-  </div>
-</div>
+<% end %>
+<script>
+  function handleSubmitShipment(){
+    $("#shipment_save").on('click', function(){
+        url = '<%= create_shipment_admin_shipments_path() %>'
+        showLoading();
+        $("#shipment_message").hide();
+
+        shipment_date = $("#shipment_shipment_date").val()
+        consignment_number = $("#shipment_consignment_number").val();
+
+        data = { 'shipment[shipment_date]' : shipment_date, 'shipment[consignment_number]' : consignment_number }
+
+        $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url : url,
+          data: data,
+
+          success: function(response){
+             hideLoading();
+             if(response["status"] == "failed"){
+                $("#shipment_message").removeClass('alert-success').addClass('alert-error').html(response.message).show();
+              }
+  
+             else{
+                $("#shipment_message").removeClass('alert-error').addClass('alert-success').html(response.message).show();
+                setTimeout(function(){
+                    window.location.href = '<%= admin_shipments_path() %>' ;
+                }, 500);
+   
+              }
+  
+          }
+
+
+        });
+        return false;
+
+    });
+  }
+ $(function(){
+  handleSubmitShipment();
+ })
+</script>
