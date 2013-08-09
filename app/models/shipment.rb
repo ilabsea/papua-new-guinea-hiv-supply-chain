@@ -10,12 +10,12 @@ class Shipment < ActiveRecord::Base
 
 	STATUS_LOST = 'Lost'
 	STATUS_RECEIVED = 'Received'
-	STATUS_PENDING = 'Pending'
+	STATUS_IN_PROGRESS = 'In Progress'
 
 	validates :consignment_number, :shipment_date, :presence => true
 	validates :consignment_number, :numericality => true
 
-	SHIPMENT_STATUSES = [STATUS_PENDING, STATUS_LOST, STATUS_RECEIVED]
+	SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED]
 
 	def self.status_mark
 		[ [ STATUS_LOST, "Mark as lost"] , [ STATUS_RECEIVED,  "Mark as received" ] ]  	
@@ -38,6 +38,15 @@ class Shipment < ActiveRecord::Base
 
 		end
 	end
+
+	def self.total_shipment_by_status
+       shipments = Shipment.select('COUNT(status) AS total, status').group('status').order('total')
+       totals= {}
+       shipments.each do |shipment|
+       	  totals[shipment.status] = shipment.total.to_i
+       end
+       totals
+  	end
 
 	def _quantity_suggested  order_lines , order_line_id
 		order_lines.each do |order_line|

@@ -12,6 +12,7 @@ module Admin
 			elsif current_user.reviewer?		
 			  render :reviewer	
 			elsif current_user.ams?	
+			  @total_shipment_by_status = Shipment.total_shipment_by_status
 			  render :ams			    		  			
 			end
 		end	

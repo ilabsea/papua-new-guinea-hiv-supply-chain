@@ -3,6 +3,9 @@ module Admin
 
     helper_method :session_shipment_from_order_line
     def index
+      @shipments = Shipment
+      @shipments = @shipments.where(["status =:status", :status => params[:type] ]) if params[:type]
+
       @shipments = Shipment.paginate(paginate_options)
     end 
 
@@ -56,6 +59,7 @@ module Admin
          @shipment.user = current_user
          @shipment.site = order_line.order.site
          @shipment.order = order_line.order
+         @shipment.status = Shipment::STATUS_IN_PROGRESS
 
          if @shipment.create_shipment(session[:shipment])
            response[:status] = :success
@@ -115,12 +119,17 @@ module Admin
         response = { :status => :failed, :error => session_shipment.errors.full_messages[0] }
       end
       render :json => response
+    end
 
+    def show
+      @app_title = "Shipment detail"
+      @shipment = Shipment.includes(:shipment_lines => {:order_line => :commodity}).find params[:id]
     end
 
 
-    def session_shipment_from_order_line order_line_id
 
+
+    def session_shipment_from_order_line order_line_id
       if session[:shipment]
         session[:shipment].each do |line|
           return line if(line.order_line_id.to_i == order_line_id.to_i)

@@ -10,11 +10,29 @@
       :url => order_admin_shipments_path()
     },
 
-    { :quantity => @total_order_by_status[Order::ORDER_STATUS_APPROVED].to_i, 
+    {
+      :quantity => @total_shipment_by_status[Shipment::STATUS_RECEIVED].to_i, 
       :class => :order_approved,  
-      :type => Order::ORDER_STATUS_APPROVED,  
-      :text => 'Pending',
-      :url =>  admin_orders_path(:type => Order::ORDER_STATUS_APPROVED)
+      :type => Shipment::STATUS_RECEIVED ,  
+      :text => 'Shipment received',
+      :url => admin_shipments_path(:type => Shipment::STATUS_RECEIVED )
+
+    },
+    {
+      :quantity => @total_shipment_by_status[Shipment::STATUS_LOST].to_i, 
+      :class => :order_in_review,  
+      :type => Shipment::STATUS_LOST,  
+      :text => 'Shipment Lost',
+      :url => admin_shipments_path(:type => Shipment::STATUS_LOST)
+
+    },
+    {
+      :quantity => @total_shipment_by_status[Shipment::STATUS_IN_PROGRESS].to_i, 
+      :class => :order_pending,  
+      :type => Shipment::STATUS_IN_PROGRESS,  
+      :text => 'Shipment in  progress',
+      :url => admin_shipments_path(:type => Shipment::STATUS_IN_PROGRESS )
+
     }
 
   ].each do |item| %>

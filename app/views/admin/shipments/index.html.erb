@@ -29,9 +29,9 @@
     <% @shipments.each_with_index do |shipment, index| %>
       <tr>
         <td><%= current_entries + index %></td>
-        <td><%=shipment.site.name %></td>
-        <td><%=shipment.consignment_number %></td>
-        <td><%= l shipment.shipment_date %> </td>
+        <td><%= shipment.site.name %></td>
+        <td><%= shipment.consignment_number %></td>
+        <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
         <td></td>
         <td></td>
         <td></td>

@@ -1,0 +1,38 @@
+<%= page_header "Shipment Detail" %>
+
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Shipments" => admin_shipments_path}, {"Detail" => nil}]  %>
+<% end %>
+<div class='well no-background' >
+  <ul >
+    <li> Site : <b> <%=@shipment.site.name %> </b> </li>
+    <li> Consignment number : <b> <%=@shipment.consignment_number%> </b> </li>
+    <li> Shipment Date : <b> <%=@shipment.shipment_date%> </b> </li>
+  </ul>  
+</div>
+
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th class='nth-table'>#</th>
+      <th style='width: 150px;'>Commodity</th>
+      <th>Quantity Issued</th>
+      <th>Quantity Suggested</th>
+      <th>Quantity Received</th>      
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @shipment.shipment_lines.each_with_index do |shipment_line, index| %>
+      <tr>
+        <td><%= current_entries + index %></td>
+        <td><%=shipment_line.order_line.commodity.name %></td>
+        <td><%=shipment_line.quantity_issued %></td>
+        <td><%=shipment_line.quantity_suggested %> </td>
+        <td><%=shipment_line.quantity_received%></td>  
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
