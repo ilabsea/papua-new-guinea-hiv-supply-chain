@@ -32,7 +32,7 @@ module Admin
 		def download
 	     	@requisition_report = RequisitionReport.find params[:id]
 	        send_file(@requisition_report.form.current_path , 
-	                      :filename      =>  "template.xls",
+	                      :filename      =>  File.basename(@requisition_report.form.current_path) ,
 	                      :type          =>  'application/xls',
 	                      :disposition   =>  'attachment',
 	                      :streaming     =>  true,

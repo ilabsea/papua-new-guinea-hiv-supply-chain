@@ -24,14 +24,15 @@ class Setting < ActiveRecord::Base
     }
   ]
 
-  def self.[](name)
-    setting = Setting.find_by_name(name)
+  def self.[](key)
+    setting = Setting.find_by_name(key)
     setting ? setting.value.to_s : ''
   end
   
   
-  def self.[]=(name, value)
-    setting = Setting.find_by_name(name) || Setting.new(:name => name)
+
+  def self.[]=(key, value)
+    setting = Setting.find_by_name(key) || Setting.new(:name => key)
     setting.value = value
     setting.save!
     setting[key]

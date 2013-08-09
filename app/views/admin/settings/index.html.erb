@@ -3,27 +3,33 @@
 <% end %>
 
 <%= page_header "System setting" %>
+<style>
+  .setting-line input, .setting-line select {
+    margin-bottom: 0px !important ;
+  }
+</style>
+<%= form_for [:admin, Setting.new] do |f| %>
+  <div class='setting-line'>
+      If site does not confirm package received, send SMS to site every 
+      <input type="number" min="0" max="99" name="setting[hour]" style="width: 40px;" value='<%= Setting[:hour] %>' /> 
 
-<%= form_for [:admin,@setting] do |f| %>
-  If site does not confirm package received, send SMS to site every 
-  <input type="number" min="0" max="99" name="setting[hour]" style="width: 40px;" value='<%= @hour %>' /> Hour(s) <p>
-    
+      <select name='setting[date_type]' style='width: 90px;' >
+        <option value='hour' <%= Setting[:date_type] == 'hour' ? 'selected' : ''  %>  > Hours </option>
+        <option value='day'  <%= Setting[:date_type] == 'day'  ? 'selected' : ''  %>  > Days  </option>
+      </select>
+      <%= button_save ' Save ' %>
+  </div>
+  <br />
   <% Setting::MESSAGE_KEYS.each do |el| %>
-  <p class="template_container">
-    <%=label_tag "#{el[:label]}" %>
-    <% if el[:name] == :message_alerting_site_about_receiving_form %>
-      <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @alert_message_value %></textarea>
-    <% elsif el[:name] == :message_asking_site %>
-      <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @asking_message_value %></textarea>
-    <% else %>
-      <textarea id=<%= el[:name] %> rows="3" cols="400" name="setting[value][]" style ="width: 400px"><%= @deadline_message_value %></textarea>
-    <% end %><br/>
-    <%= parameters_links el %>
-    <br/>
-    <br/>
-  </p>
+    <div class="template_container well">
+      <%=label_tag "#{el[:label]}" %>
+      <textarea id=<%= el[:name] %> rows="2" cols="400" name="setting[<%= el[:name]%>]" style ="width: 96%;"><%= Setting[el[:name]] %></textarea>
+      <br />
+      <%= parameters_links el %>
+    </div>
+    <br />
   <% end %>
-  <%= button_save ' Save ' %>
+  
 <% end %>
 <style>
   .template_container {

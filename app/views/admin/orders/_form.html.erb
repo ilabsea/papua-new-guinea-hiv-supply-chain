@@ -156,8 +156,8 @@
             return true ;
         }
 
-        consumtion = object.numberOfClient * object.consumtionPerClient
-        systemSuggestion = consumtion - object.stockOnHand
+        consumtion = parseFloat(object.numberOfClient) * parseFloat(object.consumtionPerClient)
+        systemSuggestion = consumtion - parseFloat(object.stockOnHand)
         cal = formatNumber((100 * Math.abs( object.quantitySuggested - systemSuggestion ) / Math.max(object.quantitySuggested , systemSuggestion)))
 
         if(cal <= parseFloat(object.siteSuggestion)){
