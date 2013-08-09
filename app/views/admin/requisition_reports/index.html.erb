@@ -19,13 +19,12 @@
       <tr>
         <td><%=current_entries + index %></td>
         <td>
-          <%=link_to File.basename(requisition_report.form.current_path) , download_admin_requisition_report_path(requisition_report) %>
+          <%=link_to File.basename(requisition_report.form.current_path) , download_admin_requisition_report_path(requisition_report), :data => {:skip_loading => true} %>
         </td>
         <td><%=requisition_report.site.name %></td>
         <td><%=requisition_report.user.display_name %></td>
         <td><%=requisition_report.status %></td>
         <td><%=requisition_report.created_at %></td>
-
 
     <% 
        confirm_warning = 'The form has already been imported. Are you sure to reimport it ? [Warning] Re impport the form will automatically delete the previouse imported data '
