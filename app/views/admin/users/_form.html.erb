@@ -13,10 +13,11 @@
   <%= f.association :site, :include_blank => "Select a site" %>
   
   <div class="form-actions">
+    <%= button_save ' Save '  %>
     <%= link_button_cancel 'Cancel',  admin_users_path %>
     <% if !@user.new_record? && @user != current_user %>
     <%= link_button 'icon-repeat', " Reset password", reset_admin_user_path(@user),:method => :put, :confirm => 'Are you sure to reset password for this user?' ,:class => 'btn btn-info' %>
     <%end %>
-    <%= button_save ' Save '  %>
+    
   </div>
 <% end %>

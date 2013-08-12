@@ -13,12 +13,17 @@
 
 //= require jquery
 //= require jquery_ujs
+//= require jquery-migrate-1.0.0
 //= require twitter/bootstrap
 
 //= require bootstrap-datepicker
 
 //= require custom
 //= require bootrap-datetime
+
+//= require jquery.dataTables
+//= require FixedColumns
+//= require fixedTableInit
 
 //= require_tree .
 

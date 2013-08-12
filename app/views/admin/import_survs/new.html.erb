@@ -9,9 +9,7 @@
     display: inline;
     margin-left: 5px;
   }
-  td, th {
-    width: 6em;
-  }
+
   .form-fixed {
     overflow: scroll;
     max-height: 550px;
@@ -49,17 +47,15 @@
 
  <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
-
   <%= f.input :surv_type, :as => :hidden %> 
-  <div class='no-bg' style='margin: 0 auto;'>
-    <table>
+
+  <table>
       <tr>
           <td class='pos-fixed' >
             <%=f.input :month, :collection => ImportSurv::MONTHS, 
                        :label_html => { :style=> 'width: 50px;'},
                        :wrapper_html => {:style=> 'margin-left: 70px;'},
                        :include_blank => 'Select month'
-
              %>
           </td>
           <td class='pos-fixed' >
@@ -68,49 +64,50 @@
           <td style='padding-left: 30px; vertical-align:top;'>
             <%= button_save " Save " %>
           </td>
-    </table>          
-  </div>
+  </table>   
+
   <div class='row-fluid form-fixed'  >
-  
-  <table class='table table-hover surv-form table-fixed-header table-bordered' >
-    <thead class='header' >
-      <tr >
-        <th class='list-no'>#</th>
-        <th class='pos-site'>Site</th>
-        <% @commodities.each do |commodity| %>
-          <th class='pos-commodity'><%= commodity.name %></th>
-        <% end %>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @site_index = 1 %>
-      <%= f.simple_fields_for :surv_sites  do |surv_site_form| %>
-          <tr>
-            <td class='list-no' ><%=@site_index %></td>
-            <td class='pos-site' > 
-              <%= surv_site_form.object.site.name %>  
-              <%= surv_site_form.input :site_id, :as => :hidden %>
-            </td>
-
-      	    <%= surv_site_form.simple_fields_for :surv_site_commodities do |surv_site_commodity_form| %>
-              <td class='pos-commodity'>
-      	  	    <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
-                <%= surv_site_commodity_form.input :quantity, 
-                          :label => false,
-                          :input_html => { :class=> 'number_text'} %>
-              </td>
-      	    <% end %>
+    <table class='table table-hover surv-form table-fixed-header table-bordered' id='tableFixed' >
+      <thead class='header' >
+        <tr >
+          <th class='pos-site border' >Site</th>
+          <% @commodities.each do |commodity| %>
+            <th class='border' ><%= commodity.name %></th>
+          <% end %>
         </tr>
-        <% @site_index +=1 %>
-      <% end %>
+      </thead>
 
-    </tbody>
-   </table>
-   </div>
+      <tbody>
+        <% @i = 1 %>
+        <%= f.simple_fields_for :surv_sites  do |surv_site_form| %>
+
+            <%
+              style = @i == 1 ? 'border-top: 1px solid #ccc;' : ''
+
+            %>
+            <tr>
+              <td class='pos-site t-header' style='<%= style %>' > 
+                <%= surv_site_form.object.site.name %>  
+                <%= surv_site_form.input :site_id, :as => :hidden %>
+              </td>
+
+        	    <%= surv_site_form.simple_fields_for :surv_site_commodities do |surv_site_commodity_form| %>
+                <td  style='<%= style %>'  >
+        	  	    <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
+                  <%= surv_site_commodity_form.input :quantity, :label => false, :input_html => { :class=> 'number_text'} %>
+                </td>
+
+        	    <% end %>
+          </tr>
+        <% end %>
+        <% @i = @i + 1 %>
+      </tbody>
+     </table>
+  </div>
   <br />
-   <div class='center' >
-      <%= link_button_cancel 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type) %>
-      <%= button_save  " Save " %> 
-   </div>
-  <% end %>
+
+  <div class='center' >
+    <%= button_save  " Save " %> 
+    <%= link_button_cancel 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type) %>
+  </div>
+<% end %>

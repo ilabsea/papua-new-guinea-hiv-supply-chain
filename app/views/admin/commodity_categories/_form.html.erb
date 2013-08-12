@@ -2,7 +2,7 @@
   <%= f.input :name %>
   <%= f.input :com_type, collection: CommodityCategory::TYPES, include_blank: "Select Type", label: "Type"  %>
   <div class="form-actions"> 
+  	<%= button_save ' Save' %>
     <%= link_button_cancel 'Cancel' , admin_commodity_categories_path(:type => params[:type]) %>
-    <%= button_save ' Save' %>
   </div>
 <% end %>

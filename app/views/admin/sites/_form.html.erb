@@ -16,7 +16,7 @@
   <%= f.input :email %>
   <%= f.association :province, :include_blank => 'Select Province' %>
   <div class="form-actions">
-      <%= link_button_cancel 'Cancel' , admin_sites_path %>
-      <%= button_save ' Save' %>  
+    <%= button_save ' Save' %>  
+    <%= link_button_cancel 'Cancel' , admin_sites_path %>
   </div>
 <% end %>

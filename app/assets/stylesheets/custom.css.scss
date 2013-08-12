@@ -1,6 +1,11 @@
-.table th{
-  background-color: #eee;
+.table th, .t-header {
+  background-color: #F1F1F1 !important;
 }
+
+.border{
+  border-bottom: 1px solid #E5E5E5 !important;
+}
+
 .left {
   text-align : left;
 }
@@ -128,6 +133,14 @@ table input{
 }
 .row-error{
 
+}
+
+.dataTables_filter, .dataTables_info {
+  display:none !important;
+}
+
+.form-fixed {
+  overflow: hidden !important;
 }
 
 

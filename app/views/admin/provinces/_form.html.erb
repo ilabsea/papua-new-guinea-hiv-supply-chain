@@ -3,8 +3,7 @@
   <%= f.input :name %>
   <%= f.input :code %>
   <div class="form-actions">
-    <%= f.button :submit, :class => 'btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                admin_provinces_path, :class => 'btn' %>
+    <%= button_save ' Save ' , 'btn-primary' %>
+    <%= link_to_cancel ' Cancel ' %>
   </div>
 <% end %>
