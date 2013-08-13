@@ -5,6 +5,7 @@ class Shipment < ActiveRecord::Base
 	has_one :order_line
 
 	has_many :shipment_lines, :dependent => :destroy
+	has_many :sms_logs, :dependent => :destroy
 
 	attr_accessible :shipment_date, :consignment_number
 

@@ -14,6 +14,7 @@ PngHivAids::Application.routes.draw do
     end
 
     resources :shipments do
+      resources :sms_logs
       collection do
         get 'order'
         post 'add_session'
