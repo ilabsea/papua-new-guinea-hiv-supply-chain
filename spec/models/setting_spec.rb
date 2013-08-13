@@ -2,70 +2,34 @@ require 'spec_helper'
 
 describe Setting do
   before(:each) do
-    allow_message_expectations_on_nil
-    @attrib = {
-      :provincial_alert => 10,
-      :national_alert => 20,
-      :admin_alert => 30
-    }
-    @setting1 = Setting.create!(:name =>"provincial_alert", :value => @attrib[:provincial_alert] );
+    Setting[:hour] = 10
   end
 
-  describe "get key value" do
-    it "should return nil when key doesn't exist" do
-      key = "not_exist"
-      Setting.stub!(:find_by_name).with(key).and_return(false)
-      Setting[key].should == ''
-
-    end
-
-    it "should return a value of key if the key exist " do
-      Setting.stub!(:find_by_name).with(:provincial_alert).and_return(@setting1)
-      @setting1.value.should == 10
-    end
+  it "should create a setting if key does not exist" do
+    Setting[:message] = "Blah"
+    Setting.count.should eq 2
+    Setting.last.name.should eq "message"
+    Setting.last.value.should eq "Blah"
   end
 
-  describe "set key a value " do
-    before(:each) do
-
-    end
-    describe "key exist" do
-      before(:each) do
-        Setting.stub!(:find_by_name).with(:provincial_alert).and_return(@setting1)
-        @settign1.stub!(:value=).with(20)
-        @setting1.stub!(:save!)
-      end
-
-      it "should find key and return an setting object " do
-        Setting.should_receive(:find_by_name).with(:provincial_alert).and_return(@setting1)
-        @setting1.should_receive(:value=).with(20)
-        @setting1.should_receive(:save!).and_return(true)
-        Setting[:provincial_alert] = 20
-      end
-    end
-
-    describe "key doesnt exist" do
-      before(:each) do
-        @key = "key_not_exist"
-        @value = 20
-        @setting = Setting.new(:name=>@key)
-        Setting.stub!(:find_by_name).with(@key).and_return(false)
-        Setting.stub!(:new).with(:name => @key).and_return(@setting)
-      end
-
-      it "should create a new setting obj" do
-        Setting.should_receive(:new).with(:name=> @key)
-        Setting[@key] = @value
-      end
-
-      it "should set the value for the new setting obj and save it" do
-        @setting.should_receive(:value=).with(@value)
-        @setting.should_receive(:save!).and_return(true)
-
-        Setting[@key] = @value
-      end
-
-    end
+  it "should update an existing setting if name exists" do
+    Setting[:hour] = 12
+    Setting.count.should eq 1
+    Setting.first.name.should eq "hour"
+    Setting.first.value.should eq "12"
   end
 
+  describe "getting setting by name" do
+    it "should return a setting if name exist" do
+      setting = Setting.get_setting("hour")
+      setting.class.should eq Setting
+      setting.name.should eq "hour"
+      setting.value.should eq "10"
+    end
+
+    it "should return nil if key does not exist " do
+      setting = Setting.get_setting(:hours)
+      setting.should eq nil
+    end
+  end
 end

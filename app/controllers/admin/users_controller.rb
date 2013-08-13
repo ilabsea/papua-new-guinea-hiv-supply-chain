@@ -73,6 +73,8 @@ module Admin
 		  @user = User.find(params[:id])
 		  @changed_password = @user.random_password!
 
+		  @app_title = "Password reset"
+
 		  if !@changed_password
 		  	redirect_to edit_admin_user_path(@user), :error => "Failed to reset password for this user. Please try again"
 		  end

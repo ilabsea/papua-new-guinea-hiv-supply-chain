@@ -2,6 +2,10 @@ class Setting < ActiveRecord::Base
  
   attr_accessible :value, :name, :hour
 
+  DURATION_TYPE_HOUR = "Hour"
+  DURATION_TYPE_DAY  = "Day"
+  DURATION_TYPES     = [DURATION_TYPE_HOUR, DURATION_TYPE_DAY]
+
   KEYS = [
   	{ name: :frequency_hours_to_resend_sms , label: "" , :as => :text },
   	{ name: :frequency_months_to_submit_form , label: "", :as => :text },
@@ -24,18 +28,22 @@ class Setting < ActiveRecord::Base
     }
   ]
 
-  def self.[](key)
-    setting = Setting.find_by_name(key)
+  def self.[](name)
+    setting = get_setting name
     setting ? setting.value.to_s : ''
   end
   
-  
+  def self.get_setting name
+     @settings ||= Setting.all
+     @settings.select{|s| s.name.to_s == name.to_s }.first
+  end
 
-  def self.[]=(key, value)
-    setting = Setting.find_by_name(key) || Setting.new(:name => key)
+  def self.[]=(name, value)
+    setting = Setting.find_by_name(name) || Setting.new(:name => name)
     setting.value = value
     setting.save!
-    setting[key]
+    @settings = nil
+    value
   end
 
   def self.create_or_update_message_alert message_alert, params

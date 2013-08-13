@@ -13,7 +13,7 @@ module Admin
 
 
     def new
-      @site = Site.new
+      @site = Site.new(:in_every => Setting[:hour], :duration_type => Setting[:date_type])
       @app_title = "New Site"
     end
 

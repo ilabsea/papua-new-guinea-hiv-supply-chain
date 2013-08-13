@@ -14,8 +14,8 @@
       <input type="number" min="0" max="99" name="setting[hour]" style="width: 40px;" value='<%= Setting[:hour] %>' /> 
 
       <select name='setting[date_type]' style='width: 90px;' >
-        <option value='hour' <%= Setting[:date_type] == 'hour' ? 'selected' : ''  %>  > Hours </option>
-        <option value='day'  <%= Setting[:date_type] == 'day'  ? 'selected' : ''  %>  > Days  </option>
+        <option value='<%= Setting::DURATION_TYPE_HOUR %>' <%= Setting[:date_type] == Setting::DURATION_TYPE_HOUR ? 'selected' : ''  %>  > <%= Setting::DURATION_TYPE_HOUR %> </option>
+        <option value='<%= Setting::DURATION_TYPE_DAY  %>'  <%= Setting[:date_type] == Setting::DURATION_TYPE_DAY  ? 'selected' : ''  %>  > <%= Setting::DURATION_TYPE_DAY %> </option>
       </select>
       <%= button_save ' Save ' %>
   </div>
@@ -31,6 +31,7 @@
   <% end %>
   
 <% end %>
+
 <style>
   .template_container {
     padding-bottom: 10px;

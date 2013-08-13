@@ -5,6 +5,10 @@
   <%= f.input :service_type, :collection => Site::SeviceType, :include_blank => 'Select Service' %>
 
   <%= f.input :suggestion_order, :label => 'Suggestion Order Valid Within(%)' %>
+
+  <%= f.input :in_every, :label => "Every" %>
+  <%= f.input :duration_type, :collection => Setting::DURATION_TYPES  %>
+
   <%= f.input :order_frequency, :label => 'Order Frequency(Month)' %>
   <%= f.input :number_of_deadline_sumission %>
   <%= f.input :order_start_at, :as => 'date_time_picker', :label => 'Order Start Month' %>

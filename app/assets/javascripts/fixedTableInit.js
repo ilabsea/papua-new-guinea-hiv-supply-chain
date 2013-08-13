@@ -10,6 +10,11 @@ $(function(){
 			"bInfo": false
 			//"oSearch": false
 	} );	
-	new FixedColumns( oTable );
+	try{
+		new FixedColumns( oTable );
+	}
+	catch(ex){
+		
+	}
 
 });
