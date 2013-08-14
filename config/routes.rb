@@ -18,6 +18,7 @@ PngHivAids::Application.routes.draw do
       collection do
         get 'order'
         post 'add_session'
+        delete 'remove_session'
         post 'create_shipment'
       end
     end

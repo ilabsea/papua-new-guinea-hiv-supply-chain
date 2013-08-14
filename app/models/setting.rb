@@ -2,8 +2,8 @@ class Setting < ActiveRecord::Base
  
   attr_accessible :value, :name, :hour
 
-  DURATION_TYPE_HOUR = "Hour"
-  DURATION_TYPE_DAY  = "Day"
+  DURATION_TYPE_HOUR = "Hour(s)"
+  DURATION_TYPE_DAY  = "Day(s)"
   DURATION_TYPES     = [DURATION_TYPE_HOUR, DURATION_TYPE_DAY]
 
   KEYS = [

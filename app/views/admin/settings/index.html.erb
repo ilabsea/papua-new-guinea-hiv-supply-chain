@@ -17,7 +17,7 @@
         <option value='<%= Setting::DURATION_TYPE_HOUR %>' <%= Setting[:date_type] == Setting::DURATION_TYPE_HOUR ? 'selected' : ''  %>  > <%= Setting::DURATION_TYPE_HOUR %> </option>
         <option value='<%= Setting::DURATION_TYPE_DAY  %>'  <%= Setting[:date_type] == Setting::DURATION_TYPE_DAY  ? 'selected' : ''  %>  > <%= Setting::DURATION_TYPE_DAY %> </option>
       </select>
-      <%= button_save ' Save ' %>
+
   </div>
   <br />
   <% Setting::MESSAGE_KEYS.each do |el| %>
@@ -29,8 +29,9 @@
     </div>
     <br />
   <% end %>
-  
+  <div class="form-actions"> <%= button_save ' Save ' %> </div>
 <% end %>
+ 
 
 <style>
   .template_container {

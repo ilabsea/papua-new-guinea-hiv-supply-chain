@@ -22,21 +22,26 @@ class Shipment < ActiveRecord::Base
 		[ [ STATUS_LOST, "Mark as lost"] , [ STATUS_RECEIVED,  "Mark as received" ] ]  	
 	end
 
-	def create_shipment session_shipments
-		order_lines = OrderLine.find(session_shipments.map{|session_shipment| session_shipment.order_line_id})
-		session_shipments.each do |session_shipment|
-		   self.shipment_lines.build(:quantity_issued =>session_shipment.quantity, 
-		   		 					 :order_line_id => session_shipment.order_line_id,
-		   		 					 :remark => session_shipment.remark,
-		   	     					 :quantity_suggested => _quantity_suggested(order_lines, session_shipment.order_line_id )
-		   	     					 )
+	def create_shipment shipment_session
+		order_lines = OrderLine.find shipment_session.shipment.keys
+		shipment_session.shipment.each do |order_line_id, data|
+		    options = {  :quantity_issued => data[:quantity], 
+						 :order_line_id => order_line_id,
+						 :remark => data[:remark],
+						 :quantity_suggested => _quantity_suggested(order_lines, order_line_id )
+					}	
+	
+		    shipment_lines.build options
 		end
-		self.save
-	end
-
-	def update_order_lines
-		self.shipment_lines.each do |shipment_lines|
-
+		
+		if save
+			order_lines.each do |order_line|
+				order_line.shipment_status = true
+				order_line.save
+			end
+			return true
+		else
+			return false	
 		end
 	end
 
@@ -51,7 +56,7 @@ class Shipment < ActiveRecord::Base
 
 	def _quantity_suggested  order_lines , order_line_id
 		order_lines.each do |order_line|
-		   return order_line._quantity_suggested if order_line.id == order_line_id
+		   return order_line.quantity_suggested if order_line.id == order_line_id
 		end
 		0
 	end

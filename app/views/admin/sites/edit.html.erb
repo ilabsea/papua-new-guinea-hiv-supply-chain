@@ -1,9 +1,9 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [
     { 'Sites' => admin_sites_path },
-    { 'Edit:' + @site.name => nil}
+    { 'Edit' => nil}
     ] %>
 <% end  %>
 
-<%=page_header "Edit : #{@site.name}"%>
+<%=page_header "Edit site"%>
 <%= render :partial => 'form' %>

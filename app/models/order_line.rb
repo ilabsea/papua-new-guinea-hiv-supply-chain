@@ -124,6 +124,10 @@ class OrderLine < ActiveRecord::Base
   	def kit
   		where [ 'arv_type = :type ', :type => CommodityCategory::TYPES_KIT ]
   	end
+
+    def not_shipped
+      where [ 'shipment_status = :shipment_status', :shipment_status => false]
+    end
   end	
 
 

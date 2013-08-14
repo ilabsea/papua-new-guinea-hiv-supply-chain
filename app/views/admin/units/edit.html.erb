@@ -1,9 +1,9 @@
 <%= content_for :breadcrumb do %>
 	<%= breadcrumb [ 
 			{"Units" => admin_units_path} ,
-			{"Edit: #{@unit.name}" => false } ,
+			{"Edit" => false } ,
 
 		] %>
 <% end %>
-<%= page_header("Edit: #{@unit.name}") %>
+<%= page_header("Edit unit") %>
 <%= render "form" %>

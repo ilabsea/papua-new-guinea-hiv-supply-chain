@@ -1,7 +1,7 @@
 <% content_for :breadcrumb do %>
-  <%= breadcrumb [{ 'Categories' => admin_categories_path }, { 'Edit: ' + @category.name => nil }]   %>
+  <%= breadcrumb [{ 'Categories' => admin_categories_path }, { 'Edit' => nil }]   %>
 <% end %>
 
-<%= page_header("Edit Category : #{@category.name}") %>
+<%= page_header("Edit category") %>
 
 <%= render :partial => 'form' %>
