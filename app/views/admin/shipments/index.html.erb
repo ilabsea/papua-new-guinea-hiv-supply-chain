@@ -1,10 +1,8 @@
 <%= form_tag mark_status_admin_shipments_path, :method => 'PUT' , :style => 'display:inline;' do %>
   <%= page_header "Shipment status", :left => 4, :right => 8  do  %>
     <div class='row-fluid'>
-      <%= link_button_new 'New Shipment',  order_admin_shipments_path() %>
-      <%= link_button_download 'Down load as Excel',  order_admin_shipments_path(), :class => 'btn btn-primary' %>
-      
-        <%= select_tag :status, options_for_select(Shipment.status_mark) , 
+      <%= link_button_download 'Download as Excel',  download_admin_shipments_path(), :class => 'btn btn-primary' %>
+      <%= select_tag :status, options_for_select(Shipment.status_mark) , 
 
                        :style=>'margin-top: 10px; width: 140px; ', 
                        :id => "mark_status_id" , 
@@ -41,7 +39,7 @@
           <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
           <td><%= shipment.status %>
           <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
-          <td> <%= link_to pluralize(shipment.sms_logs_count, 'time'), admin_shipment_sms_logs_path(shipment) %> </td>
+          <td> <%= link_to shipment.sms_logs_count , admin_shipment_sms_logs_path(shipment) %> </td>
           <td title='<%= shipment.last_notified_date%>' > <%= time_ago_in_words shipment.last_notified_date %> </td>
           <td></td>
           <td></td>   

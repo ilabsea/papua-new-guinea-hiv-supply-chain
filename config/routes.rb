@@ -17,6 +17,7 @@ PngHivAids::Application.routes.draw do
       resources :sms_logs
       
       collection do
+        get 'download'
         get 'order'
         post 'add_session'
         put 'mark_status'

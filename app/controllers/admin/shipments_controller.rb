@@ -4,8 +4,7 @@ module Admin
     def index
       @shipments = Shipment
       @shipments = @shipments.where(["status =:status", :status => params[:type] ]) if params[:type]
-
-      @shipments = Shipment.paginate(paginate_options)
+      @shipments = @shipments.paginate(paginate_options)
     end 
 
     def new
@@ -108,6 +107,19 @@ module Admin
     def show
       @app_title = "Shipment detail"
       @shipment = Shipment.includes(:shipment_lines => {:order_line => :commodity}).find params[:id]
+    end
+
+    def download
+      time =Time.now.strftime("%Y-%m-%d %H:%m:%S_")
+
+      file_name =  "#{Rails.root}/public/data/#{time}shipment.csv"
+         
+      Export.shipment file_name
+      send_file(file_name , :filename      =>  File.basename(file_name),
+                            :type          =>  'application/xls',
+                            :disposition   =>  'attachment',
+                            :streaming     =>  true,
+                            :buffer_size   =>  '4096')
     end
 
   end
