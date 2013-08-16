@@ -10,10 +10,10 @@
 
 <div class='row-fluid' >
   <div class='span6 left' >	
-	<%= form_tag '' do |f| %>
-	  <%= select_tag :site_id, options_for_select(@sites, params[:site]), :prompt => "Select a site" %>
-	<% end %>
-   </div>
+  	<%= form_tag '', :style => 'display:inline;' do |f| %>
+  	  <%= select_tag :site_id, options_for_select(@sites, params[:site]), :prompt => "Select a site" %>
+  	<% end %>
+  </div>
 
    <div class='span6 right'>
    	<%= link_button_new 'Create Shipment', '#shippement_line', :data => {:skip_loading=> true, :toggle => :modal}  %>

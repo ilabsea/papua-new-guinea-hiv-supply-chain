@@ -1,49 +1,94 @@
-<%= page_header "Shipments", :left => 4, :right => 8  do  %>
-  <div class='row-fluid'>
-    <%= link_button_new 'New Shipment',  order_admin_shipments_path() %>
-    <%= link_button_download 'Down load as Excel',  order_admin_shipments_path(), :class => 'btn btn-primary' %>
-  </div>
-  
-<% end %>
+<%= form_tag mark_status_admin_shipments_path, :method => 'PUT' , :style => 'display:inline;' do %>
+  <%= page_header "Shipment status", :left => 4, :right => 8  do  %>
+    <div class='row-fluid'>
+      <%= link_button_new 'New Shipment',  order_admin_shipments_path() %>
+      <%= link_button_download 'Down load as Excel',  order_admin_shipments_path(), :class => 'btn btn-primary' %>
+      
+        <%= select_tag :status, options_for_select(Shipment.status_mark) , 
 
-<% content_for :breadcrumb do %>
-  <%= breadcrumb [{"Shipments" => nil}]  %>
-<% end %>
+                       :style=>'margin-top: 10px; width: 140px; ', 
+                       :id => "mark_status_id" , 
+                       :include_blank => "" %>
+      
+    </div>
+  <% end %>
 
-<table class="table table-hover table-bordered">
-  <thead>
-    <tr>
-      <th class='nth-table'>#</th>
-      <th style='width: 150px;'>Site</th>
-      <th>Consignment</th>
-      <th>Date Shipped</th>
-      <th>SMS Notified clinic (times)</th>      
-      <th>Last notified date to clinic</th>
-      <th>Shipment confirmed received</th>
-      <th>Package lost</th>
-      <th style='width: 55px;'>Action</th>
-    </tr>
-  </thead>
+  <% content_for :breadcrumb do %>
+    <%= breadcrumb [{"Shipments" => nil}]  %>
+  <% end %>
 
-  <tbody>
-    <% @shipments.each_with_index do |shipment, index| %>
+  <table class="table table-hover table-bordered">
+    <thead>
       <tr>
-        <td><%= current_entries + index %></td>
-        <td><%= shipment.site.name %></td>
-        <td><%= shipment.consignment_number %></td>
-        <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>   
-        <td class="center">
-          <%= link_button_show 'Detail', admin_shipment_path(shipment), :class => 'btn-mini btn-success' %>
-        </td>
+        <th class='nth-table'>#</th>
+        <th style='width: 150px;'>Site</th>
+        <th>Consignment</th>
+        <th>Status</th>
+        <th>Date Shipped</th>
+        <th>SMS Notified clinic (times)</th>      
+        <th>Last notified date to clinic</th>
+        <th>Shipment confirmed</th>
+        <th>Package lost</th>
+        <th><%=check_box_tag 'toggle' , '', false,  :id => 'status_toggle' %></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-<%= render_paginate_for @shipments %>
+    </thead>
+
+    <tbody>
+      <% @shipments.each_with_index do |shipment, index| %>
+        <tr>
+          <td><%= current_entries + index %></td>
+          <td><%= shipment.site.name %></td>
+          <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
+          <td><%= shipment.status %>
+          <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>   
+          <td class="center">
+            <%= check_box_tag 'status_shipment_id[]', shipment.id, false %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= render_paginate_for @shipments %>
+<% end %>
+
+<script type="text/javascript">
+  function handleToggleStatus(){
+    $("#status_toggle").on('click', function(){
+       chbox = this
+       $chboxes =  $("input[name='status_shipment_id[]']");
+       for(var i=0; i< $chboxes.length; i++){
+          $chboxes.get(i).checked = chbox.checked;
+       }
+    })
+  }
+
+  function handleStatusChange(){
+    $("#mark_status_id").on('change', function(){
+      checkbox = this
+      $elm = $(checkbox);
+      var status = $elm.val();
+      if(status){
+        $chboxes =  $("input[name='status_shipment_id[]']");
+        for(var i=0; i< $chboxes.length; i++){
+          if($chboxes.get(i).checked) {
+            checkbox.form.submit();
+            return true;
+          }
+        }
+      }
+    });
+  }
+
+  $(function(){
+    handleToggleStatus();
+    handleStatusChange();
+  });
+  
+</script>
 <%#= render 'search' %>
 
 

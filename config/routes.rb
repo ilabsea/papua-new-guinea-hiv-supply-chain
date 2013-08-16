@@ -15,9 +15,11 @@ PngHivAids::Application.routes.draw do
 
     resources :shipments do
       resources :sms_logs
+      
       collection do
         get 'order'
         post 'add_session'
+        put 'mark_status'
         delete 'remove_session'
         post 'create_shipment'
       end

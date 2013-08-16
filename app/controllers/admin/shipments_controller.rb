@@ -94,8 +94,12 @@ module Admin
         render :json => { :status => :success}
       else     
         render :json => { :status => :failed, :error => shipment_line_session.errors.full_messages[0] }  
-      end  
+      end 
+    end
 
+    def mark_status
+      Shipment.bulk_update_status params[:status_shipment_id], params[:status]
+      redirect_to admin_shipments_path, :notice => "Shipments' status have been updated successfully"
     end
 
     def show

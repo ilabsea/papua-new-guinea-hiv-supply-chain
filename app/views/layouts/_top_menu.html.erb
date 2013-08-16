@@ -30,7 +30,14 @@
                 {:label => "Settings", :url => admin_settings_path, :controller => "settings"}
               ] if current_user.admin?
 
+
+
+
               menus += [
+                  {:label => "Orders pending for dispatch", :url => order_admin_shipments_path(), :controller => "" },
+                  {:label => "Shipment status", :url => admin_shipments_path(), :controller => "" },
+                  {:label => "Package lost", :url => admin_shipments_path(:type => Shipment::STATUS_LOST), :controller => "" },
+                  {:label => "Package confirmed", :url => admin_shipments_path(:type => Shipment::STATUS_RECEIVED), :controller => "" },
                 ] if current_user.ams?
 
               menus.each do |item|

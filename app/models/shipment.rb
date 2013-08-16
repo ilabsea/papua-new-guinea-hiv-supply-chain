@@ -7,7 +7,9 @@ class Shipment < ActiveRecord::Base
 	has_many :shipment_lines, :dependent => :destroy
 	has_many :sms_logs, :dependent => :destroy
 
-	attr_accessible :shipment_date, :consignment_number
+	attr_accessible :shipment_date, :consignment_number, :status, :user
+
+
 
 	STATUS_LOST = 'Lost'
 	STATUS_RECEIVED = 'Received'
@@ -15,11 +17,12 @@ class Shipment < ActiveRecord::Base
 
 	validates :consignment_number, :shipment_date, :presence => true
 	validates :consignment_number, :numericality => true
+	validates :user, :presence => true
 
 	SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED]
 
 	def self.status_mark
-		[ [ STATUS_LOST, "Mark as lost"] , [ STATUS_RECEIVED,  "Mark as received" ] ]  	
+		[ [ "Mark as lost", STATUS_LOST] , [ "Mark as received", STATUS_RECEIVED ] ]  	
 	end
 
 	def create_shipment shipment_session
@@ -44,6 +47,11 @@ class Shipment < ActiveRecord::Base
 			return false	
 		end
 	end
+
+	def self.bulk_update_status shipments_id, status
+		shipments_id.map{|id| Shipment.update(id, :status => status)}
+	end
+
 
 	def self.total_shipment_by_status
        shipments = Shipment.select('COUNT(status) AS total, status').group('status').order('total')
