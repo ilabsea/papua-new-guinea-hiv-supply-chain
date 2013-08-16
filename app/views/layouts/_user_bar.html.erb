@@ -1,13 +1,13 @@
 <div class="row user-bar"> 
-  <div class='span5' > 
+  <div class='span4' > 
     <!--
   	<div id='system_loading'>
   		<%= image_tag 'loading.gif', :alt => 'System loading', :title => 'System loading' %> Waiting for server response
     </div>
     -->
   </div>
-  <div class='span7 center' >	
-    <div style='padding:10px; margin-top:-14px;' class='well' >
+  <div class='span8 center' >	
+    <div style='padding:10px; margin-top:-14px; width: 400px; float:right;' class='well'  >
       <% if user_signed_in? %>
         Welcome  <i class='icon-user'> <%= current_user.display_name %> </i>
         <%= link_to "Change password", new_password_admin_users_path() %> 

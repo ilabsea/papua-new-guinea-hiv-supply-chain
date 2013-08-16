@@ -107,6 +107,7 @@ module Admin
     def show
       @app_title = "Shipment detail"
       @shipment = Shipment.includes(:shipment_lines => {:order_line => :commodity}).find params[:id]
+      @shipment_lines = @shipment.shipment_lines.paginate paginate_options
     end
 
     def download

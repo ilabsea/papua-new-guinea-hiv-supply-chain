@@ -81,6 +81,19 @@ module Admin::ApplicationHelper
 		items.join("").html_safe
 	end
 
+  def field_sorted_in_shipments_path_for field
+    options = { :field => field }
+    options[:type] =  params[:type] if !params[:type].blank?
+    if params[:order].blank?
+      options[:order] = 'up'
+    elsif params[:order] == 'up'
+      params[:order] = 'down'
+    else  
+      params[:order] = 'up'
+    end
+    admin_shipments_path(options)
+  end
+
   def link_button type, text, url, options={}
     options[:class] = options[:class] ? " btn #{options[:class]}" : "btn" 
     icon = content_tag "i", " ", :class => "#{type} "

@@ -19,6 +19,8 @@ class Shipment < ActiveRecord::Base
 	validates :consignment_number, :numericality => true
 	validates :user, :presence => true
 
+	default_scope order("shipments.id DESC")
+
 	SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED]
 
 	def self.status_mark

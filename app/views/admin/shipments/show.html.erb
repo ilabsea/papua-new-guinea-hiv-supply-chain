@@ -8,6 +8,7 @@
     <li> Site : <b> <%=@shipment.site.name %> </b> </li>
     <li> Consignment number : <b> <%=@shipment.consignment_number%> </b> </li>
     <li> Shipment Date : <b> <%=@shipment.shipment_date%> </b> </li>
+    <li> Total : <b> <%= pluralize(@shipment.shipment_lines_count, 'item') %> </b> </li>
   </ul>  
 </div>
 
@@ -19,20 +20,23 @@
       <th>Quantity Issued</th>
       <th>Quantity Suggested</th>
       <th>Quantity Received</th>      
+      <th>Remark</th>      
     </tr>
   </thead>
 
   <tbody>
-    <% @shipment.shipment_lines.each_with_index do |shipment_line, index| %>
+    <% @shipment_lines.each_with_index do |shipment_line, index| %>
       <tr>
         <td><%= current_entries + index %></td>
         <td><%=shipment_line.order_line.commodity.name %></td>
         <td><%=shipment_line.quantity_issued %></td>
         <td><%=shipment_line.quantity_suggested %> </td>
         <td><%=shipment_line.quantity_received%></td>  
+        <td><%=shipment_line.remark %></td>  
       </tr>
     <% end %>
   </tbody>
 </table>
+<%= render_paginate_for @shipment_lines %>
 
 

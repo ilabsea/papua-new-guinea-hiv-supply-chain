@@ -20,9 +20,9 @@
       <tr>
         <th class='nth-table'>#</th>
         <th style='width: 150px;'>Site</th>
-        <th>Consignment</th>
-        <th>Status</th>
-        <th>Date Shipped</th>
+        <th><%= link_to 'Consignment', field_sorted_in_shipments_path_for(:consignment_number), :class => 'link-thead' %> </th>
+        <th><%= link_to 'Status', field_sorted_in_shipments_path_for(:status) , :class => 'link-thead'  %> </th>
+        <th><%= link_to 'Date Shipped', field_sorted_in_shipments_path_for(:shipment_date) , :class => 'link-thead'   %> </th>
         <th>SMS Notified clinic (times)</th>      
         <th>Last notified date to clinic</th>
         <th>Shipment confirmed</th>
