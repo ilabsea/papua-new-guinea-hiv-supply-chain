@@ -2,12 +2,16 @@
 <%= render 'date_form' %>
 <ul class='dashboard-item-set'>
  <%
+   date_params = {}
+   date_params[:start] = params[:start] if !params[:start].blank?
+   date_params[:end]   = params[:end] if !params[:end].blank?
+
   [
   	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_APPROVED].to_i, 
       :class => :order_approved,  
   		:type => Order::ORDER_STATUS_APPROVED ,  
       :text => 'Orders pending for dispatch',
-      :url => order_admin_shipments_path()
+      :url => order_admin_shipments_path(date_params)
     },
 
     {
@@ -15,7 +19,7 @@
       :class => :order_approved,  
       :type => Shipment::STATUS_RECEIVED ,  
       :text => 'Shipment received',
-      :url => admin_shipments_path(:type => Shipment::STATUS_RECEIVED )
+      :url => admin_shipments_path(date_params.merge(:type => Shipment::STATUS_RECEIVED) )
 
     },
     {
@@ -23,7 +27,7 @@
       :class => :order_in_review,  
       :type => Shipment::STATUS_LOST,  
       :text => 'Shipment Lost',
-      :url => admin_shipments_path(:type => Shipment::STATUS_LOST)
+      :url => admin_shipments_path(date_params.merge( :type => Shipment::STATUS_LOST) )
 
     },
     {
@@ -31,7 +35,7 @@
       :class => :order_pending,  
       :type => Shipment::STATUS_IN_PROGRESS,  
       :text => 'Shipment in  progress',
-      :url => admin_shipments_path(:type => Shipment::STATUS_IN_PROGRESS )
+      :url => admin_shipments_path(date_params.merge(:type => Shipment::STATUS_IN_PROGRESS ) )
 
     }
 

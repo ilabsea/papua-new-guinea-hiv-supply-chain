@@ -31,17 +31,17 @@
               ] if current_user.admin?
 
 
-
+              action = params[:action]
 
               menus += [
-                  {:label => "Orders pending for dispatch", :url => order_admin_shipments_path(), :controller => "" },
-                  {:label => "Shipment status", :url => admin_shipments_path(), :controller => "" },
-                  {:label => "Package lost", :url => admin_shipments_path(:type => Shipment::STATUS_LOST), :controller => "" },
-                  {:label => "Package confirmed", :url => admin_shipments_path(:type => Shipment::STATUS_RECEIVED), :controller => "" },
+                  {:label => "Orders pending for dispatch", :url => order_admin_shipments_path(), :controller => "", :selected => action == "order" ? true : false },
+                  {:label => "Shipment status", :url => admin_shipments_path(), :controller => "", :selected => (action=="index" && params[:type].blank?) ? true : false },
+                  {:label => "Package lost", :url => admin_shipments_path(:type => Shipment::STATUS_LOST), :controller => "", :selected => (action == "index" && params[:type] == Shipment::STATUS_LOST ) ? true : false },
+                  {:label => "Package confirmed", :url => admin_shipments_path(:type => Shipment::STATUS_RECEIVED), :controller => "", :selected => ( action == "index" && params[:type] == Shipment::STATUS_RECEIVED ) ? true : false },
                 ] if current_user.ams?
 
               menus.each do |item|
-                cls = (item[:controller] == controller_name) ? "active" : ""
+                cls = (item[:controller] == controller_name || item[:selected] == true) ? "active" : ""
               %>
                   <li class="<%=cls%>"> <%=link_to item[:label], item[:url] %> </li>
               <% end %>

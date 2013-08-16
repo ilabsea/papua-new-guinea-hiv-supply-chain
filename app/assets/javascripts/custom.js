@@ -35,7 +35,9 @@ function systemLoadingClick($elm){
 function isNotIgnoreLoading($elm){
     attr = $elm.attr("data-skip-loading");
     method = $elm.attr("data-method");
-    if(attrNotSet(attr) && attrNotSet(method)) 
+    toggle = $elm.attr("data-toggle")
+
+    if(attrNotSet(attr) && attrNotSet(method) && attrNotSet(toggle) ) 
       return true
     return false
 }
