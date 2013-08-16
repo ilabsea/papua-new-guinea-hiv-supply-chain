@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130813093237) do
+ActiveRecord::Schema.define(:version => 20130816062348) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(:version => 20130813093237) do
     t.datetime "updated_at",                                        :null => false
     t.integer  "sms_logs_count",                     :default => 0
     t.integer  "shipment_lines_count",               :default => 0
+    t.datetime "last_notified_date"
   end
 
   create_table "sites", :force => true do |t|
@@ -189,6 +190,7 @@ ActiveRecord::Schema.define(:version => 20130813093237) do
     t.integer  "site_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "to"
   end
 
   create_table "surv_site_commodities", :force => true do |t|

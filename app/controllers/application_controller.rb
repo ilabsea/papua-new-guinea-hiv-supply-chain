@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   layout :layout_manager
 
-  PER_PAGE = 10
+  PER_PAGE = 15
   
   rescue_from CanCan::AccessDenied do |exception|
     flash[:error] = exception.message

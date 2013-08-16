@@ -41,8 +41,8 @@
           <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
           <td><%= shipment.status %>
           <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
-          <td></td>
-          <td></td>
+          <td> <%= link_to pluralize(shipment.sms_logs_count, 'time'), admin_shipment_sms_logs_path(shipment) %> </td>
+          <td title='<%= shipment.last_notified_date%>' > <%= time_ago_in_words shipment.last_notified_date %> </td>
           <td></td>
           <td></td>   
           <td class="center">

@@ -63,6 +63,9 @@ module Admin
          @shipment.status = Shipment::STATUS_IN_PROGRESS
  
          if @shipment.create_shipment(shipment_session)
+            sms_shipment = ShipmentSms.new(@shipment)
+            sms_shipment.alert
+
             shipment_session.clear
             response[:status] = :success
             response[:message] = 'Shipment has been created' 
