@@ -7,7 +7,7 @@ class ShipmentLineSession
 	attr_accessor :quantity, :remark, :order_line_id, :shipment_session
 
 	validates :quantity, :presence => true
-	validates :quantity, :order_line_id, :numericality => true
+	validates :quantity, :order_line_id, :numericality => { :greater_than_or_equal_to => 0 }
 	validate  :in_same_order
 
 	def initialize(attributes={})

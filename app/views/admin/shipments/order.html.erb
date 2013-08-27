@@ -16,7 +16,7 @@
   </div>
 
    <div class='span6 right'>
-   	<%= link_button_new 'Create Shipment', '#shippement_line', :data => {:skip_loading=> true, :toggle => :modal}  %>
+   	<%= link_button_new 'Create Shipment', '#shippement_dialog', :id => 'create_shippement', :data => {:skip_loading=> true}  %>
    </div>	
 </div>
 
@@ -26,7 +26,7 @@
 <table class="table table-hover table-bordered">
   <thead>
     <tr>
-      <th> # </th>
+      <th><%=check_box_tag 'toggle_all', '1', false, :id => 'cb_toggle_all' %></th>
       <th>Site</th>
       <th>OrderId </th>
       <th>Commodity</th>      
@@ -34,51 +34,119 @@
       <th>Approved Date</th>
       <th>Quantity Dispatch </th>
       <th>AMS remark </th>
-      <th width="60"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @order_lines.each_with_index do |order_line, index| %>
       <%  
-          line_session =  @shipment_session.find_by_key order_line.id 
+          line_session = @shipment_session.find_by_key order_line.id 
           klass        = line_session.nil?  ? '' : 'row-success' 
           quantity     = line_session.nil?  ? '' : line_session[:quantity]
           remark       = line_session.nil?  ? '' : line_session[:remark]
+          checked      = line_session.nil?  ? false : true
 
       %>
       <tr id='tr_<%= order_line.id %>'>
-        <td class='<%= klass  %>' > <%= current_entries + index %></td>
+        <td class='<%= klass  %>' > 
+          <%= check_box_tag 'toggle[]', '1', checked, :class => 'cb_items', :id => "toggle_#{order_line.id}", :data => {:id => order_line.id} %> 
+        </td>
         <td class='<%= klass  %>'><%= order_line.order.site.name %></td>
         <td class='<%= klass  %>'><%= order_line.order.id %></td>
         <td class='<%= klass  %>'><%= order_line.commodity.name %></td>
         <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
         <td class='<%= klass  %>'><%= time_ago_in_words order_line.updated_at %></td>
-        <td class='<%= klass  %>'><input value='<%=quantity%>' type='number' class= 'number_text' name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> </td>
-        <td class='<%= klass  %>'><input value='<%=remark%>' type='text' name='order_line[remark]' id='ams_remark_<%= order_line.id %>' /> </td> 
+
         <td class='<%= klass  %>'>
-           <%= link_button_tick  '', '' , :class => 'add_order_line btn-success btn-mini', :data => {:id => order_line.id, :skip_loading => true}  %>
-           <%= link_button_minus '', '' , :class => 'remove_order_line btn-danger btn-mini', :data => {:id => order_line.id, :skip_loading => true}  %>
+          <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> 
+
+          <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>' data-skip-loading='true' style='display: none;'
+             class='error' data-content="Invalid value. Quantity dispatch must be a number" data-original-title="Shipment Error"  >    
+             <i class='icon-exclamation-sign'></i>     
+          </a>
+
         </td>
+
+        <td class='<%= klass  %>'>
+          <input value='<%=remark%>' type='text' data-id='<%= order_line.id %>' class='content' name='order_line[remark]' id='ams_remark_<%= order_line.id %>' /> 
+        </td>
+
       </tr>
     <% end %>
   </tbody>
 </table>
+
 <%= render_paginate_for @order_lines %>
 
 <script>
+
+  function handleCreateShipment(){
+    $("#create_shippement").on('click', function(){
+      if(validShipmentLines()){
+        $('#shippement_dialog').modal();
+      }
+    });    
+  }
+
+  function validShipmentLines(){
+    var $items = $(".cbitems")
+    var valid  = true
+    for(var i=0; i< $items.length; i++){
+      $elm = $items.get(i);
+      var data = $elm.getData();
+    }
+  }
+
+  function checkUpdateCb(){
+    $(".cb_items").on('click', function($e){
+      var $elm = $(this);
+      var id   = $elm.attr("data-id");
+      var data = getData(id);
+      if(this.checked)
+        addItem(data);
+      else
+        removeItem(data);
+      $e.stopPropagation();
+
+    })
+  }
+
+  function checkUpdateContent(){
+    $(".content").on('blur', function(){
+      $elm = $(this);
+      var id = $elm.attr("data-id");
+      var data = getData(id);
+      checked = $("#toggle_"+id).get(0).checked ;
+
+      if(checked){
+        addItem(data);
+      }
+
+      else{
+        // nothing to do cause it was removed.
+      }
+
+    })
+  }
+
+  function checkUpdate(){
+    checkUpdateCb();
+    checkUpdateContent();
+  }
+
+  function getData(id){
+    var quantity = $( "#quantity_" + id ).val() ;
+    var remark   = $( "#ams_remark_" + id ).val() ;
+    return { 'order_line_id' : id, 'quantity' : quantity, 'remark' : remark } ;
+  }
 
   function handleEvent(){
     $('.add_order_line').on('click', function(){
       var $elm = $(this);
       var id = $elm.attr("data-id");
-      var quantity = $( "#quantity_" + id ).val()
-      var remark   = $( "#ams_remark_" + id ).val()
-
-      var data = { 'order_line_id' : id, 'quantity' : quantity, 'remark' : remark }
+      var data = getData(id);
       addItem(data);
       return false;
-
     });
 
     $('.remove_order_line').on('click', function(){
@@ -88,41 +156,42 @@
       var data = { 'order_line_id' : id}
       removeItem(data);
       return false;
-
     });
   }
 
   function highLightRowSuccess(id){
     $("#tr_" + id + " td " ).addClass("row-success").removeClass('row-error');
     $('#quantity_' + id).css({border: 'black', 'color' : '#333' })
-    $('#quantity_' + id).focus();
+    $("#error_" + id).hide();
+
   }
 
   function highLightRowDelete(id){
     $("#tr_" + id + " td " ).removeClass("row-success").removeClass('row-error');
     $('#quantity_' + id).css({border: 'black', 'color' : '#333' })
-    $('#quantity_' + id).focus();
+
   }
 
   function highLightRowFailure(id){
     $("#tr_" + id + " td " ).addClass("row-error").removeClass('row-success');
     $('#quantity_' + id).css('color' , 'red' )
-    $('#quantity_' + id).focus();
+    $("#error_" + id).show();
+
   }
 
-  function hideError(){
-    $("#error-shipment").hide();
+  function hideError(id){
+    $("#error-" + id).hide();
   }
 
-  function showError(msg){
-    $("#error-shipment").html(msg);
-    $("#error-shipment").show();
+  function showError(id, msg){
+    $("#error-" + id ).attr('data-content' , msg);
+    $("#error-" + id ).show();
   }
 
   function removeItem(data){  
     var url = '<%= remove_session_admin_shipments_path %>';
     showLoading();
-    hideError();
+    hideError(data.order_line_id);
 
     $.ajax({
         url: url,
@@ -135,7 +204,7 @@
             highLightRowDelete(data.order_line_id)
           }
           else{
-            showError(response.error);
+            showError(data.order_line_id, response.error);
             highLightRowFailure(data.order_line_id)
           }
         }
@@ -152,7 +221,7 @@
   function addItem(data){  
     var url = '<%= add_session_admin_shipments_path %>';
     showLoading();
-    hideError();
+    hideError(data.order_line_id);
 
     $.ajax({
         url: url,
@@ -165,7 +234,7 @@
             highLightRowSuccess(data.order_line_id)
           }
           else{
-            showError(response.error);
+            showError(data.order_line_id, response.error);
             highLightRowFailure(data.order_line_id)
           }
         }
@@ -173,9 +242,51 @@
     return false;
   }
 
+  function toggleCheckbox(){
+    $("#cb_toggle_all").on('click', function(){
+        makeToggleCheck();
+        if(this.checked)
+          addItems();
+        else
+          removeItems();
+    })
+  }
+
+  function addItems() {
+
+  }
+
+  function removeItems(){
+
+  }
+
+  function makeToggleCheck(){
+    checked = $("#cb_toggle_all").get(0).checked;
+    $cb_items =  $(".cb_items")
+
+    for(var i=0; i< $cb_items.length; i++) {
+      $cb_items.get(i).checked = checked;
+    }
+  }
+
+
+  function showPopover(){
+    $("[rel='popover']").popover(
+      {trigger:'hover',animation:'false', placement:'top'}
+    );
+
+    $("[rel='popover']").mouseover(function () {
+      $("[rel='popover']").not(this).popover('hide');
+    });
+  }
+
   $(function(){
-     handleEvent();
-     handleFilterBySite();
+     //handleEvent();
+     showPopover();
+     handleCreateShipment();
+     handleFilterBySite(); // filter by site
+     toggleCheckbox();     // handle toggle Cheeck
+     checkUpdate();        // handle add/remove shipment item
   });
 </script>
 

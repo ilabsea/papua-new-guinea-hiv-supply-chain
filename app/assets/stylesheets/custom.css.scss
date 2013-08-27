@@ -134,7 +134,6 @@ table input{
 .row-error{
 
 }
-
 .dataTables_filter, .dataTables_info {
   display:none !important;
 }
@@ -144,6 +143,23 @@ table input{
 }
 .link-thead{
   color: #333;
+}
+
+.popover-title{
+  font-size: 16px;
+  font-weight: bold;
+  color: red;
+}
+.popover-content{
+  color: red;
+}
+.error{
+  color: #ff0000;
+  text-decoration : none;
+}
+
+a.error:hover, a.error:visited {
+  color: #ff0101;
 }
 
 
