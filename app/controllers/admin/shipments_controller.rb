@@ -101,7 +101,7 @@ module Admin
 
     def mark_status
       Shipment.bulk_update_status params[:status_shipment_id], params[:status]
-      redirect_to admin_shipments_path, :notice => "Shipments' status have been updated successfully"
+      redirect_to request.referer, :notice => "Shipments' status have been updated successfully"
     end
 
     def show

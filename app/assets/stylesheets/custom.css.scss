@@ -128,11 +128,10 @@ table input{
   padding: 6px 8px;
 }
 .row-success{
-  background-color: #ddd ;
-  color : green ;
+  background-color: #8AD8B1 ;
 }
 .row-error{
-
+  background-color: #E87878;
 }
 .dataTables_filter, .dataTables_info {
   display:none !important;
@@ -148,18 +147,18 @@ table input{
 .popover-title{
   font-size: 16px;
   font-weight: bold;
-  color: red;
 }
 .popover-content{
   color: red;
 }
 .error{
-  color: #ff0000;
+  color: #7F2626;
   text-decoration : none;
 }
 
 a.error:hover, a.error:visited {
   color: #ff0101;
+  text-decoration: none;
 }
 
 

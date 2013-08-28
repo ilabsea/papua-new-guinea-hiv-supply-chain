@@ -61,7 +61,7 @@
           <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> 
 
           <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>' data-skip-loading='true' style='display: none;'
-             class='error' data-content="Invalid value. Quantity dispatch must be a number" data-original-title="Shipment Error"  >    
+             class='error' data-content="Invalid value. Quantity dispatch must be a number." data-original-title=""  >    
              <i class='icon-exclamation-sign'></i>     
           </a>
 
@@ -88,13 +88,36 @@
     });    
   }
 
+  // Display all errors message
   function validShipmentLines(){
-    var $items = $(".cbitems")
-    var valid  = true
-    for(var i=0; i< $items.length; i++){
-      $elm = $items.get(i);
-      var data = $elm.getData();
+    var $items = $(".cb_items:checked")
+
+    if($items.length == 0){
+      alert("Please select at least an item to check");
+      return false;
     }
+
+    var valid  = true
+    for(var i  = 0; i< $items.length; i++){
+      item     = $items.get(i); 
+      $elm     = $(item);
+      var id   = $elm.attr('data-id');
+      var data = getData(id);
+      if(!isDataValid(data)) {
+        valid  = false;
+        showError(data.order_line_id);
+        highLightRowFailure(data.order_line_id);
+      }
+
+    }
+    if(!valid){
+      alert("Please fix the error before continueing")
+    }
+    return valid ;
+  }
+
+  function isDataValid(data){
+    return $.isNumeric(data.quantity) && parseInt(data.quantity) > 0
   }
 
   function checkUpdateCb(){
@@ -102,12 +125,14 @@
       var $elm = $(this);
       var id   = $elm.attr("data-id");
       var data = getData(id);
-      if(this.checked)
-        addItem(data);
+      if(this.checked){
+        if(isDataValid(data))
+          addItem(data);
+      }
       else
         removeItem(data);
-      $e.stopPropagation();
 
+      $e.stopPropagation();
     })
   }
 
@@ -140,28 +165,9 @@
     return { 'order_line_id' : id, 'quantity' : quantity, 'remark' : remark } ;
   }
 
-  function handleEvent(){
-    $('.add_order_line').on('click', function(){
-      var $elm = $(this);
-      var id = $elm.attr("data-id");
-      var data = getData(id);
-      addItem(data);
-      return false;
-    });
-
-    $('.remove_order_line').on('click', function(){
-      var $elm = $(this);
-      var id = $elm.attr("data-id");
-
-      var data = { 'order_line_id' : id}
-      removeItem(data);
-      return false;
-    });
-  }
-
   function highLightRowSuccess(id){
     $("#tr_" + id + " td " ).addClass("row-success").removeClass('row-error');
-    $('#quantity_' + id).css({border: 'black', 'color' : '#333' })
+    $('#quantity_' + id).css({'color' : '#333' })
     $("#error_" + id).hide();
 
   }
@@ -180,12 +186,13 @@
   }
 
   function hideError(id){
-    $("#error-" + id).hide();
+    $("#error_" + id).hide();
   }
 
   function showError(id, msg){
-    $("#error-" + id ).attr('data-content' , msg);
-    $("#error-" + id ).show();
+    if(msg) 
+      $("#error_" + id ).attr('data-content' , msg);
+    $("#error_" + id ).show();
   }
 
   function removeItem(data){  
