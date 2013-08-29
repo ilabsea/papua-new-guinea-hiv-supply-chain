@@ -69,18 +69,6 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def self.in_between date_start, date_end
-     if(!date_start.blank? && !date_end.blank?)
-       where(['order_date BETWEEN :date_start AND :date_end', :date_start => date_start, :date_end => date_end])
-     elsif !date_start.blank?
-       where(['order_date >= :date_start', :date_start => date_start])
-     elsif !date_end.blank?
-       where(['order_date <= :date_end', :date_end => date_end])
-     else
-       where "1=1"      
-     end
-  end
-
   def self.create_from_requisition_report requisition_report
   	order = Order.new :date_submittion => requisition_report.created_at,
 											 :is_requisition_form => true,
@@ -122,7 +110,7 @@ class Order < ActiveRecord::Base
   end
 
   def self.total_by_status
-    orders = unscoped.select('COUNT(status) AS total, status').group('status').order('total')
+    orders = select('COUNT(status) AS total, status').group('status').order('total')
     statuses = {}
      orders.each do |order|
        statuses[order.status] = order.total

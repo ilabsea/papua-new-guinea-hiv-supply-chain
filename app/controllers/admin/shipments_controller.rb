@@ -1,8 +1,24 @@
 module Admin
   class ShipmentsController < Controller
 
+    helper_method :order_params
+
+    def order_fields
+      [ 
+        'sites.name' , 'shipments.consignment_number', 'shipments.id', 'shipments.status', 'shipments.shipment_date', 
+        'shipments.sms_logs_count' ,'shipments.last_notified_date', 'shipments.received_date', 'shipments.lost_date'
+      ]
+    end
+
+    def order_params
+      @order_params = @order_params || {
+        :field => ( order_fields.include?(params[:field]) ? params[:field] : 'shipments.id' ),
+        :order => ( [ 'asc', 'desc'].include?(params[:order]) ? params[:order] : 'desc' )
+      }
+    end
+
     def index
-      @shipments = Shipment
+      @shipments = Shipment.includes(:sites).unscoped.joins("LEFT OUTER JOIN sites ON sites.id = shipments.site_id").order( "#{order_params[:field]} #{order_params[:order]}" )
       @shipments = @shipments.where(["status =:status", :status => params[:type] ]) if params[:type]
       @shipments = @shipments.paginate(paginate_options)
     end 
@@ -15,25 +31,10 @@ module Admin
 
 
     def order
-  	   # @orders = Order.includes(:order_lines, :site).approved.where("order_lines.shipment_status = 0")	
-  	   # @order_lines = []
-
-  	   # @sites = @orders.map{|order| [ order.site.name, order.site.id] }
-
-  	   # @orders.each do |order|
-  	   # 	@order_lines +=  order.order_lines
-  	   # end
-       # session[:shipment] = nil
 
        @shipment_session = ShipmentSession.new(session)
   	   @order_lines = OrderLine.items(params[:site_id]).not_shipped.paginate(paginate_options)
   	   @sites = []
-
-  	   # pagination required
-  	   # @order_lines.each do |order_line|
-  	   # 	 site_item = [order_line.order.site.name, order_line.order.site.id ]
-  	   # 	 @sites << site_item if !@sites.include?(site_item)
-  	   # end
 
        @shipment = Shipment.new
 

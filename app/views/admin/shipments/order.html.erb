@@ -61,7 +61,7 @@
           <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> 
 
           <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>' data-skip-loading='true' style='display: none;'
-             class='error' data-content="Invalid value. Quantity dispatch must be a number." data-original-title=""  >    
+             class='error' data-content="Invalid value. Quantity dispatch must be a number and should be in the same site." data-original-title=""  >    
              <i class='icon-exclamation-sign'></i>     
           </a>
 

@@ -82,15 +82,17 @@ module Admin::ApplicationHelper
 	end
 
   def field_sorted_in_shipments_path_for field
-    options = { :field => field }
-    options[:type] =  params[:type] if !params[:type].blank?
+    options         = params.except(:controller, :action, :order, :field)
+    options[:field] = field 
+    
     if params[:order].blank?
-      options[:order] = 'up'
-    elsif params[:order] == 'up'
-      params[:order] = 'down'
-    else  
-      params[:order] = 'up'
+      options[:order] = 'desc'
+    elsif params[:order] == 'asc'
+      options[:order] = 'desc'
+    elsif params[:order] == 'desc'  
+      options[:order] = 'asc'
     end
+
     admin_shipments_path(options)
   end
 

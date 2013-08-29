@@ -20,14 +20,14 @@
     <thead>
       <tr>
         <th class='nth-table'>#</th>
-        <th style='width: 150px;'>Site</th>
-        <th><%= link_to 'Consignment', field_sorted_in_shipments_path_for(:consignment_number), :class => 'link-thead' %> </th>
-        <th><%= link_to 'Status', field_sorted_in_shipments_path_for(:status) , :class => 'link-thead'  %> </th>
-        <th><%= link_to 'Date Shipped', field_sorted_in_shipments_path_for(:shipment_date) , :class => 'link-thead'   %> </th>
-        <th>SMS Notified clinic (times)</th>      
-        <th>Last notified date to clinic</th>
-        <th>Confirmed date</th>
-        <th>Lost date</th>
+        <th style='width: 150px;'><%= link_to 'Site', field_sorted_in_shipments_path_for('sites.name'), :class => 'link-thead' %></th>
+        <th><%= link_to 'Consignment', field_sorted_in_shipments_path_for('shipments.consignment_number'), :class => 'link-thead' %> </th>
+        <th><%= link_to 'Status', field_sorted_in_shipments_path_for('shipments.status') , :class => 'link-thead'  %> </th>
+        <th><%= link_to 'Date Shipped', field_sorted_in_shipments_path_for('shipments.shipment_date') , :class => 'link-thead'   %> </th>
+        <th><%= link_to 'SMS Notified clinic (times)', field_sorted_in_shipments_path_for('shipments.sms_logs_count') , :class => 'link-thead' %> </th>      
+        <th><%= link_to 'Last notified date to clinic', field_sorted_in_shipments_path_for('shipments.last_notified_date') ,:class =>'link-thead' %> </th>
+        <th><%= link_to 'Confirmed date', field_sorted_in_shipments_path_for('shipments.received_date') , :class => 'link-thead' %> </th>
+        <th><%= link_to 'Lost date', field_sorted_in_shipments_path_for('shipments.lost_date') , :class => 'link-thead' %> </th>
         <th><%=check_box_tag 'toggle' , '', false,  :id => 'status_toggle' %></th>
       </tr>
     </thead>

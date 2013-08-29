@@ -53,8 +53,12 @@ describe Shipment do
   		shipments = Shipment.bulk_update_status(ids, status)
 
   		shipments.size.should eq 2
+      
   		shipments[0].status.should eq Shipment::STATUS_LOST
   		shipments[1].status.should eq Shipment::STATUS_LOST
+
+      shipments[0].received_date.should be_nil
+      shipments[1].received_date.should be_nil
 
   		
   		unchanged_shipment.status.should eq @shipment3.status

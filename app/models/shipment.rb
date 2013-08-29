@@ -49,7 +49,7 @@ class Shipment < ActiveRecord::Base
 	end
 
 	def self.bulk_update_status shipments_id, status
-		shipments_id.each do|id| 
+		shipments_id.map do|id| 
 		  attrs = { :status => status}
 		  if status == STATUS_LOST
 		  	attrs[:received_date] = nil
@@ -64,11 +64,12 @@ class Shipment < ActiveRecord::Base
 
 	def self.in_between date_start, date_end
 	   shipments = where("1=1")
+
 	   if !date_start.blank? && !date_end.blank?
 	   	 format     =    '%Y-%m-%d'
 	   	 date_start = DateTime.strptime(date_start , format )
 	   	 date_end   = DateTime.strptime(date_end   , format )
-	     shipments.where(['shipment_date BETWEEN :start AND :end', :start => date_start.beginning_of_day, :end => date_end.end_of_day ])
+	     shipments  = shipments.where(['shipment_date BETWEEN :start AND :end', :start => date_start.beginning_of_day, :end => date_end.end_of_day ])
 	   end
 	   shipments
 	end	

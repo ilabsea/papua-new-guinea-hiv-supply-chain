@@ -32,8 +32,8 @@ class Export
           shipment.shipment_date,
           shipment.sms_logs_count,
           shipment.last_notified_date,   
-          shipment.received_date ? shipment.received_date : '',
-          shipment.lost_date     ? shipment.lost_date : ''
+          shipment.received_date, 
+          shipment.lost_date   
         ]
         csv << row
       end
