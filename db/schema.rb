@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130816062348) do
+ActiveRecord::Schema.define(:version => 20130829045241) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -155,11 +155,12 @@ ActiveRecord::Schema.define(:version => 20130816062348) do
     t.integer  "user_id"
     t.integer  "site_id"
     t.integer  "order_id"
-    t.datetime "created_at",                                        :null => false
-    t.datetime "updated_at",                                        :null => false
+    t.datetime "created_at",                                                            :null => false
+    t.datetime "updated_at",                                                            :null => false
     t.integer  "sms_logs_count",                     :default => 0
     t.integer  "shipment_lines_count",               :default => 0
     t.datetime "last_notified_date"
+    t.datetime "lost_date",                          :default => '2013-08-29 05:05:03'
   end
 
   create_table "sites", :force => true do |t|

@@ -7,7 +7,7 @@ class Shipment < ActiveRecord::Base
 	has_many :shipment_lines, :dependent => :destroy
 	has_many :sms_logs, :dependent => :destroy
 
-	attr_accessible :shipment_date, :consignment_number, :status, :user
+	attr_accessible :shipment_date, :consignment_number, :status, :user, :received_date, :lost_date
 
 	STATUS_LOST = 'Lost'
 	STATUS_RECEIVED = 'Received'
@@ -48,10 +48,18 @@ class Shipment < ActiveRecord::Base
 		end
 	end
 
-	# 012 392744
-
 	def self.bulk_update_status shipments_id, status
-		shipments_id.map{|id| Shipment.update(id, :status => status)}
+		shipments_id.each do|id| 
+		  attrs = { :status => status}
+		  if status == STATUS_LOST
+		  	attrs[:received_date] = nil
+		   	attrs[:lost_date] = Time.now
+		  elsif status == STATUS_RECEIVED
+		  	attrs[:lost_date] = nil
+		  	attrs[:received_date] = Time.now
+		  end	
+		  Shipment.update(id, attrs ) 
+		end
 	end
 
 	def self.in_between date_start, date_end

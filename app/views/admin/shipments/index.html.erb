@@ -26,8 +26,8 @@
         <th><%= link_to 'Date Shipped', field_sorted_in_shipments_path_for(:shipment_date) , :class => 'link-thead'   %> </th>
         <th>SMS Notified clinic (times)</th>      
         <th>Last notified date to clinic</th>
-        <th>Shipment confirmed</th>
-        <th>Package lost</th>
+        <th>Confirmed date</th>
+        <th>Lost date</th>
         <th><%=check_box_tag 'toggle' , '', false,  :id => 'status_toggle' %></th>
       </tr>
     </thead>
@@ -42,8 +42,8 @@
           <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
           <td> <%= link_to shipment.sms_logs_count , admin_shipment_sms_logs_path(shipment) %> </td>
           <td title='<%= shipment.last_notified_date%>' > <%= time_ago_in_words shipment.last_notified_date %> </td>
-          <td></td>
-          <td></td>   
+          <td title='<%= shipment.received_date %>'> <%=  shipment.received_date ? time_ago_in_words(shipment.received_date) : ''  %></td>
+          <td title='<%= shipment.lost_date %>'> <%=  shipment.lost_date ? time_ago_in_words(shipment.lost_date) : '' %> </td>   
           <td class="center">
             <%= check_box_tag 'status_shipment_id[]', shipment.id, false %>
           </td>
