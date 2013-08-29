@@ -59,9 +59,7 @@ describe Order do
 
       FactoryGirl.create :order, :status => Order::ORDER_STATUS_APPROVED
 
-      orders = Order.total_by_status
-
-      total = Order.total_by_status_as_hash orders
+      total = Order.total_by_status
 
       total.should  eq({
         Order::ORDER_STATUS_PENDING => 5,

@@ -9,8 +9,6 @@ class Shipment < ActiveRecord::Base
 
 	attr_accessible :shipment_date, :consignment_number, :status, :user
 
-
-
 	STATUS_LOST = 'Lost'
 	STATUS_RECEIVED = 'Received'
 	STATUS_IN_PROGRESS = 'In Progress'
@@ -50,13 +48,25 @@ class Shipment < ActiveRecord::Base
 		end
 	end
 
+	# 012 392744
+
 	def self.bulk_update_status shipments_id, status
 		shipments_id.map{|id| Shipment.update(id, :status => status)}
 	end
 
+	def self.in_between date_start, date_end
+	   shipments = where("1=1")
+	   if !date_start.blank? && !date_end.blank?
+	   	 format     =    '%Y-%m-%d'
+	   	 date_start = DateTime.strptime(date_start , format )
+	   	 date_end   = DateTime.strptime(date_end   , format )
+	     shipments.where(['shipment_date BETWEEN :start AND :end', :start => date_start.beginning_of_day, :end => date_end.end_of_day ])
+	   end
+	   shipments
+	end	
 
 	def self.total_shipment_by_status
-       shipments = Shipment.select('COUNT(status) AS total, status').group('status').order('total')
+       shipments = select('COUNT(status) AS total, status').group('status').order('total')
        totals= {}
        shipments.each do |shipment|
        	  totals[shipment.status] = shipment.total.to_i

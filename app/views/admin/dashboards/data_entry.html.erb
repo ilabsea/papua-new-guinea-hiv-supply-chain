@@ -1,6 +1,6 @@
 <%=page_header("Dashboard Summary") %>
 <%= render 'date_form' %>
-<ul class='dashboard-item-set'>
+<ul class='dashboard-item-set' >
  <%
   [
   	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVISED].to_i,  :class => :order_pending, 

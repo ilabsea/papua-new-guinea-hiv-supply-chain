@@ -1,23 +1,33 @@
 <%=simple_form_for :order , :url => admin_root_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
-	<div class='row-fluid control-inline'>
-		<div class='span1'></div>
-	    <div class='span4' id='search_start_date'>
-	      <%= f.input :start_date, :as => 'date_time_picker', 
+	<style>
+	    .tbar td {
+	      padding-left: 20px;
+	    }
+		
+	</style>
+	<br/>
+
+	<div class='row-fluid control-inline '>
+		<table class='tbar'>
+		  <tr>
+		  	<td>
+		  		<%= f.input :start_date, :as => 'date_time_picker', 
 	                               :label => 'Form order date' ,
 	                               :label_html => {:class=> 'inline'},
 	                               :input_html => {:class => 'datepicker-fit date-field', :value => params[:start], :name => 'start'}
 	                               %>   
-	    </div>
-
-	    <div class='span2' id='search_end_date'>
-	        <%= f.input :end_date, :as => 'date_time_picker', 
+		  	</td>
+		  	<td>
+		  		<%= f.input :end_date, :as => 'date_time_picker', 
 	                                      :label => 'To',
 	                                      :label_html => { :class => 'inline'},
 	                                      :input_html => { :class  => 'datepicker-fit date-field', :value => params[:end], :name => 'end' } 
-	                                      %> 
-	    </div>
-	    <div class='span5'></div>
+	                                      %> </td>
+		  	<td><%= submit_tag ' Go ', :class => 'btn btn-primary', :style=> 'margin-top: -25px;', :name => nil %></td>
+		  </tr>
+
+		</table>
 	  </div> 
 <% end %>
 
-<%= render 'date_field' %>
+<%#= render 'date_field' %>

@@ -122,27 +122,25 @@ class Order < ActiveRecord::Base
   end
 
   def self.total_by_status
-    Order.unscoped.select('COUNT(status) AS total, status').group('status').order('total')
-  end
-
-  def self.total_by_status_date start_date, end_date
-     orders = Order.unscoped
-     if !start_date.blank? && !end_date.blank?
-        orders = orders.where(['order_date BETWEEN :start_date AND :end_date', :start_date => start_date, :end_date => end_date ])
-        orders = orders.select('COUNT(status) AS total, status').group('status').order('total')
-     else
-        orders = self.total_by_status
-     end
-     self.total_by_status_as_hash orders
-  end
-
-  def self.total_by_status_as_hash orders
+    orders = unscoped.select('COUNT(status) AS total, status').group('status').order('total')
     statuses = {}
      orders.each do |order|
        statuses[order.status] = order.total
      end
      statuses
   end
+
+  def self.in_between date_start, date_end
+    orders = where("1=1")
+    if !date_start.blank? && !date_end.blank?
+      format     =    '%Y-%m-%d'
+      date_start = DateTime.strptime(date_start , format )
+      date_end   = DateTime.strptime(date_end   , format )
+      orders = orders.where(['order_date BETWEEN :date_start AND :date_end', :date_start => date_start.beginning_of_day, :date_end => date_end.end_of_day ])
+    end
+    orders
+  end
+
 
   def self.approved
     where("orders.status = :status", :status => Order::ORDER_STATUS_APPROVED)
