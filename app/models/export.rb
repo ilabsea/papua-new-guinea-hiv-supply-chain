@@ -19,11 +19,12 @@ class Export
 	  end
 	end
 
-  def self.shipment file
+  def self.shipment file, type
     CSV.open(file, "wb") do |csv|
       headers = ['Site', 'Consignment', 'Status','Date Shipped', 'SMS Notified clinic (times)', 'Last notified date to clinic', 'Package lost']
       csv << headers
-      Shipment.find_each do |shipment|
+      shipments = type.blank? ? Shipment : Shipment.where(["status = :status", :status => type ])
+      shipments.find_each do |shipment|
         row = [
           shipment.site.name,
           shipment.consignment_number,

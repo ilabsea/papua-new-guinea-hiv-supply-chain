@@ -13,9 +13,6 @@ module Admin
 			  render :reviewer	
 			elsif current_user.ams?	
 			  @total_shipment_by_status = Shipment.in_between(params[:start], params[:end]).total_shipment_by_status
-			  p "totoal ------------"
-			  p @total_shipment_by_status
-			  p @total_order_by_status
 			  render :ams			    		  			
 			end
 		end	

@@ -115,7 +115,7 @@ module Admin
 
       file_name =  "#{Rails.root}/public/data/#{time}shipment.csv"
          
-      Export.shipment file_name
+      Export.shipment file_name, params[:type]
       send_file(file_name , :filename      =>  File.basename(file_name),
                             :type          =>  'application/xls',
                             :disposition   =>  'attachment',
