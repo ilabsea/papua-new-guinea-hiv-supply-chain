@@ -16,6 +16,7 @@ gem 'debugger', group: [:development, :test]
 gem 'spreadsheet'
 gem 'carrierwave'
 gem 'activerecord-import'
+gem "nuntium_api"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -59,4 +60,5 @@ group :test, :development do
   gem 'capybara', '~> 2.0.2'
   gem 'factory_girl_rails', '~> 4.0'
   gem 'thin'
+  gem 'rspec-mocks'
 end

@@ -1,23 +1,23 @@
 development:
   url: http://nuntium.instedd.org
-  account: channaly
-  application: md0
-  password: "dev c0der"
-  incoming_username: foo
-  incoming_password: foo
+  account: channa.info@gmail.com
+  application: png1
+  password: "123456"
+  incoming_username: nuntium
+  incoming_password: '123456'
 
 production:
   url: http://nuntium.instedd.org
-  account: channaly
-  application: md0
-  password: "dev c0der"
-  incoming_username: foo
-  incoming_password: foo
+  account: channa.info@gmail.com
+  application: png1
+  password: "123456"
+  incoming_username: nuntium
+  incoming_password: '123456'
 
 test:
   url: http://nuntium.instedd.org
-  account: channaly
-  application: md0
-  password: "dev c0der"
-  incoming_username: foo
-  incoming_password: foo
+  account: channa.info@gmail.com
+  application: png1
+  password: "123456"
+  incoming_username: nuntium
+  incoming_password: '123456'

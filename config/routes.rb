@@ -1,5 +1,12 @@
 PngHivAids::Application.routes.draw do
 
+  namespace :service do
+    resource :messagings do
+      post 'nuntium'
+    end
+    
+  end
+
   namespace :admin do
     resources :import_survs do
       resources :surv_sites
