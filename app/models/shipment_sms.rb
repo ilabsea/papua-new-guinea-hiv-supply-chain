@@ -16,19 +16,19 @@ class ShipmentSms < Sms
   	setting = Setting[:message_alerting_site_about_receiving_form]
   	translation = setting.str_tr options
 
-  	message_item = {
-  		:to =>  @shipment.site.mobile , 
-  		:body => translation, 
-  		:from =>  ShipmentSms::APP_NAME
-  	}
-
-  	# send_via_nuntium message_item
+    #send_via_nuntium message_item
+    Sms.send NuntiumMessagingAdapter.instance do |sms|
+      sms.from  = ShipmentSms::APP_NAME
+      sms.to    = 'sms://' + @shipment.site.mobile
+      sms.body  = translation
+    end
+    
 
   	log = {
-  		:site 	 	=> @shipment.site,
+  		:site 	 	  => @shipment.site,
   		:shipment 	=> @shipment,
   		:message    => translation,
-  		:to 		=> @shipment.site.mobile
+  		:to 		    => @shipment.site.mobile
   	}
 
   	SmsLog.create log

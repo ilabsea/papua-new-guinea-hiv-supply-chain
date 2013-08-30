@@ -27,7 +27,7 @@ describe Sms do
 
   describe "#send" do
   	before(:each) do
-  	   @adaptor = NuntiumMessagingAdaptor.instance
+  	   @adaptor = NuntiumMessagingAdapter.instance
   	   @from = 'from-'
   	   @to   = 'to-'
   	   @body = 'body-'
@@ -66,7 +66,7 @@ describe Sms do
 
   describe "::send" do
   	it "should be able to send sms right away" do
-		adaptor = NuntiumMessagingAdaptor.instance
+		adaptor = NuntiumMessagingAdapter.instance
 
 		adaptor.should_receive(:send).with(:from => 'xxfrom', :to => 'xxto', :body => 'xxbody')
 
@@ -82,4 +82,17 @@ describe Sms do
 
   	end
   end
+
+  it 'should send sms test' do
+  	sms = Sms.new do |sms|
+  	 	sms.from = '77777458'
+  	 	sms.to   = '17989822'
+  	 	sms.body = 'Hi, this is a message from PNG'
+  	end
+  	
+  	adaptor = NuntiumMessagingAdapter.instance
+  	expect{sms.send adaptor}.to_not raise_error
+  end
+
+
 end

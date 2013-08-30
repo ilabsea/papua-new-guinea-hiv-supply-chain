@@ -13,7 +13,7 @@ class Service::MessagingsController < Service::Controller
     private
 
     def authenticate_nuntium
-      nuntium_config = NuntiumMessagingAdaptor.instance.config
+      nuntium_config = NuntiumMessagingAdapter.instance.config
       authenticate_or_request_with_http_basic do |username, password|
         username == nuntium_config['incoming_username'] && password == nuntium_config['incoming_password']
       end

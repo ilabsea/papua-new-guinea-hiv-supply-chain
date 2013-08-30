@@ -1,6 +1,6 @@
 require 'nuntium'
 
-class NuntiumMessagingAdaptor < MessagingAdaptor
+class NuntiumMessagingAdapter < MessagingAdapter
 	
   attr_accessor :nuntium
 
@@ -24,16 +24,16 @@ class NuntiumMessagingAdaptor < MessagingAdaptor
 
  
   def self.instance
-  	@@instance ||= NuntiumMessagingAdaptor.new
+  	@@instance ||= NuntiumMessagingAdapter.new
   end
-  NuntiumMessagingAdaptor.instance
+  NuntiumMessagingAdapter.instance
   private_class_method :new
 
   def send  options
     options[:country] =   @config[:country]
     options[:suggested_channel] =  @config[:suggested_channel] 
 
-  	nuntium.send_ao(options)
+  	@nuntium.send_ao(options)
   end
 
   def channels

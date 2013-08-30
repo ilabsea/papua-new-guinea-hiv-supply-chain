@@ -1,23 +1,23 @@
 development:
   url: http://nuntium.instedd.org
-  account: channa.info@gmail.com
-  application: png1
+  account: 'lg1'
+  application: png
   password: "123456"
   incoming_username: nuntium
   incoming_password: '123456'
 
 production:
   url: http://nuntium.instedd.org
-  account: channa.info@gmail.com
-  application: png1
+  account: 'lg1'
+  application: png
   password: "123456"
   incoming_username: nuntium
   incoming_password: '123456'
 
 test:
   url: http://nuntium.instedd.org
-  account: channa.info@gmail.com
-  application: png1
+  account: 'lg1'
+  application: png
   password: "123456"
   incoming_username: nuntium
   incoming_password: '123456'
