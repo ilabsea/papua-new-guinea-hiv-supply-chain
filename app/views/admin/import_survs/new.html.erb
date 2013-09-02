@@ -22,14 +22,12 @@
     margin-left: 70px !important;
   }
 
-  
-
   .pos-site{
-    width: 120px !important;
+    width: 180px !important;
   }
 
   .pos-commodity{
-    width: 150px;
+    width: 240px !important;
   }
 
   .surv-form tr, .surv-form th, .surv-form td {
@@ -42,6 +40,21 @@
   .number_select{
     width: 90px;
   }
+  .number_text{
+    width: 75px;
+    height: 20px;
+  }
+
+.table th, .table td {
+    border: 1px solid #DDDDDD !important;
+    line-height: 20px;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+.form-horizontal .control-group  {
+  margin: 0px;
+}
 
 </style>
 
@@ -70,40 +83,53 @@
   </p> 
 
   <div class='row-fluid form-fixed'  >
-    <table class='table table-hover surv-form table-fixed-header table-bordered' id='tableFixed' >
+    <table class='table table-hover surv-form table-fixed-header' id='tableFixed' >
       <thead class='header' >
         <tr >
           <th class='pos-site border' >Site</th>
           <% @commodities.each do |commodity| %>
-            <th class='border' ><%= commodity.name %></th>
+            <th class='border pos-commodity' title="<%= commodity.name %>" ><%= h truncate(commodity.name, :length => 12) %></th>
           <% end %>
         </tr>
       </thead>
 
       <tbody>
-        <% @i = 1 %>
+        <% 
+        #store list of site for js 
+        @site_list = [] 
+        %>
         <%= f.simple_fields_for :surv_sites  do |surv_site_form| %>
-
             <%
               style = @i == 1 ? 'border-top: 1px solid #ccc;' : ''
-
+              dom_id = surv_site_form.object.site_id 
+              @site_list << dom_id
             %>
-            <tr>
-              <td class='pos-site t-header' style='<%= style %>' > 
-                <%= surv_site_form.object.site.name %>  
+
+            <tr id='site_<%= dom_id %>'>
+              <td class='pos-site t-header' style='<%= style %>' title="<%= h surv_site_form.object.site.name %>" > 
+                <a href='javascript:void(0)' class='btn btn-mini copy-open-dialog' data-skip-loading='true' 
+                   data-id='<%=dom_id%>' data-content="<%=surv_site_form.object.site.name%>" style='display:none;' > 
+                   <i class='icon-copy'>
+                </i> 
+                </a>
+                <%= truncate(surv_site_form.object.site.name, :length => 10) %>  
                 <%= surv_site_form.input :site_id, :as => :hidden %>
               </td>
-
+              <% @offset = 0 %>
         	    <%= surv_site_form.simple_fields_for :surv_site_commodities do |surv_site_commodity_form| %>
                 <td  style='<%= style %>'  >
         	  	    <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
-                  <%= surv_site_commodity_form.input :quantity, :label => false, :input_html => { :class=> 'number_text'} %>
-                </td>
+                  <%= surv_site_commodity_form.input :quantity, :label => false, :as => :text, 
+                                                     :input_html => { :class=> "quantity_item number_text quantity_#{dom_id}" ,
+                                                                      :data => { :id => dom_id, :offset => @offset}
+                                                      }
 
+                   %>
+                </td>
+                <% @offset = @offset + 1 %>
         	    <% end %>
           </tr>
         <% end %>
-        <% @i = @i + 1 %>
       </tbody>
      </table>
   </div>
@@ -114,3 +140,75 @@
     <%= link_button_cancel 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type) %>
   </div>
 <% end %>
+<%= render 'copy' %>
+<script type='text/javascript'>
+ window.siteLists = [<%=@site_list.join(',')%>] ;
+
+ function openDialog(){
+   $(".copy-open-dialog").on('click', function(){
+      $elm = $(this);
+      $("#copy-to-site").html($elm.attr('data-content'));
+      $("#site_to_paste").val($elm.attr('data-id'));
+      $("#copy_source").val("");
+      $('#copy_dialog').modal();
+   }); 
+  }
+
+  function pasteContent(content){
+    lines  = $.trim(content).split("\n");
+    siteId   = parseInt($("#site_to_paste").val());
+
+    indexOfSite = siteLists.indexOf(siteId);
+    commodityOffset = $("#commodity_offset").val();
+
+    for(var i=0;i< lines.length; i++ ){
+      line = lines[i];
+      quantities = line.split("\t");
+      currentSiteId =  siteLists[ (i+indexOfSite) ] ;
+
+      $quantityElms = $(".quantity_" + currentSiteId );
+
+      for(var c=commodityOffset; c< $quantityElms.length; c++){
+        indexCommodityOffset = c -commodityOffset;
+        $($quantityElms.get(c)).val(quantities[indexCommodityOffset]);
+      }
+    }
+  }
+
+
+  function pasteItems(){
+    $(".quantity_item").on('change', function(){
+      $elm = $(this);
+      content = $elm.val();
+      $("#site_to_paste").val($elm.attr('data-id'));
+      $("#commodity_offset").val($elm.attr('data-offset') );
+
+      if(content.indexOf("\n") != -1 || content.indexOf("\t") != -1 ) {
+        pasteContent(content);
+      }
+      
+    }).on('paste', function(){
+      $elm = $(this);
+      $("#site_to_paste").val($elm.attr('data-id'));
+      $("#commodity_offset").val($elm.attr('data-offset') );
+    })
+
+    $("#btn-copy-to-site").on('click', function(){
+      content = $("#copy_source").val();
+      pasteContent(content);
+      
+    });
+  }
+
+  $(function(){
+    openDialog();
+    pasteItems();
+  })
+
+</script>
+
+
+
+
+
+

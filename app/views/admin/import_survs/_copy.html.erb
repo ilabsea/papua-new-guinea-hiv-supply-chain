@@ -1,0 +1,18 @@
+<div id="copy_dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 id="myModalLabel">Copy from Excel to site: <span id='copy-to-site'>?</span></h4>
+  </div>
+
+  <div class="modal-body">
+    <div id='shipment_message' style='display:none;' class='alert' > </div>
+    <textarea id='copy_source' style='width: 520px; height: 120px;'></textarea>
+    <input type='hidden' id='site_to_paste' />
+    <input type='hidden' id='commodity_offset' value='0' />
+  </div>
+
+  <div class="modal-footer">
+    <%= link_button_cancel ' Close ', "javascript:void()", :'aria-hidden' => true, :data=> {'dismiss' => :modal, :skip_loading => true}  %>
+    <%= link_button_save ' Paste ', 'javascript:void(0)' , :id => 'btn-copy-to-site', :class =>'btn-primary' , :data => {:skip_loading => true} %>
+  </div>
+</div>
