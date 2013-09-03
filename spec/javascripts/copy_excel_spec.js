@@ -10,7 +10,7 @@ describe("CopyExcel", function(){
 			[200, 210, 220, 230, 240]
 		] 
 		itemList = CopyExcel.toItems()
-		expect(itemList).toEqual()
+		expect(itemList).toEqual([])
 
 	})
 })

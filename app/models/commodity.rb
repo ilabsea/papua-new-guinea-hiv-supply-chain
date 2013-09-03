@@ -34,14 +34,16 @@ class Commodity < ActiveRecord::Base
   end
 
   def self.of_kit
-    Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
+    # Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
+    from_type CommodityCategory::TYPES_KIT
   end  
 
   def self.of_drug
-    Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
+    # Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
+    from_type CommodityCategory::TYPES_DRUG
   end
 
   def self.from_type type
-    Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", type)
+    Commodity.unscoped.includes(:commodity_category).where("commodity_categories.com_type = ?", type).order("commodity_categories.name ASC")
   end  
 end

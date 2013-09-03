@@ -55,40 +55,58 @@
 .form-horizontal .control-group  {
   margin: 0px;
 }
+.default {
+  background-color: #B3E8EF !important;
+}
+.switch_color{
+  background-color: #BCC4BA !important;
+}
 
 </style>
+  <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
+      <%= f.error_notification %>
+      <%= f.input :surv_type, :as => :hidden %> 
+    <div class='well'>
+      <table>
+        <tr>
+            <td class='pos-fixed' >
+              <%=f.input :month, :collection => ImportSurv::MONTHS, 
+                         :label_html => { :style=> 'width: 50px;'},
+                         :wrapper_html => {:style=> 'margin-left: 70px;'},
+                         :include_blank => 'Select month'
+               %>
+            </td>
+            <td class='pos-fixed' >
+              <%=f.input :year ,:collection => 2009..2040,:include_blank => 'Select year' %>
+            </td>
+            <td style='padding-left: 30px; vertical-align:top; width: 80px;'>
+              <%= button_save " Save " %>
+            </td>
+      </table> 
+    </div>
 
- <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :surv_type, :as => :hidden %> 
-
-  <table>
-      <tr>
-          <td class='pos-fixed' >
-            <%=f.input :month, :collection => ImportSurv::MONTHS, 
-                       :label_html => { :style=> 'width: 50px;'},
-                       :wrapper_html => {:style=> 'margin-left: 70px;'},
-                       :include_blank => 'Select month'
-             %>
-          </td>
-          <td class='pos-fixed' >
-            <%=f.input :year ,:collection => 2009..2020,:include_blank => 'Select year' %>
-          </td>
-          <td style='padding-left: 30px; vertical-align:top;'>
-            <%= button_save " Save " %>
-          </td>
-  </table>  
-  <p>
-    Please enter the number of patient in the following form
-  </p> 
+  <div class='alert alert-info'>
+    <i class='icon-x'></i> Please enter the number of patient in the following form
+  </div> 
 
   <div class='row-fluid form-fixed'  >
     <table class='table table-hover surv-form table-fixed-header' id='tableFixed' >
       <thead class='header' >
         <tr >
-          <th class='pos-site border' >Site</th>
+          <th class='header-grid' >Site</th>
+          <% 
+            category = nil 
+            klass = 'default'
+          %>
           <% @commodities.each do |commodity| %>
-            <th class='border pos-commodity' title="<%= commodity.name %>" ><%= h truncate(commodity.name, :length => 12) %></th>
+            <% if category && category != commodity.commodity_category.id %>
+               <% klass = ( klass == 'default' ) ? 'switch_color' : 'default' %>
+            <% end %>
+            <% category = commodity.commodity_category.id %>
+
+            <th class='header-grid <% klass %>' title="<%= commodity.name %>" >
+              <%= h truncate(commodity.name, :length => 15) %>
+            </th>
           <% end %>
         </tr>
       </thead>
@@ -106,18 +124,26 @@
             %>
 
             <tr id='site_<%= dom_id %>'>
-              <td class='pos-site t-header' style='<%= style %>' title="<%= h surv_site_form.object.site.name %>" > 
+              <td class='header-grid' style='<%= style %>' title="<%= h surv_site_form.object.site.name %>" > 
                 <a href='javascript:void(0)' class='btn btn-mini copy-open-dialog' data-skip-loading='true' 
                    data-id='<%=dom_id%>' data-content="<%=surv_site_form.object.site.name%>" style='display:none;' > 
                    <i class='icon-copy'>
                 </i> 
                 </a>
-                <%= truncate(surv_site_form.object.site.name, :length => 10) %>  
+                <%= truncate(surv_site_form.object.site.name, :length => 12) %>  
                 <%= surv_site_form.input :site_id, :as => :hidden %>
               </td>
-              <% @offset = 0 %>
+              <% 
+                @offset = 0 
+                @category = nil
+                @klass  = 'default'
+              %>
         	    <%= surv_site_form.simple_fields_for :surv_site_commodities do |surv_site_commodity_form| %>
-                <td  style='<%= style %>'  >
+                <% if !@category.nil? && @category != surv_site_commodity_form.object.commodity.commodity_category.id %>
+                  <% @klass = (@klass == 'default') ? 'switch_color' : 'default' %>
+                <% end %>
+                <% @category = surv_site_commodity_form.object.commodity.commodity_category.id %>
+                <td  style='<%= style %>' class='<%= @klass %>' title="<%=h surv_site_commodity_form.object.commodity.commodity_category.name %>" >
         	  	    <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
                   <%= surv_site_commodity_form.input :quantity, :label => false, :as => :text, 
                                                      :input_html => { :class=> "quantity_item number_text quantity_#{dom_id}" ,

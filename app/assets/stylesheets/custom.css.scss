@@ -1,5 +1,6 @@
-.table th, .t-header {
+.table .header-grid {
   background-color: #F1F1F1 !important;
+  padding: 9px 3px;
 }
 
 .border{
@@ -159,6 +160,10 @@ table input{
 a.error:hover, a.error:visited {
   color: #ff0101;
   text-decoration: none;
+}
+.header-title {
+  font-size : 18px;
+  color: gray;
 }
 
 

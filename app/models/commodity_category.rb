@@ -5,14 +5,20 @@ class CommodityCategory < ActiveRecord::Base
   TYPES_DRUG = 'Drug'
   TYPES_KIT  = 'Kit'
 
+  default_scope order("commodity_categories.name ASC")
+
   TYPES = [TYPES_DRUG, TYPES_KIT ]
 
   def self.drug
-  	where "com_type = '#{CommodityCategory::TYPES_DRUG}' " 
+    from_type CommodityCategory::TYPES_DRUG
   end
 
   def self.kit
-  	where "com_type = '#{CommodityCategory::TYPES_KIT}' " 
+    from_type CommodityCategory::TYPES_KIT
+  end
+
+  def self.from_type com_type
+    where "com_type = '#{com_type}' "
   end
 
 end

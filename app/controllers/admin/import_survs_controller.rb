@@ -8,7 +8,10 @@ module Admin
   		type = params[:type] ||  ImportSurv::TYPES_SURV1
   		@import_surv = ImportSurv.new(:surv_type => type)
   		@sites = Site.all
+
+
   		@commodities = Commodity.from_type(@import_surv.arv_type)
+      @commodity_categories = CommodityCategory.from_type @import_surv.arv_type
 
   		@app_title = 'New ' + @import_surv.surv_type
 
