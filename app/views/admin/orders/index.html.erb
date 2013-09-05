@@ -29,10 +29,10 @@
     <% @orders.each_with_index do |order, index| %>
       <tr>
         <td><%= current_entries + index %></td>
-        <td><%=l order.date_submittion %></td>
+        <td><%= order.date_submittion ? l(order.date_submittion) : ''  %></td>
         <td><%=order.site.name %></td>
         <td><%= order.id %> </td>
-        <td><%=l order.order_date %></td>
+        <td><%= order.order_date ? l(order.order_date) : '' %></td>
         <td title='<%= order.user.phone_number%>'> 
           <%=order.user_data_entry ? order.user_data_entry.user_name : ""  %>
         </td>

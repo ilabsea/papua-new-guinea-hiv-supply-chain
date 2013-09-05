@@ -1,17 +1,47 @@
 module Admin
   class ImportSurvsController < Controller
-  	def index
-  		@import_survs = ImportSurv.all.paginate(paginate_options)
-  	end
+
+    def index
+      @app_title = "List of surv form"
+      @type = params[:type] || ImportSurv::TYPES_SURV1
+      @import_survs = current_user.import_survs.of_type(@type).paginate(paginate_options)
+    end
+
+    def edit
+      @app_title = 'Edit ' 
+      @import_surv  = ImportSurv.find params[:id]
+      @sites = Site.all
+      @commodities = Commodity.from_type(@import_surv.arv_type)
+      @app_title = 'Edit ' + @import_surv.surv_type
+
+      # @existing_sites = @import_surv.surv_sites.map{|surv_site| surv_site.site}
+      # @new_sites = @sites.reject{|site| @existing_sites.include?(site)}
+
+      # @new_sites.each do |site|
+      #   surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
+      #   @commodities.each do |commodity|
+      #     surv_site.surv_site_commodities.build(:commodity => commodity, :quantity => '' )
+      #   end
+      # end
+    end
+
+    def update
+      @import_surv = ImportSurv.includes(:surv_sites => :surv_site_commodities).find params[:id]
+
+      if(@import_surv.update_attributes(params[:import_surv]))
+        redirect_to admin_import_survs_path(:type => @import_surv.surv_type), :notice => 'Surv form has been updated successfully'
+      else
+        @sites = Site.all
+        @commodities  = Commodity.from_type(@import_surv.arv_type)  
+        render :edit
+      end
+    end
 
   	def new
   		type = params[:type] ||  ImportSurv::TYPES_SURV1
   		@import_surv = ImportSurv.new(:surv_type => type)
   		@sites = Site.all
-
-
   		@commodities = Commodity.from_type(@import_surv.arv_type)
-      @commodity_categories = CommodityCategory.from_type @import_surv.arv_type
 
   		@app_title = 'New ' + @import_surv.surv_type
 
@@ -49,14 +79,14 @@ module Admin
     end
 
   	def view
-  		@import_surv = ImportSurv.includes(:surv_sites).find(params[:id])
+  		@import_surv = ImportSurv.includes(:surv_sites => [:surv_site_commodities, :site] ).find(params[:id])
   		@sites = Site.all
   		@commodities = Commodity.from_type(@import_surv.arv_type)
   	end
 
   	def import_form
-		@import_surv = current_user.import_survs.build
-	end
+		  @import_surv = current_user.import_survs.build
+	  end
 
 	def import
 		@import_surv = current_user.import_survs.build params[:import_surv]
@@ -85,10 +115,6 @@ module Admin
 
 	def _fill_attribute
 		@import_surv.import_user = current_user
-	end
-	def index
-		@type = params[:type] || ImportSurv::TYPES_SURV1
-		@import_survs = current_user.import_survs.of_type(@type).paginate(paginate_options)
 	end
 
 	def download

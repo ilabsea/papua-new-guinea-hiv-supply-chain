@@ -1,7 +1,12 @@
-.table .header-grid {
-  background-color: #F1F1F1 !important;
-  padding: 9px 3px;
+
+.table .header-grid, .table th {
+    background-color: #DDDDDD !important;
+    padding: 9px 3px;
 }
+.table-bordered th, .table-bordered td {
+    border-left: 1px solid #CCCCCC;
+}
+
 
 .border{
   border-bottom: 1px solid #E5E5E5 !important;
@@ -36,6 +41,10 @@ td:last, td.last {
 .action_col3 {
 	width: 180px;
 	text-align: center !important;
+}
+
+.table .control-group  {
+  margin: 0px;
 }
 
 .control-inline .controls {

@@ -16,7 +16,8 @@ gem 'debugger', group: [:development, :test]
 gem 'spreadsheet'
 gem 'carrierwave'
 gem 'activerecord-import'
-gem "nuntium_api"
+gem 'nuntium_api'
+gem 'whenever', :require => false
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -36,7 +37,6 @@ group :assets do
 end
 
 #gem 'rack-mini-profiler'
-
 
 gem 'jquery-rails'
 gem 'bootstrap-datepicker-rails'

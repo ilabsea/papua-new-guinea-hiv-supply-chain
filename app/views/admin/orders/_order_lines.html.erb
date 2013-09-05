@@ -2,22 +2,20 @@
   @kit  = 1
   @drug = 1
 %>
-  <%=f.simple_fields_for :order_lines do |order_line| %>
-    <% if order_line.object.arv_type == CommodityCategory::TYPES_DRUG %>
+  <%=f.simple_fields_for :order_lines do |order_line_form| %>
+    <% if order_line_form.object.arv_type == CommodityCategory::TYPES_DRUG %>
         <%=content_for :drug do  %>
-          <%= render :partial => "order_line_row_drug", :locals => { 
-              :order_line_record => order_line.object ,
-              :order_line => order_line,
+          <%= render :partial => "order_line_row", :locals => { 
+              :order_line_form => order_line_form,
               :order => order,
               :index => @drug
             } %>
           <% @drug += 1 %>  
         <% end %>    
-    <% elsif order_line.object.arv_type == CommodityCategory::TYPES_KIT %>  
+    <% elsif order_line_form.object.arv_type == CommodityCategory::TYPES_KIT %>  
         <%=content_for :kit do %>
-          <%= render :partial => "order_line_row_kit", :locals => { 
-              :order_line_record => order_line.object,
-              :order_line => order_line,
+          <%= render :partial => "order_line_row", :locals => { 
+              :order_line_form => order_line_form,
               :order => order,
               :index => @kit
             } %>   
@@ -40,17 +38,11 @@
     <div class="tab-content">
       <div class="tab-pane active" id="drug">
         <h4> Drug Commodities </h4>
-        <div class='alert alert-error error-drug' style='display: none;' >
-           Warning ! Quantity Suggested is not acceptable
-        </div>
-        <%= render :partial => 'order_line_table_drug', :locals => {:order => order ,:body => yield(:drug)} %>
+        <%= render :partial => 'order_line_table', :locals => {:order => order ,:body => yield(:drug)} %>
       </div>
       <div class="tab-pane" id="kit">
          <h4> Kit Commodities </h4>
-         <div class='alert alert-error error-kit' style='display: none;' >
-           Warning ! Quantity Suggested is not acceptable
-        </div>
-         <%= render :partial => 'order_line_table_kit', :locals => {:order => order, :body => yield(:kit) } %>
+         <%= render :partial => 'order_line_table', :locals => {:order => order, :body => yield(:kit) } %>
       </div>
     </div>
   </div>
