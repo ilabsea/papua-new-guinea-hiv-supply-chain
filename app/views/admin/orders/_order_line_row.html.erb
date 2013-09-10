@@ -18,20 +18,11 @@
                             :'data-ref'=> row_ref, 
                             :id => "arv_type_#{row_ref}" } %>
 
-      <%= order_line_form.input :site_suggestion,:as => 'hidden', :input_html => {
-                          :class=>'validate_field number_text', 
-                          :'data-ref'=> row_ref , 
-                          :id =>"site_suggestion_#{row_ref}"} %>
-
-      <%= order_line_form.input :test_kit_waste_acceptable,:as => 'hidden', :input_html => {
-                          :class=>'validate_field number_text',
-                          :'data-ref'=> row_ref, 
-                          :id => "test_kit_waste_acceptable_#{row_ref}" } %>
 
       <%= order_line_form.input :commodity_id, :as => 'hidden' %>
+      <%= order_line_form.input :site_id, :as => 'hidden', :input_html => {:class=>'site', :id => "site_#{row_ref}"} %>
       <input type='hidden' id='commodity_name_<%=row_ref%>' value="<%= h order_line_record.commodity.name %>" />
       <span> <%= truncate(order_line_record.commodity.name, :length => 30) %> </span>
-
     </td>
 
     <td> 
@@ -43,12 +34,8 @@
     </td>
 
     <td > 
-      <%= order_line_record.consumption_per_client_per_month %> 
-      <%= order_line_form.input :consumption_per_client_per_month, :as => :hidden, :input_html => { 
-                              :class=> 'validate_field' ,
-                              :id => "consumption_per_client_per_month_#{row_ref}",
-                              :'data-ref' => row_ref
-                            } %>
+      <%= order_line_record.commodity.consumption_per_client_unit %> 
+      <input type='hidden' id='consumption_per_client_per_month_<%=row_ref%>' value="<%=order_line_record.commodity.consumption_per_client_unit %>" />
     </td>
 
     <td > 
@@ -67,8 +54,7 @@
     
     <td > 
       <span id='quantity_system_calculation_<%= row_ref %>' > 
-
-        <%= order_line_record.calculate_system_suggestion() %> 
+        <%= order_line_record.calculate_system_suggestion  %> 
       </span> 
     </td>
     

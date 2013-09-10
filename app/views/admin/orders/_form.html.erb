@@ -67,14 +67,9 @@
 
   function updateSystemSuggestion($elm){
     var ref =  $elm.attr('data-ref'); 
-    var systemCalcId = "#quantity_system_calculation_" + ref
-    $systemCal = $(systemCalcId);
-
-    var consumtion = $("#consumption_per_client_per_month_" + ref ).val()
-    var numberOfClient = $("#number_of_client_" + ref ).val()
-
-    var value = parseFloat(consumtion) * parseFloat(numberOfClient) - parseFloat($elm.val())
-    $systemCal.html(value);
+    var object = getOrderLineObject(ref);
+    var value = object.systemSuggestion();
+    $("#quantity_system_calculation_" + ref).html(value);
   }
 
   function loadOrderLinesTab(){
@@ -102,6 +97,8 @@
         method : 'GET',
         success: function(response){
           $('#order_lines_tab').html(response);
+          startupValidation();
+
         },
         complete: function(){
           hideLoading();
@@ -125,15 +122,20 @@
     var orderLine = {
           commodityName                       : $('#commodity_name_' + ref).val() ,
           commodityId                         : ref,
+          siteId                              : $("#site_" + ref).val(),
           arvType                             : $("#arv_type_" + ref ).val(),
-          siteSuggestion                      : $("#site_suggestion_" + ref ).val(),
-          testKitWasteAcceptable              : $("#test_kit_waste_acceptable_" + ref ).val(),
+
+          siteSuggestion                      : $("#suggestion_order").val(),
+          testKitWasteAcceptable              : $("#test_kit_waste_acceptable").val(),
+          orderFrequency                      : $("#order_frequency").val(),
+
           numberOfClient                      : cleanInput($("#number_of_client_" + ref ).val()),
           consumtionPerClient                 : cleanInput($("#consumption_per_client_per_month_" + ref ).val()) ,
           stockOnHand                         : cleanInput($("#stock_on_hand_" + ref ).val()),
           monthlyUse                          : cleanInput($("#monthly_use_" + ref ).val()),
           quantitySuggested                   : cleanInput($("#quantity_suggested_" + ref ).val()),
           errors                              : {},
+          
 
 
           errorMessage: function(type){
@@ -160,7 +162,7 @@
           },
 
           systemSuggestion : function(){
-            consumtion = parseFloat(this.numberOfClient) * parseFloat(this.consumtionPerClient)
+            consumtion = parseFloat(this.numberOfClient) * parseFloat(this.consumtionPerClient) * parseFloat(this.orderFrequency)
             var systemSuggestion = consumtion - parseFloat(this.stockOnHand)
             return systemSuggestion;
           },
@@ -178,8 +180,9 @@
 
           validateQuantitySuggestedAcceptable: function(){
             if(this.stockOnHand && this.quantitySuggested && this.consumtionPerClient  && this.numberOfClient ){
-              if(this.calQuantitySuggested() > parseFloat(this.siteSuggestion)){
-                 this.errors["quantity_suggested"] = this.errorMessage(TYPES_DRUG) ;
+              cal = this.calQuantitySuggested();
+              if(cal > parseFloat(this.siteSuggestion)){
+                 this.errors["quantity_suggested"] =  "<b>" + this.commodityName + "</b>: Quantity Suggested is not within " + filter(this.siteSuggestion) + " of population consumption(" + filter(cal) + ")";
                  return false
               }
             }
@@ -190,8 +193,9 @@
             this.validateMonthlyUse();
             
             if(this.stockOnHand  && this.monthlyUse && this.consumtionPerClient  && this.numberOfClient ){
-              if(this.calQuantityWastage() > parseFloat(this.testKitWasteAcceptable)){
-                this.errors["wastage"] = this.errorMessage(TYPES_KIT);
+              var cal = this.calQuantityWastage() ;
+              if( cal > parseFloat(this.testKitWasteAcceptable)){
+                this.errors["wastage"] = "<b>" + this.commodityName + "</b>: Monthly use declared by site is greater than " + filter(this.testKitWasteAcceptable)  + " of acceptable wastage (" + filter(cal) + ")";
                 return false;
               }
             }
@@ -217,6 +221,10 @@
           },
 
           validateField: function(){
+            if(this.orderFrequency == ""){
+              this.errors['site'] = 'Please select a valid site';
+            }
+
             if(this.invalidNumber(this.stockOnHand)){
               this.errors["stock_on_hand"] = "<b> Stock on hand </b> must be a valid number";
             }
@@ -224,6 +232,8 @@
             if(this.invalidNumber(this.quantitySuggested)){
               this.errros["quantity_suggested"] = "<b> Quantity Suggested </b> must be a valid number";
             }
+
+
             if(this.hasError())
               return ;
 
@@ -251,6 +261,9 @@
   function  validateCriteria(ref){
     var object = getOrderLineObject(ref);
     hidePopup(object.commodityId);
+
+    if(!object.siteId)
+      return ;
 
     if(object.arvType == TYPES_DRUG ){
         object.validateField();

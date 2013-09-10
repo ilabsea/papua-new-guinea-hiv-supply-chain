@@ -8,6 +8,9 @@ class Site < ActiveRecord::Base
   
   validates :contact_name,:land_line_number, :mobile, :name, :number_of_deadline_sumission, :order_frequency, :order_start_at, 
             :service_type, :suggestion_order, :test_kit_waste_acceptable, :province_id , :presence   =>  true
+
+  validates :order_frequency, :number_of_deadline_sumission, :numericality => {:greater_than => 0}    
+  validates  :suggestion_order, :test_kit_waste_acceptable,  :numericality => {:greater_than_or_equal_to => 0 }      
      
   
   SeviceType = ["ART", "VCCT"]
@@ -16,5 +19,6 @@ class Site < ActiveRecord::Base
   has_many :users
   has_many :requisition_reports
   has_many :orders
+  has_many :surv_sites
 
 end

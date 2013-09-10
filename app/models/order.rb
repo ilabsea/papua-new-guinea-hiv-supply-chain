@@ -10,7 +10,7 @@ class Order < ActiveRecord::Base
   has_many :order_lines, :dependent => :destroy
   has_many :shipments
 
-  validates :site, :order_date,:date_submittion, :presence => true
+  validates :site, :order_date,:date_submittion,:site_id , :presence => true
   validates :user_place_order, :presence => true, :if =>  Proc.new{|f| f.is_requisition_form }
   validates :user_data_entry,  :presence => true, :unless => Proc.new{|f| f.is_requisition_form }
   validate  :unique_order_in_month_year
@@ -37,6 +37,7 @@ class Order < ActiveRecord::Base
   before_save :order_lines_calculation
 
   def unique_order_in_month_year
+    return true if errors.size >0 
     order = Order.where(['site_id = :site_id AND MONTH(order_date)= :month AND YEAR(order_date)= :year ',
                    :site_id => self.site.id, :month => self.order_date.month, :year => self.order_date.year
       ]).first

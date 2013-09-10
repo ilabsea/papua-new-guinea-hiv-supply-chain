@@ -16,16 +16,17 @@ module Admin
 
  	def new 
  		@order = Order.new(:status => Order::ORDER_STATUS_PENDING)
- 		_build_commodity_order_line(@order)		
+ 		_build_commodity_order_line(@order, nil)		
  		@app_title = 'Create Order'
  	end
 
  	def tab_order_line
  		# must eager load order_lines, otherwise each orline from order.order_lines will go to sql query
  		@order 			  =  params[:id].blank? ? Order.new() : _order
- 		@order.site 	  =  Site.find params[:site_id]
+ 		site              =  Site.find params[:site_id]
+ 		@order.site 	  =  site
  		@order.order_date =  params[:order_date]
- 		_build_tab(@order)	
+ 		_build_tab(@order, site)	
  		render :layout => false
  	end
 
@@ -52,7 +53,7 @@ module Admin
 
  	def edit
  	  @order = _order
- 	  _build_tab @order
+ 	  _build_tab @order, @order.site
  	  @app_title = 'Edit order, Site :' + @order.site.name
  	end
 
@@ -96,23 +97,24 @@ module Admin
  		@order = Order.includes(:order_lines => :commodity).find params[:id]	
  	end
 
- 	def _build_tab order
- 		_build_commodity_order_line order
+ 	def _build_tab order, site
+ 		_build_commodity_order_line order, site
  		order.order_lines_calculation
  	end
 
- 	def _build_commodity_order_line order
+ 	def _build_commodity_order_line order, site
  	  existing_commodities = order.order_lines.map do |order_line| 
- 	  	order_line.arv_type = order_line.commodity.commodity_category.com_type if order_line.arv_type.blank?
- 	  	order_line.consumption_per_client_per_month = order_line.commodity.consumption_per_client_unit  if order_line.consumption_per_client_per_month.blank? 
+ 	  	#order_line.arv_type = order_line.commodity.commodity_category.com_type 
+ 	  	# order_line.consumption_per_client_per_month = order_line.commodity.consumption_per_client_unit
  	  	order_line.commodity
  	  end 
 
  	  non_existing_commodities = Commodity.order('name asc').includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
  	  non_existing_commodities.each do |commodity| 
  	    order.order_lines.build :commodity    => commodity, 
- 		  						:arv_type		 => commodity.commodity_category.com_type,
- 		  						:consumption_per_client_per_month => commodity.consumption_per_client_unit  
+ 	    					    :site 	      => site,
+ 		  						:arv_type	  => commodity.commodity_category.com_type
+ 		  						# :consumption_per_client_per_month => commodity.consumption_per_client_unit  
  	  end
  	end
   end

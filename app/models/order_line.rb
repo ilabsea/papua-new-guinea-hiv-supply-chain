@@ -2,16 +2,15 @@
 class OrderLine < ActiveRecord::Base
   belongs_to :order
   belongs_to :commodity
-  attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :quantity_system_calculation, :status, :order,
-                  :stock_on_hand, :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :is_set, :skip_bulk_insert,
-                  :site_suggestion, :test_kit_waste_acceptable, :number_of_client, :consumption_per_client_per_month,:commodity
+  belongs_to :site
+  attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :status, :order, :stock_on_hand, :number_of_client,
+                  :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :site_id, :site, :is_set, :skip_bulk_insert,:commodity
 
-  validates :number_of_client, :consumption_per_client_per_month, :numericality => {:greater_than => 0}, :allow_blank => true
 
-  validates :stock_on_hand , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.consumption_per_client_per_month && ol.quantity_suggested }
-  validates :quantity_suggested , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.consumption_per_client_per_month && ol.stock_on_hand }
+  validates :stock_on_hand , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.quantity_suggested }
+  validates :quantity_suggested , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.stock_on_hand }
 
-  validates :monthly_use, :numericality => {:greater_than => 0}, :if =>  Proc.new{|ol| ol.arv_type == CommodityCategory::TYPES_KIT &&  ol.number_of_client && ol.consumption_per_client_per_month && ol.stock_on_hand }      
+  validates :monthly_use, :numericality => {:greater_than => 0}, :if =>  Proc.new{|ol| ol.arv_type == CommodityCategory::TYPES_KIT &&  ol.number_of_client && ol.stock_on_hand }      
 
   default_scope order('monthly_use DESC')
   validate :validate_requirement
@@ -24,6 +23,8 @@ class OrderLine < ActiveRecord::Base
 
   DATA_COMPLETE   = 1
   DATA_INCOMPLETE = 0
+
+  attr_accessor :temp_order
 
 
   STATUSES = [STATUS_APPROVED, STATUS_REJECTED]
@@ -41,12 +42,11 @@ class OrderLine < ActiveRecord::Base
   end
 
   def calculate_attribute
-    calculate_system_suggestion
     calculate_completed_order
   end
 
   def calculate_completed_order
-    complete_order_line = number_of_client && consumption_per_client_per_month && stock_on_hand && quantity_suggested
+    complete_order_line = number_of_client && stock_on_hand && quantity_suggested
     if self.arv_type == CommodityCategory::TYPES_KIT
       complete_order_line = (complete_order_line && monthly_use) 
     end
@@ -54,25 +54,15 @@ class OrderLine < ActiveRecord::Base
     self.completed_order = complete_order_line ? OrderLine::DATA_COMPLETE : OrderLine::DATA_INCOMPLETE
   end
 
-
   def calculate_system_suggestion
-    cal_system_suggestion = ''
-    if self.consumption_per_client_per_month && self.number_of_client && self.stock_on_hand
-      total                            =  self.consumption_per_client_per_month.to_f * self.number_of_client.to_f
-      cal_system_suggestion = total - self.stock_on_hand.to_f
-      self.quantity_system_calculation = cal_system_suggestion
-
-    end
-    p "quantity_system_calculation: #{cal_system_suggestion}"
-    cal_system_suggestion 
+      @quantity_system_calculation ||= cal_system_suggestion
   end
 
   def validate_requirement
     return true if skip_bulk_insert
     return true if errors.size >0
-    return true if number_of_client.nil? || consumption_per_client_per_month.nil? 
-    
-
+    return true if number_of_client.nil? 
+    return true if self.site.nil?
 
     if arv_type == CommodityCategory::TYPES_DRUG 
       return true if stock_on_hand.nil? && quantity_suggested.nil?
@@ -90,8 +80,7 @@ class OrderLine < ActiveRecord::Base
   end
 
   def cal_drug
-    consumtion        = self.number_of_client.to_i * self.consumption_per_client_per_month.to_f
-    system_suggestion = consumtion - self.stock_on_hand.to_f
+    system_suggestion = cal_system_suggestion
 
     diff = self.quantity_suggested - system_suggestion 
     max  = self.quantity_suggested >= system_suggestion ?  self.quantity_suggested : system_suggestion
@@ -99,15 +88,21 @@ class OrderLine < ActiveRecord::Base
   end
 
   def cal_kit
-    consumtion = self.number_of_client.to_i * self.consumption_per_client_per_month.to_f
-    system_suggestion = consumtion - self.stock_on_hand.to_f
+    system_suggestion = cal_system_suggestion
     100 * (self.monthly_use - system_suggestion) / system_suggestion
+  end
+
+  def cal_system_suggestion
+    return '' if (!self.order && !self.site) || !self.stock_on_hand
+
+    consumtion = self.number_of_client.to_i * self.commodity.consumption_per_client_unit * self.site.order_frequency.to_f
+    system_suggestion = consumtion - self.stock_on_hand.to_f
   end
 
   def validate_quantity_suggested_value
     cal = cal_drug
-    if cal > self.site_suggestion.to_f
-        message = "<b>" + self.commodity.name + "</b>: Quantity Suggested is not within " + filter(self.site_suggestion) + " of population consumption"
+    if cal > self.site.suggestion_order.to_f
+        message = "<b>" + self.commodity.name + "</b>: Quantity Suggested is not within " + filter(self.site.suggestion_order) + " of population consumption"
         errors.add(:quantity_suggested, message)
         return false     
     end
@@ -116,17 +111,17 @@ class OrderLine < ActiveRecord::Base
 
   def validate_quantity_wastage_value 
     cal = cal_kit
-    if(cal > self.test_kit_waste_acceptable.to_f)
-      message = "<b>" + self.commodity.name + "</b>: Monthly use declared by site is greater than " + filter(self.test_kit_waste_acceptable)  + " of acceptable wastage" 
-      errors.add(:test_kit_waste_acceptable, message) 
+    if(cal > self.site.test_kit_waste_acceptable.to_f)
+      message = "<b>" + self.commodity.name + "</b>: Monthly use declared by site is greater than " + filter(self.site.test_kit_waste_acceptable)  + " of acceptable wastage" 
+      errors.add(:monthly_use, message) 
       return false
     end
     return true
   end
 
   def calculate_suggested_order
-     value = (self.quantity_system_calculation - self.quantity_suggested).abs
-     max = self.quantity_system_calculation > self.quantity_suggested ? self.quantity_system_calculation : self.quantity_suggested
+     value = (self.calculate_system_suggestion - self.quantity_suggested).abs
+     max = self.calculate_system_suggestion > self.quantity_suggested ? self.calculate_system_suggestion : self.quantity_suggested
      (100*value)/max
   end 
 
@@ -139,16 +134,14 @@ class OrderLine < ActiveRecord::Base
   end             
 
   def calculate_quantity_system_suggestion temp_order
-    return false if self.is_set
+    # return false if self.is_se
+    self.site = temp_order.site
     surv_sites = temp_order.surv_sites
     surv_sites.each do |type, surv_site| 
       if surv_site
         surv_site.surv_site_commodities.each do |surv_site_commodity|
           if surv_site_commodity.commodity == self.commodity
-            self.site_suggestion             = temp_order.site.suggestion_order
-            self.test_kit_waste_acceptable   = temp_order.site.test_kit_waste_acceptable
-            self.number_of_client            = surv_site_commodity.quantity.to_i
-            self.is_set = true 
+            self.number_of_client            = surv_site_commodity.quantity.to_i      
             break
           end
         end

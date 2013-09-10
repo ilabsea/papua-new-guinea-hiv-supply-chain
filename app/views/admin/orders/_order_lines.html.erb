@@ -24,6 +24,19 @@
         <% @kit += 1 %> 
     <% end %>  
   <% end %>
+  <input type='hidden' id='order_frequency' value="<%= order.site ?  order.site.order_frequency   : '' %>" />
+  <input type='hidden' id='suggestion_order' value="<%= order.site ?  order.site.suggestion_order  : '' %>" />
+  <input type='hidden' id='test_kit_waste_acceptable' value="<%= order.site ? order.site.test_kit_waste_acceptable : '' %>" />
+  
+
+  <% content_for :site_detail do %>
+    <ul>
+     <li> Order Frequency(month) : <b>         <%= order.site ? order.site.order_frequency  : '' %> </b> </li>
+     <li> Suggestion Order Valid Within(%) <b> <%= order.site ? order.site.suggestion_order : '' %> </b> </li>
+     <li> Test Kit Waste Acceptable(%) <b>     <%= order.site ? order.site.test_kit_waste_acceptable : '' %> </b> </li>
+    </ul>
+  <% end %>
+  <% site_detail = yield(:site_detail) %>
 
   <div class="tabbable"> 
     <ul class="nav nav-tabs">
@@ -37,12 +50,12 @@
 
     <div class="tab-content">
       <div class="tab-pane active" id="drug">
-        <h4> Drug Commodities </h4>
+        <%= site_detail %>
         <%= render :partial => 'order_line_table', :locals => {:order => order ,:body => yield(:drug)} %>
       </div>
       <div class="tab-pane" id="kit">
-         <h4> Kit Commodities </h4>
-         <%= render :partial => 'order_line_table', :locals => {:order => order, :body => yield(:kit) } %>
+        <%= site_detail %>
+        <%= render :partial => 'order_line_table', :locals => {:order => order, :body => yield(:kit) } %>
       </div>
     </div>
   </div>
