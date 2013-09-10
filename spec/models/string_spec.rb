@@ -40,7 +40,16 @@ describe String do
     it "should return the same string when no key is found " do
       str = @string.highlight_search("no found")
       str.should == @string
+    end  
+  end
+  describe '#is_numeric?' do
+    it "should return true for numerical string" do
+      ["12.34","-9394.09","0103.0", "10"].map{|item| item.is_numeric?}.should eq [true, true, true, true]
     end
-    
+
+    it "should return false for non numerical string" do
+      ["xx", "99.xx", "34x", "34.39x" ].map{|item| item.is_numeric?}.should eq [false, false, false, false]
+    end
+
   end
 end

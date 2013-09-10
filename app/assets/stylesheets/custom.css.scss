@@ -1,11 +1,22 @@
 
 .table .header-grid, .table th {
-    background-color: #DDDDDD !important;
+    /*background-color: #DDDDDD !important;*/
     padding: 9px 3px;
 }
 .table-bordered th, .table-bordered td {
     border-left: 1px solid #CCCCCC;
 }
+
+ .error-td .control-group, .error-td .control{
+   width: 200px !important;
+   display: inline-block;
+ }
+ .popover{
+  max-width: 600px;
+ }
+ .table .help-inline{
+   display: none;
+ }
 
 
 .border{
@@ -173,6 +184,9 @@ a.error:hover, a.error:visited {
 .header-title {
   font-size : 18px;
   color: gray;
+}
+.commodity{
+  width: 240px;
 }
 
 

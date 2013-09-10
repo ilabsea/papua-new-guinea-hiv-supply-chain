@@ -3,6 +3,7 @@
   @drug = 1
 %>
   <%=f.simple_fields_for :order_lines do |order_line_form| %>
+
     <% if order_line_form.object.arv_type == CommodityCategory::TYPES_DRUG %>
         <%=content_for :drug do  %>
           <%= render :partial => "order_line_row", :locals => { 
@@ -23,7 +24,6 @@
         <% @kit += 1 %> 
     <% end %>  
   <% end %>
-
 
   <div class="tabbable"> 
     <ul class="nav nav-tabs">

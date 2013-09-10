@@ -33,7 +33,7 @@ module Admin
     def order
 
        @shipment_session = ShipmentSession.new(session)
-  	   @order_lines = OrderLine.items(params[:site_id]).not_shipped.paginate(paginate_options)
+  	   @order_lines = OrderLine.items(params[:site_id]).data_filled.not_shipped.paginate(paginate_options)
   	   @sites = []
 
        @shipment = Shipment.new

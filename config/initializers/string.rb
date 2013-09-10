@@ -7,6 +7,10 @@ class String
     end
   end
 
+  def is_numeric?
+     (self =~/\A[-+]?[0-9]*\.?[0-9]+\Z/).nil? ? false : true
+  end
+
 
   def highlight_search portion
     if(portion.present?)

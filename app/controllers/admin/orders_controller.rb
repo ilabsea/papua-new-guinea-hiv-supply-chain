@@ -107,12 +107,12 @@ module Admin
  	  	order_line.consumption_per_client_per_month = order_line.commodity.consumption_per_client_unit  if order_line.consumption_per_client_per_month.blank? 
  	  	order_line.commodity
  	  end 
- 	  non_existing_commodities = Commodity.order('name asc').includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
 
+ 	  non_existing_commodities = Commodity.order('name asc').includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
  	  non_existing_commodities.each do |commodity| 
- 	    order.order_lines.build :commodity_id  => commodity.id, 
- 		  						  :arv_type		 => commodity.commodity_category.com_type,
- 		  						  :consumption_per_client_per_month => commodity.consumption_per_client_unit  
+ 	    order.order_lines.build :commodity    => commodity, 
+ 		  						:arv_type		 => commodity.commodity_category.com_type,
+ 		  						:consumption_per_client_per_month => commodity.consumption_per_client_unit  
  	  end
  	end
   end

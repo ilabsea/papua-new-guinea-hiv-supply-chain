@@ -1,9 +1,4 @@
-<style>
- .error-td .control-group, .error-td .control{
-   width: 200px !important;
-   display: inline-block;
- }
-</style>
+
 <%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
   <div class='row'>
@@ -17,7 +12,6 @@
       <%= f.input :order_date, :as => 'date_time_picker', 
                                :label => 'Order Create' ,
                                :input_html => {:class => 'datepicker-fit'}
-
                                %>   
     </div>
 
@@ -25,9 +19,9 @@
         <%= f.input :date_submittion, :as => 'date_time_picker', 
                                       :label => 'Order Received',
                                       :input_html => { :class  => 'datepicker-fit'} 
-
                                       %> 
     </div>
+
     <div class='span2' style ='text-align:center;' >
       <%= button_save ' Save order'  %>
     </div>
@@ -53,9 +47,7 @@
     //   {trigger:'click',animation:'false', placement:'top' }
     // );
     var selector = ".order_popover";
-
     $(selector).popover({ html : true });
-
     $(selector).mouseover(function () {
       // $(selector).not(this).popover('hide');
       $(selector).popover('hide');
@@ -64,19 +56,25 @@
   }
 
   function updateViewSystemSuggestion(){
-    $(".stock_on_hand").on('keyup', function(){
+    $('body').delegate(".stock_on_hand", 'keyup', function(){
       $elm = $(this);
-      var ref =  $elm.attr('data-ref'); 
-      var systemCalcId = "#quantity_system_calculation_" + ref
-      $systemCal = $(systemCalcId);
-
-      var consumtion = $("#consumption_per_client_per_month_" + ref ).val()
-      var numberOfClient = $("#number_of_client_" + ref ).val()
-
-      var value = parseFloat(consumtion) * parseFloat(numberOfClient) - parseFloat($elm.val())
-      $systemCal.html(value);
-
+      updateSystemSuggestion($elm); 
+    }).delegate(".stock_on_hand", 'change',function(){
+      $elm = $(this);
+      updateSystemSuggestion($elm); 
     })
+  }
+
+  function updateSystemSuggestion($elm){
+    var ref =  $elm.attr('data-ref'); 
+    var systemCalcId = "#quantity_system_calculation_" + ref
+    $systemCal = $(systemCalcId);
+
+    var consumtion = $("#consumption_per_client_per_month_" + ref ).val()
+    var numberOfClient = $("#number_of_client_" + ref ).val()
+
+    var value = parseFloat(consumtion) * parseFloat(numberOfClient) - parseFloat($elm.val())
+    $systemCal.html(value);
   }
 
   function loadOrderLinesTab(){
@@ -112,14 +110,16 @@
   }
 
   function initEventValidateField(){
-    $(document.body).delegate(".validate_field", 'keyup', function(){
-        validateCriteria($(this));
+    $('body').delegate(".validate_field", 'keyup', function(){
+      validateCriteria($(this).attr("data-ref"));
+    }).delegate(".validate_field","change", function(){
+      validateCriteria($(this).attr("data-ref"));
+    }).delegate(".validate_field", 'focus', function(){
+      hidePopup($(this).attr("data-ref"));
     });
   }
 
-  function getOrderLineObject($elm){
-    console.log("init");
-    var ref = $elm.attr("data-ref");
+  function getOrderLineObject(ref){
     //$datasets =  $("input[data-ref=" + ref + "]");
 
     var orderLine = {
@@ -133,7 +133,7 @@
           stockOnHand                         : cleanInput($("#stock_on_hand_" + ref ).val()),
           monthlyUse                          : cleanInput($("#monthly_use_" + ref ).val()),
           quantitySuggested                   : cleanInput($("#quantity_suggested_" + ref ).val()),
-          errors                              : [],
+          errors                              : {},
 
 
           errorMessage: function(type){
@@ -146,15 +146,17 @@
           },
 
           hasError: function(){
-            return this.errors.length ;
+            console.dir(this.errors)
+            var error = false;
+            for( prop in this.errors){
+              error = true;
+              break;
+            }
+            return error;
           },
 
           fullErrorMessages: function(){
-             var errors = []
-             for(var i=0; i< this.errors.length; i++){
-                errors.push( this.errorMessage(this.errors[i]));
-             }
-             return errors;
+             return this.errors;
           },
 
           systemSuggestion : function(){
@@ -175,52 +177,123 @@
           },
 
           validateQuantitySuggestedAcceptable: function(){
-            if(this.allowBlank())
-                return true ;
-
-            if(this.calQuantitySuggested() > parseFloat(this.siteSuggestion)){
-               this.errors.push(TYPES_DRUG)
-               return false
+            if(this.stockOnHand && this.quantitySuggested && this.consumtionPerClient  && this.numberOfClient ){
+              if(this.calQuantitySuggested() > parseFloat(this.siteSuggestion)){
+                 this.errors["quantity_suggested"] = this.errorMessage(TYPES_DRUG) ;
+                 return false
+              }
             }
-            return true;
           },
 
           validateWastageAcceptable: function(){
-            if(this.allowBlank())
-               return true;   
-
-            if(this.calQuantityWastage() > parseFloat(this.testKitWasteAcceptable)){
-              this.errors.push(TYPES_KIT)
-              return false;
+            this.validateField();
+            this.validateMonthlyUse();
+            
+            if(this.stockOnHand  && this.monthlyUse && this.consumtionPerClient  && this.numberOfClient ){
+              if(this.calQuantityWastage() > parseFloat(this.testKitWasteAcceptable)){
+                this.errors["wastage"] = this.errorMessage(TYPES_KIT);
+                return false;
+              }
             }
             return true ;
           },
 
-          allowBlank: function(){
-             return (this.stockOnHand == "" || this.monthlyUse == "" || this.numberOfClient == "" || this.consumtionPerClient == "");
+          validateMonthlyUse: function(){
+            if(this.invalidNumber(this.monthlyUse)){
+              this.errors["monthly_use"] = "<b> Monthly use </b> must be a valid number";
+            }
+
+            if(this.consumtionPerClient  && this.numberOfClient ){   
+              if(this.monthlyUse == "" && this.stockOnHand ==""){
+                return;
+              }
+              else if(this.stockOnHand != "" && this.monthlyUse == "" ){
+                this.errors["monthly_use"] = "<b> Monthly use </b> is required";
+              }
+              else if (this.stockOnHand == "" && this.monthlyUse != ""){
+                this.errors["stock_on_hand"] = "<b> Stock on hand </b> must be a valid number";
+              }          
+            }
+          },
+
+          validateField: function(){
+            if(this.invalidNumber(this.stockOnHand)){
+              this.errors["stock_on_hand"] = "<b> Stock on hand </b> must be a valid number";
+            }
+
+            if(this.invalidNumber(this.quantitySuggested)){
+              this.errros["quantity_suggested"] = "<b> Quantity Suggested </b> must be a valid number";
+            }
+            if(this.hasError())
+              return ;
+
+            if(this.consumtionPerClient  && this.numberOfClient ) {
+              if(this.stockOnHand == "" && this.quantitySuggested == ""){
+                return ;
+              }
+
+              else if(this.stockOnHand == "" && this.quantitySuggested != ""){
+                this.errors["stock_on_hand"] = "<b> Stock on hand </b> is required";
+              }
+              else if(this.stockOnHand != "" && this.quantitySuggested == ""){
+                this.errors["quantity_suggested"] = "<b> Quantity Suggested </b> is required";
+              }
+            }
+          },
+          invalidNumber: function(field){
+            invalid = field != "" && ( isNaN(field) || parseFloat(field)<0 ) ;
+            return invalid;
           }
     }
     return orderLine;
   }
 
-  function  validateCriteria($elm){
-    var object = getOrderLineObject($elm);
+  function  validateCriteria(ref){
+    var object = getOrderLineObject(ref);
+    hidePopup(object.commodityId);
+
     if(object.arvType == TYPES_DRUG ){
-        object.validateQuantitySuggestedAcceptable() ;
+        object.validateField();
+        if(!object.hasError())
+          object.validateQuantitySuggestedAcceptable() ;
     }
     else{
-       object.validateQuantitySuggestedAcceptable() ;
-       console.log(object.errors); 
-       object.validateWastageAcceptable();  
-       console.log(object.errors);    
+       object.validateField();
+       object.validateMonthlyUse();
+       if(!object.hasError()){
+          object.validateQuantitySuggestedAcceptable() ;
+          object.validateWastageAcceptable();  
+       }  
     }
     if(object.hasError()){
       var fullErrorMessages = object.fullErrorMessages();
-      errorMessages = fullErrorMessages.join("<hr class='separator' />");
-      showError(object.commodityId, errorMessages);
+      errorMessage  = "";
+      for(prop in fullErrorMessages){
+        errorMessage += "<li>" + fullErrorMessages[prop] + "</li>";
+        
+      } 
+      showError(object.commodityId, "<ul>" + errorMessage + "</ul>");
     }
     else{
       hideError(object.commodityId)
+    }
+  }
+
+  function initPopoverContent(){
+     for(ref in popover_contents){
+       $el = $("#error_" +ref)
+       var msg = popover_contents[ref];
+       showError(ref, msg);
+     }    
+  }
+
+  function startupValidation(){
+    $rows = $(".order_line_row")
+    for(var i=0; i< $rows.length; i++){
+      $row = $($rows.get(i));
+      var ref = $row.attr("data-ref");
+      console.log("ref " + ref  + ": " + i);
+      validateCriteria(ref)
     }
   }
 
@@ -228,6 +301,7 @@
     var $el = $("#error_" + ref);
     $el.attr("data-content", msg );
     $el.show();
+    $el.popover({ html : true});
     $("#tr_" + ref + " td").addClass("row-error");
   }
 
@@ -237,6 +311,11 @@
     $el.popover('hide');
     $("#tr_" + ref + " td").removeClass("row-error");
 
+  }
+
+  function hidePopup(ref){
+    var $el = $("#error_" + ref);
+    $el.popover('hide');
   }
 
   function cleanInput(str){
@@ -253,8 +332,8 @@
   $(function(){
     loadOrderLinesTab();
     initEventValidateField();
-
     updateViewSystemSuggestion();
-    initUIPopover();
+    // initUIPopover();
+    startupValidation();
   });
 </script>

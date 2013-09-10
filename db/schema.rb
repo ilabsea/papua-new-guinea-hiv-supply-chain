@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130829045241) do
+ActiveRecord::Schema.define(:version => 20130909080648) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20130829045241) do
     t.decimal  "consumption_per_client_per_month", :precision => 10, :scale => 0
     t.boolean  "is_set",                                                          :default => false
     t.boolean  "shipment_status",                                                 :default => false
+    t.integer  "completed_order",                                                 :default => 0
   end
 
   add_index "order_lines", ["commodity_id"], :name => "index_order_lines_on_commodity_id"

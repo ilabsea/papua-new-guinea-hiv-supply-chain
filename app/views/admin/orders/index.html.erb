@@ -43,8 +43,12 @@
         <td class="center">
           <% if current_user.reviewer? %>
             <%= link_button_review t('Review'), review_admin_order_path(order), :class => 'btn btn-mini' %> 
+            
           <% elsif current_user.data_entry? && order.status !=  Order::ORDER_STATUS_APPROVED %>  
             <%= link_button_edit 'Edit', edit_admin_order_path(order), :class => 'btn btn-mini' %> 
+
+          <% elsif current_user.data_entry? && order.status == Order::ORDER_STATUS_PENDING %>
+            <%= link_button_delete 'Delete', admin_orders_path(order), :method => :delete, :confirm => 'Are you sure to delete this order' %>  
 
           <% elsif current_user.ams? %>
             <%= link_button 'icon-briefcase',  'Shipment', admin_order_shipments_path(order), :class => 'btn btn-mini btn-primary' %>
