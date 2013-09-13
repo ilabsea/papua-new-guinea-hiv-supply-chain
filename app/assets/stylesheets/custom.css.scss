@@ -7,6 +7,10 @@
     border-left: 1px solid #CCCCCC;
 }
 
+ .table-hover th, .table-hover .header-grid{
+   background-color: #ededed;
+ }
+
  .error-td .control-group, .error-td .control{
    width: 200px !important;
    display: inline-block;

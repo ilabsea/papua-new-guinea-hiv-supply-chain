@@ -81,10 +81,16 @@ class Order < ActiveRecord::Base
   	order.requisition_report = requisition_report
 
   	if order.save(:validate => false)
+
   		requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
       requisition_report.save
+      
+      site.order_start_at = Time.now.strftime('%Y-%m-%d')
+      site.save
+
       order_line_import = OrderLineImport.new order, order.requisition_report.form.current_path
       order_line_import.import
+
   	else
   		requisition_report.status = RequisitionReport::IMPORT_STATUS_FAILED	
       requisition_report.save

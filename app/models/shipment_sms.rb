@@ -1,7 +1,5 @@
 class ShipmentSms < Sms
-
-  APP_NAME	= "Health supply chain"
-
+  
   def initialize shipment
   	@shipment = shipment
   end
@@ -28,7 +26,8 @@ class ShipmentSms < Sms
   		:site 	 	  => @shipment.site,
   		:shipment 	=> @shipment,
   		:message    => translation,
-  		:to 		    => @shipment.site.mobile
+  		:to 		    => @shipment.site.mobile,
+      :sms_type   => SmsLog::SMS_TYPE_SHIPMENT
   	}
 
   	SmsLog.create log

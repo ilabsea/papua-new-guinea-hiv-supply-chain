@@ -18,7 +18,7 @@ module Admin
 			_fill_attribute
 			if @requisition_report.save
 				order = Order.create_from_requisition_report @requisition_report
-				if order.errors.size
+				if order.errors.size == 0
 				  redirect_to admin_requisition_reports_path, :notice => 'Order has been created successfully'
 				else
 				  message = order.errors.full_messages.join("<br />")	

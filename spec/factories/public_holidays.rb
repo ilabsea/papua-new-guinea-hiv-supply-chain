@@ -3,6 +3,6 @@
 FactoryGirl.define do
   factory :public_holiday do
     name "MyString"
-    date "2013-06-05 10:42:16"
+    date "2013-06-05"
   end
 end

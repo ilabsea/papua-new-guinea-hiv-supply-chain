@@ -54,6 +54,11 @@
 .switch_color{
   background-color: #BCC4BA !important;
 }
+.note {
+  text-decoration:underline; 
+  color: black; 
+  padding-left: 10px;
+}
 
 </style>
   <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
@@ -79,7 +84,7 @@
     </div>
 
   <div class='alert alert-info'>
-    <i class='icon-x'></i> Please enter the number of patient in the following form
+    <i class='icon-x'></i> Please enter the number of patient in the following form. You can copy from Excel and paste here.
   </div> 
 
   <div class='row-fluid form-fixed'  >

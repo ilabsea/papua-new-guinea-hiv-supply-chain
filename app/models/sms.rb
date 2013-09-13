@@ -44,15 +44,15 @@ module SmsMod
     if block_given? && block.arity == 1 # pass an argurment that is a class instance
       yield(self)
     end
-    send_via_adaptor adaptor
     log
+    send_via_adaptor adaptor
   end
-  
 end
 
 class Sms
   include SmsMod 
   extend SmsMod
+  APP_NAME  = "Health supply chain"
   
   def initialize &block
     if block_given? && block.arity == 1 # pass an argurment that is a class instance

@@ -20,8 +20,14 @@ PngHivAids::Application.routes.draw do
       resources :surv_site_commodities
     end
 
+    resources :sms_logs do
+      collection do
+        get 'monitor'
+      end
+    end
+
     resources :shipments do
-      resources :sms_logs
+      resources :sms_logs 
       
       collection do
         get 'download'

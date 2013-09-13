@@ -182,7 +182,7 @@
             if(this.stockOnHand && this.quantitySuggested && this.consumtionPerClient  && this.numberOfClient ){
               cal = this.calQuantitySuggested();
               if(cal > parseFloat(this.siteSuggestion)){
-                 this.errors["quantity_suggested"] =  "<b>" + this.commodityName + "</b>: Quantity Suggested is not within " + filter(this.siteSuggestion) + " of population consumption(" + filter(cal) + ")";
+                 this.errors["quantity_suggested"] =  "<b>" + this.commodityName + "</b>: Quantity Suggested is not within " + filter(this.siteSuggestion) + " of population consumption" ;
                  return false
               }
             }
@@ -195,7 +195,7 @@
             if(this.stockOnHand  && this.monthlyUse && this.consumtionPerClient  && this.numberOfClient ){
               var cal = this.calQuantityWastage() ;
               if( cal > parseFloat(this.testKitWasteAcceptable)){
-                this.errors["wastage"] = "<b>" + this.commodityName + "</b>: Monthly use declared by site is greater than " + filter(this.testKitWasteAcceptable)  + " of acceptable wastage (" + filter(cal) + ")";
+                this.errors["wastage"] = "<b>" + this.commodityName + "</b>: Monthly use declared by site is greater than " + filter(this.testKitWasteAcceptable)  + " of acceptable wastage " ;
                 return false;
               }
             }
