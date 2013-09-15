@@ -38,13 +38,13 @@ class Site < ActiveRecord::Base
   end
 
   def self.alert now
-     return true if PublicHoliday.is_holiday?(now)
-     sites = Site.all
-     sites.each do |site|
-       if site.deadline_for? site
-          alert_dead_line_for now
-       end
-     end
+    return true if PublicHoliday.is_holiday?(now)
+    sites = Site.all
+    sites.each do |site|
+      if site.deadline_for? site
+        site.alert_dead_line_for now
+      end
+    end
   end
 
   def alert_dead_line_for now

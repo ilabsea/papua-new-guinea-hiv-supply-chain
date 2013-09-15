@@ -20,10 +20,7 @@ module Admin
     end
 
     def regenerate_cron
-    	number = Setting[:hour]
-    	date_type = Setting[:date_type]
-
-    	
+      system 'bundle exec whenever --update-crontab png-health-system'
     end
 
   end

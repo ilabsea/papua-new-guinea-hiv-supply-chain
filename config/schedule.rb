@@ -5,7 +5,7 @@
 
 # Example:
 #
-# set :output, "/path/to/my/cron_log.log"
+set :output, "#{path}/log/cron.log"
 #
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
@@ -18,3 +18,19 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+require File.expand_path('../environment', __FILE__)
+
+number    = Setting[:hour].to_i
+date_type = Setting[:date_type]
+
+p "Regenerate cron for #{number}(#{date_type})"
+if(date_type == Setting::DURATION_TYPE_HOUR)
+	every number.hours do
+	  rake "job:alert_site"
+	end
+
+elsif date_type == Setting::DURATION_TYPE_DAY	
+	every number.days do
+	  rake "job:alert_site"
+	end
+end
