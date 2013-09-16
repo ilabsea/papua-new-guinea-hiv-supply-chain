@@ -15,6 +15,20 @@ describe Site do
   	deadline.day.should eq 10
   end
 
+  describe '#alert_dead_line' do
+    it 'should alert site' do
+      Setting[:message_deadline] = 'Hi {site} dead line date is : {deadline_date}'
+      site = FactoryGirl.create :site, order_start_at: '2013-07-07', order_frequency: 2 , number_of_deadline_sumission: 3, sms_alerted: Site::SMS_ALERTED
+
+      Sms.should_receive(:send)
+      sms_count = SmsLog.count
+      site.alert_dead_line
+      SmsLog.count.should eq (sms_count + 1)
+      site.sms_alerted.should eq Site::SMS_ALERTED
+    end
+
+  end
+
   describe '#deadline?' do
   	it 'should return false for #deadline that has requisition_report' do
   	  time = DateTime.strptime('2013-07-16', '%Y-%m-%d')	

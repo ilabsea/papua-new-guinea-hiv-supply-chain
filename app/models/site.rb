@@ -51,10 +51,6 @@ class Site < ActiveRecord::Base
     end
   end
 
-  def not_alerted_yet? 
-    self.sms_alerted == Site::SMS_NOT_ALERTED
-  end
-
   def not_alerted
     where ["sms_alerted = :sms_alerted", :sms_alerted => Site::SMS_NOT_ALERTED ]
   end
