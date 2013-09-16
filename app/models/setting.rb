@@ -16,11 +16,11 @@ class Setting < ActiveRecord::Base
   MESSAGE_KEYS = [
   	{ name: :message_alerting_site_about_receiving_form, 
   	  label: "Message notification of package deliver to site" ,
-  	  params: %w(site consignment shippening_date)
+  	  params: %w(site consignment shipment_date )
   	} ,
   	{ name: :message_asking_site, 
   	  label: "Message check for confirmation of receiving package to site", 
-  	  params: %w(site consignment shippening_date)  
+  	  params: %w(site consignment shipment_date)  
   	},
     { name: :message_deadline, 
       label: "Message reminder to site who did not submit requisition form by deadline", 

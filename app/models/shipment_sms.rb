@@ -8,7 +8,7 @@ class ShipmentSms < Sms
   	options = {
   		:site => @shipment.site.name, 
   		:consignment => @shipment.consignment_number , 
-  		:shippening_date =>  @shipment.shipment_date
+  		:shipment_date =>  @shipment.shipment_date
   	}
 
   	setting = Setting[:message_alerting_site_about_receiving_form]
