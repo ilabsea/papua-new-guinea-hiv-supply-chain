@@ -10,15 +10,14 @@ class SmsLog < ActiveRecord::Base
 	SMS_TYPES = [SMS_TYPE_SHIPMENT, SMS_TYPE_REQUISITION, SMS_TYPE_ASK_CONFIRM]
 
 	def self.shipment
-		where(['sms_type = :sms_type', :sms_type => SmsLog::SMS_TYPE_SHIPMENT ])
+		of_type SmsLog::SMS_TYPE_SHIPMENT
 	end
 
 	def self.requisition
-		where(['sms_type= :sms_type', :sms_type => SmsLog::SMS_TYPE_REQUISITION])
+		of_type SmsLog::SMS_TYPE_REQUISITION
 	end
 
 	def self.of_type type
-	  return self.requisition if(type == SmsLog::SMS_TYPE_REQUISITION)
-	  return self.shipment  
+	  where ['sms_type = :sms_type', :sms_type => type ]
 	end
 end

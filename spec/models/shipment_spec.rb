@@ -60,10 +60,71 @@ describe Shipment do
       shipments[0].received_date.should be_nil
       shipments[1].received_date.should be_nil
 
-  		
   		unchanged_shipment.status.should eq @shipment3.status
 
   	end
+  end
+
+  describe '#deadline_for?' do
+    describe 'for type day' do
+      before(:each) do
+        @site = FactoryGirl.create(:site, :duration_type => Setting::DURATION_TYPE_DAY, :in_every => 3)
+        @shipment = FactoryGirl.create(:shipment, :site => @site)  
+      end
+
+      it 'should return true if the shipment date plus in_every number of days has passed' do
+        created_at = Time.new(2013,9,11)
+        @shipment.stub!(:created_at).and_return(created_at)
+        current = Time.new(2013,9,15)
+        deadline = @shipment.deadline_for? current
+        deadline.should eq true
+      end
+
+      it 'should return false if the shipment date plus in_every number of days has not passed' do
+        created_at = Time.new 2013,9,11
+        @shipment.stub!(:created_at).and_return(created_at)
+        current = Time.new(2013,9,14)
+        deadline = @shipment.deadline_for? current
+        deadline.should eq false
+      end
+    end
+
+    describe 'for type hour' do
+      before(:each) do
+        @site = FactoryGirl.create(:site, duration_type: Setting::DURATION_TYPE_HOUR, :in_every => 2)
+        @shipment = FactoryGirl.create :shipment, site: @site
+      end
+
+      it 'should return true if shipment date plus in_every number of hours has passed' do
+        created_at = Time.new(2013,9,10,8,10,0)
+        @shipment.stub!(:created_at).and_return(created_at)
+        current    = Time.new(2013,9,11,11,10,10)
+        deadline = @shipment.deadline_for? current
+        deadline.should eq true
+      end
+
+      it 'should return false if shipment date plus in_every number of hours has not passed' do
+        created_at = Time.new(2013,9,10,8,10,0)
+        @shipment.stub!(:created_at).and_return(created_at)
+        current    = Time.new(2013,9,10,9,10,10)
+        deadline = @shipment.deadline_for? current
+        deadline.should eq false
+      end
+    end
+  end
+
+  describe '#alert_deadline' do
+    it 'should alert_deadline' do
+      Setting[:message_asking_site] = 'hi {site} Consignment: {consignment} date: {shipment_date}'
+
+      Sms.should_receive(:send)
+
+      @site = FactoryGirl.create :site, name: 'Kampongchame'
+      @shipment = FactoryGirl.create :shipment, site: @site, consignment_number: '27091984', shipment_date: Time.new(2013,9,9)
+
+      expect{@shipment.alert_deadline}.to change{SmsLog.count}.by(1)
+
+    end
 
   end
 

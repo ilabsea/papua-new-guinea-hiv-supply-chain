@@ -89,7 +89,7 @@ class Shipment < ActiveRecord::Base
   			created_date = self.created_at.to_date
   			now > (created_date + self.site.in_every.days)
   		elsif self.site.duration_type == Setting::DURATION_TYPE_HOUR
-  			now > self.created_date + self.site.in_every.hours
+  			now > self.created_at + self.site.in_every.hours
   		end
   	end
 
@@ -98,12 +98,12 @@ class Shipment < ActiveRecord::Base
 	    shipments = Shipment.includes(:site).in_progress
 	    shipments.each do |shipment|
 	      if shipment.deadline_for? now
-	        shipment.alert_deadline_for now
+	        shipment.alert_deadline
 	      end
 	    end		
   	end
 
-  	def alert_deadline_for now
+  	def alert_deadline
   		options = {
 	      :site => self.site.name, 
 	      :shipment_date => self.shipment_date , 
@@ -134,7 +134,7 @@ class Shipment < ActiveRecord::Base
   		self.status == Shipment::STATUS_IN_PROGRESS
   	end
 
-  	def self.in_progess
+  	def self.in_progress
   		of_status Shipment::STATUS_IN_PROGRESS
   	end
 

@@ -45,8 +45,8 @@ class Site < ActiveRecord::Base
     return true if PublicHoliday.is_holiday?(now)
     sites = Site.not_alerted
     sites.each do |site|
-      if site.deadline_for?(site)
-        site.alert_dead_line_for now
+      if site.deadline_for? now
+        site.alert_dead_line
       end
     end
   end
@@ -59,7 +59,7 @@ class Site < ActiveRecord::Base
     where ["sms_alerted = :sms_alerted", :sms_alerted => Site::SMS_NOT_ALERTED ]
   end
 
-  def alert_dead_line_for now
+  def alert_dead_line
 
     options = {
       :site => self.name, 
