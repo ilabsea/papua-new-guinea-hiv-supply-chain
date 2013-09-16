@@ -1,5 +1,11 @@
 module Admin
  class OrdersController < Controller
+ 	load_and_authorize_resource
+
+ 	skip_load_resource :only => [:tab_order_line] # must skip loading resource by cancan
+ 	skip_authorize_resource :only => [:tab_order_line] 
+
+
  	def index
  		@date_start = params[:date_start] 
  		@date_end   = params[:date_end]
@@ -21,8 +27,8 @@ module Admin
  	end
 
  	def tab_order_line
- 		# must eager load order_lines, otherwise each orline from order.order_lines will go to sql query
- 		@order 			  =  params[:id].blank? ? Order.new() : _order
+ 		# # must eager load order_lines, otherwise each orline from order.order_lines will go to sql query
+ 		@order 			  =  params[:id].blank? ? Order.new : _order
  		site              =  Site.find params[:site_id]
  		@order.site 	  =  site
  		@order.order_date =  params[:order_date]
@@ -94,7 +100,7 @@ module Admin
  	private
 
  	def _order
- 		@order = Order.includes(:order_lines => :commodity).find params[:id]	
+ 		@order ||= Order.includes(:order_lines => :commodity).find params[:id]	
  	end
 
  	def _build_tab order, site

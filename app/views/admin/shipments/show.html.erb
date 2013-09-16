@@ -18,8 +18,7 @@
       <th class='nth-table'>#</th>
       <th style='width: 150px;'>Commodity</th>
       <th>Quantity Issued</th>
-      <th>Quantity Suggested</th>
-      <th>Quantity Received</th>      
+      <th>Quantity Suggested</th>   
       <th>Remark</th>      
     </tr>
   </thead>
@@ -31,7 +30,6 @@
         <td><%=shipment_line.order_line.commodity.name %></td>
         <td><%=shipment_line.quantity_issued %></td>
         <td><%=shipment_line.quantity_suggested %> </td>
-        <td><%=shipment_line.quantity_received%></td>  
         <td><%=shipment_line.remark %></td>  
       </tr>
     <% end %>

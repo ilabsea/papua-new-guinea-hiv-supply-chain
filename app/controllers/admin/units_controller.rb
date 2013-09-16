@@ -1,5 +1,7 @@
 module Admin
   class UnitsController < Controller
+    load_and_authorize_resource
+    
   	def index
   		@units = Unit.order("name").paginate(paginate_options)
   		@app_title = "Unit of measurement"

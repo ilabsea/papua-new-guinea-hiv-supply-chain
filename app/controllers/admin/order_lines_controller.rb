@@ -19,7 +19,7 @@ module Admin
       @order_line.user_reviewer_note = params[:order_line][:user_reviewer_note]
       @order_line.quantity_suggested = params[:order_line][:quantity_suggested]
 
-      if @order_line.save
+      if @order_line.save(:validate => false)
         @order.review_user = current_user
         @order.update_status_accepted
         @order.review_date = Time.now
@@ -38,7 +38,7 @@ module Admin
       @order_line.user_reviewer_note = params[:order_line][:user_reviewer_note]
       @order_line.quantity_suggested = params[:order_line][:quantity_suggested]
 
-      if @order_line.save
+      if @order_line.save(:validate => false)
         @order.status = Order::ORDER_STATUS_TO_BE_REVISED
         @order.review_user = current_user
         @order.review_date = Time.now

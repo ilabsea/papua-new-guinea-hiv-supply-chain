@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
      self.role == User::ROLES_SITE
   end
 
-  def random_password!
+  def reset_random_password!
       random_password =  User.regen_password
       self.password = random_password
       self.save ? random_password : false
@@ -67,12 +67,17 @@ class User < ActiveRecord::Base
 
   def self.regen_password
     #Devise.friendly_token.first(8)
+
     child_word
   end
 
   def self.child_word
     file_name =  "#{Rails.root}/public/protected/words.txt"
     content = File.open(file_name){|f| f.read}.split
+    self.child_word_from content 
+  end
+
+  def self.child_word_from content
     word_index = rand(content.size - 1) 
     word = content[word_index]
     "#{word}#{rand(9)}#{rand(9)}#{rand(9)}"

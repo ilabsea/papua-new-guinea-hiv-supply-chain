@@ -1,5 +1,9 @@
 module Admin
   class ShipmentsController < Controller
+    load_and_authorize_resource
+
+    skip_authorize_resource :only => [:create_shipment]
+    skip_load_resource :only => [:create_shipment]
 
     helper_method :order_params
 
@@ -29,9 +33,7 @@ module Admin
       @app_title = "Create new shipment"	
     end
 
-
     def order
-
        @shipment_session = ShipmentSession.new(session)
   	   @order_lines = OrderLine.items(params[:site_id]).data_filled.not_shipped.paginate(paginate_options)
   	   @sites = []
@@ -46,6 +48,8 @@ module Admin
     end
 
     def create_shipment
+      authorize! :create_shipment, :shipments
+
       @shipment = Shipment.new(params[:shipment])
       response = {}
       shipment_session = ShipmentSession.new session
@@ -63,8 +67,8 @@ module Admin
          @shipment.status = Shipment::STATUS_IN_PROGRESS
  
          if @shipment.create_shipment(shipment_session)
-            sms_shipment = ShipmentSms.new(@shipment)
-            sms_shipment.alert
+            shipment_sms = ShipmentSms.new(@shipment)
+            shipment_sms.alert
 
             shipment_session.clear
             response[:status] = :success

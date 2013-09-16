@@ -73,19 +73,22 @@ class Order < ActiveRecord::Base
   def self.create_from_requisition_report requisition_report
   	order = Order.new :date_submittion => requisition_report.created_at,
 											 :is_requisition_form => true,
-											 :order_date => Time.now(), 
+											 :order_date => Time.now().to_date, 
 											 :status  => Order::ORDER_STATUS_PENDING
 
+    site =  requisition_report.site              
+
   	order.user_place_order   = requisition_report.user
-  	order.site 				 = requisition_report.site
+  	order.site 				 = site
   	order.requisition_report = requisition_report
 
-  	if order.save(:validate => false)
+  	if order.save
 
   		requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
       requisition_report.save
       
       site.order_start_at = Time.now.strftime('%Y-%m-%d')
+      site.sms_alerted = Site::SMS_NOT_ALERTED
       site.save
 
       order_line_import = OrderLineImport.new order, order.requisition_report.form.current_path

@@ -1,5 +1,6 @@
 module Admin
   class CategoriesController < Controller
+    load_and_authorize_resource
     
     def index
       @categories = Category.paginate(paginate_options)

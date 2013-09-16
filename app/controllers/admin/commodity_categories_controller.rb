@@ -1,7 +1,7 @@
 # encoding: utf-8
 module Admin
   class CommodityCategoriesController < Controller
-    
+    load_and_authorize_resource
     def index
       params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
       if(params[:type] == CommodityCategory::TYPES_DRUG)

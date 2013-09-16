@@ -1,6 +1,6 @@
 module Admin
   class CommoditiesController < Controller
-
+    load_and_authorize_resource
     def index
         @commodities = Commodity.includes(:commodity_category, :unit)
         params[:type] = params[:type] || CommodityCategory::TYPES_DRUG

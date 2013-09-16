@@ -1,6 +1,8 @@
 <%= page_header("Requisition Report form", :left => 6, :right => 6) do %>
-  <%= link_button_new 'New Requisition Report', new_admin_requisition_report_path, :class => 'btn' %>
-  <%= link_button_download "Download Requistion Report Template", template_admin_commodity_categories_path(:format =>:xls), :class => 'btn btn-primary' %>
+  <% if current_user.site? %>
+    <%= link_button_new 'New Requisition Report', new_admin_requisition_report_path, :class => 'btn' %>
+  <% end %>
+  <%= link_button_download "Download Template", template_admin_commodity_categories_path(:format =>:xls), :class => 'btn btn-primary' %>
 <% end %>
 
 <table class="table table-hover table-bordered">

@@ -16,11 +16,15 @@ class Site < ActiveRecord::Base
   SeviceType = ["ART", "VCCT"]
   default_scope order('sites.name ASC')
 
+  SMS_ALERTED = 1
+  SMS_NOT_ALERTED = 0
+
   has_many :users
   has_many :requisition_reports
   has_many :orders
   has_many :surv_sites
   has_many :sms_logs
+  has_many :shipments
 
 
   def deadline_date
@@ -37,14 +41,22 @@ class Site < ActiveRecord::Base
     return false
   end
 
-  def self.alert now
+  def self.alert_requisition_report now
     return true if PublicHoliday.is_holiday?(now)
-    sites = Site.all
+    sites = Site.not_alerted
     sites.each do |site|
-      if site.deadline_for? site
+      if site.deadline_for?(site)
         site.alert_dead_line_for now
       end
     end
+  end
+
+  def not_alerted_yet? 
+    self.sms_alerted == Site::SMS_NOT_ALERTED
+  end
+
+  def not_alerted
+    where ["sms_alerted = :sms_alerted", :sms_alerted => Site::SMS_NOT_ALERTED ]
   end
 
   def alert_dead_line_for now
@@ -72,6 +84,8 @@ class Site < ActiveRecord::Base
       :sms_type   => SmsLog::SMS_TYPE_REQUISITION
     }
     SmsLog.create log
+    self.sms_alerted = Site::SMS_ALERTED
+    self.save
   end
 
 end

@@ -24,13 +24,13 @@ number    = Setting[:hour].to_i
 date_type = Setting[:date_type]
 
 p "Regenerate cron for #{number}(#{date_type})"
-if(date_type == Setting::DURATION_TYPE_HOUR)
+if date_type == Setting::DURATION_TYPE_HOUR
 	every number.hours do
-	  rake "job:alert_site"
+	  rake "png_job:alert"
 	end
 
 elsif date_type == Setting::DURATION_TYPE_DAY	
 	every number.days do
-	  rake "job:alert_site"
+	  rake "png_job:alert"
 	end
 end

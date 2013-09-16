@@ -1,5 +1,6 @@
 module Admin
   class SitesController < Controller
+    load_and_authorize_resource
 
     def index
       @sites = Site.includes(:province).paginate(paginate_options)

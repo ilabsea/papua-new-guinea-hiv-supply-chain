@@ -1,34 +1,27 @@
 module Admin
   class ProvincesController < Controller
-    # GET /provinces
-    # GET /provinces.json
+    load_and_authorize_resource
     def index
       @provinces = Province.paginate(paginate_options)
       @app_title = "Provinces"
     end
 
-    # GET /provinces/1
-    # GET /provinces/1.json
     def show
       @province = Province.find(params[:id])
       @app_title = "Province: #{@province.name}"
     end
 
-    # GET /provinces/new
-    # GET /provinces/new.json
     def new
       @province = Province.new
       @app_title = "New Province"
     end
 
-    # GET /provinces/1/edit
+
     def edit
       @province  = Province.find(params[:id])
       @app_title = "Edit: #{@province.name}" 
     end
 
-    # POST /provinces
-    # POST /provinces.json
     def create
       @province = Province.new(params[:province])
       if @province.save
@@ -38,8 +31,6 @@ module Admin
       end
     end
 
-    # PUT /provinces/1
-    # PUT /provinces/1.json
     def update
       @province = Province.find(params[:id])
       if @province.update_attributes(params[:province])
@@ -49,8 +40,6 @@ module Admin
       end
     end
 
-    # DELETE /provinces/1
-    # DELETE /provinces/1.json
     def destroy
       begin
         @province = Province.find(params[:id])

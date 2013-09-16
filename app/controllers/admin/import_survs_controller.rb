@@ -1,5 +1,6 @@
 module Admin
   class ImportSurvsController < Controller
+    load_and_authorize_resource
 
     def index
       @app_title = "List of surv form"
@@ -13,16 +14,6 @@ module Admin
       @sites = Site.all
       @commodities = Commodity.from_type(@import_surv.arv_type)
       @app_title = 'Edit ' + @import_surv.surv_type
-
-      # @existing_sites = @import_surv.surv_sites.map{|surv_site| surv_site.site}
-      # @new_sites = @sites.reject{|site| @existing_sites.include?(site)}
-
-      # @new_sites.each do |site|
-      #   surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
-      #   @commodities.each do |commodity|
-      #     surv_site.surv_site_commodities.build(:commodity => commodity, :quantity => '' )
-      #   end
-      # end
     end
 
     def update
@@ -66,8 +57,6 @@ module Admin
   		end	
   	end
 
-  	# DELETE /provinces/1
-    # DELETE /provinces/1.json
     def destroy
       begin
         @province = ImportSurv.find(params[:id])

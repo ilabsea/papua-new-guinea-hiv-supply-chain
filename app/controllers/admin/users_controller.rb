@@ -1,5 +1,9 @@
 module Admin
 	class UsersController < Controller
+		load_and_authorize_resource
+		skip_load_resource :only => [:new_password]
+		skip_authorize_resource :only =>[:new_password, :change, :profile, :update_profile]
+
 		def index
 		 	@users = User.includes(:site).paginate paginate_options
 		 	@app_title = "Users"
@@ -61,7 +65,7 @@ module Admin
 		end
 
 		def update_profile
-		   attributes = params[:user].slice(:phone_number, :display_name, :email, :site_id)
+		   attributes = params[:user].slice(:phone_number, :display_name, :email)
 		   if current_user.update_attributes attributes
 		     redirect_to profile_admin_users_path, :notice => 'Your profile has been updated successfully'
 		   else
@@ -71,7 +75,7 @@ module Admin
 
 		def reset
 		  @user = User.find(params[:id])
-		  @changed_password = @user.random_password!
+		  @changed_password = @user.reset_random_password!
 
 		  @app_title = "Password reset"
 

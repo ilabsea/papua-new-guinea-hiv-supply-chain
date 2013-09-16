@@ -1,22 +1,53 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(current_user)
+
+    alias_action :create, :read, :update, :destroy, :to => :crud
     
-    user ||= User.new
+    current_user ||= User.new
     
     can :read, :all
 
-    if user.admin?
+    can :update, User, :id => current_user.id
+
+    can :change_password?, User do |user|
+        current_user.id == user.id
+    end
+
+    if current_user.admin?  
       can :manage, :all  
-    elsif user.site?
+      
+      cannot :create, RequisitionReport
+      cannot :manage, Order
+      cannot :manage, Shipment
+      cannot :manage, ImportSurv
 
-    elsif user.data_entry?
+    elsif current_user.site?
+
+      can :create, RequisitionReport
+      can :read, RequisitionReport
+
+      can :create_from_requisition_report, Order
+      can :create, Order
+
+
+    elsif current_user.data_entry?
+      can :manage, ImportSurv
+      can :manage, SurvSite
+      can :manage, SurvSiteCommodity
+      can :manage, Order
+      can :export, Order
+      can :tab_order_line, Order
     
-    elsif user.reviewer?
+    elsif current_user.reviewer?
+      can :manage, Order
 
-    elsif user.ams?    
-      can :read, :all
+    elsif current_user.ams?    
+      can :manage, Shipment
+      can :create_shipment, :shipments
+      can :manage, SmsLog
+      
     end
     
     # Define abilities for the passed in user here. For example:

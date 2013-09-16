@@ -83,6 +83,65 @@ class Shipment < ActiveRecord::Base
        totals
   	end
 
+  	def deadline_for? now	
+  		if self.site.duration_type == Setting::DURATION_TYPE_DAY
+  			now = now.to_date
+  			created_date = self.created_at.to_date
+  			now > (created_date + self.site.in_every.days)
+  		elsif self.site.duration_type == Setting::DURATION_TYPE_HOUR
+  			now > self.created_date + self.site.in_every.hours
+  		end
+  	end
+
+  	def self.alert_for_confirm_status now
+  		return true if PublicHoliday.is_holiday?(now.to_date)
+	    shipments = Shipment.includes(:site).in_progress
+	    shipments.each do |shipment|
+	      if shipment.deadline_for? now
+	        shipment.alert_deadline_for now
+	      end
+	    end		
+  	end
+
+  	def alert_deadline_for now
+  		options = {
+	      :site => self.site.name, 
+	      :shipment_date => self.shipment_date , 
+	      :consignment  => self.consignment_number
+	    }
+
+	    setting = Setting[:message_asking_site]
+	    translation = setting.str_tr options
+
+	    #send_via_nuntium message_item
+	    Sms.send NuntiumMessagingAdapter.instance do |sms|
+	      sms.from  = ShipmentSms::APP_NAME
+	      sms.to    = 'sms://' + self.site.mobile
+	      sms.body  = translation
+	    end
+	    
+	    log = {
+	      :site       => self.site,
+	      :shipment   => self,
+	      :message    => translation,
+	      :to         => self.site.mobile,
+	      :sms_type   => SmsLog::SMS_TYPE_ASK_CONFIRM
+	    }
+	    SmsLog.create log
+  	end
+
+  	def in_progress?
+  		self.status == Shipment::STATUS_IN_PROGRESS
+  	end
+
+  	def self.in_progess
+  		of_status Shipment::STATUS_IN_PROGRESS
+  	end
+
+  	def self.of_status status
+  	   where(["status =:status", :status => status ])
+  	end
+
 	def _quantity_suggested  order_lines , order_line_id
 		order_lines.each do |order_line|
 		   return order_line.quantity_suggested if order_line.id == order_line_id

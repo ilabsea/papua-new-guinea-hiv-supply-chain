@@ -1,5 +1,7 @@
 module Admin
   class SettingsController < Controller
+  	load_and_authorize_resource
+  	
 	def index
       @app_title = "Settings"  
 	end

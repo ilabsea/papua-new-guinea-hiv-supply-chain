@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130913064906) do
+ActiveRecord::Schema.define(:version => 20130916102814) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -182,10 +182,11 @@ ActiveRecord::Schema.define(:version => 20130913064906) do
     t.string   "land_line_number"
     t.string   "email"
     t.integer  "province_id"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.integer  "in_every"
     t.string   "duration_type"
+    t.integer  "sms_alerted",                  :default => 0
   end
 
   create_table "sms_logs", :force => true do |t|

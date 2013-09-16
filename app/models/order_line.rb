@@ -3,6 +3,8 @@ class OrderLine < ActiveRecord::Base
   belongs_to :order
   belongs_to :commodity
   belongs_to :site
+  has_one :shipment_line, :dependent => :destroy
+
   attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :status, :order, :stock_on_hand, :number_of_client,
                   :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :site_id, :site, :is_set, :skip_bulk_insert,:commodity
 
