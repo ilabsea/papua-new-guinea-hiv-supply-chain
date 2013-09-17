@@ -1,29 +1,29 @@
 module Admin
   class SettingsController < Controller
   	load_and_authorize_resource
+    skip_load_resource
+    skip_authorize_resource
   	
-	def index
-      @app_title = "Settings"  
-	end
+  	def index
+        @app_title = "Settings"  
+  	end
 
-	def create
+  	def create
 
-	  	Setting[:message_alerting_site_about_receiving_form] = params[:setting][:message_alerting_site_about_receiving_form]
-	  	Setting[:message_asking_site]  = params[:setting][:message_asking_site]
-	  	Setting[:message_deadline]     = params[:setting][:message_deadline]
+  	  	Setting[:message_alerting_site_about_receiving_form] = params[:setting][:message_alerting_site_about_receiving_form]
+  	  	Setting[:message_asking_site]  = params[:setting][:message_asking_site]
+  	  	Setting[:message_deadline]     = params[:setting][:message_deadline]
 
-	  	Setting[:hour]   				 = params[:setting][:hour]
-	  	Setting[:date_type] 			 = params[:setting][:date_type]
+  	  	Setting[:hour]   				   = params[:setting][:hour]
+  	  	Setting[:date_type] 			 = params[:setting][:date_type]
 
-	  	regenerate_cron
-        
+  	  	regenerate_cron
         redirect_to admin_settings_path, notice: 'Setting has been updated successfully.' 
 
-    end
+      end
 
-    def regenerate_cron
-      system 'bundle exec whenever --update-crontab png-health-system'
-    end
-
+      def regenerate_cron
+        system 'bundle exec whenever --update-crontab png-health-system'
+      end
   end
 end

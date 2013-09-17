@@ -46,36 +46,4 @@ class Setting < ActiveRecord::Base
     value
   end
 
-  def self.create_or_update_message_alert message_alert, params
-    if (message_alert)
-        message_alert.update_attributes(:value => params[:setting][:value][0])
-    else
-      Setting.create({:name => "message_alerting_site_about_receiving_form", :value => params[:setting][:value][0]})
-    end
-  end
-
-  def self.create_or_update_message_asking message_asking, params
-    if (message_asking)
-        message_asking.update_attributes(:value => params[:setting][:value][1])
-    else
-      Setting.create({:name => "message_asking_site", :value => params[:setting][:value][1]})
-    end
-  end
-
-  def self.create_or_update_message_deadline message_deadline, params
-    if (message_deadline)
-      message_deadline.update_attributes(:value => params[:setting][:value][2])
-    else
-      Setting.create({:name => "message_deadline", :value => params[:setting][:value][2]})
-    end
-  end
-
-  def self.create_or_update_frequency_hour frequency_hour, params
-    if (frequency_hour)
-      frequency_hour.update_attributes(:value => params[:setting][:hour])
-    else  
-      Setting.create({:name => "hour", :value => params[:setting][:hour]})
-    end
-  end
-
 end
