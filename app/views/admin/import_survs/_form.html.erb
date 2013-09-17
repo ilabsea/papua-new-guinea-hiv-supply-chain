@@ -39,6 +39,10 @@
     height: 20px;
   }
 
+.berror{
+  background-color: red !important ;
+}  
+
 .table th, .table td {
     border: 1px solid #ccc !important;
     border-bottom: none;
@@ -142,7 +146,8 @@
                   <% @klass = (@klass == 'default') ? 'switch_color' : 'default' %>
                 <% end %>
                 <% @category = surv_site_commodity_form.object.commodity.commodity_category.id %>
-                <td  style='<%= style %>' class='<%= @klass %>' title="<%=h surv_site_commodity_form.object.commodity.commodity_category.name %>" >
+                <% error_hl  = (surv_site_commodity_form.object.errors.size >0 ) ? 'background-color: red !important;' : '' %>
+                <td  style='<%= style %> <%= error_hl %>' class='<%= @klass%>' title="<%=h surv_site_commodity_form.object.commodity.commodity_category.name %>" >
                   <%= surv_site_commodity_form.input :id ,:as => :hidden %>
         	  	    <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
                   <%= surv_site_commodity_form.input :quantity, :label => false, :as => :text, 
@@ -160,7 +165,7 @@
      </table>
   </div>
   
-  <div class='center' >
+  <div class="form-actions">
     <%= button_save  " Save " %> 
     <%= link_button_cancel 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type) %>
   </div>

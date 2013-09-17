@@ -17,7 +17,7 @@ module Admin
   	  	Setting[:hour]   				   = params[:setting][:hour]
   	  	Setting[:date_type] 			 = params[:setting][:date_type]
 
-  	  	regenerate_cron
+  	  	# regenerate_cron
         redirect_to admin_settings_path, notice: 'Setting has been updated successfully.' 
 
       end

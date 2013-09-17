@@ -20,17 +20,22 @@ set :output, "#{path}/log/cron.log"
 # Learn more: http://github.com/javan/whenever
 require File.expand_path('../environment', __FILE__)
 
-number    = Setting[:hour].to_i
-date_type = Setting[:date_type]
+# number    = Setting[:hour].to_i
+# date_type = Setting[:date_type]
 
 p "Regenerate cron for #{number}(#{date_type})"
-if date_type == Setting::DURATION_TYPE_HOUR
-	every number.hours do
-	  rake "png_job:alert"
-	end
 
-elsif date_type == Setting::DURATION_TYPE_DAY	
-	every number.days do
-	  rake "png_job:alert"
-	end
+every 1.hour do
+	rake "png_job:alert"
 end
+
+# if date_type == Setting::DURATION_TYPE_HOUR
+# 	every number.hours do
+# 	  rake "png_job:alert"
+# 	end
+
+# elsif date_type == Setting::DURATION_TYPE_DAY	
+# 	every number.days do
+# 	  rake "png_job:alert"
+# 	end
+# end
