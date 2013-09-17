@@ -7,7 +7,7 @@ class Ability
     
     current_user ||= User.new
     
-    can :read, :all
+    can :read, current_user
 
     can :update, User, :id => current_user.id
 

@@ -18,9 +18,9 @@
 
   <%= f.association :unit, :include_blank => "Select Unit of measurement" %>
   <% if params[:type] == CommodityCategory::TYPES_DRUG  %>
-    <%= f.input :strength_dosage, :label => "Streng/Dosage", :required => true %>
+    <%= f.input :strength_dosage, :label => "Streng/Dosage" %>
     <%= f.input :abbreviation, :required => true %>
-    <%= f.input :quantity_per_packg, :label => "quantity Per Package", :required => true %>
+    <%= f.input :quantity_per_packg, :label => "Quantity Per Package"%>
   <% end %>
 
   <div class="form-actions">

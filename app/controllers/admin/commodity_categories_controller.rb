@@ -2,6 +2,9 @@
 module Admin
   class CommodityCategoriesController < Controller
     load_and_authorize_resource
+    skip_load_resource :only => [:template]
+    skip_authorize_resource :only => [:template]
+
     def index
       params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
       if(params[:type] == CommodityCategory::TYPES_DRUG)
