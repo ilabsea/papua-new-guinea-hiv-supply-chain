@@ -25,7 +25,7 @@ class ImportSurv < ActiveRecord::Base
 
   TYPES = [ TYPES_SURV1,  TYPES_SURV2 ]
 
-  MONTHS = ['January' ,'February','March' ,'April', 'May', 'June', 'July', 'August', 'September', 'Octomber', 'November', 'December' ]
+  MONTHS = ['January' ,'February','March' ,'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
   
   validates :month, inclusion: { :in => MONTHS, :message => "%{value} is not a valid month" }
   validates :year, :numericality => { :only_integer => true}
@@ -266,7 +266,7 @@ class ImportSurv < ActiveRecord::Base
   private
 
   def _full_month month
-    months = ['January' , 'February' ,'March' , 'April', 'May', 'June', 'July', 'August', 'September', 'Octomber', 'November', 'December' ]
+    months = ImportSurv::MONTHS
     months.each do |m|
       return m if m.start_with? month
     end
