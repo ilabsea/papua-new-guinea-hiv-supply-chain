@@ -17,5 +17,6 @@ FactoryGirl.define do
     land_line_number "MyString"
     email "MyString"
     province
+    in_every 3
   end
 end

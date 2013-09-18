@@ -87,7 +87,7 @@ module Admin
 
  	def export
  		file =  "#{Rails.root}/public/data/orders.csv"
- 		Export.order file
+ 		Export.order file, params[:type]
  		send_file(file , 
 	                      :filename      =>  "orders.csv",
 	                      :type          =>  'text/csv',

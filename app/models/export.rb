@@ -1,11 +1,12 @@
 # encoding: utf-8
 require 'csv'
 class Export 
-	def self.order file
+	def self.order file, type
 	  CSV.open(file, "wb") do |csv|
 	  	headers = ['Summition', 'Site',	'Id', 'Order Creation','Entry', 'Reviewer', 'Reviewed Date', 'Status']
   		csv << headers
-  		Order.find_each do |order|
+      orders = type.blank? ? Order : Order.of_status(type)
+  		orders.find_each do |order|
   			csv << [ order.date_submittion, 
   					 order.site.name,
   					 order.id,
@@ -23,7 +24,7 @@ class Export
     CSV.open(file, "wb") do |csv|
       headers = ['Site', 'Consignment', 'Status','Date Shipped', 'SMS Notified clinic (times)', 'Last notified date to clinic', 'Received date', 'Package lost']
       csv << headers
-      shipments = type.blank? ? Shipment : Shipment.where(["status = :status", :status => type ])
+      shipments = type.blank? ? Shipment : Shipment.of_status(type)
       shipments.find_each do |shipment|
         row = [
           shipment.site.name,
@@ -39,7 +40,4 @@ class Export
       end
     end
   end
-
-
-
 end

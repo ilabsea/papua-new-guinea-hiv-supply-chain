@@ -1,8 +1,14 @@
 <%= page_header "Requisition and order"  do  %>
+
+  <% 
+    export_options = {}
+    export_options[:type] = params[:type]  if !params[:type].blank?   
+  %> 
+
   <% if current_user.data_entry? %>
     <%= link_button 'icon-plus' , 'New Order',  new_admin_order_path(), :class => 'btn' %>
   <% end %>
-  <%= link_button_download 'Export Orders',  export_admin_orders_path(), :class => 'btn-primary' %>  
+  <%= link_button_download 'Export Orders',  export_admin_orders_path(export_options), :class => 'btn-primary' %>  
 <% end %>
 
 <% content_for :breadcrumb do %>
