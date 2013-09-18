@@ -74,7 +74,7 @@ describe Shipment do
 
       it 'should return true if the shipment date plus in_every number of days has passed' do
         created_at = Time.new(2013,9,11)
-        @shipment.stub!(:created_at).and_return(created_at)
+        @shipment.stub!(:last_notified_date).and_return(created_at)
         current = Time.new(2013,9,15)
         deadline = @shipment.deadline_for? current
         deadline.should eq true
@@ -82,7 +82,7 @@ describe Shipment do
 
       it 'should return false if the shipment date plus in_every number of days has not passed' do
         created_at = Time.new 2013,9,11
-        @shipment.stub!(:created_at).and_return(created_at)
+        @shipment.stub!(:last_notified_date).and_return(created_at)
         current = Time.new(2013,9,14)
         deadline = @shipment.deadline_for? current
         deadline.should eq false
@@ -97,7 +97,7 @@ describe Shipment do
 
       it 'should return true if shipment date plus in_every number of hours has passed' do
         created_at = Time.new(2013,9,10,8,10,0)
-        @shipment.stub!(:created_at).and_return(created_at)
+        @shipment.stub!(:last_notified_date).and_return(created_at)
         current    = Time.new(2013,9,11,11,10,10)
         deadline = @shipment.deadline_for? current
         deadline.should eq true
@@ -105,7 +105,7 @@ describe Shipment do
 
       it 'should return false if shipment date plus in_every number of hours has not passed' do
         created_at = Time.new(2013,9,10,8,10,0)
-        @shipment.stub!(:created_at).and_return(created_at)
+        @shipment.stub!(:last_notified_date).and_return(created_at)
         current    = Time.new(2013,9,10,9,10,10)
         deadline = @shipment.deadline_for? current
         deadline.should eq false

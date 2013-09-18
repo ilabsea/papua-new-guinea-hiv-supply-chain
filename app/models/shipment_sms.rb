@@ -5,6 +5,8 @@ class ShipmentSms < Sms
   end
 
   def alert
+
+    
   	options = {
   		:site => @shipment.site.name, 
   		:consignment => @shipment.consignment_number , 

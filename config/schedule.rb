@@ -23,7 +23,7 @@ require File.expand_path('../environment', __FILE__)
 # number    = Setting[:hour].to_i
 # date_type = Setting[:date_type]
 
-p "Regenerate cron for #{number}(#{date_type})"
+# p "Regenerate cron for #{number}(#{date_type})"
 
 every 1.hour do
 	rake "png_job:alert"

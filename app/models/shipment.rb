@@ -86,10 +86,10 @@ class Shipment < ActiveRecord::Base
   	def deadline_for? now	
   		if self.site.duration_type == Setting::DURATION_TYPE_DAY
   			now = now.to_date
-  			created_date = self.created_at.to_date
+  			created_date = self.last_notified_date.to_date
   			now > (created_date + self.site.in_every.days)
   		elsif self.site.duration_type == Setting::DURATION_TYPE_HOUR
-  			now > self.created_at + self.site.in_every.hours
+  			now > self.last_notified_date + self.site.in_every.hours
   		end
   	end
 
