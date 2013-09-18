@@ -10,7 +10,8 @@ class Site < ActiveRecord::Base
             :service_type, :suggestion_order, :test_kit_waste_acceptable, :province_id , :presence   =>  true
 
   validates :order_frequency, :number_of_deadline_sumission, :numericality => {:greater_than => 0}    
-  validates  :suggestion_order, :test_kit_waste_acceptable,  :numericality => {:greater_than_or_equal_to => 0 }      
+  validates :suggestion_order, :test_kit_waste_acceptable,  :numericality => {:greater_than_or_equal_to => 0 }   
+  validates :in_every, numericality: { greater_than: 0}   
      
   
   SeviceType = ["ART", "VCCT"]
