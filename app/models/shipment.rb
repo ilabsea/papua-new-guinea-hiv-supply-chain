@@ -96,11 +96,18 @@ class Shipment < ActiveRecord::Base
   	def self.alert_for_confirm_status now
   		return true if PublicHoliday.is_holiday?(now.to_date)
 	    shipments = Shipment.includes(:site).in_progress
+
+	    Rails.logger.info "\nInfo Shipment for #{now} ****** "
+	    Rails.logger.info "\t total shipment in progress: #{shipments.size}"
 	    shipments.each do |shipment|
 	      if shipment.deadline_for? now
+	      	Rails.logger.info "\t Alert to shipment status : #{shipment.consignment_number} @ #{now} "
 	        shipment.alert_deadline
+	      else
+	        Rails.logger.info "\t Shipment: #{shipment.consignment_number} is not in dead line @ #{now} "
 	      end
-	    end		
+	    end	
+	    Rails.logger.info "End ******\n"	
   	end
 
   	def alert_deadline

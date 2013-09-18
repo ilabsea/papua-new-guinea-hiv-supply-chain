@@ -16,7 +16,7 @@ describe Site do
   end
 
   describe '#alert_dead_line' do
-    it 'should alert site' do
+    it 'should alert to site and set sms_alerted to  alerted status' do
       Setting[:message_deadline] = 'Hi {site} dead line date is : {deadline_date}'
       site = FactoryGirl.create :site, order_start_at: '2013-07-07', order_frequency: 2 , number_of_deadline_sumission: 3, sms_alerted: Site::SMS_ALERTED
 

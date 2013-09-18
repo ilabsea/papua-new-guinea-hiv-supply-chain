@@ -44,15 +44,22 @@ class Site < ActiveRecord::Base
 
   def self.alert_requisition_report now
     return true if PublicHoliday.is_holiday?(now)
+
+    Rails.logger.info "\nInfo requisitions #{now} ******* "
     sites = Site.not_alerted
     sites.each do |site|
       if site.deadline_for? now
+        Rails.logger.info "\tAlert requisitions to site: #{site.name} @ #{now} "
         site.alert_dead_line
+      else 
+        Rails.logger.info "\tSite: #{site.name} is not in deadline @ #{now} "  
       end
     end
+    Rails.logger.info "End\n"
+
   end
 
-  def not_alerted
+  def self.not_alerted
     where ["sms_alerted = :sms_alerted", :sms_alerted => Site::SMS_NOT_ALERTED ]
   end
 
