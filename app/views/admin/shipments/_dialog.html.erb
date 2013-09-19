@@ -12,6 +12,7 @@
       <div id='shipment_message' style='display:none;' class='alert' > </div>
       <%= f.input :shipment_date, :as => :date_time_picker, :input_html => {:class => 'datepicker-fit date-field'} %>
       <%= f.input :consignment_number, :input_html => { :style => 'width: 110px;'}  %>  
+      <%= f.input :cost, :input_html => { :style => 'width: 110px;'}  %>  
     </div>
 
     <div class="modal-footer">
@@ -30,8 +31,9 @@
 
         shipment_date = $("#shipment_shipment_date").val()
         consignment_number = $("#shipment_consignment_number").val();
+        cost = $("#shipment_cost").val();
 
-        data = { 'shipment[shipment_date]' : shipment_date, 'shipment[consignment_number]' : consignment_number }
+        data = $("#new_shipment").serialize();
 
         $.ajax({
           type: 'POST',

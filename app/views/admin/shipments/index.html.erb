@@ -22,6 +22,7 @@
         <th class='nth-table'>#</th>
         <th style='width: 150px;'><%= link_to 'Site', field_sorted_in_shipments_path_for('sites.name'), :class => 'link-thead' %></th>
         <th><%= link_to 'Consignment', field_sorted_in_shipments_path_for('shipments.consignment_number'), :class => 'link-thead' %> </th>
+        <th>Cost</th>
         <th><%= link_to 'Status', field_sorted_in_shipments_path_for('shipments.status') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Date Shipped', field_sorted_in_shipments_path_for('shipments.shipment_date') , :class => 'link-thead'   %> </th>
         <th><%= link_to 'SMS Notified clinic (times)', field_sorted_in_shipments_path_for('shipments.sms_logs_count') , :class => 'link-thead' %> </th>      
@@ -38,6 +39,7 @@
           <td><%= current_entries + index %></td>
           <td><%= shipment.site.name %></td>
           <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
+          <td><%= shipment.cost %></td>
           <td><%= shipment.status %>
           <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
           <td> <%= link_to shipment.sms_logs_count , admin_shipment_sms_logs_path(shipment) %> </td>

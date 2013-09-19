@@ -7,21 +7,24 @@ class Shipment < ActiveRecord::Base
 	has_many :shipment_lines, :dependent => :destroy
 	has_many :sms_logs, :dependent => :destroy
 
-	attr_accessible :shipment_date, :consignment_number, :status, :user, :received_date, :lost_date
+	attr_accessible :shipment_date, :consignment_number, :status, :user, :received_date, :lost_date, :cost
+
 
 	STATUS_LOST = 'Lost'
 	STATUS_RECEIVED = 'Received'
 	STATUS_IN_PROGRESS = 'In Progress'
+	STATUS_PARTIALLY_RECEIVED = 'Partially Recieved'
 
 	validates :consignment_number, :shipment_date, :presence => true
+	validates :cost, numericality: { greater_than_or_equal_to: 0 , message: 'is not a valid number'}
 	validates :user, :presence => true
 
 	default_scope order("shipments.id DESC")
 
-	SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED]
+	SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED, STATUS_PARTIALLY_RECEIVED]
 
 	def self.status_mark
-		[ [ "Mark as lost", STATUS_LOST] , [ "Mark as received", STATUS_RECEIVED ] ]  	
+		[ [ "Mark as lost", STATUS_LOST] , [ "Mark as received", STATUS_RECEIVED ], ["Mark as Partially recieved", STATUS_PARTIALLY_RECEIVED ] ]  	
 	end
 
 	def create_shipment shipment_session

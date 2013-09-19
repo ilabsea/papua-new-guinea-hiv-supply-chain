@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130916102814) do
+ActiveRecord::Schema.define(:version => 20130919042239) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20130916102814) do
     t.integer  "shipment_lines_count",               :default => 0
     t.datetime "last_notified_date"
     t.datetime "lost_date",                          :default => '2013-08-29 05:05:03'
+    t.float    "cost"
   end
 
   create_table "sites", :force => true do |t|

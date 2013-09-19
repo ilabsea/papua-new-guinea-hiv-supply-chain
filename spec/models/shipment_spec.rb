@@ -7,22 +7,17 @@ describe Shipment do
   		:status => Shipment::STATUS_IN_PROGRESS,
   		:consignment_number => '01019291',
   		:shipment_date => Time.now,
-  		:user => @user
+  		:user => @user,
+      :cost => 201.29
   	}
 
   end
 
   describe '::create' do
-	it "should create a shipment with valid attributes" do
-	  shipment = Shipment.new @attr
-	  expect{shipment.save}.to change{Shipment.count}.by(1)
-	end
-
-  	it "should require consignment_number to be numeric" do
-  	  shipment = Shipment.new @attr.merge(:consignment_number => '02817739x' )
-  	  shipment.save.should be_false
-  	  shipment.errors.full_messages.should =~ ["Consignment number is not a number"]
-  	end	
+	  it "should create a shipment with valid attributes" do
+	    shipment = Shipment.new @attr
+	    expect{shipment.save}.to change{Shipment.count}.by(1)
+	  end
 
   	it "should require shpment_date" do
   	  shipment = Shipment.new @attr.merge(:shipment_date => '')
@@ -31,10 +26,21 @@ describe Shipment do
   	end	
 
   	it "should require a user" do
-	  shipment = Shipment.new @attr.merge(:user  => nil )
+	    shipment = Shipment.new @attr.merge(:user  => nil )
   	  shipment.save.should be_false
   	  shipment.errors.full_messages =~ ["User can't be blank"]
   	end 
+
+    it 'should require cost to be a number' do
+      shipment = Shipment.new @attr.merge(:cost  => 'xx' )
+      shipment.save.should be_false
+      shipment.errors.full_messages =~ ["Cost is not a valid number"]
+    end
+
+    it 'should require cost to be greater than or iqual to 0 value' do
+      shipment = Shipment.new @attr.merge(:cost  => 0.0 )
+      shipment.save.should be_true
+    end
   end
 
   describe '::bulk_update_status' do
