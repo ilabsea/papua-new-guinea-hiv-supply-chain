@@ -14,7 +14,6 @@ class Shipment < ActiveRecord::Base
 	STATUS_IN_PROGRESS = 'In Progress'
 
 	validates :consignment_number, :shipment_date, :presence => true
-	validates :consignment_number, :numericality => true
 	validates :user, :presence => true
 
 	default_scope order("shipments.id DESC")

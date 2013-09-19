@@ -27,8 +27,8 @@
               menus += [
                 {:label => "Sites", :url => admin_sites_path(), :controller => "sites"},
                 {:label => "Public Holidays", :url => admin_public_holidays_path(), :controller => "public_holidays"},
-                {:label => "Settings", :url => admin_settings_path, :controller => "settings"},
-                {:label => "Sms Logs", :url => monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_REQUISITION), :controller => "sms_logs"},
+                {:label => "Settings", :url => admin_settings_path, :controller => "settings"}
+                #{:label => "Sms Logs", :url => monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_REQUISITION), :controller => "sms_logs"},
               ] if current_user.admin?
 
 
