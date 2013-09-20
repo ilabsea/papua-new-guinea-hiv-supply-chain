@@ -16,7 +16,7 @@ class Shipment < ActiveRecord::Base
 	STATUS_PARTIALLY_RECEIVED = 'Partially Recieved'
 
 	validates :consignment_number, :shipment_date, :presence => true
-	validates :cost, numericality: { greater_than_or_equal_to: 0 , message: 'is not a valid number'}
+	validates :cost, numericality: { greater_than_or_equal_to: 0, message: 'is not a valid number'}
 	validates :user, :presence => true
 
 	default_scope order("shipments.id DESC")
@@ -51,17 +51,20 @@ class Shipment < ActiveRecord::Base
 	end
 
 	def self.bulk_update_status shipments_id, status
+		result = true
 		shipments_id.map do|id| 
 		  attrs = { :status => status}
-		  if status == STATUS_LOST
+		  if status == STATUS_LOST 
 		  	attrs[:received_date] = nil
 		   	attrs[:lost_date] = Time.now
-		  elsif status == STATUS_RECEIVED
+		  elsif status == STATUS_RECEIVED || status == STATUS_PARTIALLY_RECEIVED
 		  	attrs[:lost_date] = nil
 		  	attrs[:received_date] = Time.now
-		  end	
-		  Shipment.update(id, attrs ) 
+		  end
+		  shipment = Shipment.find id	
+		  result = result && shipment.update_attributes(attrs) 
 		end
+		result
 	end
 
 	def self.in_between date_start, date_end
@@ -125,7 +128,7 @@ class Shipment < ActiveRecord::Base
 	    #send_via_nuntium message_item
 	    Sms.send NuntiumMessagingAdapter.instance do |sms|
 	      sms.from  = ShipmentSms::APP_NAME
-	      sms.to    = 'sms://' + self.site.mobile
+	      sms.to    = self.site.mobile.with_sms_protocol
 	      sms.body  = translation
 	    end
 	    

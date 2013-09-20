@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130919042239) do
+ActiveRecord::Schema.define(:version => 20130919074903) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -166,6 +166,20 @@ ActiveRecord::Schema.define(:version => 20130919042239) do
     t.datetime "lost_date",                          :default => '2013-08-29 05:05:03'
     t.float    "cost"
   end
+
+  create_table "site_messages", :force => true do |t|
+    t.text     "message"
+    t.integer  "site_id"
+    t.string   "status"
+    t.string   "consignment_number"
+    t.string   "guid"
+    t.string   "from_phone"
+    t.integer  "error",              :default => 0
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  add_index "site_messages", ["site_id"], :name => "index_site_messages_on_site_id"
 
   create_table "sites", :force => true do |t|
     t.string   "name"

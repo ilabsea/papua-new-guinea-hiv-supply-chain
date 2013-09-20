@@ -20,7 +20,11 @@
 
   </div>
   <br />
-  <% Setting::MESSAGE_KEYS.each do |el| %>
+  <% Setting::MESSAGE_KEYS.each_with_index do |el, index| %>
+    <% if Setting::MESSAGE_HEADERS[index] %>
+      <h3 class='header-title'> <%= Setting::MESSAGE_HEADERS[index] %> </h3>
+    <% end %>
+
     <div class="template_container well">
       <%=label_tag "#{el[:label]}" %>
       <textarea id=<%= el[:name] %> rows="2" cols="400" name="setting[<%= el[:name]%>]" style ="width: 96%;"><%= Setting[el[:name]] %></textarea>

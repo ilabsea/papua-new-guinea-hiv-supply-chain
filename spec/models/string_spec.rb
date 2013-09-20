@@ -13,7 +13,6 @@ describe String do
       template = 'Age: {age}, Name: {name}'
       template.str_tr({}).should == 'Age: ??, Name: ??'
     end
-
   end
 
   describe "highlight search" do
@@ -42,6 +41,25 @@ describe String do
       str.should == @string
     end  
   end
+
+  describe '#without_sms_protocol' do
+    it 'it should remove sms protocol from the number if it exists' do
+      "sms://8597555546".without_sms_protocol.should eq '8597555546'
+    end
+
+    it 'should be the same if the value does not has sms protocol' do
+      ['sms:/8597555546', '855975553553'].each do |value|
+        value.without_sms_protocol.should eq value
+      end
+    end
+  end
+
+  describe '#with_sms_protocol' do
+    it "should pretend sms:// infront of value" do
+      "855975553553".with_sms_protocol.should eq "sms://855975553553"
+    end
+  end
+
   describe '#is_numeric?' do
     it "should return true for numerical string" do
       ["12.34","-9394.09","0103.0", "10"].map{|item| item.is_numeric?}.should eq [true, true, true, true]

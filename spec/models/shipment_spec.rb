@@ -58,13 +58,17 @@ describe Shipment do
   		status = Shipment::STATUS_LOST
   		shipments = Shipment.bulk_update_status(ids, status)
 
-  		shipments.size.should eq 2
+  		shipments.should be_true
       
-  		shipments[0].status.should eq Shipment::STATUS_LOST
-  		shipments[1].status.should eq Shipment::STATUS_LOST
+      shipment1 = Shipment.find @shipment1.id
+      shipment2 = Shipment.find @shipment2.id
 
-      shipments[0].received_date.should be_nil
-      shipments[1].received_date.should be_nil
+
+  		shipment1.status.should eq Shipment::STATUS_LOST
+  		shipment1.status.should eq Shipment::STATUS_LOST
+
+      shipment2.received_date.should be_nil
+      shipment2.received_date.should be_nil
 
   		unchanged_shipment.status.should eq @shipment3.status
 

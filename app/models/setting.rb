@@ -6,12 +6,10 @@ class Setting < ActiveRecord::Base
   DURATION_TYPE_DAY  = "Day(s)"
   DURATION_TYPES     = [DURATION_TYPE_HOUR, DURATION_TYPE_DAY]
 
-  KEYS = [
-  	{ name: :frequency_hours_to_resend_sms , label: "" , :as => :text },
-  	{ name: :frequency_months_to_submit_form , label: "", :as => :text },
-  	{ name: :deadline_to_submit_form , label: "", :as => :date_time_picker }
-  ]
 
+  MESSAGE_HEADERS = {
+    3 => 'Acknowledment message to site after sending message to the system'
+  }
 
   MESSAGE_KEYS = [
   	{ name: :message_alerting_site_about_receiving_form, 
@@ -25,6 +23,33 @@ class Setting < ActiveRecord::Base
     { name: :message_deadline, 
       label: "Message reminder to site who did not submit requisition form by deadline", 
       params: %w(site deadline_date)  
+    },
+
+
+
+    { name: :site_message_success, 
+      label: "Acknowledment message: Message has been sent to system sucessfully", 
+      params: %w(original_message consignment status phone_numer)  
+    },
+
+    { name: :site_message_error_syntax, 
+      label: "Acknowledment message: Message syntax error ", 
+      params: %w(original_message phone_numer)  
+    },
+
+    { name: :site_message_invalid_consignment_number, 
+      label: "Acknowledment message: Consignment number is invalid", 
+      params: %w(original_message consignment phone_numer)  
+    },
+
+    { name: :site_message_invalid_status, 
+      label: "Acknowledment message: Status is invalid", 
+      params: %w(original_message consignment phone_numer)  
+    },
+
+    { name: :site_message_invalid_sender, 
+      label: "Acknowledment message: Phone number is not allowed to report", 
+      params: %w(original_message phone_numer)  
     }
   ]
 

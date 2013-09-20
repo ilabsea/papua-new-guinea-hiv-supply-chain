@@ -76,7 +76,7 @@ class Site < ActiveRecord::Base
     #send_via_nuntium message_item
     Sms.send NuntiumMessagingAdapter.instance do |sms|
       sms.from  = ShipmentSms::APP_NAME
-      sms.to    = 'sms://' + self.mobile
+      sms.to    = self.mobile.with_sms_protocol
       sms.body  = translation
     end
     

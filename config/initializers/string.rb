@@ -22,4 +22,12 @@ class String
     self
   end
 
+  def with_sms_protocol
+    "sms://#{self}"
+  end
+
+  def without_sms_protocol
+     self.sub 'sms://' , ''
+  end
+
 end

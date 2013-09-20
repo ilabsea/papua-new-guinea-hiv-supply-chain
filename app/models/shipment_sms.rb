@@ -19,7 +19,7 @@ class ShipmentSms < Sms
     #send_via_nuntium message_item
     Sms.send NuntiumMessagingAdapter.instance do |sms|
       sms.from  = ShipmentSms::APP_NAME
-      sms.to    = 'sms://' + @shipment.site.mobile
+      sms.to    = @shipment.site.mobile.with_sms_protocol
       sms.body  = translation
     end
     
