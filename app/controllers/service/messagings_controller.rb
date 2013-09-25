@@ -3,7 +3,10 @@ class Service::MessagingsController < Service::Controller
     before_filter :authenticate_nuntium, :only => [:nuntium, :nuntium_ack]
 
     def nuntium
-      render :json => params
+      options = params.slice(:from, :body, :guid)
+      parser = SiteMessageParser.new options
+      site_message = parser.process
+      render :json => site_message.to_nuntium
     end
 
     def nuntium_ack

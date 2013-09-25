@@ -12,9 +12,9 @@ class Setting < ActiveRecord::Base
   }
 
   MESSAGE_KEYS = [
-  	{ name: :message_alerting_site_about_receiving_form, 
+  	{ name: :message_alerting_site_for_shipment, 
   	  label: "Message notification of package deliver to site" ,
-  	  params: %w(site consignment shipment_date )
+  	  params: %w(site consignment shipment_date number_carton)
   	} ,
   	{ name: :message_asking_site, 
   	  label: "Message check for confirmation of receiving package to site", 
@@ -25,11 +25,9 @@ class Setting < ActiveRecord::Base
       params: %w(site deadline_date)  
     },
 
-
-
     { name: :site_message_success, 
       label: "Acknowledment message: Message has been sent to system sucessfully", 
-      params: %w(original_message consignment status phone_numer)  
+      params: %w(original_message consignment status phone_numer carton_number)  
     },
 
     { name: :site_message_error_syntax, 
@@ -47,10 +45,16 @@ class Setting < ActiveRecord::Base
       params: %w(original_message consignment phone_numer)  
     },
 
+    { name: :site_message_invalid_carton_format, 
+      label: "Acknowledment message: Invalid carton format", 
+      params: %w(original_message consignment status phone_numer)  
+    },
+
     { name: :site_message_invalid_sender, 
       label: "Acknowledment message: Phone number is not allowed to report", 
       params: %w(original_message phone_numer)  
     }
+
   ]
 
   def self.[](name)

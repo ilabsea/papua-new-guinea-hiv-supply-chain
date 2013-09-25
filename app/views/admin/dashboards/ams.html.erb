@@ -23,6 +23,13 @@
 
     },
     {
+      :quantity => @total_shipment_by_status[Shipment::STATUS_PARTIALLY_RECEIVED].to_i, 
+      :class => :order_in_review,  
+      :type => Shipment::STATUS_PARTIALLY_RECEIVED,  
+      :text => 'Shipment partially received',
+      :url => admin_shipments_path(date_params.merge( :type => Shipment::STATUS_PARTIALLY_RECEIVED) )
+    },
+    {
       :quantity => @total_shipment_by_status[Shipment::STATUS_LOST].to_i, 
       :class => :order_in_review,  
       :type => Shipment::STATUS_LOST,  
@@ -36,7 +43,6 @@
       :type => Shipment::STATUS_IN_PROGRESS,  
       :text => 'Shipment in  progress',
       :url => admin_shipments_path(date_params.merge(:type => Shipment::STATUS_IN_PROGRESS ) )
-
     }
 
   ].each do |item| %>

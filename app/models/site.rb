@@ -26,6 +26,7 @@ class Site < ActiveRecord::Base
   has_many :surv_sites
   has_many :sms_logs
   has_many :shipments
+  has_many :site_messages
 
 
   def deadline_date

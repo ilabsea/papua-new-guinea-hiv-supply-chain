@@ -72,6 +72,7 @@ PngHivAids::Application.routes.draw do
     
     resources :sites do
       resources :requisition_reports
+      resources :site_messages
       member do
         get 'users'
       end

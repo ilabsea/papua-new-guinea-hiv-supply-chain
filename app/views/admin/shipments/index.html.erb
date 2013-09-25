@@ -22,13 +22,15 @@
         <th class='nth-table'>#</th>
         <th style='width: 150px;'><%= link_to 'Site', field_sorted_in_shipments_path_for('sites.name'), :class => 'link-thead' %></th>
         <th><%= link_to 'Consignment', field_sorted_in_shipments_path_for('shipments.consignment_number'), :class => 'link-thead' %> </th>
-        <th>Cost</th>
+        <th><%= link_to 'Cost', field_sorted_in_shipments_path_for('shipments.cost') , :class => 'link-thead'  %> </th>
+        <th><%= link_to 'Carton', field_sorted_in_shipments_path_for('shipments.carton') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Status', field_sorted_in_shipments_path_for('shipments.status') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Date Shipped', field_sorted_in_shipments_path_for('shipments.shipment_date') , :class => 'link-thead'   %> </th>
         <th><%= link_to 'SMS Notified clinic (times)', field_sorted_in_shipments_path_for('shipments.sms_logs_count') , :class => 'link-thead' %> </th>      
         <th><%= link_to 'Last notified date to clinic', field_sorted_in_shipments_path_for('shipments.last_notified_date') ,:class =>'link-thead' %> </th>
         <th><%= link_to 'Confirmed date', field_sorted_in_shipments_path_for('shipments.received_date') , :class => 'link-thead' %> </th>
         <th><%= link_to 'Lost date', field_sorted_in_shipments_path_for('shipments.lost_date') , :class => 'link-thead' %> </th>
+        <th>Sms</th>
         <th><%=check_box_tag 'toggle' , '', false,  :id => 'status_toggle' %></th>
       </tr>
     </thead>
@@ -40,12 +42,14 @@
           <td><%= shipment.site.name %></td>
           <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
           <td><%= shipment.cost %></td>
+          <td><%= shipment.carton %></td>
           <td><%= shipment.status %>
           <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
           <td> <%= link_to shipment.sms_logs_count , admin_shipment_sms_logs_path(shipment) %> </td>
           <td> <%= shipment.last_notified_date %> </td>
           <td> <%=  shipment.received_date %></td>
-          <td> <%=  shipment.lost_date %> </td>   
+          <td> <%=  shipment.lost_date %> </td>  
+          <td> <%= link_to shipment.site.site_messages_count, admin_site_site_messages_path(shipment.site) %> </td> 
           <td class="center">
             <%= check_box_tag 'status_shipment_id[]', shipment.id, false %>
           </td>

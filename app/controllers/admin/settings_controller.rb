@@ -10,7 +10,7 @@ module Admin
 
   	def create
 
-  	  	Setting[:message_alerting_site_about_receiving_form] = params[:setting][:message_alerting_site_about_receiving_form]
+  	  	Setting[:message_alerting_site_for_shipment] = params[:setting][:message_alerting_site_for_shipment]
   	  	Setting[:message_asking_site]  = params[:setting][:message_asking_site]
   	  	Setting[:message_deadline]     = params[:setting][:message_deadline]
 

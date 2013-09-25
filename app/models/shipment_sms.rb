@@ -5,15 +5,14 @@ class ShipmentSms < Sms
   end
 
   def alert
-
-    
   	options = {
   		:site => @shipment.site.name, 
   		:consignment => @shipment.consignment_number , 
-  		:shipment_date =>  @shipment.shipment_date
+  		:shipment_date =>  @shipment.shipment_date,
+      :number_of_carton => @shipment.carton
   	}
 
-  	setting = Setting[:message_alerting_site_about_receiving_form]
+  	setting = Setting[:message_alerting_site_for_shipment]
   	translation = setting.str_tr options
 
     #send_via_nuntium message_item

@@ -1,17 +1,12 @@
 class SiteMessage < ActiveRecord::Base
-  belongs_to :site
-  attr_accessible :consignment_number, :from_phone, :guid, :message, :status
+  belongs_to :site, :counter_cache => true
+  attr_accessible :consignment_number, :from_phone, :guid, :message, :status, :site, :response_message, :error, :carton
 
-  ERROR_OK = 0
-  ERROR_ERROR = 1
+  def to_nuntium
+    {:to => self.from_phone.with_sms_protocol, :body => self.response_message, :from => Sms::APP_NAME}
+  end
 
-  DELIMITER = '.'
-
-  def self.parse_message text
-  	elements = text.split SiteMessage::DELIMITER
-  	options  = {message: text} 
-  	if elements.size != 2
-  	  options[:error] = SiteMessage::ERROR_ERROR
-  	end
+  def display_error
+  	self.error == SiteMessageParser::ERROR_ERROR ? 'Yes' : 'No'
   end
 end

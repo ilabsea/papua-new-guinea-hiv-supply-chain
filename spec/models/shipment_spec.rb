@@ -8,7 +8,8 @@ describe Shipment do
   		:consignment_number => '01019291',
   		:shipment_date => Time.now,
   		:user => @user,
-      :cost => 201.29
+      :cost => 201.29,
+      :carton => 10
   	}
 
   end
