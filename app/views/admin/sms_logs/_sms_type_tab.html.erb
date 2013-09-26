@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs">
+  <li class="<%= type ==  SmsLog::SMS_TYPE_REQUISITION ? 'active' : '' %>">
+    <%= link_to 'Requisition Deadline' , monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_REQUISITION ) %>
+  </li>
+
+  <li class=" <%= type == SmsLog::SMS_TYPE_SHIPMENT ? 'active' : '' %>">
+    <%= link_to 'Package shipped', monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_SHIPMENT) %>
+  </li>
+
+  <li class=" <%= type == SmsLog::SMS_TYPE_ASK_CONFIRM ? 'active' : '' %>">
+    <%= link_to 'Alert Shipment received?', monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_ASK_CONFIRM) %>
+  </li>
+
+  <li class=" <%= type == '' ? 'active' : '' %>">
+    <%= link_to 'SMS from site', all_admin_site_messages_path() %>
+  </li>
+</ul>

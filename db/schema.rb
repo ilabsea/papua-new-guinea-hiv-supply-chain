@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130925102744) do
+ActiveRecord::Schema.define(:version => 20130926084556) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(:version => 20130925102744) do
   create_table "shipments", :force => true do |t|
     t.string   "consignment_number",   :limit => 20
     t.string   "status",               :limit => 20
-    t.datetime "shipment_date"
+    t.date     "shipment_date"
     t.datetime "received_date"
     t.integer  "user_id"
     t.integer  "site_id"
@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(:version => 20130925102744) do
     t.datetime "lost_date",                          :default => '2013-08-29 05:05:03'
     t.float    "cost"
     t.integer  "carton"
+    t.integer  "site_messages_count",                :default => 0
   end
 
   create_table "site_messages", :force => true do |t|
@@ -180,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20130925102744) do
     t.datetime "updated_at",                        :null => false
     t.string   "response_message"
     t.integer  "carton"
+    t.integer  "shipment_id"
   end
 
   add_index "site_messages", ["site_id"], :name => "index_site_messages_on_site_id"

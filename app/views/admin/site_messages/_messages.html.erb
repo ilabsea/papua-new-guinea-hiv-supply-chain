@@ -1,0 +1,32 @@
+<table class="table table-hover table-bordered">
+	<thead> 
+		<tr>
+			<th class='nth-table'> # </th>
+			<th width=100 > From </th>
+			<th width=100 > Message</th>
+			<th width=30> Consigment</th>
+			<th> Shipment Status </th>
+			<th width=30> Carton</th>
+			<th width=400> System Response</th>
+			<th> Error </th>
+			<th> Date </th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% messages.each_with_index do |message, index| %>
+			<tr> 
+				<td><%= current_entries + index %></td>
+				<td><%= message.from_phone %></td>
+				<td><%= message.message %></td>
+				<td><%= message.shipment ? link_to(message.consignment_number, admin_shipment_path(message.shipment)) : '' %></td>
+				<td><%= shipment_status message.status %></td>
+				<td><%= message.carton %></td>
+				<td title="<%= h message.response_message%>" class='td-expand'><%= truncate message.response_message, :length => 60  %></td>
+				<td><%= message.display_error %></td>
+				<td><%= message.created_at %></td>
+			</tr>
+		<% end %> 
+	</tbody>
+</table>
+<%= render_paginate_for  messages %>

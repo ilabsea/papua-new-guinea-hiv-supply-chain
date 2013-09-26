@@ -7,6 +7,8 @@
   <ul >
     <li> Site : <b> <%=@shipment.site.name %> </b> </li>
     <li> Consignment number : <b> <%=@shipment.consignment_number%> </b> </li>
+    <li> Cost : <b> <%=@shipment.cost%> </b> </li>
+    <li> Number of carton : <b> <%=@shipment.carton %> </b> </li>
     <li> Shipment Date : <b> <%=@shipment.shipment_date%> </b> </li>
     <li> Total : <b> <%= pluralize(@shipment.shipment_lines_count, 'item') %> </b> </li>
   </ul>  

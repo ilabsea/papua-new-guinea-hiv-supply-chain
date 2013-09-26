@@ -1,6 +1,7 @@
 module Admin
 	class SmsLogsController < Controller
 		load_and_authorize_resource
+		
 		def index	
 			if(params[:shipment_id])
 				@shipment = Shipment.find params[:shipment_id]

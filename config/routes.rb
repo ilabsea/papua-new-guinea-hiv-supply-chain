@@ -5,6 +5,8 @@ PngHivAids::Application.routes.draw do
   match "/404", to: "errors#not_found"
   match "/500", to: "errors#error"
 
+
+
   namespace :service do
     resource :messagings do
       post 'nuntium'
@@ -13,6 +15,13 @@ PngHivAids::Application.routes.draw do
   end
 
   namespace :admin do
+    
+    resources :site_messages do
+      collection do
+        get 'all'
+      end
+    end
+    
     resources :import_survs do
       resources :surv_sites
       member do
@@ -32,6 +41,11 @@ PngHivAids::Application.routes.draw do
     end
 
     resources :shipments do
+      resources :site_messages do
+        collection do
+          get 'shipment_messages'
+        end
+      end
       resources :sms_logs 
       
       collection do

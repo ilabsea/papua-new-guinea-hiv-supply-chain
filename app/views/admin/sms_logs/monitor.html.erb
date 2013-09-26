@@ -3,22 +3,8 @@
   <%= breadcrumb [{"SmsLogs" => nil}]  %>
 <% end %> 
 
-<ul class="nav nav-tabs">
-  <li class="<%= @type ==  SmsLog::SMS_TYPE_REQUISITION ? 'active' : '' %>">
-    <%= link_to 'Requisition Deadline' , monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_REQUISITION ) %>
-  </li>
-
-  <li class=" <%= @type == SmsLog::SMS_TYPE_SHIPMENT ? 'active' : '' %>">
-    <%= link_to 'Package shipped', monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_SHIPMENT) %>
-  </li>
-
-  <li class=" <%= @type == SmsLog::SMS_TYPE_ASK_CONFIRM ? 'active' : '' %>">
-    <%= link_to 'Alert Shipment received?', monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_ASK_CONFIRM) %>
-  </li>
-</ul>
-
 <%= page_header("Sms Log")%>
-
+<%= render 'sms_type_tab', :type => @type %>
 <table class="table table-hover table-bordered">
   <thead>
     <tr>
@@ -26,7 +12,7 @@
       <th>Site</th>
       <th>To</th>
       <th>Message</th>
-      <th>Date</th>
+      <th width=120>Date</th>
     </tr>
   </thead>
   <tbody>
@@ -35,8 +21,8 @@
         <td><%= current_entries + index %></td>
         <td><%= sms_log.site.name %></td>
         <td><%= sms_log.to %></td>
-        <td><%= sms_log.message %></td>
-        <td title='<%= sms_log.created_at %>' ><%= time_ago_in_words sms_log.created_at %></td>
+        <td class='td-expand' title="<%=h sms_log.message %>"   > <%= truncate sms_log.message, :length => 90 %></td>
+        <td class='td-expand' title="<%= sms_log.created_at %>" > <%= time_ago_in_words sms_log.created_at %></td>
       </tr>
     <% end %>
   </tbody>

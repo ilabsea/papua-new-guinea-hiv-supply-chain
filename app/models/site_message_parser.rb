@@ -1,5 +1,5 @@
 class SiteMessageParser
-  DELIMITER = '.'	
+  DELIMITER = ' '	
   ERROR_OK = 0
   ERROR_ERROR = 1
 
@@ -21,14 +21,19 @@ class SiteMessageParser
 
   def process
     parse
-    attrs = self.options.slice(:consignment_number, :status, :site, :guid, :response_message, :error, :carton)
+    attrs = self.options.slice(:consignment_number, :status, :site, :guid, :response_message, :error, :carton, :shipment)
+
     attrs[:message] = self.options[:body]
     attrs[:from_phone] = self.options[:from].without_sms_protocol
     attrs[:site] = self.options[:site]
 
     site_message = SiteMessage.new(attrs)
     site_message.save(:validate => false)
-    site_message
+
+    if site_message.error == SiteMessageParser::ERROR_OK
+      @options[:shipment].update_status(site_message.status)
+    end
+    site_message 
   end
 
   def options
@@ -38,11 +43,11 @@ class SiteMessageParser
   def translate_message
     setting = Setting[@options[:error_type]]
     params = {
-      :phone_number     => @options[:from],
+      :phone_number     => @options[:from].without_sms_protocol,
       :status           => @options[:status],
       :consignment      => @options[:consignment_number],
       :original_message => @options[:body],
-      :carton_number           => @options[:carton]
+      :carton           => @options[:carton]
     }
     translation = setting.str_tr(params)
     @options[:response_message] = translation
@@ -71,17 +76,21 @@ class SiteMessageParser
     validate_syntax? && validate_consignment_number?(consignment_number) && validate_status?(status) && validate_carton?(carton_number)
   end
 
+
   def validate_consignment_number? consignment_number
   	shipment = Shipment.find_by_consignment_number consignment_number
   	if !shipment
   	  @options[:error] = SiteMessageParser::ERROR_ERROR
   	  @options[:error_type] = :site_message_invalid_consignment_number
-  	elsif shipment.site.mobile.with_sms_protocol != @options[:from]	
-  	  @options[:error] = SiteMessageParser::ERROR_ERROR
-  	  @options[:error_type] = :site_message_invalid_sender
-    else
-      @options[:consignment_number] = consignment_number
-      @options[:site] = shipment.site
+    else  
+    	if shipment.site.mobile.with_sms_protocol != @options[:from]	
+    	  @options[:error] = SiteMessageParser::ERROR_ERROR
+    	  @options[:error_type] = :site_message_invalid_sender
+      else
+        @options[:consignment_number] = consignment_number
+        @options[:site] = shipment.site
+        @options[:shipment] = shipment
+      end  
   	end
   	@options[:error] != SiteMessageParser::ERROR_ERROR
   end

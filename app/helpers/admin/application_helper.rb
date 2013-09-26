@@ -27,6 +27,39 @@ module Admin::ApplicationHelper
         end 
      end
   end
+
+  def error_label error
+    if error == 0 || error == 'No'
+      type = 'label-success'
+    else
+      type = 'label-important'
+    end
+    label_value error, type
+  end
+
+  def shipment_status status
+    type = ''
+    if status == Shipment::STATUS_LOST
+      type = 'label-important'
+    elsif status == Shipment::STATUS_IN_PROGRESS
+      type = ''
+    
+    elsif status == Shipment::STATUS_PARTIALLY_RECEIVED
+      type = 'label-warning'
+
+    elsif status == Shipment::STATUS_RECEIVED
+      type = 'label-success'
+    end
+    label_value status, type
+  end
+
+  def label_value value, type="label-info"
+    content_tag :span, value, :class => "label #{type}"
+  end
+
+  def badge_value value, type='badge-warning'
+    content_tag :span, value, :class => "badge #{type}"
+  end
   
   def paginate_records records
     content_tag :div , :class => "paginator right" do
@@ -92,7 +125,6 @@ module Admin::ApplicationHelper
     elsif params[:order] == 'desc'  
       options[:order] = 'asc'
     end
-
     admin_shipments_path(options)
   end
 

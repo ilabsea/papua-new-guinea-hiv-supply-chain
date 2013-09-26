@@ -1,5 +1,5 @@
 <%= form_tag mark_status_admin_shipments_path, :method => 'PUT' , :style => 'display:inline;' do %>
-  <%= page_header "Shipment status", :left => 4, :right => 8  do  %>
+  <%= page_header "Shipment list", :left => 4, :right => 8  do  %>
     <div class='row-fluid'>
       <% options_download = params[:type].blank? ? {} : {:type => params[:type] }  %>
       <%= link_button_download 'Download as Excel',  download_admin_shipments_path(options_download), :class => 'btn btn-primary' %>
@@ -20,17 +20,17 @@
     <thead>
       <tr>
         <th class='nth-table'>#</th>
-        <th style='width: 150px;'><%= link_to 'Site', field_sorted_in_shipments_path_for('sites.name'), :class => 'link-thead' %></th>
+        <th><%= link_to 'Site', field_sorted_in_shipments_path_for('sites.name'), :class => 'link-thead' %></th>
         <th><%= link_to 'Consignment', field_sorted_in_shipments_path_for('shipments.consignment_number'), :class => 'link-thead' %> </th>
         <th><%= link_to 'Cost', field_sorted_in_shipments_path_for('shipments.cost') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Carton', field_sorted_in_shipments_path_for('shipments.carton') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Status', field_sorted_in_shipments_path_for('shipments.status') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Date Shipped', field_sorted_in_shipments_path_for('shipments.shipment_date') , :class => 'link-thead'   %> </th>
-        <th><%= link_to 'SMS Notified clinic (times)', field_sorted_in_shipments_path_for('shipments.sms_logs_count') , :class => 'link-thead' %> </th>      
-        <th><%= link_to 'Last notified date to clinic', field_sorted_in_shipments_path_for('shipments.last_notified_date') ,:class =>'link-thead' %> </th>
+        <th width='90' ><%= link_to 'SMS Notified clinic (times)', field_sorted_in_shipments_path_for('shipments.sms_logs_count') , :class => 'link-thead' %> </th>      
+        <th width='120'><%= link_to 'Last notified date to clinic', field_sorted_in_shipments_path_for('shipments.last_notified_date') ,:class =>'link-thead' %> </th>
         <th><%= link_to 'Confirmed date', field_sorted_in_shipments_path_for('shipments.received_date') , :class => 'link-thead' %> </th>
         <th><%= link_to 'Lost date', field_sorted_in_shipments_path_for('shipments.lost_date') , :class => 'link-thead' %> </th>
-        <th>Sms</th>
+        <th width=60><%= link_to 'SMS from site', field_sorted_in_shipments_path_for('shipments.site_messages_count') , :class => 'link-thead' %> </th>
         <th><%=check_box_tag 'toggle' , '', false,  :id => 'status_toggle' %></th>
       </tr>
     </thead>
@@ -43,13 +43,13 @@
           <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
           <td><%= shipment.cost %></td>
           <td><%= shipment.carton %></td>
-          <td><%= shipment.status %>
-          <td title='<%= shipment.shipment_date %>'><%= time_ago_in_words shipment.shipment_date %> </td>
-          <td> <%= link_to shipment.sms_logs_count , admin_shipment_sms_logs_path(shipment) %> </td>
+          <td><%= shipment_status(shipment.status) %>
+          <td title='<%= shipment.shipment_date %>' class='td-expand'> <%= shipment.shipment_date %> </td>
+          <td> <%= link_to badge_value(shipment.sms_logs_count) , admin_shipment_sms_logs_path(shipment) %> </td>
           <td> <%= shipment.last_notified_date %> </td>
-          <td> <%=  shipment.received_date %></td>
-          <td> <%=  shipment.lost_date %> </td>  
-          <td> <%= link_to shipment.site.site_messages_count, admin_site_site_messages_path(shipment.site) %> </td> 
+          <td> <%= shipment.received_date %></td>
+          <td> <%= shipment.lost_date %> </td>  
+          <td> <%= link_to badge_value(shipment.site_messages_count), shipment_messages_admin_shipment_site_messages_path(shipment) %> </td> 
           <td class="center">
             <%= check_box_tag 'status_shipment_id[]', shipment.id, false %>
           </td>

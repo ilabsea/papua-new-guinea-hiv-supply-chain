@@ -17,12 +17,12 @@ describe SiteMessageParser do
   		:from => '85512161616',
   		:status => Shipment::STATUS_RECEIVED,
   		:consignment_number => '102010',
-  		:body => '102938448.y' 
+  		:body => '102938448 y' 
   	}
   	site_message_parser = SiteMessageParser.new options
   	Setting[:site_message_xxx] = "phone:{phone_number} consignment:{consignment} status:{status} original_body:{original_message}"
 
-  	translation = 'phone:85512161616 consignment:102010 status:Received original_body:102938448.y'
+  	translation = 'phone:85512161616 consignment:102010 status:Received original_body:102938448 y'
   	site_message_parser.translate_message.should eq translation
   	site_message_parser.options[:response_message].should eq translation
   end
@@ -30,24 +30,30 @@ describe SiteMessageParser do
   describe '#process' do
     before(:each) do
       @site = FactoryGirl.create :site, :mobile => '85597666666'
-      @shipment = FactoryGirl.create :shipment, consignment_number: '202020', site: @site
+      @shipment = FactoryGirl.create :shipment, consignment_number: '202020', site: @site, status: Shipment::STATUS_IN_PROGRESS
     end
 
-    it 'should create a site_message if successfully parsed ' do
-      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '202020.y', guid: '1345678dfghjklvbmhjkl'
+    it 'should create a site_message and update shipment status if successfully parsed ' do
+      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '202020 y', guid: '1345678dfghjklvbmhjkl'
       
       count = SiteMessage.count
       site_message = site_message_parser.process
       SiteMessage.count.should eq count+1
+      
+      shipment = Shipment.find_by_consignment_number '202020'
+      shipment.status.should eq Shipment::STATUS_RECEIVED
     end
 
-    it 'should also create a site_message even if it parses  with error' do
-      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '202020.y.xx', guid: '1345678dfghjklvbmhjkl'
+    it 'should also create a site_message and leave the shipment status untouch if it parses  with error' do
+      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '202020 tt xx', guid: '1345678dfghjklvbmhjkl'
       
       count = SiteMessage.count
       site_message = site_message_parser.process
       SiteMessage.count.should eq count+1
+      site_message.error.should eq SiteMessageParser::ERROR_ERROR
 
+      shipment = Shipment.find_by_consignment_number '202020'
+      shipment.status.should eq Shipment::STATUS_IN_PROGRESS
     end
 
   end
@@ -62,16 +68,17 @@ describe SiteMessageParser do
 
     it 'should parse the message with no error ' do
       
-      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '202020.y'
+      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '202020 y'
       site_message_parser.parse 
       site_message_parser.options[:error].should eq SiteMessageParser::ERROR_OK
       site_message_parser.options[:error_type].should eq :site_message_success
       site_message_parser.options[:site].should eq @site
       site_message_parser.options[:status].should eq Shipment::STATUS_RECEIVED
       site_message_parser.options[:consignment_number].should eq '202020'
-      site_message_parser.options[:body].should eq '202020.y'
+      site_message_parser.options[:body].should eq '202020 y'
       site_message_parser.options[:from].should eq "sms://85597666666"
-      site_message_parser.options[:response_message].should eq 'you have successfully reported: 202020.y'
+      site_message_parser.options[:shipment].should eq @shipment
+      site_message_parser.options[:response_message].should eq 'you have successfully reported: 202020 y'
     end
 
     it 'should parse the message and set the error :site_message_error_syntax ' do
@@ -87,44 +94,45 @@ describe SiteMessageParser do
     end
 
     it 'should parse the message and set the error :site_message_invalid_consignment_number' do
-      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '200000.y'
+      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '200000 y'
       site_message_parser.parse
       site_message_parser.options.should eq ({ :from=>"sms://85597666666", 
-                                               :body=>"200000.y", 
+                                               :body=>"200000 y", 
                                                :error=> SiteMessageParser::ERROR_ERROR, 
                                                :error_type=>:site_message_invalid_consignment_number, 
-                                               :response_message=>"consignment_number does not exist: 200000.y"})
+                                               :response_message=>"consignment_number does not exist: 200000 y"})
     end
 
     it 'should parse the message and set error :site_message_invalid_sender' do
 
-      site_message_parser = SiteMessageParser.new from: 'sms://855975555555', body: '202020.y'
+      site_message_parser = SiteMessageParser.new from: 'sms://855975555555', body: '202020 y'
       site_message_parser.parse
       site_message_parser.options.should eq ({ :from=>"sms://855975555555", 
-                                               :body=>"202020.y", 
+                                               :body=>"202020 y", 
                                                :error=> SiteMessageParser::ERROR_ERROR, 
                                                :error_type=>:site_message_invalid_sender, 
-                                               :response_message=>"you are not authorized to send this body: 202020.y"})
+                                               :response_message=>"you are not authorized to send this body: 202020 y"})
     end
 
     it 'should parse the message and set error :site_message_invalid_status' do
 
-      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '202020.x'
+      site_message_parser = SiteMessageParser.new from: 'sms://85597666666', body: '202020 x'
       site_message_parser.parse
       site_message_parser.options.should eq({:from=>"sms://85597666666", 
-                                             :body=>"202020.x", 
+                                             :body=>"202020 x", 
                                              :error=> SiteMessageParser::ERROR_ERROR, 
                                              :error_type=>:site_message_invalid_status, 
                                              :consignment_number=>"202020", 
                                              :site=> @site,
-                                             :response_message=>"status is invalid: 202020.x"})
+                                             :shipment => @shipment,
+                                             :response_message=>"status is invalid: 202020 x"})
     end
 
   end
 
   describe '#validate_syntax?' do
     it 'should return true if meessage has consignment_number and status' do
-      site_message_parser = SiteMessageParser.new({body: '201010.y'})
+      site_message_parser = SiteMessageParser.new({body: '201010 y'})
       result = site_message_parser.validate_syntax?
       result.should be_true
     end

@@ -21,8 +21,8 @@
         <td><%= current_entries + index %></td>
         <td><%= sms_log.site.name %></td>
         <td><%= sms_log.to %></td>
-        <td><%= sms_log.message %></td>
-        <td title='<%= sms_log.created_at %>' ><%= time_ago_in_words sms_log.created_at %></td>
+        <td class='td-expand' title="<%=h sms_log.message %>"><%= truncate sms_log.message, :length => 120 %></td>
+        <td class='td-expand' title='<%= sms_log.created_at %>' ><%= time_ago_in_words sms_log.created_at %></td>
       </tr>
     <% end %>
   </tbody>

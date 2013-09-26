@@ -58,6 +58,17 @@ function showLoading(){
     systemLoading().show();
 }
 
+function tdToggle(){
+  $('table').on('click', '.td-expand', function(){
+    $el = $(this);
+    title = $el.attr('title');
+    content = $el.html();
+
+    $el.attr('title', content);
+    $el.html(title);
+  });
+}
+
 $(window).bind("unload", function() {
   systemLoading().hide();
 });
@@ -65,4 +76,5 @@ $(window).bind("unload", function() {
 $(function() {
   systemLoading().hide();
   attachSystemLoading();
+  tdToggle();
 });

@@ -14,7 +14,7 @@ class Setting < ActiveRecord::Base
   MESSAGE_KEYS = [
   	{ name: :message_alerting_site_for_shipment, 
   	  label: "Message notification of package deliver to site" ,
-  	  params: %w(site consignment shipment_date number_carton)
+  	  params: %w(site consignment shipment_date carton)
   	} ,
   	{ name: :message_asking_site, 
   	  label: "Message check for confirmation of receiving package to site", 
@@ -27,32 +27,32 @@ class Setting < ActiveRecord::Base
 
     { name: :site_message_success, 
       label: "Acknowledment message: Message has been sent to system sucessfully", 
-      params: %w(original_message consignment status phone_numer carton_number)  
+      params: %w(original_message consignment status phone_number carton_number)  
     },
 
     { name: :site_message_error_syntax, 
       label: "Acknowledment message: Message syntax error ", 
-      params: %w(original_message phone_numer)  
+      params: %w(original_message phone_number)  
     },
 
     { name: :site_message_invalid_consignment_number, 
       label: "Acknowledment message: Consignment number is invalid", 
-      params: %w(original_message consignment phone_numer)  
+      params: %w(original_message phone_number)  
     },
 
     { name: :site_message_invalid_status, 
       label: "Acknowledment message: Status is invalid", 
-      params: %w(original_message consignment phone_numer)  
+      params: %w(original_message consignment phone_number)  
     },
 
     { name: :site_message_invalid_carton_format, 
       label: "Acknowledment message: Invalid carton format", 
-      params: %w(original_message consignment status phone_numer)  
+      params: %w(original_message consignment status phone_number)  
     },
 
     { name: :site_message_invalid_sender, 
       label: "Acknowledment message: Phone number is not allowed to report", 
-      params: %w(original_message phone_numer)  
+      params: %w(original_message phone_number)  
     }
 
   ]

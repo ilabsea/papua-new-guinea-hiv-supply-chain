@@ -1,5 +1,5 @@
 module Service
-	class Controller < ::ApplicationController
+	class Controller < ActionController::Base
 		
 	end
 end

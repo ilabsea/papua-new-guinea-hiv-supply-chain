@@ -10,7 +10,7 @@ module Admin
     def order_fields
       @order_fields ||= 
       [ 
-        'sites.name' , 'shipments.consignment_number', 'shipments.id', 'shipments.status', 'shipments.shipment_date', 
+        'sites.name' , 'shipments.consignment_number', 'shipments.id', 'shipments.status', 'shipments.shipment_date', 'shipments.site_messages_count',
         'shipments.sms_logs_count' ,'shipments.last_notified_date', 'shipments.received_date', 'shipments.lost_date','shipments.cost', 'shipments.carton'
       ]
     end

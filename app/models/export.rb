@@ -22,7 +22,7 @@ class Export
 
   def self.shipment file, type
     CSV.open(file, "wb") do |csv|
-      headers = ['Site', 'Consignment', 'Cost', 'Carton', 'Status','Date Shipped', 'SMS Notified clinic (times)', 'Last notified date to clinic', 'Received date', 'Package lost']
+      headers = ['Site', 'Consignment', 'Cost', 'Carton', 'Status','Date Shipped', 'SMS Notified clinic (times)', 'Last notified date to clinic', 'Received date', 'Package lost', 'Sms']
       csv << headers
       shipments = type.blank? ? Shipment : Shipment.of_status(type)
       shipments.find_each do |shipment|
@@ -36,7 +36,8 @@ class Export
           shipment.sms_logs_count,
           shipment.last_notified_date,   
           shipment.received_date, 
-          shipment.lost_date   
+          shipment.lost_date,
+          shipment.site_messages_count  
         ]
         csv << row
       end
