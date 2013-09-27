@@ -19,7 +19,7 @@
 				<td><%= current_entries + index %></td>
 				<td><%= message.from_phone %></td>
 				<td><%= message.message %></td>
-				<td><%= message.shipment ? link_to(message.consignment_number, admin_shipment_path(message.shipment)) : '' %></td>
+				<td><%= message.consignment_number %></td>
 				<td><%= shipment_status message.status %></td>
 				<td><%= message.carton %></td>
 				<td title="<%= h message.response_message%>" class='td-expand'><%= truncate message.response_message, :length => 60  %></td>

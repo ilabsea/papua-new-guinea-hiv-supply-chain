@@ -90,7 +90,7 @@ class Site < ActiveRecord::Base
     }
     SmsLog.create log
     self.sms_alerted = Site::SMS_ALERTED
-    self.save
+    self.save(:validate => false)
   end
 
 end

@@ -55,7 +55,7 @@
         <td class='<%= klass  %>'><%= order_line.order.site.name %></td>
         <td class='<%= klass  %>'><%= order_line.order.id %></td>
         <td class='<%= klass  %>'><%= order_line.commodity.name %></td>
-        <td><%= order_line.arv_type%></td>
+        <td class='<%= klass  %>'><%= order_line.arv_type%></td>
         <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
         <td title="<%= h order_line.updated_at %>" class='<%= klass  %>'><%= time_ago_in_words order_line.updated_at %></td>
 
