@@ -62,4 +62,5 @@ group :test, :development do
   gem 'thin'
   gem 'rspec-mocks'
   gem 'jasmine'
+  gem 'brakeman', :require => false
 end

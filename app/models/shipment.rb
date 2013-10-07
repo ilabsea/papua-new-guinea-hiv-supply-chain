@@ -17,6 +17,7 @@ class Shipment < ActiveRecord::Base
 	STATUS_PARTIALLY_RECEIVED = 'Partially Recieved'
 
 	validates :consignment_number, :shipment_date, :presence => true
+	validates :consignment_number, :uniqueness => true
 	validates :cost, :carton , numericality: { greater_than_or_equal_to: 0, message: 'is not a valid number'}
 	validates :user, :presence => true
 

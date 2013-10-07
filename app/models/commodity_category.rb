@@ -18,7 +18,7 @@ class CommodityCategory < ActiveRecord::Base
   end
 
   def self.from_type com_type
-    where "com_type = '#{com_type}' "
+    where(["com_type = :type ", type: com_type ])
   end
 
 end

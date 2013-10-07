@@ -42,6 +42,17 @@ describe Shipment do
       shipment = Shipment.new @attr.merge(:cost  => 0.0 )
       shipment.save.should be_true
     end
+
+    it 'should require consignment_number to be unique' do
+      shipment1 = FactoryGirl.create :shipment
+      shipment2 = FactoryGirl.create :shipment
+
+      shipment2.consignment_number = shipment1.consignment_number
+      shipment2.save.should be_false
+      shipment2.errors.full_messages[0].should eq 'Consignment number has already been taken'
+
+    end
+
   end
 
   describe '::bulk_update_status' do
