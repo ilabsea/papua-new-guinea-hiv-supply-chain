@@ -13,15 +13,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" >
   <style>
     body{padding-top: 50px;}
+    .container{
+       width: 800px;
+       margin: 0 auto;
+    }
   </style>
   
 </head>
 <body>
   
-  <div class="container">
-    <div class="row" >
-      <div class="span1"></div>
-      <div class="span5" style="text-align: center;">
+  <div class="container content-body">
+    <div class="row-fluid" >
+
+      <div class="span6" style="text-align: center;">
           <div class="logo">
    
             <div>
@@ -31,7 +35,7 @@
           </div>
       </div>
       
-      <div class="span4">
+      <div class="span6">
         
           <div class="well">
               <%if alert || notice %> 
@@ -44,12 +48,12 @@
               <%= yield %>       
           </div>
       </div>
-      <div class="span1"></div>
       
     </div>
     
     
   </div>
+  <footer> <%= render 'layouts/footer' %> </footer>
 
 </body>
 </html>

@@ -59,7 +59,8 @@ function showLoading(){
 }
 
 function tdToggle(){
-  $('table').on('click', '.td-expand', function(){
+  $(document.body).on('click', '.td-expand', function(){
+  //$(document.body).delegate(".td-expand", 'click', function(){  
     $el = $(this);
     title = $el.attr('title');
     content = $el.html();

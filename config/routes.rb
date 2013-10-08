@@ -1,9 +1,9 @@
 PngHivAids::Application.routes.draw do
 
 
-  match "/401", to: "errors#unauthorized"
-  match "/404", to: "errors#not_found"
-  match "/500", to: "errors#error"
+  match "/401", to: "errors#unauthorized_401"
+  match "/404", to: "errors#not_found_404"
+  match "/500", to: "errors#error_500"
 
 
 

@@ -3,13 +3,13 @@
 		<tr>
 			<th class='nth-table'> # </th>
 			<th width=100 > From </th>
-			<th width=100 > Message</th>
+			<th width=140 > Message</th>
 			<th width=30> Consigment</th>
 			<th> Shipment Status </th>
 			<th width=30> Carton</th>
-			<th width=400> System Response</th>
+			<th > System Response</th>
 			<th> Error </th>
-			<th> Date </th>
+			<th width=120> Date </th>
 		</tr>
 	</thead>
 
@@ -22,7 +22,7 @@
 				<td><%= message.consignment_number %></td>
 				<td><%= shipment_status message.status %></td>
 				<td><%= message.carton %></td>
-				<td title="<%= h message.response_message%>" class='td-expand'><%= truncate message.response_message, :length => 60  %></td>
+				<td title="<%= h message.response_message%>" class='td-expand'><%= truncate message.response_message, :length => 50  %></td>
 				<td><%= message.display_error %></td>
 				<td><%= message.created_at %></td>
 			</tr>

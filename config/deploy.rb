@@ -13,7 +13,6 @@ set :default_stage, :production
 require 'capistrano/ext/multistage'
 
 require 'bundler/capistrano'
-require 'assets/deploy'
 
 #set :whenever_command, "bundle exec whenever" # for bundler
 #set :whenever_environment, defer { stage } # multistaging
@@ -41,7 +40,6 @@ namespace :deploy do
   end
 
   task :symlink_data, :roles => :app do
-  	p "symlink_data"
     run "ln -nfs #{shared_path}/data #{release_path}/public/data"
   end
 
@@ -50,8 +48,6 @@ namespace :deploy do
   end
 
   task :symlink_config, roles: :app do
-  	p 'symlink_config'
-
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/nuntium.yml  #{release_path}/config/nuntium.yml"
   end
@@ -82,8 +78,8 @@ end
 # deploy:finalize_update
 after "deploy:update_code", "deploy:symlink_config"
 after "deploy:update_code", "deploy:symlink_data"
-after 'deploy:update_code', 'deploy:whenever'
-#after 'deploy:update_code', 'assets:precompile'
+after 'deploy:update_code', 'deploy:whenever'   # require "whenever/capistrano" does not work because it does not choose the correct database.yml
+after 'deploy:update_code', 'assets:precompile' # using builtin capistrano asset:precompile in project root Capfile load 'deploy/assets'
 
 before "deploy:start", "deploy:migrate"
 before "deploy:restart", "deploy:migrate"

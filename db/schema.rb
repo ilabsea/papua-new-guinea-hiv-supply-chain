@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(:version => 20130926084556) do
     t.integer  "sms_logs_count",                     :default => 0
     t.integer  "shipment_lines_count",               :default => 0
     t.datetime "last_notified_date"
-    t.datetime "lost_date",                          :default => '2013-08-29 05:05:03'
+    t.datetime "lost_date",                          :default => '2013-10-08 04:57:38'
     t.float    "cost"
     t.integer  "carton"
     t.integer  "site_messages_count",                :default => 0

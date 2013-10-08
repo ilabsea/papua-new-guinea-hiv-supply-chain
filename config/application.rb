@@ -23,6 +23,10 @@ module PngHivAids
         request_specs: true
         g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
+
+    # config.exceptions_app = lambda do |env|
+    #     ErrorsController.action(:render_error).call(env)
+    # end
     
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -75,6 +79,6 @@ module PngHivAids
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    # config.exceptions_app = self.routes
+    config.exceptions_app = self.routes
   end
 end

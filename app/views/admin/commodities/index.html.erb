@@ -37,12 +37,12 @@
     <% @commodities.each_with_index do |commodity, index| %>
       <tr>
         <td><%=current_entries + index %></td>
-        <td><%=link_to commodity.name, edit_admin_commodity_path(commodity, :type => params[:type]) %></td>
-        <td><%= commodity.commodity_category.name %></td>
+        <td title='<%= h commodity.name %>' class='td-expand'><%=link_to truncate(commodity.name, length: 15), edit_admin_commodity_path(commodity, :type => params[:type]) %></td>
+        <td title='<%= h commodity.commodity_category.name %>' class='td-expand' ><%= truncate commodity.commodity_category.name, length: 12 %></td>
         <td><%= commodity.unit.name %></td>
         <% if params[:type] == CommodityCategory::TYPES_DRUG  %>
-          <td><%= commodity.strength_dosage %></td>
-          <td><%= commodity.abbreviation %></td>
+          <td class='td-expand' title='<%= h commodity.strength_dosage%>'> <%= truncate commodity.strength_dosage, length: 15 %></td>
+          <td class='td-expand' title='<%=h commodity.abbreviation %>' > <%= truncate commodity.abbreviation, length: 15 %></td>
           <td><%= commodity.quantity_per_packg %></td>
         <% end %>
         <td><%= commodity.consumption_per_client_pack %></td>

@@ -24,17 +24,16 @@
 <body>
   
   <%= render "layouts/top_menu" %>
-  <div class="container">
+  <div class="container content-body">
     
     <%= render "layouts/user_bar" %>
     <div class='content-start'></div>
     <% if content_for? :breadcrumb %>
-      <div class="row" > <%= yield :breadcrumb %></div>
+      <div class="row-fluid" > <%= yield :breadcrumb %></div>
     <% end %>
     
-    <div class="row">
+    <div class="row-fluid">
       <!-- <div class="span3"> Menu</div>  -->
-      <div class="span12"></div>
         <%if alert || notice %> 
             <% css_class = alert.nil? ? "warning" : "alert-error"   %>        
             <div class="alert <%= css_class %>" >
@@ -43,11 +42,8 @@
             </div>
         <% end %> 
         <%= yield %>
-        
       </div>
     </div>
-    
-    
   </div>
 
   <div id='system_loading' class='loading well'> 
@@ -56,12 +52,7 @@
   </div>
   
   <footer>
-    <div class="container">
-      <div class="row"> 
-         <div class="span6">  </div>
-         <div class="span6">  </div>
-      </div>  
-    </div>
+    <%= render 'layouts/footer' %>
   </footer>
 
 </body>

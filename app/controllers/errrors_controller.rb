@@ -1,19 +1,19 @@
 class ErrorsController < ActionController::Base
   layout 'error'
 
-  def unauthorized
-    # Will render the app/views/errors/unauthorized.html.haml template
+  def unauthorized_401
+    @error =  { code: 401, text: 'Unauthorized' }
+
   end
  
-  def not_found
-    # Will render the app/views/errors/not_found.html.haml template
+  def not_found_404
+    @error = { code: 404, text: 'Not found. Please verify your url again.'}
   end
  
-  def error
-    # Will render the app/views/errors/error.html.haml template
+  def error_500
+    @error = { code: 500, text: 'Internal server error' }
   end
  
-  protected
  
   # The exception that resulted in this error action being called can be accessed from
   # the env. From there you can get a backtrace and/or message or whatever else is stored
@@ -22,4 +22,5 @@ class ErrorsController < ActionController::Base
     @e ||= env["action_dispatch.exception"]
   end
 
+  helper_method :the_exception
 end

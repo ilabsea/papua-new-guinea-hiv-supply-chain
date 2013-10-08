@@ -1,4 +1,18 @@
-
+.content-body {
+  min-height: 600px;
+}
+.footer-bar {
+  margin: 0 auto;
+}
+.tleft{
+  text-align: left;
+}
+.tright{
+  text-align: right;
+}
+.gray {
+  color: gray;
+}
 .table .header-grid, .table th {
     /*background-color: #DDDDDD !important;*/
     padding: 9px 3px;
