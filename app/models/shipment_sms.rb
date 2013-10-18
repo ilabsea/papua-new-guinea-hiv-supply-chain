@@ -9,7 +9,7 @@ class ShipmentSms < Sms
   		:site => @shipment.site.name, 
   		:consignment => @shipment.consignment_number , 
   		:shipment_date =>  @shipment.shipment_date,
-      :number_of_carton => @shipment.carton
+      :carton => @shipment.carton
   	}
 
   	setting = Setting[:message_alerting_site_for_shipment]
