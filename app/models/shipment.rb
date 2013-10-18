@@ -14,7 +14,7 @@ class Shipment < ActiveRecord::Base
 	STATUS_LOST = 'Lost'
 	STATUS_RECEIVED = 'Received'
 	STATUS_IN_PROGRESS = 'In Progress'
-	STATUS_PARTIALLY_RECEIVED = 'Partially Recieved'
+	STATUS_PARTIALLY_RECEIVED = 'Partially Received'
 
 	validates :consignment_number, :shipment_date, :presence => true
 	validates :consignment_number, :uniqueness => true
@@ -26,7 +26,7 @@ class Shipment < ActiveRecord::Base
 	SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED, STATUS_PARTIALLY_RECEIVED]
 
 	def self.status_mark
-		[ [ "Mark as lost", STATUS_LOST] , [ "Mark as received", STATUS_RECEIVED ], ["Mark as Partially recieved", STATUS_PARTIALLY_RECEIVED ] ]  	
+		[ [ "Mark as lost", STATUS_LOST] , [ "Mark as received", STATUS_RECEIVED ], ["Mark as partially received", STATUS_PARTIALLY_RECEIVED ] ]  	
 	end
 
 	def create_shipment shipment_session

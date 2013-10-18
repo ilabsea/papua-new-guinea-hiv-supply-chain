@@ -47,7 +47,7 @@ class SiteMessageParser
       :status           => @options[:status],
       :consignment      => @options[:consignment_number],
       :original_message => @options[:body],
-      :carton           => @options[:carton]
+      :carton_number           => @options[:carton]
     }
     translation = setting.str_tr(params)
     @options[:response_message] = translation

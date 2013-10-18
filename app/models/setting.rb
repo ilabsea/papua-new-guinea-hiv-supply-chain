@@ -14,7 +14,7 @@ class Setting < ActiveRecord::Base
   MESSAGE_KEYS = [
   	{ name: :message_alerting_site_for_shipment, 
   	  label: "Message notification of package deliver to site" ,
-  	  params: %w(site consignment shipment_date carton)
+  	  params: %w(site consignment shipment_date carton_number)
   	} ,
   	{ name: :message_asking_site, 
   	  label: "Message check for confirmation of receiving package to site", 

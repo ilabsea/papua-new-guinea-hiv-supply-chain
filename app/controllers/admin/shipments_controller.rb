@@ -132,6 +132,29 @@ module Admin
                             :buffer_size   =>  '4096')
     end
 
+    def update_cost
+      id   = params[:id]
+      cost = params[:cost]
+
+      shipment = Shipment.find id
+      shipment.cost = cost
+
+      response = {}
+      
+      if shipment.save
+        response[:status] = :ok
+        response[:message] = "Shipment cost has been updated to cost: "  + cost
+
+      else
+        response[:status] = :failed
+        response[:message] = shipment.errors.full_messages[0]
+
+      end
+
+      render :json => response
+
+    end
+
   end
 end
 

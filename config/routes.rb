@@ -41,6 +41,7 @@ PngHivAids::Application.routes.draw do
     end
 
     resources :shipments do
+
       resources :site_messages do
         collection do
           get 'shipment_messages'
@@ -56,6 +57,11 @@ PngHivAids::Application.routes.draw do
         delete 'remove_session'
         post 'create_shipment'
       end
+
+      member do
+        post 'update_cost'
+      end
+      
     end
 
     resources :orders do
