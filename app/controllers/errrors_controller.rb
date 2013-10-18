@@ -2,16 +2,16 @@ class ErrorsController < ActionController::Base
   layout 'error'
 
   def unauthorized_401
-    @error =  { code: 401, text: 'Unauthorized' }
+    @error =  { code: 401, text: 'Unauthorized.' }
 
   end
  
   def not_found_404
-    @error = { code: 404, text: 'Not found. Please verify your url again.'}
+    @error = { code: 404, text: 'Page not found. Please verify your url again.'}
   end
  
   def error_500
-    @error = { code: 500, text: 'Internal server error' }
+    @error = { code: 500, text: 'Internal server error.' }
   end
  
  

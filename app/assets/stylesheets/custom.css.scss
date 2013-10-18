@@ -4,12 +4,12 @@
 .footer-bar {
   margin: 0 auto;
 }
-.tleft{
-  text-align: left;
-}
-.tright{
-  text-align: right;
-}
+@media (min-width:400px)
+ {
+    .text-right {text-align:right;}
+    .text-left {text-align:left;}
+ } 
+
 .gray {
   color: gray;
 }

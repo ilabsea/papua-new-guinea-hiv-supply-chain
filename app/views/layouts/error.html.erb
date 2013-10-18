@@ -32,15 +32,17 @@
             <div >
 
             <h3 class='error-code'> Error Code : <%= @error[:code] %></h3>
-              <p><%= @error[:text] %></p>
+              <p>
+                <%= @error[:text] %>. 
+              </p>
+              <%= link_to "<i class='icon-home'></i> #{root_url}".html_safe, root_url, :class => '' %>
+
               <%= yield %>       
             </div>
           </div>
       </div>
       
-      <div class="span3">
-          
-      </div>
+      <div class="span3"></div>
       
     </div>
     
