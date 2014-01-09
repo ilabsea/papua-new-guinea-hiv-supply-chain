@@ -6,7 +6,7 @@
 # ssh config for remote server and repo
 require 'whenever'
 require "capistrano-rbenv"
-set :rbenv_ruby_version, "2.0.0-p247"
+set :rbenv_ruby_version, "1.9.3-p392" #2.0.0-p247
 
 set :stages, %w(production staging)
 set :default_stage, :production
@@ -25,7 +25,7 @@ set :repository, "git@bitbucket.org:channainfo/papua-new-guinea-hiv-aids.git"
 set :scm, :git
 set :scm_username, 'channainfo'
 
-set :deploy_to, '/var/www'
+set :deploy_to, '/var/www/png'
 set :deploy_via, :remote_cache
 
 default_environment['TERM'] = ENV['TERM']

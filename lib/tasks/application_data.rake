@@ -78,8 +78,8 @@ def load_sites
                      :lng => site[2],
                      :service_type => site[3],
                      :suggestion_order => site[4],
-                     :order_frequency => site[5],
-                     :number_of_deadline_sumission => site[6],
+                     :order_frequency => 0.2 + site[5],
+                     :number_of_deadline_sumission => 1+site[6],
                      :order_start_at => site[7],
                      :test_kit_waste_acceptable => site[8],
                      :address => site[9],
@@ -87,6 +87,7 @@ def load_sites
                      :mobile => site[11],
                      :land_line_number => site[12],
                      :email => site[13],
+                     :in_every => 1+rand(3),
                      :province_id => site[14])
     end
     print "\n Done loading #{Site.count} sites \n"
@@ -212,7 +213,8 @@ def load_commodities
                           :strength_dosage => el[1], 
                           :abbreviation => el[2], 
                           :quantity_per_packg => el[3],
-                          :consumption_per_client_unit => rand(100) ,
+                          :consumption_per_client_unit => 1+rand(100),
+                          :consumption_per_client_pack => 1+rand(10),
                           :quantity_per_packg => rand(100))
 
        print("\n loaded: #{el[0]} to database")                   
@@ -252,6 +254,7 @@ def load_commodities
                       :abbreviation => el[2], 
                       :quantity_per_packg => el[3],
                       :consumption_per_client_unit => rand(500) ,
+                      :consumption_per_client_pack => 1+rand(10),
                       :quantity_per_packg => rand(500)   ) 
     print("\n loaded: #{el[0]} to database")
   end
