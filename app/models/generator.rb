@@ -365,7 +365,7 @@ class Generator
 		}
 
 		move_next 4
-		write_cell Cell.new(current_row, 0), 'Authorising Officer :', :weight => :bold
+		write_cell Cell.new(current_row, 0), 'Authorizing Officer :', :weight => :bold
 
 		move_next
 
