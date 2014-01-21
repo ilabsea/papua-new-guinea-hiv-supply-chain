@@ -370,12 +370,12 @@ class Generator
 		move_next
 
 		draw_table Cell.new(current_row, 0), Cell.new(current_row+2, 4), {
-			'1_0' => 'Supply Authorised Singnature',
+			'1_0' => 'Supply Authorized Signature',
 			'1_2' => 'Date'
 		}
 
 		draw_table Cell.new(current_row, 5), Cell.new(current_row+2, self.total_column), {
-			'0_0' => 'Recieving Officer:' ,
+			'0_0' => 'Receiving Officer:' ,
 			'0_2' => 'Dispatch Officer:' ,
 			'1_0' => 'Date',
 			'1_2' => 'Date'
@@ -493,7 +493,7 @@ class Generator
 
 		move_next 2
 		draw_table Cell.new(current_row, 0), Cell.new(current_row, self.total_column-1), {
-			'0_0' => 'Authorising Officer (Please sign and add date, dispatching officer to also add co-note number):',
+			'0_0' => 'Authorizing Officer (Please sign and add date, dispatching officer to also add co-note number):',
 			'0_6' => 'For AMS Use Only'
 		}
 		write_cell_body Cell.new(current_row, self.total_column-1), ''
