@@ -1,2 +1,2 @@
 set :user, 'ilab'
-server "192.168.1.134", :app, :web, :db, primary: true
+server "54.254.208.168", :app, :web, :db, primary: true

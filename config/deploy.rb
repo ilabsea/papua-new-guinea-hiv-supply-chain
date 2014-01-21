@@ -21,7 +21,7 @@ require 'bundler/capistrano'
 set :application, "png"
 set :use_sudo , false
 
-set :repository, "git@bitbucket.org:channainfo/papua-new-guinea-hiv-aids.git"
+set :repository, "https://channainfo@bitbucket.org/channainfo/papua-new-guinea-hiv-aids.git"
 set :scm, :git
 set :scm_username, 'channainfo'
 
