@@ -304,7 +304,7 @@ class Generator
 		texts = [ '1) Please remember, when submitting orders YOU MUST:', 
 				  '2) Submit the "Surv 2: Monthly Data Collection Sheet" (including total number of patients on each regimen) when requesting ARVs;', 
 				  '3) Submit the "VCT Monthly Summary Sheet" when requesting Test Kits;',
-				  '4) Indicate your Current Stock On Hand of ARVs or Test Kits, monthly consumption and earliet expiry of stock'
+				  '4) Indicate your Current Stock On Hand of ARVs or Test Kits, monthly consumption and earlier expiry of stock'
 		]
 		move_next
 
