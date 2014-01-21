@@ -151,10 +151,15 @@ end
 def load_setting_messages
   print("\n Loading Setting Messages")
   [
-    ["message_alerting_site_about_receiving_form", "Hi {site}, new package has been sent to you on {shipping_date}, consignment {consignment}. Please respond yes when you received the package."],
-    ["message_asking_site", "Hi {site}, did you received package that was sent on {shipping_date}, {consigment} ? Please respond yes if you received."],
-    ["message_deadline", "Hi {site}, you are late to submit requisition form. The deadline was on {dead_line}, please submit as soon as possible."],
-    ["hour", 0]
+    ["message_alerting_site_for_shipment", "Message notification of package deliver to site: {site} , consignment: {consignment}, shipment date: {shipment_date}, carton number: {carton_number} ."],
+    ["message_asking_site", "Message check for confirmation of receiving package to site: {site}, consignment: {consignment}, shipment_date: {shipment_date} ."],
+    ["message_deadline", "Message reminder to site who did not submit requisition form by deadline site: {site}, deadline date: {deadline_date}"],
+    ["site_message_success", "Acknowledgment message: message has been sent to system successfully"],
+    ["site_message_error_syntax", "message syntax error"],
+    ["site_message_invalid_consignment_number", "consignment number is invalid"],
+    ["site_message_invalid_status", "status is invalid"],
+    ["site_message_invalid_carton_format", "invalid carton format"],
+    ["site_message_invalid_sender", "phone number is not allowed to report"]
   ].each do |el|
     Setting.find_or_create_by_name(:name => el[0], :value => el[1])
     print("\n loaded: #{el[0]} to database")
@@ -321,6 +326,7 @@ namespace :png do
     load_commodities
     load_sites
     load_users
+    load_setting_messages
   end
 
 end

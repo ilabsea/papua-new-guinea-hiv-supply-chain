@@ -8,7 +8,7 @@ class Setting < ActiveRecord::Base
 
 
   MESSAGE_HEADERS = {
-    3 => 'Acknowledment message to site after sending message to the system'
+    3 => 'Acknowledgment message to site after sending message to the system'
   }
 
   MESSAGE_KEYS = [
@@ -26,32 +26,32 @@ class Setting < ActiveRecord::Base
     },
 
     { name: :site_message_success, 
-      label: "Acknowledment message: Message has been sent to system sucessfully", 
+      label: "Acknowledgment message: Message has been sent to system successfully", 
       params: %w(original_message consignment status phone_number carton_number)  
     },
 
     { name: :site_message_error_syntax, 
-      label: "Acknowledment message: Message syntax error ", 
+      label: "Acknowledgment message: Message syntax error ", 
       params: %w(original_message phone_number)  
     },
 
     { name: :site_message_invalid_consignment_number, 
-      label: "Acknowledment message: Consignment number is invalid", 
+      label: "Acknowledgment message: Consignment number is invalid", 
       params: %w(original_message phone_number)  
     },
 
     { name: :site_message_invalid_status, 
-      label: "Acknowledment message: Status is invalid", 
+      label: "Acknowledgment message: Status is invalid", 
       params: %w(original_message consignment phone_number)  
     },
 
     { name: :site_message_invalid_carton_format, 
-      label: "Acknowledment message: Invalid carton format", 
+      label: "Acknowledgment message: Invalid carton format", 
       params: %w(original_message consignment status phone_number)  
     },
 
     { name: :site_message_invalid_sender, 
-      label: "Acknowledment message: Phone number is not allowed to report", 
+      label: "Acknowledgment message: Phone number is not allowed to report", 
       params: %w(original_message phone_number)  
     }
 
