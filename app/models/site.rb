@@ -1,4 +1,11 @@
 class Site < ActiveRecord::Base
+  has_many :users
+  has_many :requisition_reports
+  has_many :orders
+  has_many :surv_sites
+  has_many :sms_logs
+  has_many :shipments
+  has_many :site_messages
   belongs_to :province
   attr_accessible :address, :contact_name, :email, :in_every, :duration_type,
                   :land_line_number, :lat, :lng, :mobile, 
@@ -20,13 +27,7 @@ class Site < ActiveRecord::Base
   SMS_ALERTED = 1
   SMS_NOT_ALERTED = 0
 
-  has_many :users
-  has_many :requisition_reports
-  has_many :orders
-  has_many :surv_sites
-  has_many :sms_logs
-  has_many :shipments
-  has_many :site_messages
+ 
 
 
   def deadline_date

@@ -34,7 +34,6 @@ group :assets do
   gem 'therubyracer'
   gem 'less-rails'
   gem 'twitter-bootstrap-rails'
-  gem "angular-rails"
 end
 
 #gem 'rack-mini-profiler'

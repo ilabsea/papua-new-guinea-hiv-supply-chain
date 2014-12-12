@@ -7,7 +7,7 @@ class OrderLineImport
 		@order = order
 	end
 
-	def import 		
+	def import
 		load_arv_req 
 		load_arv_test
 	end
@@ -59,7 +59,7 @@ class OrderLineImport
 				    info =  'Could not find commodity with name: ' + row[0]
 				    add_missing_commodities row[0]
 				    Rails.logger.info(info)
-				end													  
+				end
 			end
 		end
 		bulk_import order_lines
@@ -90,7 +90,7 @@ class OrderLineImport
 				    info =  'Could not find commodity with name: ' + row[0]
 				    add_missing_commodities row[0]
 				    Rails.logger.info(info)
-				end													  
+				end
 			end
 		end
 		bulk_import order_lines	

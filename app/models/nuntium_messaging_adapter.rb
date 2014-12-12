@@ -1,16 +1,7 @@
 require 'nuntium'
 
 class NuntiumMessagingAdapter < MessagingAdapter
-	
   attr_accessor :nuntium
-
-  def nuntium
-  	@nuntium
-  end
-
-  def nuntium=(nt)
-  	@nuntium = nt
-  end	
 
   def config
     @config
@@ -22,10 +13,10 @@ class NuntiumMessagingAdapter < MessagingAdapter
   	@nuntium = Nuntium.new(@config['url'], @config['account'], @config['application'], @config['password'])
   end
 
- 
   def self.instance
   	@@instance ||= NuntiumMessagingAdapter.new
   end
+
   NuntiumMessagingAdapter.instance
   private_class_method :new
 
@@ -39,5 +30,4 @@ class NuntiumMessagingAdapter < MessagingAdapter
   def channels
     @nuntium.channels
   end
-    
 end

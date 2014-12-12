@@ -10,11 +10,12 @@ class Shipment < ActiveRecord::Base
 
 	attr_accessible :shipment_date, :consignment_number, :status, :user, :received_date, :lost_date, :cost, :carton
 
-
 	STATUS_LOST = 'Lost'
 	STATUS_RECEIVED = 'Received'
 	STATUS_IN_PROGRESS = 'In Progress'
 	STATUS_PARTIALLY_RECEIVED = 'Partially Received'
+
+  STATUSES = [STATUS_LOST, STATUS_RECEIVED, STATUS_IN_PROGRESS, STATUS_PARTIALLY_RECEIVED]
 
 	validates :consignment_number, :shipment_date, :presence => true
 	validates :consignment_number, :uniqueness => true
@@ -25,9 +26,60 @@ class Shipment < ActiveRecord::Base
 
 	SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED, STATUS_PARTIALLY_RECEIVED]
 
-	def self.status_mark
-		[ [ "Mark as lost", STATUS_LOST] , [ "Mark as received", STATUS_RECEIVED ], ["Mark as partially received", STATUS_PARTIALLY_RECEIVED ] ]  	
-	end
+	def self.alert_for_confirm_status now
+  		return true if PublicHoliday.is_holiday?(now.to_date)
+	    shipments = Shipment.includes(:site).in_progress
+	    shipments.each do |shipment|
+	      if shipment.deadline_for? now
+	        shipment.alert_deadline
+	      else
+	        Rails.logger.info "\t Shipment: #{shipment.consignment_number} is not in dead line @ #{now} "
+	      end
+	    end
+  	end
+
+	def alert_deadline
+    options = {
+      :site => self.site.name, 
+      :shipment_date => self.shipment_date , 
+      :consignment  => self.consignment_number
+    }
+
+    setting = Setting[:message_asking_site]
+    translation = setting.str_tr options
+
+    #send_via_nuntium message_item
+    Sms.send NuntiumMessagingAdapter.instance do |sms|
+      sms.from  = ShipmentSms::APP_NAME
+      sms.to    = self.site.mobile.with_sms_protocol
+      sms.body  = translation
+    end
+
+    log = {
+      :site       => self.site,
+      :shipment   => self,
+      :message    => translation,
+      :to         => self.site.mobile,
+      :sms_type   => SmsLog::SMS_TYPE_ASK_CONFIRM
+    }
+    SmsLog.create log
+    
+    self.last_notified_date = Time.now
+    self.save
+  end
+
+  def self.status_mark
+    STATUSES.map{|status| ["Mark as #{status}", status]}
+  end
+
+	def deadline_for? now
+		if self.site.duration_type == Setting::DURATION_TYPE_DAY
+			created_date = self.last_notified_date.to_date
+			now.to_date > (created_date + self.site.in_every.days)
+		elsif self.site.duration_type == Setting::DURATION_TYPE_HOUR
+			now > self.last_notified_date + self.site.in_every.hours
+		end
+  end
 
 	def create_shipment shipment_session
 		order_lines = OrderLine.find shipment_session.shipment.keys
@@ -36,9 +88,9 @@ class Shipment < ActiveRecord::Base
 						 :order_line_id => order_line_id,
 						 :remark => data[:remark],
 						 :quantity_suggested => _quantity_suggested(order_lines, order_line_id )
-					}	
+					}
 	
-		    shipment_lines.build options
+		  shipment_lines.build options
 		end
 		
 		if save
@@ -48,7 +100,7 @@ class Shipment < ActiveRecord::Base
 			end
 			return true
 		else
-			return false	
+			return false
 		end
 	end
 
@@ -84,82 +136,28 @@ class Shipment < ActiveRecord::Base
 	     shipments  = shipments.where(['shipment_date BETWEEN :start AND :end', :start => date_start.beginning_of_day, :end => date_end.end_of_day ])
 	   end
 	   shipments
-	end	
+	end
 
 	def self.total_shipment_by_status
        shipments = select('COUNT(status) AS total, status').group('status').order('total')
        totals= {}
        shipments.each do |shipment|
-       	  totals[shipment.status] = shipment.total.to_i
+         totals[shipment.status] = shipment.total.to_i
        end
        totals
   	end
 
-  	def deadline_for? now	
-  		if self.site.duration_type == Setting::DURATION_TYPE_DAY
-  			now = now.to_date
-  			created_date = self.last_notified_date.to_date
-  			now > (created_date + self.site.in_every.days)
-  		elsif self.site.duration_type == Setting::DURATION_TYPE_HOUR
-  			now > self.last_notified_date + self.site.in_every.hours
-  		end
-  	end
-
-  	def self.alert_for_confirm_status now
-  		return true if PublicHoliday.is_holiday?(now.to_date)
-	    shipments = Shipment.includes(:site).in_progress
-
-	    Rails.logger.info "\nInfo Shipment for #{now} ****** "
-	    Rails.logger.info "\t total shipment in progress: #{shipments.size}"
-	    shipments.each do |shipment|
-	      if shipment.deadline_for? now
-	      	Rails.logger.info "\t Alert to shipment status : #{shipment.consignment_number} @ #{now} "
-	        shipment.alert_deadline
-	      else
-	        Rails.logger.info "\t Shipment: #{shipment.consignment_number} is not in dead line @ #{now} "
-	      end
-	    end	
-	    Rails.logger.info "End ******\n"	
-  	end
-
-  	def alert_deadline
-  		options = {
-	      :site => self.site.name, 
-	      :shipment_date => self.shipment_date , 
-	      :consignment  => self.consignment_number
-	    }
-
-	    setting = Setting[:message_asking_site]
-	    translation = setting.str_tr options
-
-	    #send_via_nuntium message_item
-	    Sms.send NuntiumMessagingAdapter.instance do |sms|
-	      sms.from  = ShipmentSms::APP_NAME
-	      sms.to    = self.site.mobile.with_sms_protocol
-	      sms.body  = translation
-	    end
-	    
-	    log = {
-	      :site       => self.site,
-	      :shipment   => self,
-	      :message    => translation,
-	      :to         => self.site.mobile,
-	      :sms_type   => SmsLog::SMS_TYPE_ASK_CONFIRM
-	    }
-	    SmsLog.create log
-  	end
-
-  	def in_progress?
+  def in_progress?
   		self.status == Shipment::STATUS_IN_PROGRESS
-  	end
+  end
 
-  	def self.in_progress
+  def self.in_progress
   		of_status Shipment::STATUS_IN_PROGRESS
-  	end
+  end
 
-  	def self.of_status status
+  def self.of_status status
   	   where(["status =:status", :status => status ])
-  	end
+  end
 
 	def _quantity_suggested  order_lines , order_line_id
 		order_lines.each do |order_line|

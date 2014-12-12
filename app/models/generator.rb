@@ -505,7 +505,7 @@ class Generator
 
 		move_next
 		draw_table Cell.new(current_row, 0), Cell.new(current_row+1, self.total_column-1), {
-			'0_0' => 'Supply Authorised',
+			'0_0' => 'Supply Authorized',
 			'0_1' => 'Date',
 			'0_3' => 'Dispatching Officer',
 			'0_5' => 'Date'

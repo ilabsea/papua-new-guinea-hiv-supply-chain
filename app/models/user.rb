@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   ROLES_SITE = "Site"
   ROLES_AMS  = "AMS"
 
-  ROLES = [ ROLES_ADMIN, ROLES_REVIEWER, ROLES_DATA_ENTRY, ROLES_SITE ]
+  ROLES = [ ROLES_ADMIN, ROLES_REVIEWER, ROLES_DATA_ENTRY, ROLES_SITE , ROLES_AMS]
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable

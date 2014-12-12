@@ -86,7 +86,7 @@ class Order < ActiveRecord::Base
 
   		requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
       requisition_report.save
-      
+
       site.order_start_at = Time.now.strftime('%Y-%m-%d')
       site.sms_alerted = Site::SMS_NOT_ALERTED
       site.save
