@@ -15,7 +15,7 @@ class Shipment < ActiveRecord::Base
 	STATUS_IN_PROGRESS = 'In Progress'
 	STATUS_PARTIALLY_RECEIVED = 'Partially Received'
 
-  STATUSES = [STATUS_LOST, STATUS_RECEIVED, STATUS_IN_PROGRESS, STATUS_PARTIALLY_RECEIVED]
+  STATUSES = [STATUS_LOST, STATUS_RECEIVED, STATUS_PARTIALLY_RECEIVED]
 
 	validates :consignment_number, :shipment_date, :presence => true
 	validates :consignment_number, :uniqueness => true
