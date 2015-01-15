@@ -96,7 +96,7 @@ class Shipment < ActiveRecord::Base
 		if save
 			order_lines.each do |order_line|
 				order_line.shipment_status = true
-				order_line.save
+				order_line.save(validate: false)
 			end
 			return true
 		else
