@@ -8,11 +8,10 @@ class OrderLine < ActiveRecord::Base
   attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :status, :order, :stock_on_hand, :number_of_client,
                   :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :site_id, :site, :is_set, :skip_bulk_insert,:commodity
 
-
-  validates :stock_on_hand , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.quantity_suggested }
+  validates :stock_on_hand , :numericality => {:greater_than_or_equal_to => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.quantity_suggested }
   validates :quantity_suggested , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.stock_on_hand }
 
-  validates :monthly_use, :numericality => {:greater_than => 0}, :if =>  Proc.new{|ol| ol.arv_type == CommodityCategory::TYPES_KIT &&  ol.number_of_client && ol.stock_on_hand }      
+  validates :monthly_use, :numericality => {:greater_than_or_equal_to => 0}, :if =>  Proc.new{|ol| ol.arv_type == CommodityCategory::TYPES_KIT &&  ol.number_of_client && ol.stock_on_hand }
 
   default_scope order('monthly_use DESC')
   validate :validate_requirement
