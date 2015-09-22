@@ -1,0 +1,23 @@
+calculate system_suggestion:
+-------------------------------------------------------------------------------------------------------------------
+  consumtion = self.number_of_client.to_i * self.commodity.consumption_per_client_unit * self.site.order_frequency.to_f
+  system_suggestion = consumtion - self.stock_on_hand.to_f
+
+
+calculate drug:
+--------------------------------------------------------------------------------------------------------------------
+  diff = [self.quantity_suggested] - system_suggestion 
+  max  = self.quantity_suggested >= system_suggestion ?  self.quantity_suggested : system_suggestion
+  cal_drug = 100 * diff.abs / max
+
+
+calculate drug:
+--------------------------------------------------------------------------------------------------------------------
+  cal_kit = 100 * (self.monthly_use - system_suggestion) / system_suggestion
+
+
+validation:
+---------------------------------------------------------------------------------------------------------------------
+  cal_kit  > self.site.test_kit_waste_acceptable.to_f
+  cal_drug > self.site.suggestion_order.to_f
+
