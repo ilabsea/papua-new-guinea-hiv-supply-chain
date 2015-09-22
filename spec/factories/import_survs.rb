@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: import_survs
+#
+#  id         :integer          not null, primary key
+#  surv_type  :string(255)
+#  form       :string(255)
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  year       :integer
+#  month      :string(20)
+#
+
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do

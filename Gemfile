@@ -11,7 +11,6 @@ gem 'devise'
 gem 'cancan'
 
 gem 'will_paginate-bootstrap'
-gem 'debugger', group: [:development, :test]
 
 gem 'spreadsheet'
 gem 'carrierwave'
@@ -53,6 +52,11 @@ gem 'bootstrap-datepicker-rails'
 
 # To use debugger
 # gem 'debugger'
+
+group :development do
+  gem 'annotate'
+end
+
 group :test, :development do
   gem 'rspec-rails', '~> 2.0'
   gem 'capybara', '~> 2.0.2'
@@ -61,4 +65,5 @@ group :test, :development do
   gem 'rspec-mocks'
   gem 'jasmine'
   gem 'brakeman', :require => false
+  gem 'debugger'
 end

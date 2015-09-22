@@ -30,6 +30,9 @@ GEM
     activesupport (3.2.13)
       i18n (= 0.6.1)
       multi_json (~> 1.0)
+    annotate (2.6.5)
+      activerecord (>= 2.3.0)
+      rake (>= 0.8.7)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     bootstrap-datepicker-rails (1.1.0.1)
@@ -242,6 +245,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-import
+  annotate
   bootstrap-datepicker-rails
   brakeman
   cancan

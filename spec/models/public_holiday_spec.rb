@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: public_holidays
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  date       :date
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'spec_helper'
 
 describe PublicHoliday do

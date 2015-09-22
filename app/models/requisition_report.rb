@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: requisition_reports
+#
+#  id         :integer          not null, primary key
+#  form       :string(255)
+#  site_id    :integer
+#  user_id    :integer
+#  status     :string(255)      default("PENDING")
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class RequisitionReport < ActiveRecord::Base
    attr_accessible :form
    #site_id, user_id

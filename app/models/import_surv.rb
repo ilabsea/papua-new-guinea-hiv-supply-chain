@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: import_survs
+#
+#  id         :integer          not null, primary key
+#  surv_type  :string(255)
+#  form       :string(255)
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  year       :integer
+#  month      :string(20)
+#
+
 require 'spreadsheet'
 
 class ImportSurv < ActiveRecord::Base

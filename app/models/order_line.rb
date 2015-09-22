@@ -1,4 +1,33 @@
 # encoding: utf-8
+# == Schema Information
+#
+# Table name: order_lines
+#
+#  id                               :integer          not null, primary key
+#  order_id                         :integer
+#  commodity_id                     :integer
+#  stock_on_hand                    :integer
+#  monthly_use                      :integer
+#  earliest_expiry                  :datetime
+#  quantity_system_calculation      :integer
+#  quantity_suggested               :integer
+#  user_data_entry_note             :text
+#  user_reviewer_note               :text
+#  status                           :string(255)
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
+#  arv_type                         :string(255)
+#  site_suggestion                  :integer
+#  test_kit_waste_acceptable        :integer
+#  number_of_client                 :integer
+#  consumption_per_client_per_month :integer
+#  is_set                           :boolean          default(FALSE)
+#  shipment_status                  :boolean          default(FALSE)
+#  completed_order                  :integer          default(0)
+#  order_frequency                  :float
+#  site_id                          :integer
+#
+
 class OrderLine < ActiveRecord::Base
   belongs_to :order
   belongs_to :commodity

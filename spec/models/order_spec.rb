@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: orders
+#
+#  id                    :integer          not null, primary key
+#  site_id               :integer
+#  is_requisition_form   :boolean
+#  user_place_order_id   :integer
+#  order_date            :date
+#  user_data_entry_id    :integer
+#  review_date           :datetime
+#  review_user_id        :integer
+#  status                :string(255)
+#  requisition_report_id :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  date_submittion       :date
+#
+
 require 'spec_helper'
 
 describe Order do

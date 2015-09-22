@@ -1,3 +1,31 @@
+# == Schema Information
+#
+# Table name: sites
+#
+#  id                           :integer          not null, primary key
+#  name                         :string(255)
+#  lat                          :float
+#  lng                          :float
+#  service_type                 :string(255)
+#  suggestion_order             :float
+#  order_frequency              :integer
+#  number_of_deadline_sumission :integer
+#  order_start_at               :date
+#  test_kit_waste_acceptable    :float
+#  address                      :text
+#  contact_name                 :string(255)
+#  mobile                       :string(255)
+#  land_line_number             :string(255)
+#  email                        :string(255)
+#  province_id                  :integer
+#  created_at                   :datetime         not null
+#  updated_at                   :datetime         not null
+#  in_every                     :integer
+#  duration_type                :string(255)
+#  sms_alerted                  :integer          default(0)
+#  site_messages_count          :integer          default(0)
+#
+
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do

@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: commodity_categories
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  com_type   :string(255)
+#
+
 class CommodityCategory < ActiveRecord::Base
   attr_accessible :name, :com_type
   has_many :commodities
