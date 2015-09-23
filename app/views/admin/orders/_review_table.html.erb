@@ -2,16 +2,19 @@
   <thead>
   	<tr> 
       <th> # </th>
-      <th class='commodity'> Commodity </th>
-      <th> #Patient drug </th>
-      <th style='width: 65px;' > Stock on hand </th>
+      <th> Commodity </th>
+      <% if show_strength %>
+        <th> Strength </th>
+      <% end %>
+      <th title="# Of Patient on Drug regiment">No-Patient...</th>
+      <th style='width: 65px;' title="Stock on hand" >Stock...</th>
       <th> Consumtion</th>
-      <th> System suggestion</th>
-      <th> Quantity Suggested</th>
+      <th title="System suggestion">System...</th>
+      <th title="Quantity Suggested">Quantity...</th>
       <th> Status</th>
-      <th width="160"> Entry Note</th>
+      <th width="100"> Entry Note</th>
       <th> Reviewer Note</th>
-      <th width='60px;'> Action </th>
+      <th width='80px;'> Action </th>
 
   	</tr>
   </thead>
@@ -21,6 +24,9 @@
 	    <tr> 
         <td> <%= index+1 %></td>
 	      <td title="<%= h order_line.commodity.name%>"> <%= truncate(order_line.commodity.name, :length => 30) %> </td>
+        <% if show_strength %>
+          <td> <%= order_line.commodity.strength_dosage %> </td>
+        <% end %>
 	      <td> <%= order_line.number_of_client %></td>
 	      <td> <%= order_line.stock_on_hand %> </td>
 	      <td> <%= order_line.monthly_use %></td>
@@ -37,13 +43,13 @@
                       :title => 'Accept',
                       :'data-ref' => order_line.id, 
                       :method => :put, 
-                      :class => 'approved intercept btn-mini btn-success' %>           
+                      :class => 'approved intercept btn-mini btn-success' %>
 
           <%= link_button_minus '', reject_admin_order_order_line_url(order, order_line), 
                       :title => 'Reject',
                       :'data-ref' => order_line.id, 
                       :method => :put, 
-                      :class => 'rejected intercept btn-mini btn-danger' %>  
+                      :class => 'rejected intercept btn-mini btn-danger' %>
 	      </td>
 	  	</tr>
 

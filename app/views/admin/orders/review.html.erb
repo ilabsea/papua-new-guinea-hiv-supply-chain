@@ -32,12 +32,18 @@
       <div class="tab-pane <%= drug %>" id="drug">
         <h4> Drug Commodities </h4>
         <div class='alert alert-error' id='error-drug' style='display: none;' ></div>
-        <%= render :partial => 'review_table', :locals => {:order_lines => order_lines_drug, :order => @order } %>
+        <%= render 'review_table',
+                   :order_lines => order_lines_drug,
+                   :order => @order,
+                   :show_strength => true %>
       </div>
       <div class="tab-pane <%= kit %>" id="kit">
          <h4> Kit Commodities </h4>
          <div class='alert alert-error' id='error-kit' style='display: none;' ></div>
-         <%= render :partial => 'review_table', :locals => {:order_lines => order_lines_kit, :order => @order  } %>
+         <%= render 'review_table', 
+                    :order_lines => order_lines_kit,
+                    :order => @order,
+                    :show_strength => false %>
       </div>
     </div>
 </div>

@@ -2,18 +2,23 @@
     <thead>
       <tr>
         <th> # </th>
-        <th class='commodity'> Commodity </th>
-        <th> # Of Patient on Drug regiment </th>
-        <th> Consumtion per patient per month </th>
-        <th> Stock on hand</th>
-        <th> Monthly use</th>
-        <th> System Suggestion</th>
-        <th> Quantity Suggested</th>
+        <th> Commodity </th>
+
+        <% if show_strength %>
+          <th> Strength </th>
+        <% end %>
+
+        <th title="# Of Patient on Drug regiment">No-Patient...</th>
+        <th title="Consumtion per patient per month">Consumtion...</th>
+        <th title="Stock on hand">Stock...</th>
+        <th title="Monthly use">Monthly use</th>
+        <th title="System Suggestion">System...</th>
+        <th title="Quantity Suggested">Quantity...</th>
         <% if(order.status == Order::ORDER_STATUS_TO_BE_REVISED )%>
           <th>Status</th>
           <th>Reviewer Note</th>
         <% end %>
-        <th style='width:220px;'> Entry Note</th>
+        <th style='width:220px;' title="Entry Note">Entry Note</th>
       </tr>
     </thead>
     <tbody>

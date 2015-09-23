@@ -4,30 +4,31 @@
 %>
   <%=f.simple_fields_for :order_lines do |order_line_form| %>
 
-    <% if order_line_form.object.arv_type == CommodityCategory::TYPES_DRUG %>
+    <% if order_line_form.object.drug? %>
         <%=content_for :drug do  %>
-          <%= render :partial => "order_line_row", :locals => { 
-              :order_line_form => order_line_form,
-              :order => order,
-              :index => @drug
-            } %>
-          <% @drug += 1 %>  
-        <% end %>    
-    <% elsif order_line_form.object.arv_type == CommodityCategory::TYPES_KIT %>  
+          <%= render "order_line_row",
+                    :order_line_form => order_line_form,
+                    :order => order,
+                    :index => @drug
+          %>
+          <% @drug += 1 %>
+        <% end %>
+
+    <% elsif order_line_form.object.kit? %>
         <%=content_for :kit do %>
-          <%= render :partial => "order_line_row", :locals => { 
-              :order_line_form => order_line_form,
-              :order => order,
-              :index => @kit
-            } %>   
+          <%= render "order_line_row",
+                    :order_line_form => order_line_form,
+                    :order => order,
+                    :index => @kit
+          %>
         <% end %>
         <% @kit += 1 %> 
-    <% end %>  
+    <% end %>
   <% end %>
   <input type='hidden' id='order_frequency' value="<%= order.site ?  order.site.order_frequency   : '' %>" />
   <input type='hidden' id='suggestion_order' value="<%= order.site ?  order.site.suggestion_order  : '' %>" />
   <input type='hidden' id='test_kit_waste_acceptable' value="<%= order.site ? order.site.test_kit_waste_acceptable : '' %>" />
-  
+
 
   <% content_for :site_detail do %>
     <ul>
@@ -51,11 +52,11 @@
     <div class="tab-content">
       <div class="tab-pane active" id="drug">
         <%= site_detail %>
-        <%= render :partial => 'order_line_table', :locals => {:order => order ,:body => yield(:drug)} %>
+        <%= render 'order_line_table', :order => order ,:body => yield(:drug), :show_strength => true %>
       </div>
       <div class="tab-pane" id="kit">
         <%= site_detail %>
-        <%= render :partial => 'order_line_table', :locals => {:order => order, :body => yield(:kit) } %>
+        <%= render 'order_line_table', :order => order, :body => yield(:kit), :show_strength => false %>
       </div>
     </div>
   </div>

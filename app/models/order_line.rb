@@ -179,6 +179,14 @@ class OrderLine < ActiveRecord::Base
     end
   end
 
+  def drug?
+   self.arv_type == CommodityCategory::TYPES_DRUG
+  end
+
+  def kit?
+    self.arv_type == CommodityCategory::TYPES_KIT
+  end
+
   class << self
   	def drug
   		where ['arv_type = :type ', :type => CommodityCategory::TYPES_DRUG ]

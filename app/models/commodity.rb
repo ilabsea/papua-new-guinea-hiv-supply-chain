@@ -51,10 +51,16 @@ class Commodity < ActiveRecord::Base
     @commodity_type = value
   end
 
+  def with_strength
+    result = [self.name]
+    result << "with strength: (#{self.strength_dosage})" if self.strength_dosage
+    result.join(" ")
+  end
+
   def self.of_kit
     # Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
     from_type CommodityCategory::TYPES_KIT
-  end  
+  end
 
   def self.of_drug
     # Commodity.includes(:commodity_category).where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)

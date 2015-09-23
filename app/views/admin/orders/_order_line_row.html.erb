@@ -1,8 +1,6 @@
 <% 
   order_line_record = order_line_form.object
   row_ref = order_line_record.commodity.id 
-  # error_content = order_line_record.message_error_line;
-  # error_row  =  ( order_line_record.errors.full_messages.size > 0 ) ? 'row-error' : ''
   error_display = ( order_line_record.errors.full_messages.size > 0 ) ? '' : 'display:none;'
 
 %>
@@ -23,6 +21,10 @@
       <input type='hidden' id='commodity_name_<%=row_ref%>' value="<%= h order_line_record.commodity.name %>" />
       <span> <%= truncate(order_line_record.commodity.name, :length => 30) %> </span>
     </td>
+
+    <% if order_line_record.drug? %>
+      <td> <%= order_line_record.commodity.strength_dosage %> </td>
+    <% end %>
 
     <td> 
       <%= order_line_record.number_of_client %> 
