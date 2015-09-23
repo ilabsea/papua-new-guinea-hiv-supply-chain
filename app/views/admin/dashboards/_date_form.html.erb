@@ -3,7 +3,6 @@
 	    .tbar td {
 	      padding-left: 20px;
 	    }
-		
 	</style>
 	<br/>
 
@@ -15,7 +14,7 @@
 	                               :label => 'Form order date' ,
 	                               :label_html => {:class=> 'inline'},
 	                               :input_html => {:class => 'datepicker-fit date-field', :value => params[:start], :name => 'start'}
-	                               %>   
+	                               %>
 		  	</td>
 		  	<td>
 		  		<%= f.input :end_date, :as => 'date_time_picker', 
@@ -29,5 +28,3 @@
 		</table>
 	  </div> 
 <% end %>
-
-<%#= render 'date_field' %>

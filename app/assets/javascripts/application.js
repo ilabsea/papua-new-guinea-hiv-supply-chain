@@ -17,12 +17,17 @@
 //= require twitter/bootstrap
 
 //= require bootstrap-datepicker
+//= require bootstrap-jquery-init
 
-//= require custom
+//= require shared/custom
 //= require bootrap-datetime
 
 //= require jquery.dataTables
 //= require FixedColumns
 //= require fixedTableInit
 
-//= require_tree .
+//= require jquery.dataTables
+//= require jquery.fieldSelection
+//= require html5shiv
+
+//= require order/reviewer-approval

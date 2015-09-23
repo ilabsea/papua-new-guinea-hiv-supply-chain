@@ -155,13 +155,20 @@ class OrderLine < ActiveRecord::Base
      (100*value)/max
   end 
 
-  def self.items site_id
-    order_lines = OrderLine.includes(:commodity, :order => :site ).joins(:order).where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
-    if !site_id.blank?
-      order_lines = order_lines.where("orders.site_id = :site_id", :site_id => site_id )
-    end
+  def self.items options
+
+    order_lines = OrderLine.includes(:commodity, :order => :site )
+                           .joins("INNER JOIN orders ON order_lines.order_id = orders.id")
+                           .where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
+    
+
+    # order_lines = OrderLine.includes(:commodity, :order => :site ).joins(:order).where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
+
+    order_lines = order_lines.where(["orders.site_id = ?", options[:site_id]]) if !options[:site_id].blank?
+    order_lines = order_lines.where(["orders.date_submittion <= ?", options[:end] ]) if !options[:end].blank?
+    order_lines = order_lines.where(["orders.date_submittion >= ?", options[:start] ]) if !options[:start].blank?
     order_lines
-  end             
+  end
 
   def calculate_quantity_system_suggestion temp_order
     # return false if self.is_se
@@ -171,7 +178,7 @@ class OrderLine < ActiveRecord::Base
       if surv_site
         surv_site.surv_site_commodities.each do |surv_site_commodity|
           if surv_site_commodity.commodity == self.commodity
-            self.number_of_client            = surv_site_commodity.quantity.to_i      
+            self.number_of_client            = surv_site_commodity.quantity.to_i
             break
           end
         end

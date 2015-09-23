@@ -150,6 +150,9 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
+    rails-timeago (2.12.0)
+      actionpack (>= 3.1)
+      activesupport (>= 3.1)
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -260,6 +263,7 @@ DEPENDENCIES
   mysql2
   nuntium_api
   rails (= 3.2.13)
+  rails-timeago (~> 2.0)
   rspec-mocks
   rspec-rails (~> 2.0)
   sass-rails (~> 3.2.3)

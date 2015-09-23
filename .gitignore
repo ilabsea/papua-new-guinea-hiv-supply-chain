@@ -22,6 +22,7 @@
 
 #Ignore All uploaded and generated data
 /public/uploads/*
+/public/data/*
 .floorc
 .rspec
 /public/assets

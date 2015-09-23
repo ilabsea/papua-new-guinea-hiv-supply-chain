@@ -35,17 +35,20 @@ module Admin
     end
 
     def order
-       @shipment_session = ShipmentSession.new(session)
-  	   @order_lines = OrderLine.items(params[:site_id]).data_filled.not_shipped.paginate(paginate_options)
-  	   @sites = []
+      @shipment_session = ShipmentSession.new(session)
 
-       @shipment = Shipment.new
+      @order_lines = OrderLine.items(params).data_filled.not_shipped.paginate(paginate_options.merge(per_page: 50))
 
-  	   @orders = Order.includes(:site).approved
-  	   @orders.each do |order|
-		   site_item = [order.site.name, order.site.id ]
-  	   	 @sites << site_item if !@sites.include?(site_item)
-  	   end
+
+      @sites = []
+
+      @shipment = Shipment.new
+
+      @orders = Order.includes(:site).approved
+      @orders.each do |order|
+      site_item = [order.site.name, order.site.id ]
+        @sites << site_item if !@sites.include?(site_item)
+      end
     end
 
     def create_shipment
@@ -148,13 +151,12 @@ module Admin
       else
         response[:status] = :failed
         response[:message] = shipment.errors.full_messages[0]
-
       end
 
       render :json => response
-
     end
 
   end
+
 end
 

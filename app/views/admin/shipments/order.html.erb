@@ -1,6 +1,6 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [
-    {"Shipments" => admin_shipments_path() },
+    {"Shipments" => admin_shipments_path(request.query_parameters) },
     {"Order" => nil}
  ]
 %>
@@ -9,15 +9,33 @@
 <%= page_header t("New Shipment")  %>
 
 <div class='row-fluid' >
-  <div class='span6 left' >	
-  	<%= form_tag order_admin_shipments_path, :method => 'GET', :style => 'display:inline;' do |f| %>
-  	  <%= select_tag :site_id, options_for_select(@sites, params[:site_id]), :id => :order_site_id , :prompt => "Select a site" %>
-  	<% end %>
+  <div class='span8' >
+    <%= form_tag order_admin_shipments_path(request.query_parameters), :method => 'GET', :style => 'display:inline;' do |f| %>
+
+      <span> Site </span>
+      <%= select_tag :site_id, options_for_select(@sites, params[:site_id]), 
+                     :id => :order_site_id , class: 'order-shipment',
+                     :prompt => "Select a site" %>
+
+      <span style='margin-left: 20px;'> From </span>
+      <div class="input-append date datepicker">
+        <%= text_field_tag :start, params[:start], size: "30",
+               class: "datepicker-input date_time_picker required datepicker-fit date-field order-shipment" %>
+        <span class="add-on"><i class="icon-calendar"> </i></span>
+      </div>
+
+      <span style='margin-left: 20px;'> To </span>
+      <div class="input-append date datepicker">
+        <%= text_field_tag :end, params[:end], size: "30",
+               class: "datepicker-input date_time_picker required datepicker-fit date-field order-shipment" %>
+        <span class="add-on"><i class="icon-calendar"> </i></span>
+      </div>
+    <% end %>
   </div>
 
-   <div class='span6 right'>
-   	<%= link_button_new 'Create Shipment', '#shippement_dialog', :id => 'create_shippement', :data => {:skip_loading=> true}  %>
-   </div>	
+   <div class='span4 text-right'>
+     <%= link_button_new 'Create Shipment', '#shippement_dialog', :id => 'create_shippement', :data => {:skip_loading=> true}  %>
+   </div>
 </div>
 
 <%= render "dialog" %>
@@ -29,8 +47,9 @@
       <th><%=check_box_tag 'toggle_all', '1', false, :id => 'cb_toggle_all' %></th>
       <th>Site</th>
       <th>OrderId </th>
-      <th>Commodity</th>  
-      <th>Type</th>    
+      <th>Commodity</th>
+      <th>Strength</th>
+      <th>Type</th>
       <th>Amount</th>
       <th>Approved Date</th>
       <th>Quantity Dispatch </th>
@@ -55,6 +74,7 @@
         <td class='<%= klass  %>'><%= order_line.order.site.name %></td>
         <td class='<%= klass  %>'><%= order_line.order.id %></td>
         <td class='<%= klass  %>'><%= order_line.commodity.name %></td>
+        <td class='<%= klass  %>'><%= order_line.commodity.strength_dosage %></td>
         <td class='<%= klass  %>'><%= order_line.arv_type%></td>
         <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
         <td title="<%= h order_line.updated_at %>" class='<%= klass  %>'><%= time_ago_in_words order_line.updated_at %></td>
@@ -87,7 +107,7 @@
       if(validShipmentLines()){
         $('#shippement_dialog').modal();
       }
-    });    
+    })
   }
 
   // Display all errors message
@@ -222,7 +242,7 @@
   }
 
   function handleFilterBySite(){
-    $("#order_site_id").on('change', function(){
+    $(".order-shipment").on('change', function(){
        this.form.submit();
     })
   }
