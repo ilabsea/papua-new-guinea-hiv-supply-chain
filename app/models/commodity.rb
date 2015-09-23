@@ -19,8 +19,9 @@ class Commodity < ActiveRecord::Base
 
   attr_accessor :commodity_type
 
-  attr_accessible :commodity_category_id, :commodity_category, :consumption_per_client_pack, :consumption_per_client_unit, :name,
-                  :unit_id, :strength_dosage, :abbreviation, :quantity_per_packg, :commodity_type	
+  attr_accessible :commodity_category_id, :commodity_category, :pack_size, :consumption_per_client_pack,
+                  :consumption_per_client_unit, :name, :unit_id, :strength_dosage, :abbreviation,
+                  :quantity_per_packg, :commodity_type
 
   belongs_to :commodity_category
   belongs_to :unit

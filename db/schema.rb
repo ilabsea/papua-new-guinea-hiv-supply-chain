@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130926084556) do
+ActiveRecord::Schema.define(:version => 20150923101240) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20130926084556) do
     t.string   "strength_dosage"
     t.string   "abbreviation"
     t.string   "quantity_per_packg"
+    t.float    "pack_size"
   end
 
   create_table "commodity_categories", :force => true do |t|
@@ -163,7 +164,7 @@ ActiveRecord::Schema.define(:version => 20130926084556) do
     t.integer  "sms_logs_count",                     :default => 0
     t.integer  "shipment_lines_count",               :default => 0
     t.datetime "last_notified_date"
-    t.datetime "lost_date",                          :default => '2013-10-08 04:57:38'
+    t.datetime "lost_date",                          :default => '2015-09-21 05:09:07'
     t.float    "cost"
     t.integer  "carton"
     t.integer  "site_messages_count",                :default => 0

@@ -15,8 +15,10 @@
   <% end %>
   <%= f.input :consumption_per_client_pack, :label => 'Consumption per client per month(pack)' %>
   <%= f.input :consumption_per_client_unit, :label => 'Consumption per client per month(unit)' %>
+  <%= f.input :pack_size, :label => 'Pack Size' %>
 
   <%= f.association :unit, :include_blank => "Select Unit of measurement" %>
+
   <% if params[:type] == CommodityCategory::TYPES_DRUG  %>
     <%= f.input :strength_dosage, :label => "Streng/Dosage" %>
     <%= f.input :abbreviation, :required => true %>
