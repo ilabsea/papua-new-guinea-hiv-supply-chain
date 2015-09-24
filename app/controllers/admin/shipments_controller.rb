@@ -37,7 +37,11 @@ module Admin
     def order
       @shipment_session = ShipmentSession.new(session)
 
-      @order_lines = OrderLine.items(params).data_filled.not_shipped.paginate(paginate_options.merge(per_page: 50))
+      @order_lines = OrderLine.includes(:commodity => :unit, :order => :site )
+                              .items(params)
+                              .data_filled
+                              .not_shipped
+                              .paginate(paginate_options.merge(per_page: 50))
 
 
       @sites = []

@@ -38,7 +38,8 @@
         <th width=160>
           <%= link_to 'SMS from site', field_sorted_in_shipments_path_for('shipments.site_messages_count'),
                       :class => 'link-thead' %> </th>
-        <th><%=check_box_tag 'toggle' , '', false,  :id => 'status_toggle' %></th>
+        <th style="text-align:center;">
+          <%=check_box_tag 'toggle' , '', false,  :id => 'status_toggle' %></th>
       </tr>
     </thead>
 

@@ -157,9 +157,8 @@ class OrderLine < ActiveRecord::Base
 
   def self.items options
 
-    order_lines = OrderLine.includes(:commodity, :order => :site )
-                           .joins("INNER JOIN orders ON order_lines.order_id = orders.id")
-                           .where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
+    order_lines = self.joins("INNER JOIN orders ON order_lines.order_id = orders.id")
+                  .where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
     
 
     # order_lines = OrderLine.includes(:commodity, :order => :site ).joins(:order).where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
