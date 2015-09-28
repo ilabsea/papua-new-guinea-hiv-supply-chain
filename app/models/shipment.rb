@@ -42,6 +42,9 @@ class Shipment < ActiveRecord::Base
 
 	validates :consignment_number, :shipment_date, :presence => true
 	validates :consignment_number, :uniqueness => true
+  validates :consignment_number, numericality: true
+  validates :consignment_number, length: { in: 9..10 }
+
 	validates :cost, :carton , numericality: { greater_than_or_equal_to: 0, message: 'is not a valid number'}
 	validates :user, :presence => true
 

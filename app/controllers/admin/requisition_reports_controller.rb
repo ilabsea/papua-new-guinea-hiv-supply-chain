@@ -57,7 +57,7 @@ module Admin
 			if Order.create_from_requisition_report @requisition_report
 			  redirect_to admin_orders_path, :notice => 'Order has been created successfully'
 			else
-			  redirect_to admin_requisition_reports_path, :error => 'Failed to import'	
+			  redirect_to admin_requisition_reports_path, :error => 'Failed to import'
 			end
 		end
 

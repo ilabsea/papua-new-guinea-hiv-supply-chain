@@ -25,7 +25,7 @@ class RequisitionReport < ActiveRecord::Base
 
    IMPORT_STATUSES = [ IMPORT_STATUS_PENDING, IMPORT_STATUS_FAILED, IMPORT_STATUS_SUCCESS ]
 
-   validates :form, :presence => true 
+   validates :form, :presence => true
    mount_uploader :form, RequisitionReportUploader
 
    def save_nested_order
@@ -37,7 +37,7 @@ class RequisitionReport < ActiveRecord::Base
             message = order.errors.full_messages.join("<br />") 
             errors.add(:form, message)
             raise ActiveRecord::Rollback, message
-         end         
+         end
       end
       errors.size == 0
    end

@@ -62,8 +62,9 @@ class Order < ActiveRecord::Base
       ]).first
 
     if(!order.nil? && order.id != self.id)
-      errors.add(:site_id, "#{order.site.name} has already had an order on #{order.order_date}")
-      errors.add(:order_date, "#{order.site.name} has already had an order on #{order.order_date}")
+      date = order.order_date ? order.order_date.strftime(ENV['DATE_FORMAT']) : ''
+      errors.add(:site_id, "#{order.site.name} has already had an order on #{date}")
+      errors.add(:order_date, "#{order.site.name} has already had an order on #{date}")
     end
   end
 
@@ -92,18 +93,18 @@ class Order < ActiveRecord::Base
   def self.create_from_requisition_report requisition_report
   	order = Order.new :date_submittion => requisition_report.created_at,
 											 :is_requisition_form => true,
-											 :order_date => Time.now().to_date, 
+											 :order_date => Time.zone.now.to_date, 
 											 :status  => Order::ORDER_STATUS_PENDING
 
-    site =  requisition_report.site              
+    site =  requisition_report.site
 
-  	order.user_place_order   = requisition_report.user
-  	order.site 				 = site
+  	order.user_place_order = requisition_report.user
+  	order.site = site
   	order.requisition_report = requisition_report
 
-  	if order.save
+    if order.save
 
-  		requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
+      requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
       requisition_report.save
 
       site.order_start_at = Time.now.strftime('%Y-%m-%d')
@@ -113,10 +114,10 @@ class Order < ActiveRecord::Base
       order_line_import = OrderLineImport.new order, order.requisition_report.form.current_path
       order_line_import.import
 
-  	else
-  		requisition_report.status = RequisitionReport::IMPORT_STATUS_FAILED	
+    else
+      requisition_report.status = RequisitionReport::IMPORT_STATUS_FAILED
       requisition_report.save
-  	end
+    end
     order
   end
 
@@ -126,16 +127,15 @@ class Order < ActiveRecord::Base
   end
 
   def import_order_lines
-  	file_name = order.requisition_report.current_path
-
+    file_name = order.requisition_report.current_path
   end
 
   def user_type
-  	 return user_place_order.nil? ? 'Data Entry' : 'Site'
+    return user_place_order.nil? ? 'Data Entry' : 'Site'
   end
 
   def user
-  	self.user_place_order || self.user_data_entry
+    self.user_place_order || self.user_data_entry
   end
 
   def self.total_by_status
@@ -156,7 +156,6 @@ class Order < ActiveRecord::Base
     end
     orders
   end
-
 
   def self.approved
     where("orders.status = :status", :status => Order::ORDER_STATUS_APPROVED)
