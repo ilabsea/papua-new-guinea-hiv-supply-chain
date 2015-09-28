@@ -127,9 +127,8 @@ module Admin
     end
 
     def download
-      time =Time.now.strftime("%Y-%m-%d %H:%m:%S_")
-
-      file_name =  "#{Rails.root}/public/data/#{time}shipment.csv"
+      time =Time.now.strftime(ENV['DATE_TIME_FORMAT'])
+      file_name =  "#{Rails.root}/public/data/#{time}_shipment.csv"
          
       Export.shipment file_name, params[:type]
       send_file(file_name , :filename      =>  File.basename(file_name),

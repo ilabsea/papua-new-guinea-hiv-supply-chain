@@ -9,6 +9,8 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+ENV.update YAML.load_file('config/application.yml')[Rails.env]
+
 module PngHivAids
   class Application < Rails::Application
     
@@ -78,6 +80,7 @@ module PngHivAids
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    config.time_zone = ENV['TIME_ZONE']
 
     config.exceptions_app = self.routes
   end

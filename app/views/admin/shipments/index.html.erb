@@ -51,13 +51,25 @@
           <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
           <td><%= shipment.cost %></td>
           <td><%= shipment.carton %></td>
-          <td><%= shipment_status(shipment.status) %>
-          <td title='<%= shipment.shipment_date %>' class='td-expand'> <%= shipment.shipment_date %> </td>
+          <td><%= shipment.status %>
+          <td title='<%= show_date(shipment.shipment_date) %>' class='td-expand'> <%= time_ago_tag shipment.shipment_date %> </td>
           <td> <%= link_to badge_value(shipment.sms_logs_count) , admin_shipment_sms_logs_path(shipment) %> </td>
-          <td> <%= timeago_tag shipment.last_notified_date %> </td>
-          <td> <%= timeago_tag shipment.received_date %></td>
-          <td> <%= timeago_tag shipment.lost_date %> </td>  
-          <td> <%= link_to badge_value(shipment.site_messages_count), shipment_messages_admin_shipment_site_messages_path(shipment) %> </td> 
+          <td title="<%= show_date_time(shipment.last_notified_date) %>" class='td-expand'>
+            <%= time_ago_tag shipment.last_notified_date %>
+          </td>
+
+          <td title='<%= show_date_time(shipment.received_date)%>' class='td-expand'>
+             <%= time_ago_tag shipment.received_date %>
+          </td>
+
+          <td title="<%= show_date_time(shipment.lost_date)%>" class='td-expand'>
+            <%= time_ago_tag shipment.lost_date %>
+          </td>
+
+          <td>
+            <%= link_to badge_value(shipment.site_messages_count), 
+                        shipment_messages_admin_shipment_site_messages_path(shipment) if shipment.site_messages_count >0 %>
+          </td>
           <td class="center">
             <%= check_box_tag 'status_shipment_id[]', shipment.id, false %>
           </td>

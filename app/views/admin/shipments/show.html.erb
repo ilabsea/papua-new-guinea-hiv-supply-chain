@@ -9,10 +9,14 @@
     <li> Consignment number : <b> <%=@shipment.consignment_number%> </b> </li>
     <li> 
       Cost : 
-      <b>  <%= link_to @shipment.cost , '#cost_shippement_dialog', :id => 'update_cost', :title => 'Click to update the cost of shipment',  :data => {:skip_loading=> true, toggle: 'modal'}  %>  <%=%>  </b> 
+      <b>  <%= link_to @shipment.cost , '#cost_shippement_dialog',
+                                        :id => 'update_cost',
+                                        :title => 'Click to update the cost of shipment',
+                                        :data => {:skip_loading=> true, toggle: 'modal'} %>
+      </b>
     </li>
     <li> Number of carton : <b> <%=@shipment.carton %> </b> </li>
-    <li> Shipment Date : <b> <%=@shipment.shipment_date%> </b> </li>
+    <li> Shipment Date : <b> <%= show_date(@shipment.shipment_date)%> </b> </li>
     <li> Total : <b> <%= pluralize(@shipment.shipment_lines_count, 'item') %> </b> </li>
   </ul>  
 </div>
@@ -23,8 +27,8 @@
       <th class='nth-table'>#</th>
       <th style='width: 450px;'>Commodity</th>
       <th>Quantity Issued</th>
-      <th>Quantity Suggested</th>   
-      <th>Remark</th>      
+      <th>Quantity Suggested</th>
+      <th>Remark</th>
     </tr>
   </thead>
 

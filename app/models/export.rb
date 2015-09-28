@@ -10,10 +10,10 @@ class Export
   			csv << [ order.date_submittion, 
   					 order.site.name,
   					 order.id,
-  					 order.order_date,
+  					 show_date(order.order_date),
   					 order.user_data_entry ? order.user_data_entry.user_name : "",
   					 order.review_user ?  order.review_user.user_name : "",
-  					 order.review_date ,
+  					 show_date_time(order.review_date),
   					 order.status 
   			]
   		end
@@ -32,15 +32,24 @@ class Export
           shipment.cost,
           shipment.carton,
           shipment.status,
-          shipment.shipment_date,
+          show_date(shipment.shipment_date),
           shipment.sms_logs_count,
-          shipment.last_notified_date,   
-          shipment.received_date, 
-          shipment.lost_date,
-          shipment.site_messages_count  
+          show_date_time(shipment.last_notified_date),
+          show_date_time(shipment.received_date),
+          show_date_time(shipment.lost_date),
+          shipment.site_messages_count
         ]
         csv << row
       end
     end
   end
+
+  def self.show_date(date)
+    date ? date.strftime(ENV['DATE_FORMAT']) : ''
+  end
+
+  def self.show_date_time(datetime)
+    datetime ? datetime.strftime(ENV['DATE_TIME_FORMAT']) : ''
+  end
+
 end

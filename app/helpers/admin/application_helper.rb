@@ -1,6 +1,6 @@
 module Admin::ApplicationHelper
   def app_name
-    "HIV Supply Chain"
+    ENV['APP_NAME']
   end
   
   def app_title
@@ -206,9 +206,9 @@ module Admin::ApplicationHelper
     end
   end
 
-	def breadcrumb options=nil
-		content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
-	end
+  def breadcrumb options=nil
+    content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
+  end
 
   def status st
     text = ""
@@ -219,5 +219,19 @@ module Admin::ApplicationHelper
        text = '<i class="icon-minus-sign" ></i>'
     end
     text.html_safe
-  end 
+  end
+
+  def time_ago_tag date_time
+    format =  date_time.class == Date ? ENV['DATE_FORMAT'] : ENV['DATE_TIME_FORMAT']
+    timeago_tag date_time, :nojs => true, :limit => 20.days.ago, format: format
+  end
+
+  def show_date(date)
+    date ? date.strftime(ENV['DATE_FORMAT']) : ''
+  end
+
+  def show_date_time date_time
+    date_time ? date_time.strftime(ENV['DATE_TIME_FORMAT']) : ''
+  end
+
 end

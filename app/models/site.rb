@@ -27,6 +27,8 @@
 #
 
 class Site < ActiveRecord::Base
+  # has_date_format :order_start_at
+
   has_many :users
   has_many :requisition_reports
   has_many :orders
@@ -46,17 +48,13 @@ class Site < ActiveRecord::Base
 
   validates :order_frequency, :number_of_deadline_sumission, :numericality => {:greater_than => 0}    
   validates :suggestion_order, :test_kit_waste_acceptable,  :numericality => {:greater_than_or_equal_to => 0 }   
-  validates :in_every, numericality: { greater_than: 0}   
-     
-  
+  validates :in_every, numericality: { greater_than: 0}
+
   SeviceType = ["ART", 'PMTCT', "VCCT"]
   default_scope order('sites.name ASC')
 
   SMS_ALERTED = 1
   SMS_NOT_ALERTED = 0
-
- 
-
 
   def deadline_date
     self.order_start_at + self.order_frequency.months + self.number_of_deadline_sumission.days

@@ -26,7 +26,7 @@
         <td><%=requisition_report.site.name %></td>
         <td><%=requisition_report.user.display_name %></td>
         <td><%=requisition_report.status %></td>
-        <td><%=requisition_report.created_at %></td>
+        <td><%= time_ago_tag(requisition_report.created_at) %></td>
 
     <% 
        confirm_warning = 'The form has already been imported. Are you sure to reimport it ? [Warning] Re impport the form will automatically delete the previouse imported data '

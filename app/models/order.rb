@@ -150,10 +150,9 @@ class Order < ActiveRecord::Base
   def self.in_between date_start, date_end
     orders = where("1=1")
     if !date_start.blank? && !date_end.blank?
-      format     =    '%Y-%m-%d'
-      date_start = DateTime.strptime(date_start , format )
-      date_end   = DateTime.strptime(date_end   , format )
-      orders = orders.where(['order_date BETWEEN :date_start AND :date_end', :date_start => date_start.beginning_of_day, :date_end => date_end.end_of_day ])
+      date_start = DateTime.strptime(date_start , ENV['DATE_FORMAT'] )
+      date_end   = DateTime.strptime(date_end   , ENV['DATE_FORMAT'] )
+      orders = orders.where(['order_date BETWEEN ? AND ?', date_start.beginning_of_day, date_end.end_of_day ])
     end
     orders
   end

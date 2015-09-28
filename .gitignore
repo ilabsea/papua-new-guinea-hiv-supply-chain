@@ -27,3 +27,6 @@
 .rspec
 /public/assets
 /vendor/bundle
+
+
+/config/application.yml

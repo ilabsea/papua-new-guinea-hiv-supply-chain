@@ -4,7 +4,11 @@ class DateTimePickerInput < SimpleForm::Inputs::DateTimeInput
   	class_input = input_html_options[:class]
   	class_input =  class_input.unshift('datepicker-input')
     options = input_html_options.merge(:class => class_input )
-    icon = '<span class="add-on"><i class="icon-calendar"> </i></span>' 
+    icon = '<span class="add-on"><i class="icon-calendar"> </i></span>'
+    value = object.try(attribute_name)
+    value = value.strftime(ENV['DATE_FORMAT']) if value.present?
+    options[:value] = value
+
     text = "#{@builder.text_field(attribute_name, options)}"
     '<div class="input-append date datepicker" > ' + text + icon + '</div>'.html_safe
    end

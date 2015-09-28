@@ -1,0 +1,18 @@
+default: &default
+
+  APP_NAME: "HIV Supply Chain"
+  TIME_ZONE: 'Bangkok'
+  
+  DATE_FORMAT: '%d-%m-%Y'
+  DATE_FORMAT_JS: 'dd-mm-yyyy'
+
+  DATE_TIME_FORMAT: '%d-%m-%Y, %H:%M:%S'
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

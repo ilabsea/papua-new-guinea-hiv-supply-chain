@@ -28,11 +28,11 @@ module Admin
 
  	def tab_order_line
  		# # must eager load order_lines, otherwise each orline from order.order_lines will go to sql query
- 		@order 			  =  params[:id].blank? ? Order.new : _order
- 		site              =  Site.find params[:site_id]
- 		@order.site 	  =  site
+ 		@order =  params[:id].blank? ? Order.new : _order
+ 		site =  Site.find params[:site_id]
+ 		@order.site =  site
  		@order.order_date =  params[:order_date]
- 		_build_tab(@order, site)	
+ 		_build_tab(@order, site)
  		render :layout => false
  	end
 
@@ -88,12 +88,12 @@ module Admin
  	def export
  		file =  "#{Rails.root}/public/data/orders.csv"
  		Export.order file, params[:type]
- 		send_file(file , 
-	                      :filename      =>  "orders.csv",
-	                      :type          =>  'text/csv',
-	                      :disposition   =>  'attachment',
-	                      :streaming     =>  true,
-	                      :buffer_size   =>  '4096')
+ 		send_file(file ,
+              :filename      =>  "orders.csv",
+              :type          =>  'text/csv',
+              :disposition   =>  'attachment',
+              :streaming     =>  true,
+              :buffer_size   =>  '4096')
  	end
 
  	# don't refer me coz am private
