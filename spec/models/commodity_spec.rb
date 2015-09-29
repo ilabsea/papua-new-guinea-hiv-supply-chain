@@ -13,6 +13,7 @@
 #  strength_dosage             :string(255)
 #  abbreviation                :string(255)
 #  quantity_per_packg          :string(255)
+#  pack_size                   :float
 #
 
 require 'spec_helper'

@@ -26,6 +26,7 @@
 #  completed_order                  :integer          default(0)
 #  order_frequency                  :float
 #  site_id                          :integer
+#  pack_size                        :float            default(1.0)
 #
 
 class OrderLine < ActiveRecord::Base
@@ -34,8 +35,9 @@ class OrderLine < ActiveRecord::Base
   belongs_to :site
   has_one :shipment_line, :dependent => :destroy
 
-  attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :status, :order, :stock_on_hand, :number_of_client,
-                  :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id, :site_id, :site, :is_set, :skip_bulk_insert,:commodity
+  attr_accessible :earliest_expiry, :monthly_use, :quantity_suggested, :status, :order, :stock_on_hand,
+                  :number_of_client, :user_data_entry_note, :user_reviewer_note,:arv_type, :commodity_id,
+                  :site_id, :site, :is_set, :skip_bulk_insert,:commodity, :pack_size
 
   validates :stock_on_hand , :numericality => {:greater_than_or_equal_to => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.quantity_suggested }
   validates :quantity_suggested , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.stock_on_hand }

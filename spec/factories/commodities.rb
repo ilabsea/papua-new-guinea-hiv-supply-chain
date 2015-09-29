@@ -13,6 +13,7 @@
 #  strength_dosage             :string(255)
 #  abbreviation                :string(255)
 #  quantity_per_packg          :string(255)
+#  pack_size                   :float
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -25,5 +26,6 @@ FactoryGirl.define do
     consumption_per_client_unit 1
     commodity_type { CommodityCategory::TYPES_KIT} 
     unit
+    pack_size 3.0
   end
 end

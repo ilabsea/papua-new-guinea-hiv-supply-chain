@@ -1,10 +1,10 @@
 class SiteMessageParser
-  DELIMITER = ' '	
+  DELIMITER = ' '
   ERROR_OK = 0
   ERROR_ERROR = 1
 
-  STATUS_RECEIVED 	= [ 'r','y','yes', 'received']
-  STATUS_LOST				= [ 'l','n', 'no', 'not', 'lost']
+  STATUS_RECEIVED = [ 'r','y','yes', 'received']
+  STATUS_LOST = [ 'l','n', 'no', 'not', 'lost']
   STATUS_PARTIALLY_RECEIVED = ['p', 'partial']
 
   def initialize params
@@ -43,11 +43,11 @@ class SiteMessageParser
   def translate_message
     setting = Setting[@options[:error_type]]
     params = {
-      :phone_number     => @options[:from].without_sms_protocol,
-      :status           => @options[:status],
-      :consignment      => @options[:consignment_number],
+      :phone_number => @options[:from].without_sms_protocol,
+      :status => @options[:status],
+      :consignment => @options[:consignment_number],
       :original_message => @options[:body],
-      :carton_number           => @options[:carton]
+      :carton_number => @options[:carton]
     }
     translation = setting.str_tr(params)
     @options[:response_message] = translation

@@ -25,6 +25,7 @@
 #  completed_order                  :integer          default(0)
 #  order_frequency                  :float
 #  site_id                          :integer
+#  pack_size                        :float            default(1.0)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

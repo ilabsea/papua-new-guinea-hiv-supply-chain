@@ -23,13 +23,13 @@
 
 FactoryGirl.define do
   factory :shipment do
-  	shipment_date '2013-06-25 11:31:27'
-  	sequence(:consignment_number){|index| 100000+index} 
-  	status Shipment::STATUS_IN_PROGRESS
-  	cost 100.25
-  	carton 10
-  	order
-  	user
-  	site
+    shipment_date '2013-06-25 11:31:27'
+    status Shipment::STATUS_IN_PROGRESS
+    cost 100.25
+    carton 10
+    order
+    user
+    site
+    sequence(:consignment_number) {|n| (100000000 + n).to_s }
   end
 end

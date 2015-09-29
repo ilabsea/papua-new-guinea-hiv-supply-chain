@@ -28,7 +28,7 @@ describe Shipment do
   	@user = FactoryGirl.create :user
   	@attr = {
   		:status => Shipment::STATUS_IN_PROGRESS,
-  		:consignment_number => '01019291',
+  		:consignment_number => '0101929100',
   		:shipment_date => Time.now,
   		:user => @user,
       :cost => 201.29,
@@ -63,7 +63,10 @@ describe Shipment do
 
     it 'should require cost to be greater than or iqual to 0 value' do
       shipment = Shipment.new @attr.merge(:cost  => 0.0 )
-      shipment.save.should be_true
+      
+      result = shipment.save
+      p shipment.errors.full_messages
+      result.should be_true
     end
 
     it 'should require consignment_number to be unique' do
@@ -165,7 +168,7 @@ describe Shipment do
       Sms.should_receive(:send)
 
       @site = FactoryGirl.create :site, name: 'Kampongchame'
-      @shipment = FactoryGirl.create :shipment, site: @site, consignment_number: '27091984', shipment_date: Time.new(2013,9,9)
+      @shipment = FactoryGirl.create :shipment, site: @site, shipment_date: Time.new(2013,9,9)
 
       expect{@shipment.alert_deadline}.to change{SmsLog.count}.by(1)
 

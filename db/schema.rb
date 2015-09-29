@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150923101240) do
+ActiveRecord::Schema.define(:version => 20150929022132) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20150923101240) do
     t.integer  "completed_order",                                                 :default => 0
     t.float    "order_frequency"
     t.integer  "site_id"
+    t.float    "pack_size",                                                       :default => 1.0
   end
 
   add_index "order_lines", ["commodity_id"], :name => "index_order_lines_on_commodity_id"

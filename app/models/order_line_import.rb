@@ -8,7 +8,7 @@ class OrderLineImport
 	end
 
 	def import
-		load_arv_req 
+		load_arv_req
 		load_arv_test
 	end
 
@@ -47,16 +47,25 @@ class OrderLineImport
 				commodity = find_commodity_by_name(row[0])
 				
 				if commodity
-					params = { :commodity  => commodity,
-							   :arv_type  	  =>  CommodityCategory::TYPES_KIT,
-							   :stock_on_hand =>  row[2].to_i,
-							   :monthly_use	  => row[3].to_i,
-							   :skip_bulk_insert => true
-							}
+					pack_size = commodity.pack_size == nil ? 1.0 : commodity.pack_size
+
+					stock_on_hand = row[2].to_i
+					stock_on_hand = (stock_on_hand/pack_size).ceil
+
+					monthly_use   = row[3].to_i
+					monthly_use   = (monthly_use/pack_size).ceil
+
+					params = { :commodity => commodity,
+							       :pack_size => pack_size,
+							       :arv_type => CommodityCategory::TYPES_KIT,
+							       :stock_on_hand => stock_on_hand,
+							       :monthly_use => monthly_use,
+							       :skip_bulk_insert => true
+					}
 
 					order_lines << @order.order_lines.build(params)
 				else
-				    info =  'Could not find commodity with name: ' + row[0]
+				    info = 'Could not find commodity with name: ' + row[0]
 				    add_missing_commodities row[0]
 				    Rails.logger.info(info)
 				end
@@ -78,22 +87,23 @@ class OrderLineImport
 
 			if is_commodities? row
 				commodity = find_commodity_by_name(row[0])
+
 				if commodity
 					params = { :commodity => commodity,
-							   :arv_type  => CommodityCategory::TYPES_DRUG,
-							   :stock_on_hand =>  row[5].to_i,
-							   :monthly_use   =>  row[6].to_i,
-							   :skip_bulk_insert => true 
+							       :arv_type  => CommodityCategory::TYPES_DRUG,
+							       :stock_on_hand =>  row[5].to_i,
+							       :monthly_use   =>  row[6].to_i,
+							       :skip_bulk_insert => true
 							}
 					order_lines << @order.order_lines.build(params)
 				else
-				    info =  'Could not find commodity with name: ' + row[0]
+				    info = 'Could not find commodity with name: ' + row[0]
 				    add_missing_commodities row[0]
 				    Rails.logger.info(info)
 				end
 			end
 		end
-		bulk_import order_lines	
+		bulk_import order_lines
 	end
 
 	def bulk_import order_lines
