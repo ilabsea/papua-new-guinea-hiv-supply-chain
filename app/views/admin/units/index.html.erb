@@ -12,8 +12,8 @@
 		<tr>
 			<th class='nth-table'> # </th>
 			<th> Name </th>
-			<th> Creation date </th>
-			<th class='action_col2'> Action</th>
+			<th width="200"> Creation date </th>
+			<th class='action_col3'> Action</th>
 		</tr>
 	</thead>
 
@@ -22,11 +22,13 @@
 			<tr> 
 				<td><%= current_entries + index %></td>
 				<td><%= link_to unit.name, admin_unit_path(unit) %></td>
-				<td><%= l unit.created_at %></td>
+				<td><%= show_date_time unit.created_at %></td>
 				<td>
 				  <%=link_button_edit  "Edit", edit_admin_unit_path(unit), :class => 'btn btn-mini'  %>
 				  <%=link_button_delete "Destroy", admin_unit_path(unit) ,
-				  			 :method => :delete , :confirm => 'Are you sure to delete?',:class => 'btn btn-mini btn-danger' %>
+				                        :method => :delete ,
+				                        :confirm => 'Are you sure to delete?',
+				                        :class => 'btn btn-mini btn-danger' %>
 				</td>
 			</tr>
 		<% end %> 

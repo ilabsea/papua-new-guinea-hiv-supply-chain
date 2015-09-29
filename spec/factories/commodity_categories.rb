@@ -13,6 +13,7 @@
 
 FactoryGirl.define do
   factory :commodity_category do
-    name "CommodityCategory"
+    sequence(:name) {|n| "Category_#{n}"}
+    com_type 'Kit'
   end
 end

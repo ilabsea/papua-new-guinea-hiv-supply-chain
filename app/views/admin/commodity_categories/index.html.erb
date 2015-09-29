@@ -35,7 +35,7 @@
         <td>
           <%= link_button_edit 'Edit',  edit_admin_commodity_category_path(commodity_category,:type => params[:type]) %>
           <%= link_button_delete 'Delete',  admin_commodity_category_path(commodity_category, :type => params[:type]),
-                :method => :delete, :confirm => 'Are you sure to delete?' %>
+                :method => :delete, :confirm => 'Are you sure to delete this commodity category?' %>
         </td>
       </tr>
     <% end %>

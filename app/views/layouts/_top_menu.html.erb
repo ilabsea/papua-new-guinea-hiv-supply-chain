@@ -9,47 +9,112 @@
         <a class="brand" href="<%= admin_root_path() %>"> <%=app_name %> </a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <%
-              menus = [] 
-              menus += [ {:label => "Users", :url => admin_users_path ,    :controller => "users" },
-                        {:label => "Commodities",:url => admin_commodities_path(), :controller => "commodities"},
-               ] if current_user.admin?
+              <% if current_user.admin? %>
+                <li class="<%=nav_status([:users]) %>"> 
+                  <%= link_to 'Users', admin_users_path %>
+                </li>
 
-              menus += [ {:label => "Requisition Forms",:url => admin_requisition_reports_path(), :controller => "requisition_reports"}
-                #,{:label => 'Requisition Template', :url => template_admin_commodity_categories_path(:format =>:xls), :controller => 'commodity_categories' } 
-
-
-                ]  if current_user.site?
-              
-              menus << {:label => "SURV",:url => admin_import_survs_path(:type => ImportSurv::TYPES_SURV1), :controller => "import_survs"} if current_user.data_entry?
-              menus << {:label => "Requisition and order", :url => admin_orders_path(), :controller => "orders"} if current_user.data_entry? || current_user.reviewer?
-
-              menus += [
-                {:label => "Sites", :url => admin_sites_path(), :controller => "sites"},
-                {:label => "Public Holidays", :url => admin_public_holidays_path(), :controller => "public_holidays"},
-                {:label => "Settings", :url => admin_settings_path, :controller => "settings"},
-                {:label => "Sms Logs", :url => monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_REQUISITION), :controller => ["sms_logs", "site_messages"] },
-              ] if current_user.admin?
-
-
-              action = params[:action]
-
-              menus += [
-                  {:label => "Orders pending for dispatch", :url => order_admin_shipments_path(), :controller => "", :selected => action == "order" ? true : false },
-                  {:label => "Shipment status", :url => admin_shipments_path(), :controller => "", :selected => (action=="index" && params[:type].blank?) ? true : false },
-                  {:label => "Package lost", :url => admin_shipments_path(:type => Shipment::STATUS_LOST), :controller => "", :selected => (action == "index" && params[:type] == Shipment::STATUS_LOST ) ? true : false },
-
-                  {:label => "Package partially confirmed", :url => admin_shipments_path(:type => Shipment::STATUS_PARTIALLY_RECEIVED), :controller => "", :selected => ( action == "index" && params[:type] == Shipment::STATUS_PARTIALLY_RECEIVED ) ? true : false },
-
-                  {:label => "Package confirmed", :url => admin_shipments_path(:type => Shipment::STATUS_RECEIVED), :controller => "", :selected => ( action == "index" && params[:type] == Shipment::STATUS_RECEIVED ) ? true : false },
-
-                ] if current_user.ams?
-
-              menus.each do |item|
-                cls = (item[:controller] == controller_name || item[:controller].include?(controller_name) || item[:selected] == true) ? "active" : ""
-              %>
-                  <li class="<%=cls%>"> <%=link_to item[:label], item[:url] %> </li>
+                <li class="<%=nav_status([:commodities]) %>"> 
+                  <%= link_to 'Commodities', admin_commodities_path %>
+                </li>
               <% end %>
+
+              <% if current_user.site? %>
+                <li class='<%=nav_status([:requisition_reports]) %>'>
+                  <%= link_to 'Requisition Forms', admin_requisition_reports_path %>
+                </li>
+              <% end %>
+
+              <% if current_user.data_entry? || current_user.reviewer? %>
+                <li class='<%=nav_status([:import_surv]) %>'> 
+                  <%= link_to 'SURV', admin_import_survs_path(:type => ImportSurv::TYPES_SURV1) %>
+                </li>
+
+                <li class='<%=nav_status([:orders]) %>'>
+                  <%= link_to 'Requisition and order', admin_orders_path(:type => ImportSurv::TYPES_SURV1) %>
+                </li>
+              <% end %>
+
+              <% if current_user.admin? %>
+                <li class='<%=nav_status([:sites]) %>'>
+                  <%= link_to 'Sites', admin_sites_path %>
+                </li>
+
+                <li class='<%=nav_status([:public_holidays]) %>'>
+                  <%= link_to 'Public Holidays', admin_public_holidays_path %>
+                </li>
+
+                <li  class='<%=nav_status([:site_messages, :sms_logs]) %>'>
+                  <%= link_to 'Sms Logs', monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_REQUISITION) %>
+                </li>
+
+
+                <li class="dropdown <%=nav_status([:commodity_categories, :lab_test_categories, :regimen_categories, :units, :provinces, :settings, :lab_tests, :regimens])%>" >
+
+                  <a  class="dropdown-toggle" href="#" data-toggle="dropdown">
+                    Settings
+                    <b class="caret"></b>
+                  </a>
+
+                  <ul class="dropdown-menu">
+
+                    <li class="<%=nav_status([:settings]) %>" >
+                      <%= link_to "System Settings", admin_settings_path() %>
+                    </li>
+                    <li class="divider"></li>
+
+                    <li class="<%=nav_status([:commodity_categories]) %>" >
+                      <%= link_to "Commodity Categories", admin_commodity_categories_path() %>
+                    </li>
+
+                    <li class="<%=nav_status([:lab_test_categories]) %>" >
+                      <%= link_to "Lab Test Categories", admin_lab_test_categories_path() %>
+                    </li>
+
+                    <li class="<%=nav_status([:regimen_categories]) %>" >
+                      <%= link_to "Regimen Categories", admin_regimen_categories_path() %>
+                    </li>
+
+                    <li class="divider"></li>
+                    <li class="<%=nav_status([:lab_tests]) %>" >
+                      <%= link_to "Lab Test", admin_lab_tests_path() %>
+                    </li>
+                    <li class="<%=nav_status([:regimens]) %>" >
+                      <%= link_to "Regimen", admin_regimens_path() %>
+                    </li>
+                    <li class="<%=nav_status([:units]) %>" >
+                      <%= link_to "Units", admin_units_path() %>
+                    </li>
+                    <li class="<%=nav_status([:provinces]) %>" >
+                      <%= link_to "Provinces", admin_provinces_path() %>
+                    </li>
+
+                  </ul>
+                </li>
+              <% end %>
+
+              <% if current_user.ams? %>
+                <li class='<%=nav_status([:shipment]) %>'>
+                  <%= link_to 'Orders pending for dispatch', order_admin_shipments_path %>
+                </li>
+
+                <li class='<%=nav_status([:shipment]) %>'>
+                  <%= link_to 'Shipment status', admin_shipments_path %>
+                </li>
+
+                <li class='<%=nav_status([:shipment]) %>'>
+                  <%= link_to 'Package lost', admin_shipments_path(:type => Shipment::STATUS_LOST) %>
+                </li>
+
+                <li class='<%=nav_status([:shipment]) %>'>
+                  <%= link_to 'Package partially confirmed', admin_shipments_path(:type => Shipment::STATUS_PARTIALLY_RECEIVED) %>
+                </li>
+
+                <li class='<%=nav_status([:shipment]) %>'>
+                  <%= link_to 'Package confirmed', admin_shipments_path(:type => Shipment::STATUS_RECEIVED) %>
+                </li>
+              <% end %>
+
             </ul>
 
             <ul class="nav pull-right">
@@ -57,7 +122,7 @@
                 <li class="divider-vertical"></li>
                 <li class="dropdown">
                   <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                    Welcome <%= current_user.display_name %> </i>
+                    Welcome <%= current_user.display_name %>
                     <b class="caret"></b>
                   </a>
 

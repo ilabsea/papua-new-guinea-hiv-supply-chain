@@ -7,8 +7,8 @@ describe Service::MessagingsController do
   describe "POST 'nuntium'" do
  	before(:each) do
  	  @site = FactoryGirl.create :site, :mobile => '85597666666'
-      @shipment = FactoryGirl.create :shipment, consignment_number: '202020', site: @site, status: Shipment::STATUS_IN_PROGRESS
-      @attrs = {from: 'sms://85597666666', body: '202020 y', guid: '1345678dfghjklvbmhjkl' }
+      @shipment = FactoryGirl.create :shipment, consignment_number: '2020202020', site: @site, status: Shipment::STATUS_IN_PROGRESS
+      @attrs = {from: 'sms://85597666666', body: '2020202020 y', guid: '1345678dfghjklvbmhjkl' }
       Setting[:site_message_success] = 'you have successfully reported'
  	end
 

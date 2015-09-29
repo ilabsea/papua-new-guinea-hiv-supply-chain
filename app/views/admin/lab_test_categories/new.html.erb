@@ -1,0 +1,7 @@
+<%  content_for :breadcrumb do %>
+  <%= breadcrumb [ { "Lab Test Categories" => admin_lab_test_categories_path }, 
+  				   { "New Lab Test" => nil} ] %>
+<% end %>
+
+<%= page_header "New Lab Test Category" %>
+<%= render :partial => 'form' %>

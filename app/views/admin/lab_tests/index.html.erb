@@ -1,0 +1,43 @@
+
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Lab Test" => nil}]  %>
+<% end %> 
+
+<%= render 'admin/shared/commodity_tab' %>
+
+<%= page_header("Lab Tests", :left => 6, :right => 6) do %>
+  <%=link_button_new "New Lab Test", new_admin_lab_test_path() , :class => 'btn' %>
+<% end %>
+
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th class='nth-table'>#</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Unit</th>
+      <th class='action_col2'>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @lab_tests.each_with_index do |lab_test, index| %>
+      <tr>
+        <td><%=current_entries + index %></td>
+        <td>
+          <%=link_to lab_test.name, edit_admin_lab_test_path(lab_test) %>
+        </td>
+
+        <td><%= lab_test.lab_test_category.name %></td>
+        <td><%= lab_test.unit.name %></td>
+        <td class="last">
+          <%= link_button_edit 'Edit', edit_admin_lab_test_path(lab_test) %>
+          <%= link_button_delete 'Delete', admin_lab_test_path(lab_test),
+                                 :method => :delete,
+                                 :confirm => 'Are you sure to delete this lab test ?' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render_paginate_for @lab_tests %>
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150929022132) do
+ActiveRecord::Schema.define(:version => 20150929075533) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -50,6 +50,24 @@ ActiveRecord::Schema.define(:version => 20150929022132) do
     t.integer  "year"
     t.string   "month",      :limit => 20
   end
+
+  create_table "lab_test_categories", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "lab_tests", :force => true do |t|
+    t.string   "name"
+    t.integer  "lab_test_category_id"
+    t.integer  "unit_id"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  add_index "lab_tests", ["lab_test_category_id"], :name => "index_lab_tests_on_lab_test_category_id"
+  add_index "lab_tests", ["unit_id"], :name => "index_lab_tests_on_unit_id"
 
   create_table "order_lines", :force => true do |t|
     t.integer  "order_id"
@@ -112,6 +130,25 @@ ActiveRecord::Schema.define(:version => 20150929022132) do
     t.date     "date"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "regimen", :force => true do |t|
+    t.string   "name"
+    t.integer  "regimen_category_id"
+    t.integer  "unit_id"
+    t.string   "strength_dosage"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
+  add_index "regimen", ["regimen_category_id"], :name => "index_regimen_on_regimen_category_id"
+  add_index "regimen", ["unit_id"], :name => "index_regimen_on_unit_id"
+
+  create_table "regimen_categories", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "requisition_reports", :force => true do |t|

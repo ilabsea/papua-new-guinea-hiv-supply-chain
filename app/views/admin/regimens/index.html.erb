@@ -1,0 +1,43 @@
+
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Regimen" => nil}]  %>
+<% end %> 
+
+<%= render 'admin/shared/commodity_tab' %>
+
+<%= page_header("Regimens", :left => 6, :right => 6) do %>
+  <%=link_button_new "New Regimen", new_admin_regimen_path() , :class => 'btn' %>
+<% end %>
+
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th class='nth-table'>#</th>
+      <th>Name</th>
+      <th>Strength Dosage</th>
+      <th>Category</th>
+      <th>Unit</th>
+      <th class='action_col2'>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @regimens.each_with_index do |regimen, index| %>
+      <tr>
+        <td><%=current_entries + index %></td>
+        <td><%=link_to regimen.name, edit_admin_regimen_path(regimen) %></td>
+        <td><%=regimen.strength_dosage %></td>
+
+        <td><%= link_to regimen.regimen_category.name, edit_admin_regimen_category_path(regimen.regimen_category) %></td>
+        <td><%= link_to regimen.unit.name, edit_admin_unit_path(regimen.unit) %></td>
+        <td class="last">
+          <%= link_button_edit 'Edit', edit_admin_regimen_path(regimen) %>
+          <%= link_button_delete 'Delete', admin_regimen_path(regimen),
+                                 :method => :delete,
+                                 :confirm => 'Are you sure to delete this regimen ?' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render_paginate_for @regimens %>
+

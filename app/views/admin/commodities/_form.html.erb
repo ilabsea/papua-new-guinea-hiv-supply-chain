@@ -1,9 +1,3 @@
-<style type="text/css">
-  .form-horizontal .control-label {
-    margin-right: 15px;
-    width: 260px;
-  }
-</style>
 <% url =  @commodity.new_record? ? admin_commodities_path(:type => params[:type]) : admin_commodity_path(@commodity, :type => params[:type]) %>
 <%= simple_form_for [:admin , @commodity], :url => url,:html => { :class => 'form-horizontal' } do |f| %>
   <%= f.error_notification %> 

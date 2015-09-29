@@ -2,14 +2,8 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Commodity" => nil}]  %>
 <% end %> 
-<ul class="nav nav-tabs">
-  <li class=" <%= params[:type] == CommodityCategory::TYPES_DRUG ? 'active' : '' %>">
-    <%= link_to CommodityCategory::TYPES_DRUG, admin_commodities_path(:type =>  CommodityCategory::TYPES_DRUG ) %>
-  </li>
-  <li class="<%=params[:type] ==  CommodityCategory::TYPES_KIT ? 'active' : '' %>">
-    <%= link_to CommodityCategory::TYPES_KIT , admin_commodities_path(:type =>  CommodityCategory::TYPES_KIT ) %>
-  </li>
-</ul>
+
+<%= render 'admin/shared/commodity_tab' %>
 
 <%= page_header("Commodities", :left => 6, :right => 6) do %>
     <%=link_button_new "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}", :class => 'btn' %>

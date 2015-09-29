@@ -13,6 +13,9 @@ class CommodityCategory < ActiveRecord::Base
   attr_accessible :name, :com_type
   has_many :commodities
 
+  validates :name, :com_type, presence: true
+  validates :name, uniqueness: true
+
   TYPES_DRUG = 'Drug'
   TYPES_KIT  = 'Kit'
 

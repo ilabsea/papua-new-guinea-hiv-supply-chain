@@ -1,0 +1,8 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{ 'Lab Test Categories' => admin_lab_test_categories_path }, 
+  				  { 'Edit Lab Test Category' => nil }] %>
+<% end %>
+
+<%= page_header("Edit Lab Test Category") %>
+
+<%= render :partial => 'form' %>

@@ -234,4 +234,8 @@ module Admin::ApplicationHelper
     date_time ? date_time.strftime(ENV['DATE_TIME_FORMAT']) : ''
   end
 
+  def nav_status(controllers=[])
+    controllers.include?(controller_name.to_sym) ? ' active ' : ''
+  end
+
 end

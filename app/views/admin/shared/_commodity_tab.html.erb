@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs">
+  <li class=" <%= params[:type] == CommodityCategory::TYPES_DRUG ? 'active' : '' %>">
+    <%= link_to CommodityCategory::TYPES_DRUG, admin_commodities_path(:type =>  CommodityCategory::TYPES_DRUG ) %>
+  </li>
+  <li class="<%=params[:type] ==  CommodityCategory::TYPES_KIT ? 'active' : '' %>">
+    <%= link_to CommodityCategory::TYPES_KIT , admin_commodities_path(:type =>  CommodityCategory::TYPES_KIT ) %>
+  </li>
+
+  <li class="<%= controller_name == 'lab_tests' ? 'active' : '' %> ">
+    <%= link_to "Lab Test", admin_lab_tests_path %>
+  </li>
+
+  <li class="<%= controller_name == 'regimens' ? 'active' : '' %> ">
+    <%= link_to "Regimen", admin_regimens_path %>
+  </li>
+
+</ul>

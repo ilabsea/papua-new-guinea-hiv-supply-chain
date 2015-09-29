@@ -1,0 +1,8 @@
+<%= simple_form_for [:admin, @category ] , :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :name %>
+  <%= f.input :description, input_html: {rows: 5, cols: 40} %>
+  <div class="form-actions"> 
+    <%= button_save ' Save' %>
+    <%= link_button_cancel 'Cancel' , admin_lab_test_categories_path %>
+  </div>
+<% end %>

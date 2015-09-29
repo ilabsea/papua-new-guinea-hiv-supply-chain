@@ -1,0 +1,35 @@
+<%content_for :breadcrumb do %>
+ <%= breadcrumb [ "Regimen Categoies" => nil] %>
+<% end %>
+
+<%= page_header t("Regimen Categories"), :left => 6, :right => 6 do %>
+  <%=link_button_new "Regimen Category", new_admin_regimen_category_path %>
+<%  end %>
+
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th class='nth-table'>#</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th class='action_col2' >Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @categories.each_with_index do |category, index| %>
+      <tr>
+        <td><%= current_entries + index %></td>
+        <td><%= link_to category.name, edit_admin_regimen_category_path(category) %></td>
+        <td title="<%= category.description%>" class='td-expand'><%= truncate(category.description) %></td>
+        <td>
+          <%= link_button_edit 'Edit', edit_admin_regimen_category_path(category) %>
+          <%= link_button_delete 'Delete', admin_regimen_category_path(category),
+                      :method => :delete,
+                      :confirm => 'Are you sure to delete this category?' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= render_paginate_for @categories %>

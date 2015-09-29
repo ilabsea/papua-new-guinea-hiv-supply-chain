@@ -1,0 +1,7 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [ {"Regimens" => admin_regimens_path}, {"New Regimen" => nil} ] %>
+<% end %>
+
+<%= page_header t("New Regimen") %>
+<%= render :partial => 'form' %>
+

@@ -1,11 +1,8 @@
 PngHivAids::Application.routes.draw do
-
-
+  
   match "/401", to: "errors#unauthorized_401"
   match "/404", to: "errors#not_found_404"
   match "/500", to: "errors#error_500"
-
-
 
   namespace :service do
     resource :messagings do
@@ -15,6 +12,11 @@ PngHivAids::Application.routes.draw do
   end
 
   namespace :admin do
+
+    resources :lab_test_categories
+    resources :regimen_categories
+    resources :lab_tests
+    resources :regimens
     
     resources :site_messages do
       collection do
@@ -92,6 +94,7 @@ PngHivAids::Application.routes.draw do
         get  'download'
       end
     end
+
     resources :home
     
     resources :sites do
