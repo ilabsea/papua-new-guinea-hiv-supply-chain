@@ -27,7 +27,7 @@
 FactoryGirl.define do
 
   sequence :user_name do |n|
-	    "user_name_#{n}"
+      "user_name_#{n}"
   end
 
   sequence :email do |n|
@@ -39,10 +39,10 @@ FactoryGirl.define do
   end
 
   factory :user do
-  	 user_name
-  	 email
-  	 phone_number
-  	 site
+     user_name
+     email
+     phone_number
+     site
      password { "123456" }
      display_name "XXX"
      role { User::ROLES[rand(User::ROLES.size-1)] }

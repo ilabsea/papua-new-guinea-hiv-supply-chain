@@ -48,8 +48,6 @@
       <th>Site</th>
       <th>OrderId </th>
       <th>Commodity</th>
-      <th>Strength</th>
-      <th>Unit</th>
       <th>Amount</th>
       <th>Approved Date</th>
       <th>Quantity Dispatch </th>
@@ -74,8 +72,6 @@
         <td class='<%= klass  %>'><%= order_line.order.site.name %></td>
         <td class='<%= klass  %>'><%= order_line.order.id %></td>
         <td class='<%= klass  %>'><%= order_line.commodity.name %></td>
-        <td class='<%= klass  %>'><%= order_line.commodity.strength_dosage %></td>
-        <td class='<%= klass  %>'><%= order_line.commodity.unit.name%></td>
         <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
         <td title="<%= h order_line.updated_at %>" class='<%= klass  %>'><%= time_ago_in_words order_line.updated_at %></td>
 

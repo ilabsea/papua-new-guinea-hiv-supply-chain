@@ -15,7 +15,7 @@
 #  sms_logs_count       :integer          default(0)
 #  shipment_lines_count :integer          default(0)
 #  last_notified_date   :datetime
-#  lost_date            :datetime         default(2015-09-21 05:09:07 UTC)
+#  lost_date            :datetime         default(2015-09-30 03:11:51 UTC)
 #  cost                 :float
 #  carton               :integer
 #  site_messages_count  :integer          default(0)
@@ -25,35 +25,35 @@ require 'spec_helper'
 
 describe Shipment do
   before(:each) do
-  	@user = FactoryGirl.create :user
-  	@attr = {
-  		:status => Shipment::STATUS_IN_PROGRESS,
-  		:consignment_number => '0101929100',
-  		:shipment_date => Time.now,
-  		:user => @user,
+    @user = FactoryGirl.create :user
+    @attr = {
+      :status => Shipment::STATUS_IN_PROGRESS,
+      :consignment_number => '0101929100',
+      :shipment_date => Time.now,
+      :user => @user,
       :cost => 201.29,
       :carton => 10
-  	}
+    }
 
   end
 
   describe '::create' do
-	  it "should create a shipment with valid attributes" do
-	    shipment = Shipment.new @attr
-	    expect{shipment.save}.to change{Shipment.count}.by(1)
-	  end
+    it "should create a shipment with valid attributes" do
+      shipment = Shipment.new @attr
+      expect{shipment.save}.to change{Shipment.count}.by(1)
+    end
 
-  	it "should require shpment_date" do
-  	  shipment = Shipment.new @attr.merge(:shipment_date => '')
-  	  shipment.save.should be_false
-  	  shipment.errors.full_messages =~ ["Shipment date can't be blank"]
-  	end	
+    it "should require shpment_date" do
+      shipment = Shipment.new @attr.merge(:shipment_date => '')
+      shipment.save.should be_false
+      shipment.errors.full_messages =~ ["Shipment date can't be blank"]
+    end  
 
-  	it "should require a user" do
-	    shipment = Shipment.new @attr.merge(:user  => nil )
-  	  shipment.save.should be_false
-  	  shipment.errors.full_messages =~ ["User can't be blank"]
-  	end 
+    it "should require a user" do
+      shipment = Shipment.new @attr.merge(:user  => nil )
+      shipment.save.should be_false
+      shipment.errors.full_messages =~ ["User can't be blank"]
+    end 
 
     it 'should require cost to be a number' do
       shipment = Shipment.new @attr.merge(:cost  => 'xx' )
@@ -65,7 +65,6 @@ describe Shipment do
       shipment = Shipment.new @attr.merge(:cost  => 0.0 )
       
       result = shipment.save
-      p shipment.errors.full_messages
       result.should be_true
     end
 
@@ -82,35 +81,35 @@ describe Shipment do
   end
 
   describe '::bulk_update_status' do
-  	before(:each) do
-  	  @shipment1 = FactoryGirl.create :shipment
-  	  @shipment2 = FactoryGirl.create :shipment
-  	  @shipment3 = FactoryGirl.create :shipment
+    before(:each) do
+      @shipment1 = FactoryGirl.create :shipment
+      @shipment2 = FactoryGirl.create :shipment
+      @shipment3 = FactoryGirl.create :shipment
 
-  	end
+    end
 
-  	it "should update status of the shipment" do
-  		ids = [@shipment1.id, @shipment2.id]
-  		unchanged_shipment = Shipment.find(@shipment3.id)
+    it "should update status of the shipment" do
+      ids = [@shipment1.id, @shipment2.id]
+      unchanged_shipment = Shipment.find(@shipment3.id)
 
-  		status = Shipment::STATUS_LOST
-  		shipments = Shipment.bulk_update_status(ids, status)
+      status = Shipment::STATUS_LOST
+      shipments = Shipment.bulk_update_status(ids, status)
 
-  		shipments.should be_true
+      shipments.should be_true
       
       shipment1 = Shipment.find @shipment1.id
       shipment2 = Shipment.find @shipment2.id
 
 
-  		shipment1.status.should eq Shipment::STATUS_LOST
-  		shipment1.status.should eq Shipment::STATUS_LOST
+      shipment1.status.should eq Shipment::STATUS_LOST
+      shipment1.status.should eq Shipment::STATUS_LOST
 
       shipment2.received_date.should be_nil
       shipment2.received_date.should be_nil
 
-  		unchanged_shipment.status.should eq @shipment3.status
+      unchanged_shipment.status.should eq @shipment3.status
 
-  	end
+    end
   end
 
   describe '#deadline_for?' do
@@ -177,4 +176,4 @@ describe Shipment do
   end
 
 
-end	
+end

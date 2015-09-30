@@ -22,9 +22,6 @@
       <span> <%= truncate(order_line_record.commodity.name, :length => 30) %> </span>
     </td>
 
-    <% if order_line_record.drug? %>
-      <td> <%= order_line_record.commodity.strength_dosage %> </td>
-    <% end %>
 
     <td> 
       <%= order_line_record.number_of_client %> 

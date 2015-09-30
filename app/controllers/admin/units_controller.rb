@@ -4,12 +4,10 @@ module Admin
     
   	def index
   		@units = Unit.order("name").paginate(paginate_options)
-  		@app_title = "Unit of measurement"
   	end
 
   	def new
   	  @unit = Unit.new
-  	  @app_title = "New Unit"
   	end
 
   	def create
@@ -21,15 +19,8 @@ module Admin
   	   end
   	end
 
-    def show
-      @unit = Unit.find(params[:id])
-      @app_title = "Unit: #{@unit.name}"
-    end
-
-
     def edit
       @unit = Unit.find(params[:id])
-      @app_title = "Edit Unit : #{@unit.name}"
     end
 
     def update

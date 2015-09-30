@@ -6,8 +6,10 @@
 <%= render 'admin/shared/commodity_tab' %>
 
 <%= page_header("Commodities", :left => 6, :right => 6) do %>
-    <%=link_button_new "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}", :class => 'btn' %>
-    <%=link_button_export "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ), :class => 'btn btn-primary' %>
+    <%=link_button_new "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}",
+                       :class => 'btn' %>
+    <%=link_button_export "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ),
+                          :class => 'btn btn-primary' %>
 <% end %>
 
 <table class="table table-hover ">
@@ -16,14 +18,14 @@
       <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Category</th>
-      <th>Unit</th>
+
       <% if params[:type] == CommodityCategory::TYPES_DRUG %>
-        <th>Strength Dosage</th>
+        <th>Regimen</th>
         <th>Abbreviation</th>
         <th>Quantity Per Pack</th>
+      <% else %>
+        <th> LabTest </th>
       <% end %>
-      <th title='Consumtion Per Cient' > CPC (pack) </th>
-      <th title='Consumtion Per Cient' > CPC (unit) </th>
       <th>Action</th>
     </tr>
   </thead>
@@ -31,16 +33,26 @@
     <% @commodities.each_with_index do |commodity, index| %>
       <tr>
         <td><%=current_entries + index %></td>
-        <td title='<%= h commodity.name %>' class='td-expand'><%=link_to truncate(commodity.name, length: 15), edit_admin_commodity_path(commodity, :type => params[:type]) %></td>
-        <td title='<%= h commodity.commodity_category.name %>' class='td-expand' ><%= truncate commodity.commodity_category.name, length: 12 %></td>
-        <td><%= commodity.unit.name %></td>
+        <td title='<%= h commodity.name %>' class='td-expand'>
+          <%=link_to truncate(commodity.name), edit_admin_commodity_path(commodity, :type => params[:type]) %>
+        </td>
+
+        <td title='<%= h commodity.commodity_category.name %>' class='td-expand' >
+          <%= truncate commodity.commodity_category.name %>
+        </td>
+
         <% if params[:type] == CommodityCategory::TYPES_DRUG  %>
-          <td class='td-expand' title='<%= h commodity.strength_dosage%>'> <%= truncate commodity.strength_dosage, length: 15 %></td>
-          <td class='td-expand' title='<%=h commodity.abbreviation %>' > <%= truncate commodity.abbreviation, length: 15 %></td>
-          <td><%= commodity.quantity_per_packg %></td>
+          <td><%=commodity.try(:regimen).try(:name) %></td>
+          <td class='td-expand' title='<%=h commodity.abbreviation %>' >
+            <%= truncate commodity.abbreviation %>
+          </td>
+          <td>
+            <%= commodity.quantity_per_packg %>
+          </td>
+        <% else %>
+           <td><%= commodity.try(:lab_test).try(:name)%></td>
         <% end %>
-        <td><%= commodity.consumption_per_client_pack %></td>
-        <td><%= commodity.consumption_per_client_unit %></td>
+
         <td class="last">
           <%= link_button_delete 'Delete', admin_commodity_path(commodity,
                                  :type => params[:type]),

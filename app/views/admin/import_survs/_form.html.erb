@@ -107,7 +107,7 @@
             <% category = commodity.commodity_category.id %>
 
 
-            <th class='header-grid <% klass %>' title='<%=commodity.with_strength %>' >
+            <th class='header-grid <% klass %>' title='<%= commodity.name %>' >
               <%= h truncate(commodity.name, :length => 15) %>
             </th>
           <% end %>

@@ -5,7 +5,7 @@ require 'rspec/rails'
 require 'rspec/autorun'
 #Rspecx : use capybara
 require 'capybara/rspec'
- 	
+   
 #Rspecx : Use factory girl
 #FactoryGirl.find_definitions
 

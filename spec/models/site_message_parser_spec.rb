@@ -11,20 +11,20 @@ describe SiteMessageParser do
 
   it '#translate_message' do
 
-  	error_type = :site_message_xxx
-  	options = {
-  		:error_type => :site_message_xxx,
-  		:from => '85512161616',
-  		:status => Shipment::STATUS_RECEIVED,
-  		:consignment_number => '123456789',
-  		:body => '102938448 y' 
-  	}
-  	site_message_parser = SiteMessageParser.new options
-  	Setting[:site_message_xxx] = "phone:{phone_number} consignment:{consignment} status:{status} original_body:{original_message}"
+    error_type = :site_message_xxx
+    options = {
+      :error_type => :site_message_xxx,
+      :from => '85512161616',
+      :status => Shipment::STATUS_RECEIVED,
+      :consignment_number => '123456789',
+      :body => '102938448 y' 
+    }
+    site_message_parser = SiteMessageParser.new options
+    Setting[:site_message_xxx] = "phone:{phone_number} consignment:{consignment} status:{status} original_body:{original_message}"
 
-  	translation = 'phone:85512161616 consignment:123456789 status:Received original_body:102938448 y'
-  	site_message_parser.translate_message.should eq translation
-  	site_message_parser.options[:response_message].should eq translation
+    translation = 'phone:85512161616 consignment:123456789 status:Received original_body:102938448 y'
+    site_message_parser.translate_message.should eq translation
+    site_message_parser.options[:response_message].should eq translation
   end
 
   describe '#process' do

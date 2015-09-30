@@ -4,7 +4,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @lab_tests = LabTest.includes(:lab_test_category, :unit).paginate(paginate_options)
+      @lab_tests = LabTest.includes(:lab_test_category, :unit).order('name ASC').paginate(paginate_options)
     end
 
     def new

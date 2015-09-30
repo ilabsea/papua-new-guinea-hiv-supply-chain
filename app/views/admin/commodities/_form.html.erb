@@ -1,23 +1,25 @@
 <% url =  @commodity.new_record? ? admin_commodities_path(:type => params[:type]) : admin_commodity_path(@commodity, :type => params[:type]) %>
 <%= simple_form_for [:admin , @commodity], :url => url,:html => { :class => 'form-horizontal' } do |f| %>
   <%= f.error_notification %> 
+  <%= f.input :commodity_type, as: :hidden %>
   <%= f.input :name %>
+
+  <%= f.input :strength_dosage, :label => "Strengh Dosage"%>
+  <%= f.association :unit, collection: Unit.all, :include_blank => 'Select Unit' %>
+
+  <%= f.input :quantity_per_packg, :label => "Quantity Per Package"%>
+  <%= f.input :pack_size, required: true, :label => 'Pack Size' %>
+
   <% if params[:type] == CommodityCategory::TYPES_DRUG %>
-  <%= f.association :commodity_category, collection: CommodityCategory.drug, :include_blank => 'Select Commodity Category' %>
-  <% else %>
-  <%= f.association :commodity_category, collection: CommodityCategory.kit, :include_blank => 'Select Commodity Category' %>
-  <% end %>
-  <%= f.input :consumption_per_client_pack, :label => 'Consumption per client per month(pack)' %>
-  <%= f.input :consumption_per_client_unit, :label => 'Consumption per client per month(unit)' %>
-  <%= f.input :pack_size, :label => 'Pack Size' %>
-
-  <%= f.association :unit, :include_blank => "Select Unit of measurement" %>
-
-  <% if params[:type] == CommodityCategory::TYPES_DRUG  %>
-    <%= f.input :strength_dosage, :label => "Streng/Dosage" %>
     <%= f.input :abbreviation, :required => true %>
-    <%= f.input :quantity_per_packg, :label => "Quantity Per Package"%>
+    <%= f.association :commodity_category, collection: CommodityCategory.drug, :include_blank => 'Select Commodity Category' %>
+    <%= f.association :regimen, required: true, :include_blank => "Select Regimen" %>
+  <% else %>
+    
+    <%= f.association :commodity_category, collection: CommodityCategory.kit, :include_blank => 'Select Commodity Category' %>
+    <%= f.association :lab_test, required: :true, :include_blank => "Select Lab Test" %>
   <% end %>
+
 
   <div class="form-actions">
     <%= button_save ' Save ' %>

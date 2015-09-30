@@ -2,7 +2,8 @@ module Admin
   class CommoditiesController < Controller
     load_and_authorize_resource
     def index
-        @commodities = Commodity.includes(:commodity_category, :unit)
+        @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test)
+
         params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
         if (params[:type] ==  CommodityCategory::TYPES_DRUG)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
@@ -10,34 +11,19 @@ module Admin
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
         end
         @commodities = @commodities.paginate(paginate_options)
-        @app_title = "Commodities"
     end
-
-
-    def show
-      @commodity = Commodity.find(params[:id])
-      @app_title = "Commodity: #{@commodity.name}"
-    end
-
 
     def new
-      if (params[:type] == "drugs")
-        @commodity = Commodity.new
-      else 
-        @commodity = Commodity.new
-      end
-      @app_title = "New Commodity"
+      @commodity = Commodity.new(commodity_type: params[:type])
     end
-
 
     def edit
       @commodity = Commodity.find(params[:id])
-      @app_title = "Commodity: #{@commodity.name}"
+      @commodity.commodity_type = params[:type]
     end
 
     def create
       @commodity = Commodity.new(params[:commodity])
-      @commodity.commodity_type = params[:type]
       if @commodity.save
         redirect_to admin_commodities_path(:type => params[:type]), notice: 'Commodity has been created successfully.'
       else
@@ -49,7 +35,6 @@ module Admin
     # PUT /commodities/1.json
     def update
       @commodity = Commodity.find(params[:id])
-      @commodity.commodity_type = params[:type]
       if @commodity.update_attributes(params[:commodity])
         redirect_to admin_commodities_path(:type => params[:type]), notice: 'Commodity has been updated successfully.' 
       else
