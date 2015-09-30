@@ -7,12 +7,13 @@
       </tr>
 
     </thead>
-  <%=simple_fields_for :surv_site_commodities do |surv_site_commodity| %>
-     <%=surv_site_commodity.input :commodity, :as => :hidden %>
-     <%=surv_site_commodity.input :commodity, :as => :hidden %>
-     <%=surv_site_commodity.input :quantity  %>
-     <%=debug surv_site_commodity %>
-  <% end %>
+    
+    <%=simple_fields_for :surv_site_commodities do |surv_site_commodity| %>
+       <%=surv_site_commodity.input :commodity, :as => :hidden %>
+       <%=surv_site_commodity.input :commodity, :as => :hidden %>
+       <%=surv_site_commodity.input :quantity  %>
+       <%=debug surv_site_commodity %>
+    <% end %>
 
 </table>
 <%= button_save ' Save Surv Site'  %>

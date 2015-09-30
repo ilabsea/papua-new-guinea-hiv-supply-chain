@@ -10,7 +10,7 @@
     <%=link_button_export "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ), :class => 'btn btn-primary' %>
 <% end %>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
@@ -24,7 +24,7 @@
       <% end %>
       <th title='Consumtion Per Cient' > CPC (pack) </th>
       <th title='Consumtion Per Cient' > CPC (unit) </th>
-      <th class='action_col2'>Action</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -42,9 +42,10 @@
         <td><%= commodity.consumption_per_client_pack %></td>
         <td><%= commodity.consumption_per_client_unit %></td>
         <td class="last">
-          <%= link_button_edit 'Edit', edit_admin_commodity_path(commodity, :type => params[:type]) %>
-          <%= link_button_delete 'Delete' ,   admin_commodity_path(commodity, :type => params[:type]),
-                      :method => :delete, :confirm => 'Are you sure to delete?' %>
+          <%= link_button_delete 'Delete', admin_commodity_path(commodity,
+                                 :type => params[:type]),
+                                 :method => :delete,
+                                 :confirm => 'Are you sure to delete this commodity ?' %>
         </td>
       </tr>
     <% end %>

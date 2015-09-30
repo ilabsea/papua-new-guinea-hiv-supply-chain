@@ -11,23 +11,25 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 
+// gem
 //= require jquery
 //= require jquery_ujs
-//= require jquery-migrate-1.0.0
-//= require twitter/bootstrap
-
+//= require bootstrap
 //= require bootstrap-datepicker
-//= require bootstrap-jquery-init
 
-//= require shared/custom
-//= require bootrap-datetime
-
+// lib
+//= require jquery-migrate-1.0.0
+//= require jquery.fieldSelection
 //= require jquery.dataTables
 //= require FixedColumns
-//= require fixedTableInit
 
-//= require jquery.dataTables
-//= require jquery.fieldSelection
-//= require html5shiv
+// initializer
+//= require init/bootrap-datetime
+//= require init/fixed-table
+//= require init/bootstrap-jquery
+//= require init/system-loading-indicator
+//= require init/td-expandable
 
+
+// functionalities
 //= require order/reviewer-approval

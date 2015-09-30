@@ -5,13 +5,13 @@
 <%= page_header t("Drug categories")  do %>
   <%=link_button_new "New Drug Category", new_admin_category_path() %>
 <%  end %>
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Description</th>
-      <th class='action_col2' >Action</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -21,8 +21,8 @@
         <td><%= link_to category.name, edit_admin_category_path(category) %></td>
         <td><%= category.description %></td>
         <td>
-          <%= link_button_edit 'Edit',  edit_admin_category_path(category) %>
-          <%= link_button_delete 'Delete',  admin_category_path(category), :confirm => 'Are you sure to delete?',
+          <%= link_button_delete 'Delete',  admin_category_path(category), 
+                      :confirm => 'Are you sure to delete this category ?',
                       :method => :delete  %>
         </td>
       </tr>

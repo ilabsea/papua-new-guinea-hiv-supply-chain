@@ -6,13 +6,13 @@
   <%= breadcrumb [{"Provinces" => nil}]  %>
 <% end %>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Code</th>
-      <th class="action_col2" >Action</th>
+      <th width="50">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -22,9 +22,8 @@
         <td><%=link_to province.name, edit_admin_province_path(province) %></td>
         <td><%= province.code %></td>
         <td class="last">
-          <%= link_button_edit 'Edit', edit_admin_province_path(province)%>
           <%= link_button_delete 'Delete', admin_province_path(province),
-                      :method => :delete, :confirm  => 'Are you sure to delete?' ,:class => 'btn btn-mini btn-danger' %>
+                      :method => :delete, :confirm  => 'Are you sure to delete this province ?' %>
         </td>
       </tr>
     <% end %>

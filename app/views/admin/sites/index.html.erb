@@ -6,7 +6,7 @@
   <%= breadcrumb [{"Sites" => nil}]  %>
 <% end %>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
@@ -15,11 +15,11 @@
       <th>Suggestion Order Valid Within(%)</th>
       <th>Order Frequency(Month)</th>
       <th>Dead line Summision</th>
-      <th>Order start at</th>
+      <th>Order at</th>
       <th>Test kit waste acceptable</th>
       <th>Contact</th>
       <th width='150'>Province</th>
-      <th class='action_col2' >Action</th>
+      <th width="60" >Action</th>
     </tr>
   </thead>
   <tbody>
@@ -35,10 +35,9 @@
         <td><%= site.test_kit_waste_acceptable %></td>
         <td><%= site.contact_name %></td>
         <td><%= site.province.name if site.province %></td>
-        <td  width="90">
-          <%= link_button_edit 'Edit', edit_admin_site_path(site) %>
+        <td>
           <%= link_button_delete 'Delete', admin_site_path(site),:method => :delete,
-                      :confirm =>'Are you sure to delete?' %>
+                      :confirm =>'Are you sure to delete this site ?' %>
         </td>
       </tr>
     <% end %>

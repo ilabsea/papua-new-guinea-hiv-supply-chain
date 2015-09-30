@@ -6,13 +6,13 @@
   <%=link_button_new "New Lab Test Category", new_admin_lab_test_category_path %>
 <%  end %>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Description</th>
-      <th class='action_col2' >Action</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -22,10 +22,9 @@
         <td><%= link_to category.name, edit_admin_lab_test_category_path(category) %></td>
         <td title="<%= category.description%>" class='td-expand'><%= truncate(category.description) %></td>
         <td>
-          <%= link_button_edit 'Edit', edit_admin_lab_test_category_path(category) %>
           <%= link_button_delete 'Delete', admin_lab_test_category_path(category),
                       :method => :delete,
-                      :confirm => 'Are you sure to delete this category?' %>
+                      :confirm => 'Are you sure to delete this category ?' %>
         </td>
       </tr>
     <% end %>

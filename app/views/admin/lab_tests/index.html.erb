@@ -9,14 +9,14 @@
   <%=link_button_new "New Lab Test", new_admin_lab_test_path() , :class => 'btn' %>
 <% end %>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Category</th>
       <th>Unit</th>
-      <th class='action_col2'>Action</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -30,7 +30,6 @@
         <td><%= lab_test.lab_test_category.name %></td>
         <td><%= lab_test.unit.name %></td>
         <td class="last">
-          <%= link_button_edit 'Edit', edit_admin_lab_test_path(lab_test) %>
           <%= link_button_delete 'Delete', admin_lab_test_path(lab_test),
                                  :method => :delete,
                                  :confirm => 'Are you sure to delete this lab test ?' %>

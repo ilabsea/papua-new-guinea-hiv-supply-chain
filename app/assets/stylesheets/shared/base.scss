@@ -15,10 +15,10 @@
 }
 .table .header-grid, .table th {
     /*background-color: #DDDDDD !important;*/
-    padding: 9px 3px;
+    // padding: 9px 3px;
 }
 .table-bordered th, .table-bordered td {
-    border-left: 1px solid #CCCCCC;
+  // border-left: 1px solid #CCCCCC;
 }
 
  .table-hover th, .table-hover .header-grid{
@@ -64,12 +64,12 @@ td:last, td.last {
   padding: 0px !important  
 }
 .action_col2 {
-	width: 120px ;
-	text-align: center !important;
+  width: 120px ;
+  text-align: center !important;
 }
 .action_col3 {
-	width: 180px;
-	text-align: center !important;
+  width: 180px;
+  text-align: center !important;
 }
 
 .table .control-group  {
@@ -161,10 +161,11 @@ table input{
   margin-bottom: 0px !important;
 }
 .table td{
-  padding: 3px 8px;
+  // padding: 3px 8px;
 }
+
 .table th{
-  padding: 6px 8px;
+  // padding: 6px 8px;
 }
 .row-success{
   background-color: #8AD8B1 ;
@@ -208,6 +209,10 @@ a.error:hover, a.error:visited {
 }
 h3.myModalLabel{
   font-size: 130%;
+}
+
+a {
+  white-space: nowrap;
 }
 
 

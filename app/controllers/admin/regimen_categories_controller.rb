@@ -4,7 +4,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @categories = RegimenCategory.paginate(paginate_options)
+      @categories = RegimenCategory.order('name ASC').paginate(paginate_options)
     end
 
     def new

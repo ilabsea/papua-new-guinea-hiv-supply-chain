@@ -4,7 +4,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @categories = LabTestCategory.paginate(paginate_options)
+      @categories = LabTestCategory.order('name ASC').paginate(paginate_options)
     end
 
     def new

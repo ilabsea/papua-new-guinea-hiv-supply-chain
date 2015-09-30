@@ -1,3 +1,14 @@
+$(function() {
+
+  $(window).bind("unload", function() {
+    systemLoading().hide();
+  });
+
+  systemLoading().hide();
+  attachSystemLoading();
+
+});
+
 
 function linkSystemLoading () {
   var $as = $("a");
@@ -58,24 +69,6 @@ function showLoading(){
     systemLoading().show();
 }
 
-function tdToggle(){
-  $(document.body).on('click', '.td-expand', function(){
-  //$(document.body).delegate(".td-expand", 'click', function(){  
-    $el = $(this);
-    title = $el.attr('title');
-    content = $el.html();
 
-    $el.attr('title', content);
-    $el.html(title);
-  });
-}
 
-$(window).bind("unload", function() {
-  systemLoading().hide();
-});
 
-$(function() {
-  systemLoading().hide();
-  attachSystemLoading();
-  tdToggle();
-});

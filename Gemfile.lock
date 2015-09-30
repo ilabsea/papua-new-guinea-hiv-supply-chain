@@ -37,6 +37,8 @@ GEM
     bcrypt-ruby (3.0.1)
     bootstrap-datepicker-rails (1.1.0.1)
       railties (>= 3.0)
+    bootstrap-sass (2.3.0.1)
+      sass (~> 3.2)
     brakeman (2.1.2)
       erubis (~> 2.6)
       fastercsv (~> 1.5)
@@ -74,14 +76,7 @@ GEM
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.1)
-    columnize (0.3.6)
     daemons (1.1.9)
-    debugger (1.6.0)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.2.1)
-    debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.2.4)
     devise (2.2.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -99,6 +94,8 @@ GEM
       railties (>= 3.0.0)
     fastercsv (1.5.5)
     ffi (1.8.1)
+    font-awesome-sass (4.4.0)
+      sass (>= 3.2)
     haml (4.0.3)
       tilt
     highline (1.6.19)
@@ -226,11 +223,10 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    twitter-bootstrap-rails (2.2.6)
-      actionpack (>= 3.1)
-      execjs
-      railties (>= 3.1)
     tzinfo (0.3.37)
+    uglifier (2.7.2)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     warden (1.2.1)
       rack (>= 1.0)
     websocket (1.0.7)
@@ -250,14 +246,15 @@ DEPENDENCIES
   activerecord-import
   annotate
   bootstrap-datepicker-rails
+  bootstrap-sass (~> 2.3.0.0)
   brakeman
   cancan
   capistrano-rbenv
   capybara (~> 2.0.2)
   carrierwave
-  debugger
   devise
   factory_girl_rails (~> 4.0)
+  font-awesome-sass (~> 4.4.0)
   jasmine
   jquery-rails
   mysql2
@@ -271,7 +268,7 @@ DEPENDENCIES
   spreadsheet
   therubyracer
   thin
-  twitter-bootstrap-rails
+  uglifier (>= 1.0.3)
   whenever
   will_paginate-bootstrap
 

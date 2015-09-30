@@ -8,14 +8,14 @@
   <% if current_user.data_entry? %>
     <%= link_button 'icon-plus' , 'New Order',  new_admin_order_path(), :class => 'btn' %>
   <% end %>
-  <%= link_button_download 'Export Orders',  export_admin_orders_path(export_options), :class => 'btn-primary' %>  
+  <%= link_button_download 'Export Orders',  export_admin_orders_path(export_options), :class => 'btn btn-primary' %>  
 <% end %>
 
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Orders" => nil}]  %>
 <% end %>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
@@ -51,13 +51,13 @@
             <%= link_button_review t('Review'), review_admin_order_path(order), :class => 'btn btn-mini' %> 
             
           <% elsif current_user.data_entry? && order.status !=  Order::ORDER_STATUS_APPROVED %>  
-            <%= link_button_edit 'Edit', edit_admin_order_path(order), :class => 'btn btn-mini' %> 
+            <%= link_button_edit 'Edit', edit_admin_order_path(order) %> 
 
           <% elsif current_user.data_entry? && order.status == Order::ORDER_STATUS_PENDING %>
-            <%= link_button_delete 'Delete', admin_orders_path(order), :method => :delete, :confirm => 'Are you sure to delete this order' %>  
+            <%= link_button_delete 'Delete', admin_orders_path(order), :method => :delete, :confirm => 'Are you sure to delete this order ?' %>  
 
           <% elsif current_user.ams? %>
-            <%= link_button 'icon-briefcase',  'Shipment', admin_order_shipments_path(order), :class => 'btn btn-mini btn-primary' %>
+            <%= link_button 'icon-briefcase', 'Shipment', admin_order_shipments_path(order), :class => 'btn btn-mini btn-primary' %>
           <% end %>   
 
         </td>

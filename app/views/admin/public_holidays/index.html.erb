@@ -6,13 +6,13 @@
   <%= breadcrumb [{"Public Holiday" => nil}]  %>
 <% end %>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Date</th>
-      <th class='action_col2' >Action</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody>
@@ -22,9 +22,8 @@
         <td><%=link_to public_holiday.name, edit_admin_public_holiday_path(public_holiday) %></td>
         <td><%= public_holiday.date.strftime('%A, %d %B %Y') %></td>
         <td class="last"> 
-          <%= link_button_edit  'Edit', edit_admin_public_holiday_path(public_holiday), :class => 'btn btn-mini' %>
           <%= link_button_delete 'Delete', admin_public_holiday_path(public_holiday),
-                      :method => :delete,:confirm => 'Are you sure to delete?', :class => 'btn btn-mini btn-danger' %>
+                      :method => :delete,:confirm => 'Are you sure to delete this public holiday ?' %>
         </td>
       </tr>
     <% end %>

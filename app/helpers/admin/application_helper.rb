@@ -129,18 +129,20 @@ module Admin::ApplicationHelper
   end
 
   def link_button type, text, url, options={}
-    options[:class] = options[:class] ? " btn #{options[:class]}" : "btn" 
+    # options[:class] = options[:class] ? "#{options[:class]}" : ""
     icon = content_tag "i", " ", :class => "#{type} "
-    link_to (icon + text.html_safe), url, options
+    link_to (icon + " #{text}".html_safe), url, options
   end
 
   def link_button_save text, url, options={}
-    link_button 'icon-ok', text, url, options
+    link_to text, url, options
   end
 
   def link_button_edit text, url, options={}
-    options[:class] = options[:class].nil? ? "btn btn-mini btn-info" : "btn btn-mini btn-info #{options[:class] }"
-    link_button 'icon-edit', text, url, options
+    # options[:class] = options[:class].nil? ? "btn btn-mini btn-info" : "btn btn-mini btn-info #{options[:class] }"
+    link_to  url, options do
+      icon('edit') + " #{text}"
+    end
   end
 
   def link_button_new text, url, options={}
@@ -149,8 +151,9 @@ module Admin::ApplicationHelper
   end
 
   def link_button_delete text, url, options={}
-    options[:class] = options[:class].nil? ? "btn btn-mini btn-danger" : "btn btn-mini btn-danger #{options[:class] }"
-    link_button 'icon-ban-circle', text, url, options
+    link_to  url, options do
+      icon('trash') + " #{text}"
+    end
   end
 
   def link_button_search text, url, options={}
@@ -174,8 +177,8 @@ module Admin::ApplicationHelper
   end
 
   def link_button_cancel text, url, options={}
-    options[:class] = options[:class] ? "btn #{options[:class] }" : "btn"  
-    link_button 'icon-remove', text, url, options
+    options[:class] = options[:class] ? "btn #{options[:class] }" : "btn"
+    link_to text, url, options
   end
 
   def link_button_signout text, url, options={}
@@ -202,7 +205,7 @@ module Admin::ApplicationHelper
 
   def button_save text, klass=''
     content_tag :button, :class => "btn btn-primary #{klass}", :'data-system-loading' => true do
-     content_tag "i", text , :class => 'icon-ok'
+      content_tag("i", '', :class => 'icon-ok') + " " + text
     end
   end
 

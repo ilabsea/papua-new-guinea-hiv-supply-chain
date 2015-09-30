@@ -21,35 +21,36 @@
   <%end%>
 </div>
 
-<table class="table table-hover table-bordered">
+<table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'> # </th>
+      <th> Created at </th>
       <th> Year </th>
       <th> Month </th>
       <th> Type </th>
-      <th> Created at </th>
-      <th class='action_col2'> Action </th>
+      <th> Action </th>
     </tr>
   </thead>
   <tbody>
     <% @import_survs.each_with_index do |import_surv, index| %>
       <tr>
         <td><%= current_entries + index %></td>
+        <td>
+          <%=link_button_edit show_date_time(import_surv.created_at), edit_admin_import_surv_path(import_surv, 
+                              :type => import_surv.surv_type),
+                              :class => 'btn btn-mini' %>
+        </td>
+
         <td><%= import_surv.year %></td>
         <td><%= import_surv.month %></td>
         <td><%= import_surv.surv_type %></td>
-        <td><%= show_date_time(import_surv.created_at) %></td>
-        <td class='action_col2' >
-          <%=link_button_edit ' Edit ', edit_admin_import_surv_path(import_surv, 
-                              :type => import_surv.surv_type),
-                              :class => 'btn btn-mini' %>
 
+        <td>
           <%= link_button_delete ' Delete ',admin_import_surv_path(import_surv,
                                  :type => import_surv.surv_type),
                                  :method => :delete,
-                                 :confirm => 'Are you sure to delete?',
-                                 :class => 'btn btn-mini btn-danger' %>
+                                 :confirm => 'Are you sure to delete this import surv ?' %>
         </td>
       </tr>
     <% end %>
