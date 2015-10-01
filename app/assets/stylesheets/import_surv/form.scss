@@ -1,0 +1,67 @@
+  .form-fixed {
+    overflow: scroll;
+    max-height: 550px;
+  }
+  
+  .import-surv-filter {
+    label {
+      width: 50px !important;
+    }
+    .controls {
+      margin-left: 65px !important;
+    }
+  }
+
+  .pos-site{
+    width: 180px !important;
+  }
+
+  .pos-commodity{
+    width: 240px !important;
+  }
+
+  .surv-form tr, .surv-form th, .surv-form td {
+    min-width: 90px;
+    font-weight: normal !important;
+  }
+  .site_col {
+    width: 200px;
+  }
+  .number_select{
+    width: 90px;
+  }
+  .number_text{
+    width: 75px;
+    height: 20px;
+  }
+
+.berror{
+  background-color: red !important ;
+}
+
+.surv-form.table{
+  td, th {
+    border: 1px solid #ccc !important;
+    border-bottom: none;
+    line-height: 20px;
+    padding: 8px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  .controls {
+    display: inline;
+    margin-left: 5px;
+  }
+}
+
+.default {
+  background-color: #B3E8EF !important;
+}
+.switch_color{
+  background-color: #BCC4BA !important;
+}
+.note {
+  text-decoration:underline; 
+  color: black; 
+  padding-left: 10px;
+}

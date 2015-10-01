@@ -8,8 +8,8 @@ $(function(){
 			"bPaginate": false,
 			"bFilter": false,
 			"bInfo": false
-			//"oSearch": false
-	} );	
+	});
+
 	try{
 		new FixedColumns( oTable );
 	}

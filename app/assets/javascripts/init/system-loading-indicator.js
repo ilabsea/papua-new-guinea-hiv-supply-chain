@@ -48,7 +48,7 @@ function isNotIgnoreLoading($elm){
     method = $elm.attr("data-method");
     toggle = $elm.attr("data-toggle")
 
-    if(attrNotSet(attr) && attrNotSet(method) && attrNotSet(toggle) ) 
+    if(attrNotSet(attr) && attrNotSet(method) && attrNotSet(toggle) && window.skipServerLoading ) 
       return true
     return false
 }

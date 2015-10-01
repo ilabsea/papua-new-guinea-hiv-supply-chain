@@ -1,91 +1,24 @@
-<style>
-  .surv-form .controls {
-    display: inline;
-    margin-left: 5px;
-  }
-
-  .form-fixed {
-    overflow: scroll;
-    max-height: 550px;
-  }
-  .pos-fixed label{
-    width: 60px !important
-  }
-
-  .pos-fixed .controls{
-    margin-left: 70px !important;
-  }
-
-  .pos-site{
-    width: 180px !important;
-  }
-
-  .pos-commodity{
-    width: 240px !important;
-  }
-
-  .surv-form tr, .surv-form th, .surv-form td {
-    min-width: 90px;
-    font-weight: normal !important;
-  }
-  .site_col {
-    width: 200px;
-  }
-  .number_select{
-    width: 90px;
-  }
-  .number_text{
-    width: 75px;
-    height: 20px;
-  }
-
-.berror{
-  background-color: red !important ;
-}  
-
-.table th, .table td {
-    border: 1px solid #ccc !important;
-    border-bottom: none;
-    line-height: 20px;
-    padding: 8px;
-    text-align: left;
-    vertical-align: top;
-}
-
-.default {
-  background-color: #B3E8EF !important;
-}
-.switch_color{
-  background-color: #BCC4BA !important;
-}
-.note {
-  text-decoration:underline; 
-  color: black; 
-  padding-left: 10px;
-}
-
-</style>
-  <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
-      <%= f.error_notification %>
-      <%= f.input :surv_type, :as => :hidden %> 
-    <div class='well'>
-      <table>
-        <tr>
-            <td class='pos-fixed' >
-              <%=f.input :month, :collection => ImportSurv::MONTHS, 
-                         :label_html => { :style=> 'width: 50px;'},
-                         :wrapper_html => {:style=> 'margin-left: 70px;'},
-                         :include_blank => 'Select month'
-               %>
-            </td>
-            <td class='pos-fixed' >
-              <%=f.input :year ,:collection => 2009..2040,:include_blank => 'Select year' %>
-            </td>
-            <td style='padding-left: 30px; vertical-align:top; width: 80px;'>
-              <%= button_save " Save " %>
-            </td>
-      </table> 
-    </div>
+<%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :surv_type, :as => :hidden %> 
+  <div class='well'>
+    <table class='import-surv-filter'>
+      <tr>
+          <td>
+            <%=f.input :month, :collection => ImportSurv::MONTHS, 
+                       :label_html => { :style=> 'width: 50px;'},
+                       :wrapper_html => {:style=> 'margin-left: 70px;'},
+                       :include_blank => 'Select month'
+             %>
+          </td>
+          <td >
+            <%=f.input :year ,:collection => 2009..2040,:include_blank => 'Select year' %>
+          </td>
+          <td style='width: 80px; vertical-align: top; padding-left: 15px;'>
+            <%= button_save " Save " %>
+          </td>
+    </table> 
+  </div>
 
   <div class='alert alert-info'>
     <i class='icon-x'></i> Please enter the number of patient in the following form. You can copy from Excel and paste here.
@@ -142,7 +75,7 @@
                 @category = nil
                 @klass  = 'default'
               %>
-        	    <%= surv_site_form.simple_fields_for :surv_site_commodities do |surv_site_commodity_form| %>
+              <%= surv_site_form.simple_fields_for :surv_site_commodities do |surv_site_commodity_form| %>
                 <% if !@category.nil? && @category != surv_site_commodity_form.object.commodity.commodity_category.id %>
                   <% @klass = (@klass == 'default') ? 'switch_color' : 'default' %>
                 <% end %>
@@ -150,16 +83,16 @@
                 <% error_hl  = (surv_site_commodity_form.object.errors.size >0 ) ? 'background-color: red !important;' : '' %>
                 <td  style='<%= style %> <%= error_hl %>' class='<%= @klass%>' title="<%=h surv_site_commodity_form.object.commodity.commodity_category.name %>" >
                   <%= surv_site_commodity_form.input :id ,:as => :hidden %>
-        	  	    <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
+                  <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
                   <%= surv_site_commodity_form.input :quantity, :label => false, :as => :text, 
-                                                     :input_html => { :class=> "quantity_item number_text quantity_#{dom_id}" ,
+                                                     :input_html => { :class=> "quantity_item number_text quantity_#{dom_id}",
                                                                       :data => { :id => dom_id, :offset => @offset}
                                                       }
 
                    %>
                 </td>
                 <% @offset = @offset + 1 %>
-        	    <% end %>
+              <% end %>
           </tr>
         <% end %>
       </tbody>
@@ -171,75 +104,5 @@
     <%= link_button_cancel 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type) %>
   </div>
 <% end %>
+<input type='hidden' id='site-list' value='<%=@site_list.join(',')%>' />
 <%= render 'copy' %>
-<script type='text/javascript'>
- window.siteLists = [<%=@site_list.join(',')%>] ;
-
- function openDialog(){
-   $(".copy-open-dialog").on('click', function(){
-      $elm = $(this);
-      $("#copy-to-site").html($elm.attr('data-content'));
-      $("#site_to_paste").val($elm.attr('data-id'));
-      $("#copy_source").val("");
-      $('#copy_dialog').modal();
-   }); 
-  }
-
-  function pasteContent(content){
-    lines  = $.trim(content).split("\n");
-    siteId   = parseInt($("#site_to_paste").val());
-
-    indexOfSite = siteLists.indexOf(siteId);
-    commodityOffset = $("#commodity_offset").val();
-
-    for(var i=0;i< lines.length; i++ ){
-      line = lines[i];
-      quantities = line.split("\t");
-      currentSiteId =  siteLists[ (i+indexOfSite) ] ;
-
-      $quantityElms = $(".quantity_" + currentSiteId );
-
-      for(var c=commodityOffset; c< $quantityElms.length; c++){
-        indexCommodityOffset = c -commodityOffset;
-        $($quantityElms.get(c)).val(quantities[indexCommodityOffset]);
-      }
-    }
-  }
-
-
-  function pasteItems(){
-    $(".quantity_item").on('change', function(){
-      $elm = $(this);
-      content = $elm.val();
-      $("#site_to_paste").val($elm.attr('data-id'));
-      $("#commodity_offset").val($elm.attr('data-offset') );
-
-      if(content.indexOf("\n") != -1 || content.indexOf("\t") != -1 ) {
-        pasteContent(content);
-      }
-      
-    }).on('paste', function(){
-      $elm = $(this);
-      $("#site_to_paste").val($elm.attr('data-id'));
-      $("#commodity_offset").val($elm.attr('data-offset') );
-    })
-
-    $("#btn-copy-to-site").on('click', function(){
-      content = $("#copy_source").val();
-      pasteContent(content);
-      
-    });
-  }
-
-  $(function(){
-    openDialog();
-    pasteItems();
-  })
-
-</script>
-
-
-
-
-
-

@@ -33,3 +33,4 @@
 
 // functionalities
 //= require order/reviewer-approval
+//= require import_surv/form
