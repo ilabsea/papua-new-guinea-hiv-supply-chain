@@ -2,22 +2,22 @@ module Admin
   class UnitsController < Controller
     load_and_authorize_resource
     
-  	def index
-  		@units = Unit.order("name").paginate(paginate_options)
-  	end
+    def index
+      @units = Unit.order("name").paginate(paginate_options)
+    end
 
-  	def new
-  	  @unit = Unit.new
-  	end
+    def new
+      @unit = Unit.new
+    end
 
-  	def create
-  	   @unit = Unit.new params[:unit]
-  	   if(@unit.save)
-  	   	  redirect_to admin_units_path, :notice => "Unit has been saved successfully"
-  	   else
-  	   	  render :new
-  	   end
-  	end
+    def create
+       @unit = Unit.new params[:unit]
+       if(@unit.save)
+           redirect_to admin_units_path, :notice => "Unit has been saved successfully"
+       else
+           render :new
+       end
+    end
 
     def edit
       @unit = Unit.find(params[:id])

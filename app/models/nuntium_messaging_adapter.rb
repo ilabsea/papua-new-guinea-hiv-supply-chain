@@ -9,12 +9,12 @@ class NuntiumMessagingAdapter < MessagingAdapter
 
   def initialize
     config_file = File.expand_path('config/nuntium.yml', Rails.root)
-  	@config   = YAML.load_file(config_file)[Rails.env]
-  	@nuntium = Nuntium.new(@config['url'], @config['account'], @config['application'], @config['password'])
+    @config   = YAML.load_file(config_file)[Rails.env]
+    @nuntium = Nuntium.new(@config['url'], @config['account'], @config['application'], @config['password'])
   end
 
   def self.instance
-  	@@instance ||= NuntiumMessagingAdapter.new
+    @@instance ||= NuntiumMessagingAdapter.new
   end
 
   NuntiumMessagingAdapter.instance
@@ -24,7 +24,7 @@ class NuntiumMessagingAdapter < MessagingAdapter
     options[:country] =   @config[:country]
     options[:suggested_channel] =  @config[:suggested_channel] 
 
-  	@nuntium.send_ao(options)
+    @nuntium.send_ao(options)
   end
 
   def channels

@@ -31,7 +31,7 @@ module Admin
     def new
       @order = Order.find params[:order_id]
       @shipment = @order.shipments.build()
-      @app_title = "Create new shipment"	
+      @app_title = "Create new shipment"  
     end
 
     def order

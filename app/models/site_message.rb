@@ -28,6 +28,6 @@ class SiteMessage < ActiveRecord::Base
   end
 
   def display_error
-  	self.error == SiteMessageParser::ERROR_ERROR ? 'Yes' : 'No'
+    self.error == SiteMessageParser::ERROR_ERROR ? 'Yes' : 'No'
   end
 end

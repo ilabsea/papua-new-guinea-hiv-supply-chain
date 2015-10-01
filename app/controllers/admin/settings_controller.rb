@@ -1,14 +1,14 @@
 module Admin
   class SettingsController < Controller
-  	load_and_authorize_resource
+    load_and_authorize_resource
     skip_load_resource
     skip_authorize_resource
-  	
-  	def index
+    
+    def index
         @app_title = "Settings"  
-  	end
+    end
 
-  	def create
+    def create
       keys =  [ 
         :message_alerting_site_for_shipment,
         :message_asking_site,

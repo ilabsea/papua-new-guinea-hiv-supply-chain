@@ -91,16 +91,16 @@ class Order < ActiveRecord::Base
   end
 
   def self.create_from_requisition_report requisition_report
-  	order = Order.new :date_submittion => requisition_report.created_at,
-											 :is_requisition_form => true,
-											 :order_date => Time.zone.now.to_date, 
-											 :status  => Order::ORDER_STATUS_PENDING
+    order = Order.new :date_submittion => requisition_report.created_at,
+                       :is_requisition_form => true,
+                       :order_date => Time.zone.now.to_date, 
+                       :status  => Order::ORDER_STATUS_PENDING
 
     site =  requisition_report.site
 
-  	order.user_place_order = requisition_report.user
-  	order.site = site
-  	order.requisition_report = requisition_report
+    order.user_place_order = requisition_report.user
+    order.site = site
+    order.requisition_report = requisition_report
 
     if order.save
 

@@ -1,16 +1,16 @@
 module Admin
   class OrderLinesController < Controller
-  	def index
+    def index
       params[:type] ||= CommodityCategory::TYPES_DRUG
-  		@order = Order.find params[:order_id]
-  		if params[:type] == CommodityCategory::TYPES_DRUG
-  			@order_lines = @order.order_lines.drug.paginate(paginate_options)
-  		else params[:type] == CommodityCategory::TYPES_KIT
-  			@order_lines = @order.order_lines.kit.paginate(paginate_options)	
-  		end	
+      @order = Order.find params[:order_id]
+      if params[:type] == CommodityCategory::TYPES_DRUG
+        @order_lines = @order.order_lines.drug.paginate(paginate_options)
+      else params[:type] == CommodityCategory::TYPES_KIT
+        @order_lines = @order.order_lines.kit.paginate(paginate_options)  
+      end  
 
-  		@app_title = "Order lines"
-  	end
+      @app_title = "Order lines"
+    end
 
     def review_all
       order = Order.find(params[:order_id])

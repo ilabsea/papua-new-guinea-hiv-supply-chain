@@ -196,13 +196,13 @@ class OrderLine < ActiveRecord::Base
   end
 
   class << self
-  	def drug
-  		where ['arv_type = :type ', :type => CommodityCategory::TYPES_DRUG ]
-  	end
+    def drug
+      where ['arv_type = :type ', :type => CommodityCategory::TYPES_DRUG ]
+    end
 
-  	def kit
-  		where [ 'arv_type = :type ', :type => CommodityCategory::TYPES_KIT ]
-  	end
+    def kit
+      where [ 'arv_type = :type ', :type => CommodityCategory::TYPES_KIT ]
+    end
 
     def not_shipped
       where [ 'shipment_status = :shipment_status', :shipment_status => false]
@@ -211,6 +211,6 @@ class OrderLine < ActiveRecord::Base
     def data_filled
       where ['completed_order = :completed', :completed => OrderLine::DATA_COMPLETE]
     end
-  end	
+  end  
 
 end

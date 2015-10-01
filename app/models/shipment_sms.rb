@@ -1,19 +1,19 @@
 class ShipmentSms < Sms
   
   def initialize shipment
-  	@shipment = shipment
+    @shipment = shipment
   end
 
   def alert
-  	options = {
-  		:site => @shipment.site.name, 
-  		:consignment => @shipment.consignment_number , 
-  		:shipment_date =>  @shipment.shipment_date,
+    options = {
+      :site => @shipment.site.name, 
+      :consignment => @shipment.consignment_number , 
+      :shipment_date =>  @shipment.shipment_date,
       :carton_number => @shipment.carton
-  	}
+    }
 
-  	setting = Setting[:message_alerting_site_for_shipment]
-  	translation = setting.str_tr options
+    setting = Setting[:message_alerting_site_for_shipment]
+    translation = setting.str_tr options
 
     #send_via_nuntium message_item
     Sms.send NuntiumMessagingAdapter.instance do |sms|
@@ -23,18 +23,18 @@ class ShipmentSms < Sms
     end
     
 
-  	log = {
-  		:site 	 	  => @shipment.site,
-  		:shipment 	=> @shipment,
-  		:message    => translation,
-  		:to 		    => @shipment.site.mobile,
+    log = {
+      :site        => @shipment.site,
+      :shipment   => @shipment,
+      :message    => translation,
+      :to         => @shipment.site.mobile,
       :sms_type   => SmsLog::SMS_TYPE_SHIPMENT
-  	}
+    }
 
-  	SmsLog.create log
+    SmsLog.create log
 
-  	@shipment.last_notified_date = Time.now
-  	@shipment.save
+    @shipment.last_notified_date = Time.now
+    @shipment.save
 
   end
 

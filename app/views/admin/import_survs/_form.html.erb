@@ -48,10 +48,7 @@
       </thead>
 
       <tbody>
-        <% 
-        #store list of site for js 
-        @site_list = [] 
-        %>
+        <%  @site_list = [] %>
         <%= f.simple_fields_for :surv_sites  do |surv_site_form| %>
             <%
               style = @i == 1 ? 'border-top: 1px solid #ccc;' : ''

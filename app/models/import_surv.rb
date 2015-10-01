@@ -178,10 +178,10 @@ class ImportSurv < ActiveRecord::Base
   end
 
   def import
-  	file_name = self.form.current_path
-  	@book = Spreadsheet.open(file_name)
+    file_name = self.form.current_path
+    @book = Spreadsheet.open(file_name)
     self.surv_type == TYPES_SURV1 ? read_file_surv1 : read_file_surv2
-	end
+  end
 
   def read_file_surv2
     sheet_arv_request = @book.worksheet 0

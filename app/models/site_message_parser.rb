@@ -8,15 +8,15 @@ class SiteMessageParser
   STATUS_PARTIALLY_RECEIVED = ['p', 'partial']
 
   def initialize params
-  	@options = params	
+    @options = params  
   end
 
   def parse
-  	@options[:error] = SiteMessageParser::ERROR_OK
-  	@options[:error_type] = :site_message_success
-  	validate_content?
-  	translate_message
-  	@options
+    @options[:error] = SiteMessageParser::ERROR_OK
+    @options[:error_type] = :site_message_success
+    validate_content?
+    translate_message
+    @options
   end
 
   def process
@@ -78,37 +78,37 @@ class SiteMessageParser
 
 
   def validate_consignment_number? consignment_number
-  	shipment = Shipment.find_by_consignment_number consignment_number
-  	if !shipment
-  	  @options[:error] = SiteMessageParser::ERROR_ERROR
-  	  @options[:error_type] = :site_message_invalid_consignment_number
+    shipment = Shipment.find_by_consignment_number consignment_number
+    if !shipment
+      @options[:error] = SiteMessageParser::ERROR_ERROR
+      @options[:error_type] = :site_message_invalid_consignment_number
     else  
-    	if shipment.site.mobile.with_sms_protocol != @options[:from]	
-    	  @options[:error] = SiteMessageParser::ERROR_ERROR
-    	  @options[:error_type] = :site_message_invalid_sender
+      if shipment.site.mobile.with_sms_protocol != @options[:from]  
+        @options[:error] = SiteMessageParser::ERROR_ERROR
+        @options[:error_type] = :site_message_invalid_sender
       else
         @options[:consignment_number] = consignment_number
         @options[:site] = shipment.site
         @options[:shipment] = shipment
       end  
-  	end
-  	@options[:error] != SiteMessageParser::ERROR_ERROR
+    end
+    @options[:error] != SiteMessageParser::ERROR_ERROR
   end
-  	
+    
   def validate_status? status
-  	status = status.downcase
+    status = status.downcase
 
-  	if SiteMessageParser::STATUS_RECEIVED.include? status
-  	  @options[:status] = Shipment::STATUS_RECEIVED
-  	elsif SiteMessageParser::STATUS_LOST.include? status
-  	  @options[:status] = Shipment::STATUS_LOST
-  	elsif SiteMessageParser::STATUS_PARTIALLY_RECEIVED.include? status
-  	  @options[:status] = Shipment::STATUS_PARTIALLY_RECEIVED 
-  	else
-  	  @options[:error] = SiteMessageParser::ERROR_ERROR
-  	  @options[:error_type] = :site_message_invalid_status
-  	end
-  	@options[:error] != SiteMessageParser::ERROR_ERROR
+    if SiteMessageParser::STATUS_RECEIVED.include? status
+      @options[:status] = Shipment::STATUS_RECEIVED
+    elsif SiteMessageParser::STATUS_LOST.include? status
+      @options[:status] = Shipment::STATUS_LOST
+    elsif SiteMessageParser::STATUS_PARTIALLY_RECEIVED.include? status
+      @options[:status] = Shipment::STATUS_PARTIALLY_RECEIVED 
+    else
+      @options[:error] = SiteMessageParser::ERROR_ERROR
+      @options[:error_type] = :site_message_invalid_status
+    end
+    @options[:error] != SiteMessageParser::ERROR_ERROR
   end
 
   def validate_carton? carton_number
