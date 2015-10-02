@@ -6,7 +6,7 @@
 %>
 <tr id='tr_<%= row_ref %>'  data-ref="<%= row_ref%>" class='order_line_row'>
     <td ><%=index%></td>
-    <td title="<%= h order_line_record.commodity.name %>"> 
+    <td class='td-expand no-wrap' title="<%= h order_line_record.commodity.name %>"> 
       
       <%= order_line_form.input :id, :as => 'hidden' %>
       <%= order_line_form.input :status, :as => 'hidden', :input_html => {:value =>''} %>
@@ -18,22 +18,20 @@
 
       <%= order_line_form.input :commodity_id, :as => 'hidden' %>
       <%= order_line_form.input :site_id, :as => 'hidden', :input_html => {:class=>'site', :id => "site_#{row_ref}"} %>
+
       <input type='hidden' id='commodity_name_<%=row_ref%>' value="<%= h order_line_record.commodity.name %>" />
-      <span> <%= truncate(order_line_record.commodity.name, :length => 30) %> </span>
+      <%= truncate(order_line_record.commodity.name, :length => 30) %>
     </td>
 
 
-    <td> 
-      <%= order_line_record.number_of_client %> 
-      <%= order_line_form.input :number_of_client, :as => :hidden, :input_html => { 
+    <td>
+      <%= order_line_record.number_of_client %>
+      <div style="display:none;"> 
+        <%= order_line_form.input :number_of_client, :as => :hidden, :input_html => { 
                            :class => 'validate_field number_text',
                            :id => "number_of_client_#{row_ref}", 
                            :'data-ref' => row_ref } %>
-    </td>
-
-    <td > 
-      <%= order_line_record.commodity.consumption_per_client_unit %> 
-      <input type='hidden' id='consumption_per_client_per_month_<%=row_ref%>' value="<%=order_line_record.commodity.consumption_per_client_unit %>" />
+      </div>
     </td>
 
     <td > 
@@ -76,10 +74,10 @@
           :label_html   => {:class => 'none'}
       %>
 
-      <a href="javascript:void(0)" class="order_popover error" id='error_<%= row_ref %>' class='error' style='<%= error_display %>'
-           data-skip-loading='true' data-ref='<%= row_ref %>' data-html = 'true' data-placement='left'>  
-           <i class='icon-exclamation-sign'></i>     
+      <a href="javascript:void(0)" class="order_popover error" id='error_<%= row_ref %>' style='<%= error_display %>'
+         data-skip-loading='true' data-ref='<%= row_ref %>' data-html = 'true' data-placement='left'>  
+           <i class='icon-exclamation-sign'></i>
       </a>
 
     </td>
-</tr>  
+</tr>

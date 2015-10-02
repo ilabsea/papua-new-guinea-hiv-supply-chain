@@ -9,7 +9,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  year       :integer
-#  month      :string(20)
+#  month      :integer
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

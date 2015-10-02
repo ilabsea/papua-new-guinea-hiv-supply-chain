@@ -9,7 +9,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  year       :integer
-#  month      :string(20)
+#  month      :integer
 #
 
 require 'spec_helper'
@@ -17,7 +17,7 @@ require 'spec_helper'
 describe ImportSurv do
   describe 'Create Import Surv' do
     before(:each) do
-      @valid_attr = { :surv_type => ImportSurv::TYPES_SURV1, :month => 'January', :year => 2013 }
+      @valid_attr = { :surv_type => ImportSurv::TYPES_SURV1, :month => 0, :year => 2013 }
     end
 
     describe 'with valid attributes' do
@@ -31,7 +31,7 @@ describe ImportSurv do
       it 'should require month' do
         import_surv = ImportSurv.new(@valid_attr.merge(:month => ""))
         expect{import_surv.save}.to change{ImportSurv.count}.by(0)
-        import_surv.errors.full_messages[0].should eq "Month  is not a valid month"
+        import_surv.errors.full_messages[0].should eq "Month can't be blank"
       end
 
       it 'should require year to be a numberic value' do

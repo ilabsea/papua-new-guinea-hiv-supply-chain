@@ -11,6 +11,8 @@ module Admin
           render :data_entry
         elsif current_user.reviewer?
           render :reviewer
+        elsif current_user.data_entry_and_reviewer?
+          render :data_entry_and_reviewer
         elsif current_user.ams?
           @total_shipment_by_status = Shipment.in_between(params[:start], params[:end]).total_shipment_by_status
           render :ams

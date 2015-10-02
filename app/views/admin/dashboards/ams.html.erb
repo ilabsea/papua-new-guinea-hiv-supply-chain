@@ -7,9 +7,9 @@
    date_params[:end]   = params[:end] if !params[:end].blank?
 
   [
-  	{ :quantity => @total_order_by_status[Order::ORDER_STATUS_APPROVED].to_i, 
+    { :quantity => @total_order_by_status[Order::ORDER_STATUS_APPROVED].to_i, 
       :class => :order_approved,  
-  		:type => Order::ORDER_STATUS_APPROVED ,  
+      :type => Order::ORDER_STATUS_APPROVED ,  
       :text => 'Orders pending for dispatch',
       :url => order_admin_shipments_path(date_params)
     },
@@ -46,14 +46,14 @@
     }
 
   ].each do |item| %>
-  	<li> 
-  		<div>
-			 <a href='<%= item[:url] %>' >
-			 	<span class='order_size <%=item[:class] %>' > <%= item[:quantity] %> </span>
-			 	<span > <%= item[:text] %> </span>
-			 </a>			 
-  		</div>
-  	</li>	
+    <li> 
+      <div>
+       <a href='<%= item[:url] %>' >
+         <span class='order_size <%=item[:class] %>' > <%= item[:quantity] %> </span>
+         <span > <%= item[:text] %> </span>
+       </a>       
+      </div>
+    </li>  
 
 <% end %>
 </ul>

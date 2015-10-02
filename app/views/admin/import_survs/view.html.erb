@@ -1,6 +1,6 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Survs" => admin_import_survs_path(:type => params[:type])}, "Show" => nil]  %>
-<% end %>	
+<% end %>  
 
 <style>
 .surv-form tr, .surv-form th, .surv-form td {
@@ -31,9 +31,9 @@
               survs = @import_surv.surv_sites.select{|surv_site| surv_site.site == site } 
               surv = survs[0]
             %>  
-      	    <% surv.surv_site_commodities.each do |surv_site_commodity| %>
+            <% surv.surv_site_commodities.each do |surv_site_commodity| %>
               <td class='pos-commodity'><%= surv_site_commodity.quantity.to_i %> </td>
-      	    <% end %>
+            <% end %>
         </tr>
       <% end %>
 

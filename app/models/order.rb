@@ -73,7 +73,7 @@ class Order < ActiveRecord::Base
   end
 
   def self.of_user(user)
-    return where("1=1") if user.admin? || user.data_entry? || user.reviewer?
+    return where("1=1") if user.admin? || user.data_entry? || user.reviewer? || user.data_entry_and_reviewer?
     return where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
     return where('status = :status', :status => ORDER_STATUS_APPROVED) if user.ams?
   end

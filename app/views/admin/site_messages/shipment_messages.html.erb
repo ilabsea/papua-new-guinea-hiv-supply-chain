@@ -4,9 +4,9 @@
 
 <%= page_header "Messages list"  %>
 <div class='well'>
-	<ul >
-	  <li> Site: <b> <%= @shipment.site.name %> </b></li>
-	  <li> Shipment: <b> <%= link_to @shipment.consignment_number, admin_shipment_path(@shipment) %> </b></li>
-	</ul>
+  <ul >
+    <li> Site: <b> <%= @shipment.site.name %> </b></li>
+    <li> Shipment: <b> <%= link_to @shipment.consignment_number, admin_shipment_path(@shipment) %> </b></li>
+  </ul>
 </div>
 <%= render 'messages', messages: @messages %>

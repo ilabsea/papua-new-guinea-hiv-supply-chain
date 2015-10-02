@@ -15,8 +15,8 @@ class Ability
         current_user.id == user.id
     end
 
-    if current_user.admin?  
-      can :manage, :all  
+    if current_user.admin?
+      can :manage, :all
       
       cannot :create, RequisitionReport
       cannot :manage, Order
@@ -27,12 +27,13 @@ class Ability
 
       can :create, RequisitionReport
       can :read, RequisitionReport
+      # can :destroy, RequisitionReport
 
       can :create_from_requisition_report, Order
       can :create, Order
 
 
-    elsif current_user.data_entry?
+    elsif current_user.data_entry? || current_user.data_entry_and_reviewer?
       can :manage, ImportSurv
       can :manage, SurvSite
       can :manage, SurvSiteCommodity
@@ -43,11 +44,10 @@ class Ability
     elsif current_user.reviewer?
       can :manage, Order
 
-    elsif current_user.ams?    
+    elsif current_user.ams?
       can :manage, Shipment
       can :create_shipment, :shipments
       can :manage, SmsLog
-      
     end
     
     # Define abilities for the passed in user here. For example:

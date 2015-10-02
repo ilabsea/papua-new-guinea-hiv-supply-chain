@@ -147,17 +147,24 @@ module Admin::ApplicationHelper
 
   def link_button_new text, url, options={}
     options[:class] = options[:class].nil? ? "btn" : "btn #{options[:class] }"
-    link_button 'icon-plus', text, url, options
+    link_to url, options do
+      icon('plus-square') + " #{text}"
+    end
   end
 
   def link_button_delete text, url, options={}
+    options[:class] = options[:class].nil? ? "btn btn-danger" : "btn btn-danger #{options[:class] }"
+
     link_to  url, options do
       icon('trash') + " #{text}"
     end
   end
 
   def link_button_search text, url, options={}
-    link_button ' icon-search', text, url, options
+
+    link_to url, options do
+      icon('search') + " #{text}"
+    end
   end
 
   def link_button_show text, url, options={}
@@ -173,12 +180,16 @@ module Admin::ApplicationHelper
   end
 
   def link_button_reset text, url, options={}
-    link_button 'icon-repeat', text, url, options
+    link_to url, options do
+      icon('refresh') + " #{text}"
+    end
   end
 
   def link_button_cancel text, url, options={}
-    options[:class] = options[:class] ? "btn #{options[:class] }" : "btn"
-    link_to text, url, options
+    options[:class] = options[:class] ? "btn btn-danger #{options[:class] }" : "btn btn-danger"
+    link_to url, options do
+      icon('ban') + " #{text}"
+    end
   end
 
   def link_button_signout text, url, options={}
@@ -195,17 +206,26 @@ module Admin::ApplicationHelper
 
   def link_button_download text, url, options={}
     options = options.merge(:'data-skip-loading' => true)
-    link_button 'icon-download-alt', text, url, options
+    link_to url, options do
+      icon('download') + " #{text}"
+    end
   end
 
   def link_to_home text, url, options={}
-    icon = content_tag "i", " ", :class => "icon-home"
-    link_to (icon + text.html_safe), url, options
+    link_to url, options do
+      icon('home') + " #{text}"
+    end
+  end
+
+  def link_icon icon_name, text, url, options={}
+    link_to url, options do
+      icon(icon_name) + " #{text}"
+    end
   end
 
   def button_save text, klass=''
     content_tag :button, :class => "btn btn-primary #{klass}", :'data-system-loading' => true do
-      content_tag("i", '', :class => 'icon-ok') + " " + text
+      icon('check-square') + " #{text}"
     end
   end
 
@@ -239,6 +259,10 @@ module Admin::ApplicationHelper
 
   def nav_status(controllers=[])
     controllers.include?(controller_name.to_sym) ? ' active ' : ''
+  end
+
+  def patch_auto_complete_password
+    password_field_tag :_autocomplete_off, nil, style: 'display:none;'
   end
 
 end

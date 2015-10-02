@@ -5,6 +5,20 @@ class OrderLineImport
   def initialize order, file_name
     @book = Spreadsheet.open(file_name)
     @order = order
+    @surv_sites = SurvSite.includes(:surv_site_commodities).for_site_order(order)
+  end
+
+  def query_number_of_patient surv_sites, commodity, type
+    surv_sites.each do |surv_site|
+      next if surv_site.surv_type != type
+
+      surv_site.surv_site_commodities.each do |surv_site_commodity|
+        if surv_site_commodity.commodity_id == commodity.id
+          return surv_site_commodity.quantity
+        end
+      end
+    end
+    0
   end
 
   def import
@@ -55,12 +69,15 @@ class OrderLineImport
           monthly_use   = row[3].to_i
           monthly_use   = (monthly_use/pack_size).ceil
 
+          number_of_client = query_number_of_patient(@surv_sites, commodity, ImportSurv::TYPES_SURV1)
+
           params = { :commodity => commodity,
                      :pack_size => pack_size,
                      :arv_type => CommodityCategory::TYPES_KIT,
                      :stock_on_hand => stock_on_hand,
                      :monthly_use => monthly_use,
-                     :skip_bulk_insert => true
+                     :skip_bulk_insert => true,
+                     :number_of_client => number_of_client
           }
 
           order_lines << @order.order_lines.build(params)
@@ -89,11 +106,13 @@ class OrderLineImport
         commodity = find_commodity_by_name(row[0])
 
         if commodity
+          number_of_client = query_number_of_patient(@surv_sites, commodity, ImportSurv::TYPES_SURV2)
           params = { :commodity => commodity,
                      :arv_type  => CommodityCategory::TYPES_DRUG,
                      :stock_on_hand =>  row[5].to_i,
                      :monthly_use   =>  row[6].to_i,
-                     :skip_bulk_insert => true
+                     :skip_bulk_insert => true,
+                     :number_of_client => number_of_client
               }
           order_lines << @order.order_lines.build(params)
         else

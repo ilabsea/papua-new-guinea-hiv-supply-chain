@@ -1,30 +1,31 @@
 <%=simple_form_for :order , :url => admin_root_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
-	<style>
-	    .tbar td {
-	      padding-left: 20px;
-	    }
-	</style>
-	<br/>
+  <div class='row-fluid control-inline '>
+    <table class="table-dashboard-form" >
+      <tr>
 
-	<div class='row-fluid control-inline '>
-		<table class='tbar'>
-		  <tr>
-		  	<td>
-		  		<%= f.input :start_date, :as => 'date_time_picker', 
-	                               :label => 'Form order date' ,
-	                               :label_html => {:class=> 'inline'},
-	                               :input_html => {:class => 'datepicker-fit date-field', :value => params[:start], :name => 'start'}
-	                               %>
-		  	</td>
-		  	<td>
-		  		<%= f.input :end_date, :as => 'date_time_picker', 
-	                                      :label => 'To',
-	                                      :label_html => { :class => 'inline'},
-	                                      :input_html => { :class  => 'datepicker-fit date-field', :value => params[:end], :name => 'end' } 
-	                                      %> </td>
-		  	<td><%= submit_tag ' Go ', :class => 'btn btn-primary', :style=> 'margin-top: -25px;', :name => nil %></td>
-		  </tr>
+        <td>
+          <%= f.input :start_date, :as => 'date_time_picker',
+                                 :required => false,
+                                 :label => 'Form',
+                                 :input_html => {:class => 'datepicker-fit date-field', 
+                                                 :value => params[:start],
+                                                 :name => 'start'}
+                                 %>
+        </td>
 
-		</table>
-	  </div> 
+        <td style="padding: 0 2em;">
+          <%= f.input :end_date, :as => 'date_time_picker',
+                                        :required => false,
+                                        :label => 'To',
+                                        :input_html => { :class  => 'datepicker-fit date-field',
+                                                         :value => params[:end],
+                                                         :name => 'end'}
+                                        %> </td>
+        <td style="vertical-align: top;">
+          <%= button_tag  "#{icon('search')}  Go ".html_safe, :class => 'btn btn-primary', :name => nil %>
+         </td>
+      </tr>
+
+    </table>
+    </div>
 <% end %>

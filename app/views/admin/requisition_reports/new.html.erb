@@ -1,7 +1,7 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [
-  		 {"New Requisition Form" => false}
-  	] %>
+       {"New Requisition Form" => false}
+    ] %>
 <% end %>
 
 <%= page_header 'Requisition Form Submission' %>
@@ -11,8 +11,8 @@
   <%= f.input :form, :as =>:file %>
 
   <div class="form-actions">
-  	<%= button_save ' Save ' %>
-  	<%= link_button_cancel 'Cancel', admin_requisition_reports_path %>
+    <%= button_save ' Upload and Save ' %>
+    <%= link_button_cancel 'Cancel', admin_requisition_reports_path %>
   </div>
 <% end %>
 

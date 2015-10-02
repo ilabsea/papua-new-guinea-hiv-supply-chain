@@ -3,17 +3,25 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @app_title = "List of surv form"
       @type = params[:type] || ImportSurv::TYPES_SURV1
       @import_survs = current_user.import_survs.of_type(@type).paginate(paginate_options)
     end
 
     def edit
-      @app_title = 'Edit ' 
       @import_surv  = ImportSurv.find params[:id]
       @sites = Site.all
-      @commodities = Commodity.from_type(@import_surv.arv_type)
-      @app_title = 'Edit ' + @import_surv.surv_type
+      @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test).from_type(@import_surv.arv_type)
+
+      existing_sites = @import_surv.surv_sites.map(&:site_id)
+
+      @sites.each do |site|
+        next if existing_sites.include?(site.id)
+        surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
+        @commodities.each do |commodity|
+          surv_site.surv_site_commodities.build(:commodity => commodity, :quantity => '' )
+        end
+      end
+
     end
 
     def update
@@ -34,8 +42,6 @@ module Admin
       @sites = Site.all
       @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test).from_type(@import_surv.arv_type)
 
-      @app_title = 'New ' + @import_surv.surv_type
-
       @sites.each do |site|
         surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
         @commodities.each do |commodity|
@@ -54,7 +60,7 @@ module Admin
         @sites = Site.all
         @commodities = Commodity.from_type(@import_surv.arv_type)  
         render :new
-      end  
+      end
     end
 
     def destroy
@@ -77,44 +83,54 @@ module Admin
       @import_surv = current_user.import_survs.build
     end
 
-  def import
-    @import_surv = current_user.import_survs.build params[:import_surv]
-    if @import_surv.surv_type != nil && !@import_surv.form.blank?
-      @import_surv.validate_surv_form
-    end
-    if @import_surv.is_form_error?
-      flash.now[:alert] = "Import failed ! The following fields are missing."
-      render :field_error
-    else
-      if @import_surv.save        
-         @import_surv.import
-         redirect_to admin_import_survs_path, notice: 'SURV Form has been successfully imported.'
+    def import
+      @import_surv = current_user.import_survs.build params[:import_surv]
+      if @import_surv.surv_type != nil && !@import_surv.form.blank?
+        @import_surv.validate_surv_form
+      end
+      if @import_surv.is_form_error?
+        flash.now[:alert] = "Import failed ! The following fields are missing."
+        render :field_error
       else
-        _fill_attribute
-        if @import_surv.save        
-          ImportSurv.import(@import_surv)
-          redirect_to  new_admin_import_surv_path(), :notice => 'SURV Form has been successfully imported.'
+        if @import_surv.save
+           @import_surv.import
+           redirect_to admin_import_survs_path, notice: 'SURV Form has been successfully imported.'
         else
-          render :new
+          _fill_attribute
+          if @import_surv.save
+            ImportSurv.import(@import_surv)
+            redirect_to  new_admin_import_surv_path(), :notice => 'SURV Form has been successfully imported.'
+          else
+            render :new
+          end
         end
       end
     end
-  end
 
 
-  def _fill_attribute
-    @import_surv.import_user = current_user
-  end
+    def _fill_attribute
+      @import_surv.import_user = current_user
+    end
 
-  def download
-    @import_surv = ImportSurv.find params[:id]
-      send_file(@import_surv.form.current_path , 
-                        :filename      =>  "surv#{@import_surv.surv_type}.xls",
-                        :type          =>  'application/xls',
-                        :disposition   =>  'attachment',
-                        :streaming     =>  true,
-                        :buffer_size   =>  '4096')
-  end
+    def download
+      @import_surv = ImportSurv.find params[:id]
+        send_file(@import_surv.form.current_path , 
+                          :filename      =>  "surv#{@import_surv.surv_type}.xls",
+                          :type          =>  'application/xls',
+                          :disposition   =>  'attachment',
+                          :streaming     =>  true,
+                          :buffer_size   =>  '4096')
+    end
+
+    def filter_empty_site
+      import_surv[surv_sites_attributes][0][surv_site_commodities_attributes][0][quantity]
+
+      import_surv_params = params[:import_surv]
+      filter_params = []
+
+
+
+    end
 
   end
 end

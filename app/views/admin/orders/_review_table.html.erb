@@ -1,6 +1,6 @@
 <table class="table  table table-hover" >
   <thead>
-  	<tr> 
+    <tr> 
       <th> # </th>
       <th> Commodity </th>
       <th title="# Of Patient on Drug regiment">No-Patient...</th>
@@ -13,27 +13,27 @@
       <th> Reviewer Note</th>
       <th width='80px;'> Action </th>
 
-  	</tr>
+    </tr>
   </thead>
 
   <tbody>
     <% order_lines.each_with_index do |order_line, index| %>
-	    <tr> 
+      <tr> 
         <td> <%= index+1 %></td>
-	      <td title="<%= h order_line.commodity.name%>"> <%= truncate(order_line.commodity.name, :length => 30) %> </td>
+        <td title="<%= h order_line.commodity.name%>"> <%= truncate(order_line.commodity.name, :length => 30) %> </td>
 
-	      <td> <%= order_line.number_of_client %></td>
-	      <td> <%= order_line.stock_on_hand %> </td>
-	      <td> <%= order_line.monthly_use %></td>
-	      <td> <%= order_line.calculate_system_suggestion %> </td>
+        <td> <%= order_line.number_of_client %></td>
+        <td> <%= order_line.stock_on_hand %> </td>
+        <td> <%= order_line.monthly_use %></td>
+        <td> <%= order_line.calculate_system_suggestion %> </td>
 
-	      <td> <%= number_field_tag :quantity_suggested, order_line.quantity_suggested, 
+        <td> <%= number_field_tag :quantity_suggested, order_line.quantity_suggested, 
                       :id => "quantity_suggested_#{order_line.id}",  
                       :class => :number_text %>  </td>
         <td> <span id='status_<%=order_line.id%>' ><%= status(order_line.status) %> </span> </td>
         <td> <%= order_line.user_data_entry_note %> </td>
-	      <td> <%= text_field_tag :reviewer_note, order_line.user_reviewer_note, :id => "user_reviewer_note_#{order_line.id}" %> </td>
-	      <td id='<%=order_line.id %>' > 
+        <td> <%= text_field_tag :reviewer_note, order_line.user_reviewer_note, :id => "user_reviewer_note_#{order_line.id}" %> </td>
+        <td id='<%=order_line.id %>' > 
           <%= link_button_tick '', approve_admin_order_order_line_url(order, order_line), 
                       :title => 'Accept',
                       :'data-ref' => order_line.id, 
@@ -45,8 +45,8 @@
                       :'data-ref' => order_line.id, 
                       :method => :put, 
                       :class => 'rejected intercept btn-mini btn-danger' %>
-	      </td>
-	  	</tr>
+        </td>
+      </tr>
 
     <% end %>
   </tbody>

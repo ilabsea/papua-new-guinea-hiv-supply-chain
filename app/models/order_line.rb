@@ -40,7 +40,7 @@ class OrderLine < ActiveRecord::Base
                   :site_id, :site, :is_set, :skip_bulk_insert,:commodity, :pack_size
 
   validates :stock_on_hand , :numericality => {:greater_than_or_equal_to => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.quantity_suggested }
-  validates :quantity_suggested , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.stock_on_hand }
+  # validates :quantity_suggested , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.stock_on_hand }
 
   validates :monthly_use, :numericality => {:greater_than_or_equal_to => 0}, :if =>  Proc.new{|ol| ol.arv_type == CommodityCategory::TYPES_KIT &&  ol.number_of_client && ol.stock_on_hand }
 

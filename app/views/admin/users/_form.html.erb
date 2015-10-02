@@ -1,4 +1,5 @@
 <%= simple_form_for [:admin,@user], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= patch_auto_complete_password %>
   <%= f.error_notification %>
   <%= f.input :user_name %>
   <% if @user.new_record? %>
@@ -15,8 +16,9 @@
   <div class="form-actions">
     <%= button_save ' Save '  %>
     <% if !@user.new_record? && @user != current_user  %>
-        <%= link_button 'icon-repeat', " Reset password", reset_admin_user_path(@user),:method => :put, 
-                        :confirm => 'Are you sure to reset password for this user?' ,:class => 'btn btn-info' %>
+        <%= link_button_reset "Reset password", reset_admin_user_path(@user),:method => :put,
+                              :confirm => 'Are you sure to reset password for this user?' ,
+                              :class => 'btn btn-info' %>
     <%end %>
     <%= link_button_cancel 'Cancel',  admin_users_path %>
     

@@ -36,7 +36,7 @@ module Admin
 
     def destroy
       begin
-        # @requisition_report = RequisitionReport.find params[:id]
+        @requisition_report = RequisitionReport.find params[:id]
         @requisition_report.destroy
         redirect_to admin_requisition_reports_path, :notice => 'Requistion Form summitted has been deleted'
       rescue Exception => e
@@ -46,7 +46,7 @@ module Admin
 
     def _fill_attribute
       @requisition_report.site = current_user.site
-      @requisition_report.user = current_user 
+      @requisition_report.user = current_user
     end
 
     def import 

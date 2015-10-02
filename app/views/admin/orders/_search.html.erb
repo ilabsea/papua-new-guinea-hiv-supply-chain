@@ -1,37 +1,37 @@
 <div class='well' style='background-color: #fff;' >
-	<%=simple_form_for :order , :url => admin_orders_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
-		<style type="text/css">
-			#search_order {
-				margin: 0px !important;
-			}
-			#search_order .controls {
-				display: inline;
-			}
-			#search_order label {
-				display: inline;
-			}
-			.search_btn {
-				margin-top: 4px;
-			}
+  <%=simple_form_for :order , :url => admin_orders_path, :method => 'GET', :html => {:id => 'search_order'} do |f| %>
+    <style type="text/css">
+      #search_order {
+        margin: 0px !important;
+      }
+      #search_order .controls {
+        display: inline;
+      }
+      #search_order label {
+        display: inline;
+      }
+      .search_btn {
+        margin-top: 4px;
+      }
 
-		</style>
-		<div class='row-fluid'>
-		    <div class='span3' id='search_start_date'>
-		      <%= f.input :date_start, :as => 'date_time_picker', 
-		                               :label => 'From Date' ,
-		                               :input_html => {:class => 'datepicker-fit', :value => @date_start, :name => 'date_start'}
-		                               %>   
-		    </div>
+    </style>
+    <div class='row-fluid'>
+        <div class='span3' id='search_start_date'>
+          <%= f.input :date_start, :as => 'date_time_picker', 
+                                   :label => 'From Date' ,
+                                   :input_html => {:class => 'datepicker-fit', :value => @date_start, :name => 'date_start'}
+                                   %>   
+        </div>
 
-		    <div class='span3' id='search_end_date'>
-		        <%= f.input :date_end, :as => 'date_time_picker', 
-		                                      :label => 'To Date',
-		                                      :input_html => { :class  => 'datepicker-fit', :value => @date_end, :name => 'date_end'} 
-		                                      %> 
-		    </div>
-		    <div class='span6' style ='text-align:left;' >
-		      <%= f.submit 'Search order', :class => 'btn btn-primary search_btn' %>
-		    </div>
-		  </div> 
-	<% end %>
+        <div class='span3' id='search_end_date'>
+            <%= f.input :date_end, :as => 'date_time_picker', 
+                                          :label => 'To Date',
+                                          :input_html => { :class  => 'datepicker-fit', :value => @date_end, :name => 'date_end'} 
+                                          %> 
+        </div>
+        <div class='span6' style ='text-align:left;' >
+          <%= f.submit 'Search order', :class => 'btn btn-primary search_btn' %>
+        </div>
+      </div> 
+  <% end %>
 </div>

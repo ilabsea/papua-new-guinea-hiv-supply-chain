@@ -1,0 +1,30 @@
+.table-order {
+  label {
+    width: 70px !important;
+  }
+
+  select {
+    width: 150px;
+  }
+
+  .datepicker {
+    input {
+      width: 130px;
+    }
+  }
+}
+
+
+.form-horizontal .controls {
+    margin-left: 90px;
+}
+
+
+.table-order-line-form {
+  label {
+    display: none !important;
+  }
+  .controls {
+    margin-left: 0 !important;
+  }
+}

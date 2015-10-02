@@ -1,5 +1,14 @@
 table{
   th {
     vertical-align: middle;
+    white-space: nowrap !important;
   }
+}
+
+.navbar .nav > li > a {
+  padding: 10px 12px;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }

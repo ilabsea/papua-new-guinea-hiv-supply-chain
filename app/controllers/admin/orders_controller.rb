@@ -17,13 +17,12 @@ module Admin
      
      @orders = @orders.of_user(current_user).in_between(@date_start, @date_end)
      @orders = @orders.paginate(paginate_options) 
-     @app_title = 'List of Orders'
+
    end
 
    def new 
      @order = Order.new(:status => Order::ORDER_STATUS_PENDING)
-     _build_commodity_order_line(@order, nil)    
-     @app_title = 'Create Order'
+     _build_commodity_order_line(@order, nil)
    end
 
    def tab_order_line
@@ -55,12 +54,9 @@ module Admin
      @order = _order
    end
 
-
-
    def edit
      @order = _order
      _build_tab @order, @order.site
-     @app_title = 'Edit order, Site :' + @order.site.name
    end
 
    def update
@@ -78,7 +74,11 @@ module Admin
    def destroy
      begin
      @order = Order.find params[:id]
+
+     @order.requisition_report.destroy
      @order.destroy
+
+
      redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
      rescue Exception => e
        redirect_to admin_orders_path, :error =>  e.message
@@ -119,7 +119,7 @@ module Admin
      non_existing_commodities.each do |commodity| 
        order.order_lines.build :commodity    => commodity, 
                      :site         => site,
-                   :arv_type    => commodity.commodity_category.com_type
+                     :arv_type    => commodity.commodity_category.com_type
                    # :consumption_per_client_per_month => commodity.consumption_per_client_unit  
      end
    end

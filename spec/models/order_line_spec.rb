@@ -73,7 +73,7 @@ describe OrderLine do
     end  
 
     it 'should require quantity_suggested to be a valid positive number' do
-      ['10xx', -10, nil].each do |quantity_suggested|
+      ['10xx', -10, 0].each do |quantity_suggested|
         @order_line.quantity_suggested = quantity_suggested
         @order_line.save.should eq false
         @order_line.errors.full_messages[0].should =~ /Quantity suggested/

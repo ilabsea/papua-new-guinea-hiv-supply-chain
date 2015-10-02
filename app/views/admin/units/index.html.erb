@@ -3,33 +3,33 @@
 <% end %>
 
 <%= page_header "Units" do %>
-  <%=link_button_new "New Unit", new_admin_unit_path() %>	
+  <%=link_button_new "New Unit", new_admin_unit_path() %>  
 <%end%>
 
 
 <table class="table table-hover ">
-	<thead> 
-		<tr>
-			<th class='nth-table'> # </th>
-			<th> Name </th>
-			<th width="200"> Creation date </th>
-			<th width="50"> Action</th>
-		</tr>
-	</thead>
+  <thead> 
+    <tr>
+      <th class='nth-table'> # </th>
+      <th> Name </th>
+      <th width="200"> Creation date </th>
+      <th width="50"> Action</th>
+    </tr>
+  </thead>
 
-	<tbody>
-		<% @units.each_with_index do |unit, index| %>
-			<tr> 
-				<td><%= current_entries + index %></td>
-				<td><%= link_to unit.name, admin_unit_path(unit) %></td>
-				<td><%= show_date_time unit.created_at %></td>
-				<td>
-				  <%=link_button_delete "Destroy", admin_unit_path(unit) ,
-				                        :method => :delete ,
-				                        :confirm => 'Are you sure to delete this unit ?'%>
-				</td>
-			</tr>
-		<% end %> 
-	</tbody>
+  <tbody>
+    <% @units.each_with_index do |unit, index| %>
+      <tr> 
+        <td><%= current_entries + index %></td>
+        <td><%= link_to unit.name, admin_unit_path(unit) %></td>
+        <td><%= show_date_time unit.created_at %></td>
+        <td>
+          <%=link_button_delete "Destroy", admin_unit_path(unit) ,
+                                :method => :delete ,
+                                :confirm => 'Are you sure to delete this unit ?'%>
+        </td>
+      </tr>
+    <% end %> 
+  </tbody>
 </table>
 <%= render_paginate_for  @units %>

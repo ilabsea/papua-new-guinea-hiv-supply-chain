@@ -1,0 +1,18 @@
+<div class='well'>
+  <table class='import-surv-filter'>
+    <tr>
+        <td>
+          <%=f.input :month, :collection => ImportSurv.month_list, 
+                     :label_html => { :style=> 'width: 50px;'},
+                     :wrapper_html => {:style=> 'margin-left: 70px;'},
+                     :include_blank => 'Select month'
+           %>
+        </td>
+        <td >
+          <%=f.input :year ,:collection => 2009..2040,:include_blank => 'Select year' %>
+        </td>
+        <td style='width: 80px; vertical-align: top; padding-left: 15px;'>
+          <%= button_save " Save " %>
+        </td>
+  </table> 
+</div>

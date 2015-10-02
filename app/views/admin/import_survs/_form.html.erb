@@ -1,24 +1,7 @@
 <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
   <%= f.input :surv_type, :as => :hidden %> 
-  <div class='well'>
-    <table class='import-surv-filter'>
-      <tr>
-          <td>
-            <%=f.input :month, :collection => ImportSurv::MONTHS, 
-                       :label_html => { :style=> 'width: 50px;'},
-                       :wrapper_html => {:style=> 'margin-left: 70px;'},
-                       :include_blank => 'Select month'
-             %>
-          </td>
-          <td >
-            <%=f.input :year ,:collection => 2009..2040,:include_blank => 'Select year' %>
-          </td>
-          <td style='width: 80px; vertical-align: top; padding-left: 15px;'>
-            <%= button_save " Save " %>
-          </td>
-    </table> 
-  </div>
+  <%= render 'form_top', f: f %>
 
   <div class='alert alert-info'>
     <i class='icon-x'></i> Please enter the number of patient in the following form. You can copy from Excel and paste here.

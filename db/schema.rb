@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150930072006) do
+ActiveRecord::Schema.define(:version => 20151002101718) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -47,10 +47,10 @@ ActiveRecord::Schema.define(:version => 20150930072006) do
     t.string   "surv_type"
     t.string   "form"
     t.integer  "user_id"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "year"
-    t.string   "month",      :limit => 20
+    t.integer  "month"
   end
 
   create_table "lab_test_categories", :force => true do |t|
@@ -274,7 +274,7 @@ ActiveRecord::Schema.define(:version => 20150930072006) do
   create_table "surv_sites", :force => true do |t|
     t.integer  "import_surv_id"
     t.integer  "site_id"
-    t.string   "month"
+    t.integer  "month"
     t.integer  "year"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false

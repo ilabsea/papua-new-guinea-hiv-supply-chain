@@ -24,28 +24,25 @@
 <table class="table table-hover ">
   <thead>
     <tr>
-      <th class='nth-table'> # </th>
-      <th> Created at </th>
+      <th> # </th>
+      <th> Sumission Date</th>
       <th> Year </th>
       <th> Month </th>
       <th> Type </th>
-      <th> Action </th>
+      <th width="60"> Action </th>
     </tr>
   </thead>
   <tbody>
     <% @import_survs.each_with_index do |import_surv, index| %>
       <tr>
         <td><%= current_entries + index %></td>
-        <td>
-          <%=link_button_edit show_date_time(import_surv.created_at), edit_admin_import_surv_path(import_surv, 
-                              :type => import_surv.surv_type),
-                              :class => 'btn btn-mini' %>
+        <td><%= link_to "Surv #{show_date(import_surv.created_at)}",edit_admin_import_surv_path(import_surv,
+                        :type => import_surv.surv_type) %>
         </td>
 
         <td><%= import_surv.year %></td>
-        <td><%= import_surv.month %></td>
+        <td><%= ImportSurv::MONTHS[import_surv.month] %></td>
         <td><%= import_surv.surv_type %></td>
-
         <td>
           <%= link_button_delete ' Delete ',admin_import_surv_path(import_surv,
                                  :type => import_surv.surv_type),

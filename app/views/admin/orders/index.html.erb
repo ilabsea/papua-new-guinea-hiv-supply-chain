@@ -5,7 +5,7 @@
     export_options[:type] = params[:type]  if !params[:type].blank?   
   %> 
 
-  <% if current_user.data_entry? %>
+  <% if current_user.data_entry? or current_user.data_entry_and_reviewer? %>
     <%= link_button 'icon-plus' , 'New Order',  new_admin_order_path(), :class => 'btn' %>
   <% end %>
   <%= link_button_download 'Export Orders',  export_admin_orders_path(export_options), :class => 'btn btn-primary' %>  
@@ -19,7 +19,7 @@
   <thead>
     <tr>
       <th class='nth-table'>#</th>
-      <th>Summition</th>
+      <th>Submission</th>
       <th>Site</th>
       <th>Id</th>
       <th>Order Creation</th>
@@ -35,7 +35,12 @@
     <% @orders.each_with_index do |order, index| %>
       <tr>
         <td><%= current_entries + index %></td>
-        <td><%= order.date_submittion ? show_date(order.date_submittion) : ''  %></td>
+        <td>
+          <% text = "Order #{l(order.date_submittion)}"
+              editable = (current_user.data_entry? || current_user.data_entry_and_reviewer?) && order.status !=  Order::ORDER_STATUS_APPROVED
+          %>
+          <%= editable ? link_to(text, edit_admin_order_path(order)) : text %>
+        </td>
         <td><%=order.site.name %></td>
         <td><%= order.id %> </td>
         <td><%= order.order_date ? show_date(order.order_date) : '' %></td>
@@ -48,16 +53,13 @@
         
         <td class="center">
           <% if current_user.reviewer? %>
-            <%= link_button_review t('Review'), review_admin_order_path(order), :class => 'btn btn-mini' %> 
-            
-          <% elsif current_user.data_entry? && order.status !=  Order::ORDER_STATUS_APPROVED %>  
-            <%= link_button_edit 'Edit', edit_admin_order_path(order) %> 
+            <%= link_button_review t('Review'), review_admin_order_path(order) %> 
 
-          <% elsif current_user.data_entry? && order.status == Order::ORDER_STATUS_PENDING %>
-            <%= link_button_delete 'Delete', admin_orders_path(order), :method => :delete, :confirm => 'Are you sure to delete this order ?' %>  
+          <% elsif (current_user.data_entry? || current_user.data_entry_and_reviewer? ) && order.status == Order::ORDER_STATUS_PENDING %>
+            <%= link_button_delete 'Delete', admin_order_path(order), :method => :delete, :confirm => 'Are you sure to delete this order ?' %>  
 
           <% elsif current_user.ams? %>
-            <%= link_button 'icon-briefcase', 'Shipment', admin_order_shipments_path(order), :class => 'btn btn-mini btn-primary' %>
+            <%= link_button 'icon-briefcase', 'Shipment', admin_order_shipments_path(order)%>
           <% end %>   
 
         </td>

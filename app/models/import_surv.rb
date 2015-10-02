@@ -9,9 +9,11 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  year       :integer
-#  month      :string(20)
+#  month      :integer
 #
 
+
+#when order approve the surv site should not be able to edit
 require 'spreadsheet'
 
 class ImportSurv < ActiveRecord::Base
@@ -40,14 +42,30 @@ class ImportSurv < ActiveRecord::Base
   TYPES = [ TYPES_SURV1,  TYPES_SURV2 ]
 
   MONTHS = ['January' ,'February','March' ,'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]
-  
-  validates :month, inclusion: { :in => MONTHS, :message => "%{value} is not a valid month" }
+
+  validates :month, presence: true 
   validates :year, :numericality => { :only_integer => true}
   validate :uniqueness_of_year_month
 
   #mount_uploader :form, RequisitionReportUploader
-  accepts_nested_attributes_for :surv_sites
+  accepts_nested_attributes_for :surv_sites, reject_if: :reject_empty_row
 
+  def reject_empty_row(attributes)
+    reject = true
+    attributes['surv_site_commodities_attributes'].each do |key, surv_site_commodities_attributes |
+      reject = false if !surv_site_commodities_attributes['quantity'].blank?
+    end
+    p "reject: #{reject}"
+    return reject
+  end
+
+  def self.month_list
+    list = []
+    ImportSurv::MONTHS.each_with_index do |month, index|
+      list << [month, index]
+    end
+    list
+  end
 
   def uniqueness_of_year_month
     import = ImportSurv.where([ 'month = :month AND year = :year and surv_type = :type', 

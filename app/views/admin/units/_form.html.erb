@@ -1,8 +1,8 @@
 <%= simple_form_for [:admin, @unit], :html => { :class => "form-horizontal"} do |f| %>
-	<%= f.error_notification %>
-	<%= f.input "name" %>
-	<div class="form-actions">
-	    <%= button_save ' Save' %>		
-	    <%= link_button_cancel 'Cancel',  admin_units_path, :class => 'btn' %>
-  	</div>
+  <%= f.error_notification %>
+  <%= f.input "name" %>
+  <div class="form-actions">
+      <%= button_save ' Save' %>    
+      <%= link_button_cancel 'Cancel',  admin_units_path, :class => 'btn' %>
+    </div>
 <% end %>

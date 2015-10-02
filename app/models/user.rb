@@ -26,11 +26,12 @@ class User < ActiveRecord::Base
 
   ROLES_ADMIN = "Admin"
   ROLES_REVIEWER = "Reviewer"
+  ROLES_DATA_ENTRY_AND_REVIEWER = "Data Entry & Reviewer"
   ROLES_DATA_ENTRY = "Data Entry"
   ROLES_SITE = "Site"
   ROLES_AMS  = "AMS"
 
-  ROLES = [ ROLES_ADMIN, ROLES_REVIEWER, ROLES_DATA_ENTRY, ROLES_SITE , ROLES_AMS]
+  ROLES = [ ROLES_ADMIN, ROLES_REVIEWER, ROLES_DATA_ENTRY_AND_REVIEWER, ROLES_DATA_ENTRY, ROLES_SITE , ROLES_AMS]
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -69,6 +70,10 @@ class User < ActiveRecord::Base
 
   def reviewer?
      self.role == User::ROLES_REVIEWER
+  end
+
+  def data_entry_and_reviewer?
+     self.role == User::ROLES_DATA_ENTRY_AND_REVIEWER
   end
 
   def data_entry?
