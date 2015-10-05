@@ -34,6 +34,10 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     arel (3.0.2)
+    audited (3.0.0)
+    audited-activerecord (3.0.0)
+      activerecord (~> 3.0)
+      audited (= 3.0.0)
     bcrypt-ruby (3.0.1)
     bootstrap-datepicker-rails (1.1.0.1)
       railties (>= 3.0)
@@ -252,6 +256,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   annotate
+  audited-activerecord (~> 3.0)
   bootstrap-datepicker-rails
   bootstrap-sass (~> 2.3.0.0)
   brakeman
