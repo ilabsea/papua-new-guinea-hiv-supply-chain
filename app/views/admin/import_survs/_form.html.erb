@@ -23,8 +23,8 @@
             <% category = commodity.commodity_category.id %>
 
 
-            <th class='header-grid <% klass %>' title='<%= commodity.name %>' >
-              <%= h truncate(commodity.name, :length => 15) %>
+            <th class='header-grid <% klass %>' title='<%= commodity.ref_name %>' >
+              <%= h truncate(commodity.ref_name, :length => 15) %>
             </th>
           <% end %>
         </tr>
@@ -61,9 +61,12 @@
                 <% end %>
                 <% @category = surv_site_commodity_form.object.commodity.commodity_category.id %>
                 <% error_hl  = (surv_site_commodity_form.object.errors.size >0 ) ? 'background-color: red !important;' : '' %>
-                <td  style='<%= style %> <%= error_hl %>' class='<%= @klass%>' title="<%=h surv_site_commodity_form.object.commodity.commodity_category.name %>" >
+                <td  style='<%= style %> <%= error_hl %>'
+                     class='<%= @klass%>' 
+                     title="<%=h surv_site_commodity_form.object.commodity.commodity_category.name %>" >
                   <%= surv_site_commodity_form.input :id ,:as => :hidden %>
                   <%= surv_site_commodity_form.input :commodity_id, :as => :hidden %>
+
                   <%= surv_site_commodity_form.input :quantity, :label => false, :as => :text, 
                                                      :input_html => { :class=> "quantity_item number_text quantity_#{dom_id}",
                                                                       :data => { :id => dom_id, :offset => @offset}

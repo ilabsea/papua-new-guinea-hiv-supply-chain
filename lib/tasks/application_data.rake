@@ -217,9 +217,7 @@ def load_commodities
                           :unit_id => unit.id, 
                           :strength_dosage => el[1], 
                           :abbreviation => el[2], 
-                          :quantity_per_packg => el[3],
-                          :consumption_per_client_unit => 1+rand(100),
-                          :consumption_per_client_pack => 1+rand(10),
+                          :quantity_per_packg => el[3]
                           :quantity_per_packg => rand(100))
 
        print("\n loaded: #{el[0]} to database")                   
@@ -258,9 +256,7 @@ def load_commodities
                       :strength_dosage => el[1], 
                       :abbreviation => el[2], 
                       :quantity_per_packg => el[3],
-                      :consumption_per_client_unit => rand(500) ,
-                      :consumption_per_client_pack => 1+rand(10),
-                      :quantity_per_packg => rand(500)   ) 
+                      :quantity_per_packg => rand(500))
     print("\n loaded: #{el[0]} to database")
   end
 

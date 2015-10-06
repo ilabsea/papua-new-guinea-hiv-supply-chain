@@ -2,20 +2,18 @@
 #
 # Table name: commodities
 #
-#  id                          :integer          not null, primary key
-#  name                        :string(255)
-#  commodity_category_id       :integer
-#  consumption_per_client_pack :integer
-#  consumption_per_client_unit :integer
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#  abbreviation                :string(255)
-#  quantity_per_packg          :string(255)
-#  pack_size                   :float
-#  regimen_id                  :integer
-#  lab_test_id                 :integer
-#  unit_id                     :integer
-#  strength_dosage             :string(255)
+#  id                    :integer          not null, primary key
+#  name                  :string(255)
+#  commodity_category_id :integer
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  abbreviation          :string(255)
+#  quantity_per_packg    :string(255)
+#  pack_size             :float
+#  regimen_id            :integer
+#  lab_test_id           :integer
+#  unit_id               :integer
+#  strength_dosage       :string(255)
 #
 
 class Commodity < ActiveRecord::Base
@@ -31,7 +29,7 @@ class Commodity < ActiveRecord::Base
   belongs_to :regimen
   belongs_to :lab_test
 
-  has_many :order_lines
+  has_many :order_lines, dependent: :destroy
 
   validates :name, :unit_id, :commodity_category_id, presence: true
   validates :name, uniqueness: true
@@ -51,6 +49,14 @@ class Commodity < ActiveRecord::Base
   #     errors.add(:lab_test_id, "can't be blank") if self.lab_test_id.blank?
   #   end
   # end
+
+  def ref_name
+    if self.commodity_category.kit?
+      "#{self.name} #{self.try(:lab_test).try(:name)}"
+    else
+      "#{self.name} #{self.try(:regimen).try(:name)}"
+    end
+  end
 
   def self.of_kit
     from_type CommodityCategory::TYPES_KIT

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151005100918) do
+ActiveRecord::Schema.define(:version => 20151006150105) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -44,10 +44,8 @@ ActiveRecord::Schema.define(:version => 20151005100918) do
   create_table "commodities", :force => true do |t|
     t.string   "name"
     t.integer  "commodity_category_id"
-    t.integer  "consumption_per_client_pack"
-    t.integer  "consumption_per_client_unit"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
     t.string   "abbreviation"
     t.string   "quantity_per_packg"
     t.float    "pack_size"

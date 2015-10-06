@@ -23,6 +23,14 @@ class CommodityCategory < ActiveRecord::Base
 
   TYPES = [TYPES_DRUG, TYPES_KIT ]
 
+  def kit?
+    self.com_type == CommodityCategory::TYPES_KIT
+  end
+
+  def drug?
+    self.com_type == CommodityCategory::TYPES_DRUG
+  end
+
   def self.drug
     from_type CommodityCategory::TYPES_DRUG
   end
