@@ -1,5 +1,5 @@
 <%= form_tag mark_status_admin_shipments_path, :method => 'PUT' , :style => 'display:inline;' do %>
-  <%= page_header "Shipment list", :left => 4, :right => 8  do  %>
+  <%= page_header "Shipments Status Listing", :left => 4, :right => 8  do  %>
     <div class='row-fluid'>
       <% options_download = params[:type].blank? ? {} : {:type => params[:type] }  %>
       <%= link_button_download 'Download as CSV',  download_admin_shipments_path(options_download), :class => 'btn btn-primary' %>

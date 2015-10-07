@@ -19,8 +19,6 @@ class CommodityCategory < ActiveRecord::Base
   TYPES_DRUG = 'Drug'
   TYPES_KIT  = 'Kit'
 
-  default_scope order("commodity_categories.name ASC")
-
   TYPES = [TYPES_DRUG, TYPES_KIT ]
 
   def kit?

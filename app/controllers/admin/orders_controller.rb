@@ -26,16 +26,16 @@ module Admin
 
    def review
      @type = params[:type] || CommodityCategory::TYPES_DRUG 
-     @order = _order
+     load_order
    end
 
    def edit
-     @order = _order
+     load_order
      _build_tab @order, @order.site
    end
 
    def update
-     @order = _order
+     load_order
      @order.user_data_entry = current_user
      if current_user.data_entry?
        @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
@@ -45,6 +45,14 @@ module Admin
        @order.update_approval if current_user.data_entry_and_reviewer?
        redirect_to admin_orders_path, :notice => 'Order has been updated succesfully'
      else
+       errors = []
+       errors += @order.errors.full_messages
+       @order.order_lines.each do |order_line|
+         if order_line.errors.size > 0
+            errors += order_line.errors.full_messages
+         end
+       end
+       flash.now[:alert] = "Failed to save order with errors: " + errors.join("\n")
        render :edit
      end
    end
@@ -76,8 +84,8 @@ module Admin
    # don't refer me coz am private
    private
 
-   def _order
-     @order ||= Order.includes(:order_lines => :commodity).find params[:id]  
+   def load_order
+     @order ||= Order.includes(:order_lines => :commodity).find params[:id]
    end
 
    def _build_tab order, site

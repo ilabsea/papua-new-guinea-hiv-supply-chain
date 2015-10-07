@@ -25,6 +25,7 @@
   <thead>
     <tr>
       <th> # </th>
+      <th> ID </th>
       <th> Sumission Date</th>
       <th> Year </th>
       <th> Month </th>
@@ -36,8 +37,8 @@
     <% @import_survs.each_with_index do |import_surv, index| %>
       <tr>
         <td><%= current_entries + index %></td>
-        <td><%= link_to "Surv #{show_date(import_surv.created_at)}",edit_admin_import_surv_path(import_surv,
-                        :type => import_surv.surv_type) %>
+        <td><%= link_to import_surv.id,edit_admin_import_surv_path(import_surv, :type => import_surv.surv_type) %></td>
+        <td><%= l(import_surv.created_at.to_date) %>
         </td>
 
         <td><%= import_surv.year %></td>

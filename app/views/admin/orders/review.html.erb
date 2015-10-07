@@ -2,15 +2,7 @@
   <%= breadcrumb [{'Orders' => admin_orders_path}, {'Reviewer' => false}] %>
 <% end %>
 
-<%= page_header 'Review order'  %>
-
-<div class='well' style='background-color: #fff;' >
-  <div class='row-fluid'>
-    <div class='span3'> Site : <b> <%= @order.site.name%> </b> </div>
-    <div class='span3'> Order ID : <b> <%= @order.id %> </b> </div>
-    <div class='span6'> </div>
-  </div>
-</div>
+<%= page_header "Review Order(#{@order.id}) of Site(#{@order.site.name})" %>
 
 <% 
   order_lines_drug = @order.order_lines.select{|order_line| order_line.arv_type == CommodityCategory::TYPES_DRUG}
@@ -33,31 +25,39 @@
         <div class="clearfix">
            <h4 class="pull-left"> Drug Commodities </h4>
            <div class='pull-right'>
+             <!--  
              <%= link_to 'Approve All Drug', review_all_admin_order_order_lines_path(@order, type: CommodityCategory::TYPES_DRUG),
                          method: :put,
                          class: "btn btn-primary" %>
+              -->
            </div>
          </div>
 
         <div class='alert alert-error' id='error-drug' style='display: none;' ></div>
-        <%= render 'review_table',
-                   :order_lines => order_lines_drug,
-                   :order => @order,
-                   :show_strength => true %>
+        <div >
+          <%= render 'review_table',
+                     :order_lines => order_lines_drug,
+                     :order => @order,
+                     :type => CommodityCategory::TYPES_DRUG,
+                     :show_strength => true %>
+        </div>
       </div>
       <div class="tab-pane <%= kit %>" id="kit">
          <div class="clearfix">
            <h4 class="pull-left"> Kit Commodities </h4>
            <div class='pull-right'>
+             <!-- 
              <%= link_to 'Approve All Kit', review_all_admin_order_order_lines_path(@order, type: CommodityCategory::TYPES_KIT),
                          method: :put,
                          class: "btn btn-primary" %>
+              -->
            </div>
          </div>
          <div class='alert alert-error' id='error-kit' style='display: none;' ></div>
          <%= render 'review_table', 
                     :order_lines => order_lines_kit,
                     :order => @order,
+                    :type => CommodityCategory::TYPES_KIT,
                     :show_strength => false %>
       </div>
     </div>

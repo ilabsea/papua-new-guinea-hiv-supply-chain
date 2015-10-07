@@ -1,8 +1,8 @@
 <% content_for :breadcrumb do %>
-  <%= breadcrumb [{'Messages' => nil }] %>
+  <%= breadcrumb [{'Sms Logs' => nil }] %>
 <% end %>
 
-<%= page_header "Messages list"  %>
+<%= page_header "SMS Logs" %>
 
 <%= render 'admin/sms_logs/sms_type_tab', :type => '' %>
 <%= render 'messages', messages: @messages %>

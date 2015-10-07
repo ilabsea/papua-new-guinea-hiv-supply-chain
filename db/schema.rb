@@ -46,13 +46,13 @@ ActiveRecord::Schema.define(:version => 20151006150105) do
     t.integer  "commodity_category_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+    t.integer  "unit_id"
+    t.string   "strength_dosage"
     t.string   "abbreviation"
     t.string   "quantity_per_packg"
     t.float    "pack_size"
     t.integer  "regimen_id"
     t.integer  "lab_test_id"
-    t.integer  "unit_id"
-    t.string   "strength_dosage"
   end
 
   create_table "commodity_categories", :force => true do |t|
@@ -225,7 +225,7 @@ ActiveRecord::Schema.define(:version => 20151006150105) do
     t.integer  "sms_logs_count",                     :default => 0
     t.integer  "shipment_lines_count",               :default => 0
     t.datetime "last_notified_date"
-    t.datetime "lost_date",                          :default => '2015-09-30 03:11:51'
+    t.datetime "lost_date",                          :default => '2015-10-08 14:13:02'
     t.float    "cost"
     t.integer  "carton"
     t.integer  "site_messages_count",                :default => 0

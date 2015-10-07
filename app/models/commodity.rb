@@ -72,8 +72,6 @@ class Commodity < ActiveRecord::Base
   end
 
   def self.from_type type
-    Commodity.includes(:commodity_category)
-             .where("commodity_categories.com_type = ?", type)
-             .order("commodity_categories.name ASC")
+    self.where("commodity_categories.com_type = ?", type)
   end  
 end

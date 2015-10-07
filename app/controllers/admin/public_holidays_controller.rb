@@ -2,7 +2,7 @@ module Admin
   class PublicHolidaysController < Controller
     load_and_authorize_resource
     def index
-      @public_holidays = PublicHoliday.paginate(paginate_options)
+      @public_holidays = PublicHoliday.order('date').paginate(paginate_options)
       @app_title = "Public holidays"
     end
 

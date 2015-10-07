@@ -19,7 +19,7 @@
 
     <% content_for(:commodity_name) do %>
       <th class='header-grid <% klass %>' title='<%= commodity.ref_name %>' >
-        <%= h truncate(commodity.ref_name, :length => 15) %>
+        <%= h truncate(commodity.ref_name) %>
        </th>
     <% end %>
 

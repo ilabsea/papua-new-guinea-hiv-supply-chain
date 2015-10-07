@@ -9,8 +9,10 @@ module Admin
 
     def edit
       @import_surv  = ImportSurv.find params[:id]
-      @sites = Site.all
-      @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test).from_type(@import_surv.arv_type)
+      @sites = Site.order('name').all
+      @commodities = Commodity.order('commodities.name')
+                              .includes(:commodity_category, :regimen, :lab_test)
+                              .from_type(@import_surv.arv_type)
 
       existing_sites = @import_surv.surv_sites.map(&:site_id)
 
@@ -30,8 +32,10 @@ module Admin
       if(@import_surv.update_attributes(params[:import_surv]))
         redirect_to admin_import_survs_path(:type => @import_surv.surv_type), :notice => 'Surv form has been updated successfully'
       else
-        @sites = Site.all
-        @commodities  = Commodity.from_type(@import_surv.arv_type)  
+        @sites = Site.order('name').all
+        @commodities  = Commodity.order('commodities.name')
+                                 .includes(:commodity_category, :regimen, :lab_test)
+                                 .from_type(@import_surv.arv_type)
         render :edit
       end
     end
@@ -39,8 +43,10 @@ module Admin
     def new
       type = params[:type] ||  ImportSurv::TYPES_SURV1
       @import_surv = ImportSurv.new(:surv_type => type)
-      @sites = Site.all
-      @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test).from_type(@import_surv.arv_type)
+      @sites = Site.order('name').all
+      @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test)
+                              .from_type(@import_surv.arv_type)
+                              .order('commodities.name')
 
       @sites.each do |site|
         surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
@@ -57,8 +63,10 @@ module Admin
       if(@import_surv.save)
         redirect_to admin_import_survs_path(:type =>@import_surv.surv_type), :notice => 'Surv site has been created'
       else 
-        @sites = Site.all
-        @commodities = Commodity.from_type(@import_surv.arv_type)  
+        @sites = Site.order('name').all
+        @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test)
+                                .from_type(@import_surv.arv_type)
+                                .order('commodities.name')
         render :new
       end
     end
@@ -127,9 +135,6 @@ module Admin
 
       import_surv_params = params[:import_surv]
       filter_params = []
-
-
-
     end
 
   end

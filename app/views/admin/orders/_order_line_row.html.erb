@@ -6,6 +6,7 @@
 %>
 <tr id='tr_<%= row_ref %>'  data-ref="<%= row_ref%>" class='order_line_row'>
     <td ><%=index%></td>
+    <td ><%=order_line_record.id%></td>
     <td class='td-expand no-wrap' title="<%= h order_line_record.commodity.name %>"> 
       
       <%= order_line_form.input :id, :as => 'hidden' %>

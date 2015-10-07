@@ -33,9 +33,6 @@ class ImportSurv < ActiveRecord::Base
   #validates_format_of :form, :with => %r{\.(xls)$}i, :message => "Only .xls format is excepted"
   #validates :import_user, :form, :surv_type, :presence   =>  true
 
-  default_scope order("id DESC")
-
-
   TYPES_SURV1  = 'SURV1'
   TYPES_SURV2  = 'SURV2'
 

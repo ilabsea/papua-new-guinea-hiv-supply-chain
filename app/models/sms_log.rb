@@ -25,8 +25,6 @@ class SmsLog < ActiveRecord::Base
   
   SMS_TYPES = [SMS_TYPE_SHIPMENT, SMS_TYPE_REQUISITION, SMS_TYPE_ASK_CONFIRM]
 
-  default_scope order('created_at DESC')
-
   def self.shipment
     of_type SmsLog::SMS_TYPE_SHIPMENT
   end
