@@ -7,8 +7,12 @@
         <th title="# Of Patient on Drug regiment"># Patient</th>
         <th title="Stock on hand">Stock on hand</th>
         <th title="Monthly use">MonthlyUse</th>
-        <th title="System Suggestion">Suggestion</th>
-        <th title="Quantity Suggested">Quantity Suggested</th>
+
+        <% if !current_user.data_entry? %>
+          <th title="System Suggestion">Suggestion</th>
+          <th title="Quantity Suggested">Quantity Suggested</th>
+        <% end %>
+
         <% if(order.status == Order::ORDER_STATUS_TO_BE_REVISED )%>
           <th>Status</th>
           <th>Reviewer Note</th>

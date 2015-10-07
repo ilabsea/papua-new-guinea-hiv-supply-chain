@@ -49,6 +49,7 @@
                             :label_html   => {:class => 'none'} %> 
     </td>
     
+    <% if !current_user.data_entry? %>
     <td > 
       <span id='quantity_system_calculation_<%= row_ref %>' > 
         <%= order_line_record.system_suggestion  %> 
@@ -62,6 +63,8 @@
           :label_html   => {:class => 'none'}
       %> 
     </td>
+
+    <% end %>
 
     <% if order.status == Order::ORDER_STATUS_TO_BE_REVISED %>
       <td><%= status(order_line_record.status) %></td>
