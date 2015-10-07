@@ -19,11 +19,13 @@
                 </li>
               <% end %>
 
-              <% if current_user.data_entry? || current_user.reviewer? || current_user.data_entry_and_reviewer? %>
+              <% if current_user.data_entry? || current_user.data_entry_and_reviewer? %>
                 <li class='<%=nav_status([:import_surv]) %>'> 
                   <%= link_icon 'keyboard-o', 'SURV', admin_import_survs_path(:type => ImportSurv::TYPES_SURV1) %>
                 </li>
+              <% end %>
 
+              <% if current_user.data_entry? || current_user.reviewer? || current_user.data_entry_and_reviewer? %>
                 <li class='<%=nav_status([:orders]) %>'>
                   <%= link_icon 'table', 'Requisition and order', admin_orders_path %>
                 </li>

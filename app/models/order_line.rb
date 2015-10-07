@@ -43,10 +43,10 @@ class OrderLine < ActiveRecord::Base
                   :site_id, :site, :test_kit_waste_acceptable, :suggestion_order, :order_frequency,
                   :is_set, :skip_bulk_insert,:commodity, :pack_size
 
-  validates :stock_on_hand , :numericality => {:greater_than_or_equal_to => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.quantity_suggested }
-  validates :quantity_suggested , :numericality => {:greater_than => 0}, :if => Proc.new{|ol| ol.number_of_client && ol.stock_on_hand }
+  validates :quantity_suggested, numericality: {greater_than: 0}, if: Proc.new{|ol| ol.number_of_client }
 
-  validates :monthly_use, :numericality => {:greater_than_or_equal_to => 0}, :if =>  Proc.new{|ol| ol.arv_type == CommodityCategory::TYPES_KIT &&  ol.number_of_client && ol.stock_on_hand }
+  validates :stock_on_hand, numericality: {greater_than_or_equal_to: 0, allow_blank: true}, if: Proc.new{|ol| ol.number_of_client }
+  validates :monthly_use, numericality: {greater_than_or_equal_to: 0, allow_blank: true}, if: Proc.new{|ol| ol.number_of_client }
 
   default_scope order('monthly_use DESC')
   validate :validate_requirement

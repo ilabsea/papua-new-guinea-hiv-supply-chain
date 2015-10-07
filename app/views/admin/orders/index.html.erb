@@ -14,16 +14,16 @@
 <table class="table table-hover ">
   <thead>
     <tr>
-      <th class='nth-table'>#</th>
-      <th>Submission</th>
-      <th>Site</th>
-      <th>Id</th>
-      <th>Order Creation</th>
-      <th>Entry</th>
-      <th>Reviewer</th>
-      <th>Reviewed Date</th>
-      <th>Status</th>
-      <th>Action</th>
+      <th class='nth-table expand'>#</th>
+      <th class="expand">Id</th>
+      <th class="expand">Submission</th>
+      <th class="expand">Site</th>
+      <th class="expand">Order Creation</th>
+      <th class="expand">Entry</th>
+      <th class="expand">Reviewer</th>
+      <th class="expand">Reviewed Date</th>
+      <th class="expand">Status</th>
+      <th class="expand">Action</th>
     </tr>
   </thead>
 
@@ -32,7 +32,7 @@
       <tr>
         <td><%= current_entries + index %></td>
         <td>
-          <% text = "Order #{l(order.date_submittion)}"
+          <% 
              editable = false
              if current_user.data_entry_and_reviewer?
                editable = true if !order.approved?
@@ -40,10 +40,12 @@
                editable = true if order.pending? || order.to_be_revised?
              end
           %>
-          <%= editable ? link_to(text, edit_admin_order_path(order)) : text %>
+          <%= editable ? link_to(order.id, edit_admin_order_path(order)) : order.id %>
         </td>
+
+        <td><%= show_date(order.date_submittion) %></td>
         <td><%=order.site.name %></td>
-        <td><%= order.id %> </td>
+        
         <td><%= order.order_date ? show_date(order.order_date) : '' %></td>
         <td title='<%= order.user.phone_number%>'> 
           <%=order.user_data_entry ? order.user_data_entry.user_name : "" %>

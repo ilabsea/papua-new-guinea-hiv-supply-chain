@@ -33,31 +33,39 @@
         <div class="clearfix">
            <h4 class="pull-left"> Drug Commodities </h4>
            <div class='pull-right'>
+             <!--  
              <%= link_to 'Approve All Drug', review_all_admin_order_order_lines_path(@order, type: CommodityCategory::TYPES_DRUG),
                          method: :put,
                          class: "btn btn-primary" %>
+              -->
            </div>
          </div>
 
         <div class='alert alert-error' id='error-drug' style='display: none;' ></div>
-        <%= render 'review_table',
-                   :order_lines => order_lines_drug,
-                   :order => @order,
-                   :show_strength => true %>
+        <div >
+          <%= render 'review_table',
+                     :order_lines => order_lines_drug,
+                     :order => @order,
+                     :type => CommodityCategory::TYPES_DRUG,
+                     :show_strength => true %>
+        </div>
       </div>
       <div class="tab-pane <%= kit %>" id="kit">
          <div class="clearfix">
            <h4 class="pull-left"> Kit Commodities </h4>
            <div class='pull-right'>
+             <!-- 
              <%= link_to 'Approve All Kit', review_all_admin_order_order_lines_path(@order, type: CommodityCategory::TYPES_KIT),
                          method: :put,
                          class: "btn btn-primary" %>
+              -->
            </div>
          </div>
          <div class='alert alert-error' id='error-kit' style='display: none;' ></div>
          <%= render 'review_table', 
                     :order_lines => order_lines_kit,
                     :order => @order,
+                    :type => CommodityCategory::TYPES_KIT,
                     :show_strength => false %>
       </div>
     </div>

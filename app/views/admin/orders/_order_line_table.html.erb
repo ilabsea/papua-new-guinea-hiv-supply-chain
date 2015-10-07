@@ -2,22 +2,22 @@
     <thead>
       <tr>
         <th> # </th>
-        <th width="200"> Commodity </th>
-        <th> Strength </th>
-        <th title="# Of Patient on Drug regiment"># Patient</th>
-        <th title="Stock on hand">Stock on hand</th>
-        <th title="Monthly use">MonthlyUse</th>
+        <th class="expand" > Commodity </th>
+        <th class="expand" > Strength </th>
+        <th class="expand" title="# Of Patient on Drug regiment"># Patient</th>
+        <th class="expand" title="Stock on hand">Stock on hand (unit)</th>
+        <th class="expand" title="Monthly use">Monthly use (unit)</th>
 
         <% if !current_user.data_entry? %>
-          <th title="System Suggestion">Suggestion</th>
-          <th title="Quantity Suggested">Quantity Suggested</th>
+          <th class="expand" title="System Suggestion">Suggestion</th>
+          <th class="expand" title="Quantity Suggested">Quantity Suggested</th>
         <% end %>
 
         <% if(order.status == Order::ORDER_STATUS_TO_BE_REVISED )%>
-          <th>Status</th>
-          <th>Reviewer Note</th>
+          <th class="expand" >Status</th>
+          <th class="expand" >Reviewer Note</th>
         <% end %>
-        <th style='width:220px;' title="Entry Note">Entry Note</th>
+        <th class="expand" style='width:220px;' title="Entry Note">Entry Note</th>
       </tr>
     </thead>
     <tbody>

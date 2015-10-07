@@ -32,8 +32,9 @@
  .popover{
   max-width: 600px;
  }
+ 
  .table .help-inline{
-   display: none;
+   // display: none;
  }
 
 
@@ -178,7 +179,7 @@ table input{
 }
 
 .form-fixed {
-  overflow: hidden !important;
+
 }
 .link-thead{
   color: #333;
