@@ -51,11 +51,16 @@ class Commodity < ActiveRecord::Base
   # end
 
   def ref_name
+    names = []
     if self.commodity_category.kit?
-      "#{self.name} #{self.try(:lab_test).try(:name)}"
+      lab_name = self.try(:lab_test).try(:name)
+      names << lab_name if lab_name
     else
-      "#{self.name} #{self.try(:regimen).try(:name)}"
+      regimen_name = self.try(:regimen).try(:name)
+      names << regimen_name if regimen_name
     end
+    names << self.name
+    names.join(':')
   end
 
   def self.of_kit

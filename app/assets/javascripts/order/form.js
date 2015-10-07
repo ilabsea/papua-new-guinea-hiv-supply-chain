@@ -10,10 +10,10 @@
   function updateViewSystemSuggestion(){
     $('body').delegate(".stock_on_hand", 'keyup', function(){
       $elm = $(this);
-      updateSystemSuggestion($elm); 
+      // updateSystemSuggestion($elm); 
     }).delegate(".stock_on_hand", 'change',function(){
       $elm = $(this);
-      updateSystemSuggestion($elm); 
+      // updateSystemSuggestion($elm); 
     })
   }
 

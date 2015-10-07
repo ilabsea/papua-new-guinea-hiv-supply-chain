@@ -3,6 +3,7 @@
     <tr> 
       <th> # </th>
       <th> Commodity </th>
+      <th> Strength </th>
       <th title="# Of Patient on Drug regiment"># Patient</th>
       <th style='width: 65px;' title="Stock on hand" >Stock on hand</th>
       <th> Monthly use</th>
@@ -21,7 +22,7 @@
       <tr> 
         <td> <%= index+1 %></td>
         <td title="<%= h order_line.commodity.name%>"> <%= truncate(order_line.commodity.name, :length => 20) %> </td>
-
+        <td><%=order_line.commodity.strength_dosage%></td>
         <td> <%= order_line.number_of_client %></td>
         <td> <%= order_line.stock_on_hand %> </td>
         <td> <%= order_line.monthly_use %></td>

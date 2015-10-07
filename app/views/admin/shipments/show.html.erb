@@ -28,7 +28,8 @@
   <thead>
     <tr>
       <th class='nth-table'>#</th>
-      <th style='width: 450px;'>Commodity</th>
+      <th>Commodity</th>
+      <th>Unit</th>
       <th>Quantity Issued</th>
       <th>Quantity Suggested</th>
       <th>Remark</th>
@@ -40,6 +41,7 @@
       <tr>
         <td><%= current_entries + index %></td>
         <td><%=shipment_line.order_line.commodity.name %></td>
+        <td><%=shipment_line.order_line.commodity.unit.name %></td>
         <td><%=shipment_line.quantity_issued %></td>
         <td><%=shipment_line.quantity_suggested %> </td>
         <td><%=shipment_line.remark %></td>  

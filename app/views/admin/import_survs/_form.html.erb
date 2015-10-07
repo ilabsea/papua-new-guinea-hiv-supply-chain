@@ -7,26 +7,41 @@
     <i class='icon-x'></i> Please enter the number of patient in the following form. You can copy from Excel and paste here.
   </div> 
 
+<% 
+  category = nil 
+  klass = 'default'
+  @commodities.each do |commodity|
+    if category && category != commodity.commodity_category.id
+      klass = ( klass == 'default' ) ? 'switch_color' : 'default'
+    end
+    category = commodity.commodity_category.id %>
+
+
+    <% content_for(:commodity_name) do %>
+      <th class='header-grid <% klass %>' title='<%= commodity.ref_name %>' >
+        <%= h truncate(commodity.ref_name, :length => 15) %>
+       </th>
+    <% end %>
+
+    <% content_for(:commodity_strength) do %>
+      <td class='header-grid <% klass %>' title='<%= commodity.ref_name %>' >
+        <%= commodity.strength_dosage %>
+      </td>
+    <% end %>
+
+<% end %>
+
   <div class='row-fluid form-fixed'  >
     <table class='table table-hover surv-form table-fixed-header' id='tableFixed' >
       <thead class='header' >
-        <tr >
+        <tr>
           <th class='header-grid' >Site</th>
-          <% 
-            category = nil 
-            klass = 'default'
-          %>
-          <% @commodities.each do |commodity| %>
-            <% if category && category != commodity.commodity_category.id %>
-               <% klass = ( klass == 'default' ) ? 'switch_color' : 'default' %>
-            <% end %>
-            <% category = commodity.commodity_category.id %>
+          <%= yield(:commodity_name) %>
+        </tr>
 
-
-            <th class='header-grid <% klass %>' title='<%= commodity.ref_name %>' >
-              <%= h truncate(commodity.ref_name, :length => 15) %>
-            </th>
-          <% end %>
+        <tr>
+          <td class='header-grid' >Strength</td>
+          <%= yield(:commodity_strength) %>
         </tr>
       </thead>
 

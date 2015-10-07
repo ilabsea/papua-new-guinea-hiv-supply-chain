@@ -34,9 +34,6 @@ class Order < ActiveRecord::Base
   validates :user_data_entry,  :presence => true, :unless => Proc.new{|f| f.is_requisition_form }
   validate  :unique_order_in_month_year
 
-
-  default_scope order('orders.order_date DESC, orders.id DESC')
-
   attr_accessor :survs
   attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
                   :status, :site_id, :order_lines_attributes,:surv_sites, :site, 

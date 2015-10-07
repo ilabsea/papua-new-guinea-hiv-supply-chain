@@ -37,7 +37,7 @@
              if current_user.data_entry_and_reviewer?
                editable = true if !order.approved?
              elsif current_user.data_entry?
-               editable = true if order.pending?
+               editable = true if order.pending? || order.to_be_revised?
              end
           %>
           <%= editable ? link_to(text, edit_admin_order_path(order)) : text %>

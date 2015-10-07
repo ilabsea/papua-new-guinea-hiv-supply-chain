@@ -56,7 +56,6 @@ module Admin
      @order.requisition_report.destroy
      @order.destroy
 
-
      redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
      rescue Exception => e
        redirect_to admin_orders_path, :error =>  e.message
