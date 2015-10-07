@@ -296,7 +296,7 @@ class Generator
   def _drug_sheet_header
 
     merge_cells(Cell.new(current_row ,0), Cell.new(current_row ,4) )
-    write_cell_title Cell.new(current_row, 0) , 'ARV and TEST KIT REQUISITION FOR'  
+    write_cell_title Cell.new(current_row, 0) , 'ARV and TEST KIT REQUISITION FORM'
 
     merge_cells(Cell.new(current_row,5), Cell.new(current_row, self.total_column-1) )
     write_cell_title Cell.new(current_row, 5), 'Papua New Guinea National Department of Health'
@@ -383,12 +383,12 @@ class Generator
 
     move_next 3
 
-    write_cell Cell.new(current_row, 0), 'Fax Completed Form To 3257172/3013753', :weight => :bold, :horizontal_align => :centre
+    write_cell Cell.new(current_row, 0), 'Fax Completed Form To 3013753/3257172', :weight => :bold, :horizontal_align => :centre
     merge_cells Cell.new(current_row, 0), Cell.new(current_row, self.total_column-1)
     
     move_next
 
-    write_cell Cell.new(current_row, 0), 'Any Queries, please call 301-3734/301-3731', :weight => :bold, :horizontal_align => :centre
+    write_cell Cell.new(current_row, 0), 'Any Queries, please call 301-3751/71906173', :weight => :bold, :horizontal_align => :centre
     merge_cells Cell.new(current_row, 0), Cell.new(current_row, self.total_column-1)
   end
 
