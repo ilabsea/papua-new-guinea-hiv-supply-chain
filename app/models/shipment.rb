@@ -48,8 +48,6 @@ class Shipment < ActiveRecord::Base
   validates :cost, :carton , numericality: { greater_than_or_equal_to: 0, message: 'is not a valid number'}
   validates :user, :presence => true
 
-  default_scope order("shipments.id DESC")
-
   SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED, STATUS_PARTIALLY_RECEIVED]
 
   def self.alert_for_confirm_status now

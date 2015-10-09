@@ -15,7 +15,7 @@
   <thead>
     <tr>
       <th class='nth-table expand'>#</th>
-      <th class="expand">Id</th>
+      <th class="expand">ID</th>
       <th class="expand">Submission</th>
       <th class="expand">Site</th>
       <th class="expand">Order Creation</th>
@@ -55,11 +55,12 @@
         <td><%= order.status %></td>
         
         <td class="center">
-          <% if (current_user.reviewer? || current_user.data_entry_and_reviewer?) && !order.approved? %>
+          <% if (current_user.reviewer? || current_user.data_entry_and_reviewer?) && order.to_be_reviewed? %>
             <%= link_button_review 'Review', review_admin_order_path(order) %> 
 
           <% elsif (current_user.data_entry? || current_user.data_entry_and_reviewer? ) && order.pending? %>
-            <%= link_button_delete 'Delete', admin_order_path(order), :method => :delete, :confirm => 'Are you sure to delete this order ?' %>  
+            <%= link_button_delete 'Delete', admin_order_path(order), :method => :delete, 
+                                             :confirm => 'Are you sure to delete this order ?' %>
 
           <% elsif current_user.ams? %>
             <%= link_button 'icon-briefcase', 'Shipment', admin_order_shipments_path(order)%>

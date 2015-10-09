@@ -5,7 +5,7 @@
 
 <%= render 'admin/shared/commodity_tab' %>
 
-<%= page_header("Commodities", :left => 6, :right => 6) do %>
+<%= page_header("Commodities Listing", :left => 6, :right => 6) do %>
     <%=link_button_new "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}",
                        :class => 'btn' %>
     <%=link_button_export "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ),
@@ -26,7 +26,7 @@
       <% else %>
         <th> LabTest </th>
       <% end %>
-      <th>Action</th>
+      <th width="60">Action</th>
     </tr>
   </thead>
   <tbody>

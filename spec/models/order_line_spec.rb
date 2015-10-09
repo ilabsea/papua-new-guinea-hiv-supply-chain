@@ -35,7 +35,7 @@ require 'spec_helper'
 describe OrderLine do
   before(:each) do
     @order = FactoryGirl.create :order
-    @commodity = FactoryGirl.create(:commodity, :consumption_per_client_unit => 30)
+    @commodity = FactoryGirl.create(:commodity)
     @site = FactoryGirl.create :site, suggestion_order: 50 , test_kit_waste_acceptable: 25, order_frequency: 2, order_start_at: (Time.now-1.month)
 
     @attr = { arv_type: CommodityCategory::TYPES_KIT,

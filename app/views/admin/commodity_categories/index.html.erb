@@ -2,7 +2,7 @@
  <%= breadcrumb [ "Commodity Categoies" => nil] %>
 <% end %>
 
-<%= page_header t("Commodity Categories"), :left => 6, :right => 6 do %>
+<%= page_header t("Commodity Categories Listing"), :left => 6, :right => 6 do %>
   <%=link_button_new "New Commodity Category", new_admin_commodity_category_path(:type => params[:type]) %>
 <%  end %>
 
@@ -23,17 +23,16 @@
       <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Type</th>
-      <th class='action_col2' >Action</th>
+      <th width="60">Action</th>
     </tr>
   </thead>
   <tbody>
     <% @commodity_categories.each_with_index do |commodity_category, index| %>
       <tr>
         <td><%= current_entries + index %></td>
-        <td><%= link_to commodity_category.name, edit_admin_commodity_category_path(commodity_category) %></td>
+        <td><%= link_to commodity_category.name, edit_admin_commodity_category_path(commodity_category, :type => params[:type]) %></td>
         <td><%= commodity_category.com_type %></td>
         <td>
-          <%= link_button_edit 'Edit',  edit_admin_commodity_category_path(commodity_category,:type => params[:type]) %>
           <%= link_button_delete 'Delete',  admin_commodity_category_path(commodity_category, :type => params[:type]),
                 :method => :delete, :confirm => 'Are you sure to delete this commodity category?' %>
         </td>

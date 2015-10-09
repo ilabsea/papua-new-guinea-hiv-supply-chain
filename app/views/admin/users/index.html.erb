@@ -2,7 +2,7 @@
   <%= breadcrumb [{"Users" => nil}]  %>
 <% end %>
 
-<%= page_header "Users" do %>
+<%= page_header "Users Listing" do %>
   <%= link_button_new "New User", new_admin_user_path, :class => "btn" %>
 <% end %>
 
@@ -10,13 +10,13 @@
   <thead>
     <tr>
       <th class='nth-table'>#</th>
-      <th>Login</th>
-      <th>Phone</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Site</th>
-      <th>Last access</th>
+      <th class="expand">Login</th>
+      <th class="expand">Phone</th>
+      <th class="expand">Name</th>
+      <th class="expand">Email</th>
+      <th class="expand">Role</th>
+      <th class="expand">Site</th>
+      <th class="expand">Last access</th>
       <th width="50"><%= t("Action")%></th>
     </tr>
   </thead>

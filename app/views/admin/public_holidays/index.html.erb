@@ -1,9 +1,9 @@
-<%= page_header("Public Holidays", :left => 6, :right => 6) do %>
+<%= page_header("Public Holidays Listing", :left => 6, :right => 6) do %>
     <%= link_button_new 'New Public Holiday', new_admin_public_holiday_path, :class => 'btn' %>
 <% end %>
 
 <% content_for :breadcrumb do %>
-  <%= breadcrumb [{"Public Holiday" => nil}]  %>
+  <%= breadcrumb [{"Public Holidays" => nil}]  %>
 <% end %>
 
 <table class="table table-hover ">
@@ -12,7 +12,7 @@
       <th class='nth-table'>#</th>
       <th>Name</th>
       <th>Date</th>
-      <th>Action</th>
+      <th  width="60">Action</th>
     </tr>
   </thead>
   <tbody>

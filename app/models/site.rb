@@ -51,7 +51,6 @@ class Site < ActiveRecord::Base
   validates :in_every, numericality: { greater_than: 0}
 
   SeviceType = ["ART", 'PMTCT', "VCCT"]
-  default_scope order('sites.name ASC')
 
   SMS_ALERTED = 1
   SMS_NOT_ALERTED = 0

@@ -1,5 +1,5 @@
 table{
-  th.expand {
+  .expand {
     vertical-align: middle;
     white-space: nowrap !important;
   }
@@ -11,4 +11,14 @@ table{
 
 .no-wrap {
   white-space: nowrap;
+}
+
+.navbar {
+  .brand {
+    padding: 2px 20px ;
+    
+    img {
+      border-radius: 4px;
+    }
+  }
 }

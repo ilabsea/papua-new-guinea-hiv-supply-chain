@@ -43,14 +43,12 @@ class OrderLine < ActiveRecord::Base
                   :site_id, :site, :test_kit_waste_acceptable, :suggestion_order, :order_frequency,
                   :is_set, :skip_bulk_insert,:commodity, :pack_size
 
-  validates :quantity_suggested, numericality: {greater_than: 0}, if: Proc.new{|ol| ol.number_of_client }
+  validates :quantity_suggested, numericality: {greater_than_or_equal_to: 0, allow_blank: true}, if: Proc.new{|ol| ol.number_of_client }
 
   validates :stock_on_hand, numericality: {greater_than_or_equal_to: 0, allow_blank: true}, if: Proc.new{|ol| ol.number_of_client }
   validates :monthly_use, numericality: {greater_than_or_equal_to: 0, allow_blank: true}, if: Proc.new{|ol| ol.number_of_client }
 
-  default_scope order('monthly_use DESC')
-  validate :validate_requirement
-
+  # validate :validate_requirement
   before_save :calculate_attribute
 
   attr_accessor :skip_bulk_insert
@@ -77,17 +75,14 @@ class OrderLine < ActiveRecord::Base
   end
 
   def calculate_attribute
-    calculate_completed_order
-  end
-
-  def calculate_completed_order
     complete_order_line = number_of_client && stock_on_hand && quantity_suggested
-    if self.arv_type == CommodityCategory::TYPES_KIT
-      complete_order_line = (complete_order_line && monthly_use) 
-    end
 
+    if self.arv_type == CommodityCategory::TYPES_KIT
+      complete_order_line = (complete_order_line && monthly_use)
+    end
     self.completed_order = complete_order_line ? OrderLine::DATA_COMPLETE : OrderLine::DATA_INCOMPLETE
   end
+
 
   def validate_requirement
     if arv_type == CommodityCategory::TYPES_DRUG 

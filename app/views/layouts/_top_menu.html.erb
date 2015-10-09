@@ -7,7 +7,9 @@
           <span class="icon-bar"></span>
         </a>
         <a class="brand" href="<%= admin_root_path() %>">
-          <b><%=app_name %></b>
+          <b>
+            <%= image_tag 'logo.jpg', width: '42', height: '42', alt: ENV['APP_NAME'] %>
+          </b>
         </a>
 
         <div class="nav-collapse collapse">
@@ -63,7 +65,7 @@
                   <ul class="dropdown-menu">
 
                     <li class="<%=nav_status([:settings]) %>" >
-                      <%= link_to "System Settings", admin_settings_path() %>
+                      <%= link_to "SMS Message Template", admin_settings_path() %>
                     </li>
                     <li class="divider"></li>
 

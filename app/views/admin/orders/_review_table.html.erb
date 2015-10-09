@@ -7,18 +7,18 @@
   <thead>
     <tr> 
       <th> # </th>
-      <th> Commodity </th>
-      <th> Strength </th>
-      <th title="# Of Patient on Drug regiment"># Patient</th>
-      <th style='width: 65px;' title="Stock on hand" >Stock on hand (unit)</th>
-      <th> Monthly use (unit) </th>
-      <th title="System suggestion">System Suggestion</th>
-      <th title="Quantity Suggested">Quantity suggested</th>
-      <th> Status</th>
-      <th width="100"> Entry Note</th>
-      <th> Reviewer Note</th>
-      <th colspan="2"> Action </th>
-
+      <th> ID </th>
+      <th class="expand"> Commodity </th>
+      <th class="expand"> Strength </th>
+      <th class="expand" title="# Of Patient on Drug regiment"># Patient</th>
+      <th class="expand" style='width: 65px;' title="Stock on hand" >Stock on hand (unit)</th>
+      <th class="expand"> Monthly use (unit) </th>
+      <th class="expand" title="System suggestion">System Suggestion</th>
+      <th class="expand" title="Quantity Suggested">Quantity suggested</th>
+      <th class="expand"> Status</th>
+      <th class="expand" width="100"> Entry Note</th>
+      <th class="expand"> Reviewer Note</th>
+      <th class="expand" colspan="2"> Action </th>
     </tr>
   </thead>
 
@@ -26,7 +26,9 @@
     <% order_lines.each_with_index do |order_line, index| %>
       <tr> 
         <td> <%= index+1 %></td>
-        <td title="<%= h order_line.commodity.name%>"> <%= truncate(order_line.commodity.name, :length => 20) %> </td>
+        <td> <%= order_line.id %></td>
+        <td class="expand td-expand" title="<%= h order_line.commodity.name%>">
+          <%= truncate(order_line.commodity.name, :length => 20) %> </td>
         <td><%=order_line.commodity.strength_dosage%></td>
         <td> <%= order_line.number_of_client %></td>
         <td> <%= order_line.stock_on_hand %> </td>

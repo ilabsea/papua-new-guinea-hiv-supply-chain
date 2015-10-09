@@ -11,12 +11,11 @@
 
 class PublicHoliday < ActiveRecord::Base
   attr_accessible :date, :name
-  validates :name, :date , :presence   =>  true
-  default_scope order('public_holidays.date ASC')
+  validates :name, :date , :presence => true
 
   def self.is_holiday? day
     if day.class == String
-       day = Date.parse day    
+       day = Date.parse day
     end
 
     return true if day.sunday? || day.saturday?
