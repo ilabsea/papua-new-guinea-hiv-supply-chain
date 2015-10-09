@@ -32,6 +32,10 @@
     $("#order_order_date").on('change', function(){
        _loadOrderLinesTab();
     });
+
+    $("#order_date_submittion").on('change', function(){
+      _loadOrderLinesTab();
+    })
   }
 
 

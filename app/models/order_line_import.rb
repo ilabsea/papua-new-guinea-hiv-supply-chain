@@ -5,19 +5,7 @@ class OrderLineImport
   def initialize order, file_name
     @book = Spreadsheet.open(file_name)
     @order = order
-    @surv_sites = SurvSite.includes(:surv_site_commodities).for_site_order(order)
-    @order_line_suggestion = OrderLineSuggestion.new
-  end
-
-  def set_quantity_suggested order_line
-    quantity_suggested = @order_line_suggestion.average(order_line)
-    if quantity_suggested
-      order_line.system_suggestion = quantity_suggested.to_f.ceil
-      order_line.quantity_suggested = order_line.system_suggestion
-    else
-      order_line.system_suggestion = order_line.monthly_use
-      order_line.quantity_suggested = order_line.system_suggestion
-    end
+    @order_line_completer = OrderLineCompleter.new(@order)
   end
 
   def query_number_of_patient surv_sites, commodity, type
@@ -84,7 +72,7 @@ class OrderLineImport
           monthly_use   = row[3].to_i
           monthly_use   = (monthly_use/pack_size).ceil
 
-          number_of_client = query_number_of_patient(@surv_sites, commodity, ImportSurv::TYPES_SURV1)
+          number_of_client = @order_line_completer.query_number_of_patient(commodity)
 
           params = { :commodity => commodity,
                      :pack_size => pack_size,
@@ -100,7 +88,7 @@ class OrderLineImport
           }
 
           order_line = @order.order_lines.build(params)
-          set_quantity_suggested(order_line)
+          @order_line_completer.set_quantity_suggested(order_line)
           order_lines << order_line
         else
           info = "Could not find commodity with name:  #{row[0]} at index #{i}"
@@ -127,7 +115,7 @@ class OrderLineImport
         commodity = find_commodity_by_name(row[0])
 
         if commodity
-          number_of_client = query_number_of_patient(@surv_sites, commodity, ImportSurv::TYPES_SURV2)
+          number_of_client = @order_line_completer.query_number_of_patient(commodity)
 
           params = { :commodity => commodity,
                      :arv_type  => CommodityCategory::TYPES_DRUG,
@@ -142,7 +130,7 @@ class OrderLineImport
           }
 
           order_line = @order.order_lines.build(params)
-          set_quantity_suggested(order_line)
+          @order_line_completer.set_quantity_suggested(order_line)
           order_lines << order_line
         else
           info = 'Could not find commodity with name: ' + row[0]

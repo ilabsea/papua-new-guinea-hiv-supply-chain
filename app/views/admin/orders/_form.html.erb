@@ -4,7 +4,7 @@
 <%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
 
-  <%#= render 'form_top', f: f %>
+  <%= render 'form_top', f: f if @order.new_record? %>
   <div id='order_lines_tab'>
       <%= render 'order_lines', :f => f, :order => @order %> 
   </div>

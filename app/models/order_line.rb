@@ -43,10 +43,10 @@ class OrderLine < ActiveRecord::Base
                   :site_id, :site, :test_kit_waste_acceptable, :suggestion_order, :order_frequency,
                   :is_set, :skip_bulk_insert,:commodity, :pack_size
 
-  validates :quantity_suggested, numericality: {greater_than_or_equal_to: 0, allow_blank: true}, if: Proc.new{|ol| ol.number_of_client }
+  validates :quantity_suggested, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
 
-  validates :stock_on_hand, numericality: {greater_than_or_equal_to: 0, allow_blank: true}, if: Proc.new{|ol| ol.number_of_client }
-  validates :monthly_use, numericality: {greater_than_or_equal_to: 0, allow_blank: true}, if: Proc.new{|ol| ol.number_of_client }
+  validates :stock_on_hand, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
+  validates :monthly_use, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
 
   # validate :validate_requirement
   before_save :calculate_attribute

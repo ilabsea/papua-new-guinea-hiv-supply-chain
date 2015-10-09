@@ -63,6 +63,10 @@ class Commodity < ActiveRecord::Base
     names.join(':')
   end
 
+  def to_surv_type
+    (self.commodity_category.com_type == CommodityCategory::TYPES_KIT) ? ImportSurv::TYPES_SURV1 : ImportSurv::TYPES_SURV2
+  end
+
   def self.of_kit
     from_type CommodityCategory::TYPES_KIT
   end

@@ -3,15 +3,13 @@ $(function() {
 })
 
 function tdToggle(){
-  $('.td-expand').on('click', function(e){
-    console.log("click")
-    var $el = $(this);
-    var title = $el.attr('title');
-    var content = $el.html();
+  $(document.body).delegate('.td-expand','click', function(e){
+    var $el = $(this)
+    var title = $el.attr('title')
+    var content = $el.html()
 
-    $el.attr('title', content);
-    $el.html(title);
+    $el.attr('title', content)
+    $el.html(title)
     e.stopPropagation()
-
   })
 }

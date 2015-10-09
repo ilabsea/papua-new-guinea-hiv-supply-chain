@@ -31,7 +31,14 @@ module Admin
 
    def edit
      load_order
-     _build_tab @order, @order.site
+     build_commodity_order_line @order, @order.site
+   end
+
+   def tab_order_line
+     @site  = Site.find(params[:site_id])
+     @order = Order.new(site: @site, order_date: params[:order_date])
+     build_commodity_order_line(@order, @site)
+     render :layout => false
    end
 
    def update
@@ -88,22 +95,31 @@ module Admin
      @order ||= Order.includes(:order_lines => :commodity).find params[:id]
    end
 
-   def _build_tab order, site
-     _build_commodity_order_line order, site
-   end
-
-   def _build_commodity_order_line order, site
+   def build_commodity_order_line order, site
      existing_commodities = order.order_lines.map do |order_line| 
-       #order_line.arv_type = order_line.commodity.commodity_category.com_type 
-       # order_line.consumption_per_client_per_month = order_line.commodity.consumption_per_client_unit
        order_line.commodity
      end 
 
-     non_existing_commodities = Commodity.order('name asc').includes(:commodity_category).all.select{|commodity| !existing_commodities.include?(commodity) }
+     non_existing_commodities = Commodity.order('name asc')
+                                         .includes(:commodity_category)
+                                         .all
+                                         .select{|commodity| !existing_commodities.include?(commodity) }
+
+
+     order_line_completer = OrderLineCompleter.new(order)
+
      non_existing_commodities.each do |commodity| 
-       order.order_lines.build :commodity    => commodity, 
-                     :site         => site,
-                     :arv_type    => commodity.commodity_category.com_type
+       order.order_lines.build :commodity => commodity,
+                               :pack_size => commodity.pack_size,
+                               :arv_type => commodity.commodity_category.com_type,
+                               :stock_on_hand => nil,
+                               :monthly_use => nil,
+                               :skip_bulk_insert => true,
+                               :number_of_client => order_line_completer.query_number_of_patient(commodity),
+                               :site_id => order.site.id,
+                               :suggestion_order => order.site.suggestion_order,
+                               :order_frequency => order.site.order_frequency,
+                               :test_kit_waste_acceptable => order.site.test_kit_waste_acceptable
      end
    end
   end
