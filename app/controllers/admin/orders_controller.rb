@@ -29,9 +29,19 @@ module Admin
      load_order
    end
 
-   def edit
-     load_order
-     build_commodity_order_line @order, @order.site
+   def create
+     raise 'Unable to create order. Only data entry user is able to create order' if !(current_user.data_entry? || current_user.data_entry_and_reviewer?)
+     @order = Order.new params[:order]
+     @order.user_data_entry = current_user
+     @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
+     @order.is_requisition_form = false
+
+    if @order.save
+      @order.update_approval if current_user.data_entry_and_reviewer?
+      redirect_to admin_orders_path, :notice => 'Order has been created'
+    else
+      render :new
+    end
    end
 
    def tab_order_line
@@ -39,6 +49,11 @@ module Admin
      @order = Order.new(site: @site, order_date: params[:order_date])
      build_commodity_order_line(@order, @site)
      render :layout => false
+   end
+
+   def edit
+     load_order
+     build_commodity_order_line @order, @order.site
    end
 
    def update
@@ -66,12 +81,11 @@ module Admin
 
    def destroy
      begin
-     @order = Order.find params[:id]
+       @order = Order.find params[:id]
+       @order.requisition_report.destroy
+       @order.destroy
 
-     @order.requisition_report.destroy
-     @order.destroy
-
-     redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
+       redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
      rescue Exception => e
        redirect_to admin_orders_path, :error =>  e.message
      end  

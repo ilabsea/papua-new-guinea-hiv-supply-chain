@@ -10,7 +10,7 @@
   function updateViewSystemSuggestion(){
     $('body').delegate(".stock_on_hand", 'keyup', function(){
       $elm = $(this);
-      // updateSystemSuggestion($elm); 
+      //updateSystemSuggestion($elm); 
     }).delegate(".stock_on_hand", 'change',function(){
       $elm = $(this);
       // updateSystemSuggestion($elm); 
@@ -105,7 +105,6 @@
           },
 
           hasError: function(){
-            console.dir(this.errors)
             var error = false;
             for( prop in this.errors){
               error = true;
@@ -164,7 +163,7 @@
               this.errors["monthly_use"] = "<b> Monthly use </b> must be a valid number";
             }
 
-            if(this.consumtionPerClient  && this.numberOfClient ){   
+            if(this.consumtionPerClient  && this.numberOfClient ){
               if(this.monthlyUse == "" && this.stockOnHand ==""){
                 return;
               }
@@ -260,9 +259,8 @@
   function startupValidation(){
     $rows = $(".order_line_row")
     for(var i=0; i< $rows.length; i++){
-      $row = $($rows.get(i));
-      var ref = $row.attr("data-ref");
-      console.log("ref " + ref  + ": " + i);
+      $row = $($rows.get(i))
+      var ref = $row.attr("data-ref")
       validateCriteria(ref)
     }
   }

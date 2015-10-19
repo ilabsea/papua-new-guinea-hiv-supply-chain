@@ -12,7 +12,7 @@ module Admin
       @app_title = "Order lines"
     end
 
-    def review_all
+    def approve_all
       order = Order.find(params[:order_id])
 
       order_lines = order.order_lines

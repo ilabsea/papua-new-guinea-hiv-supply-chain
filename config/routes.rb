@@ -84,7 +84,7 @@ PngHivAids::Application.routes.draw do
         end
 
         collection do
-          put 'review_all'
+          put 'approve_all'
         end
       end
     end

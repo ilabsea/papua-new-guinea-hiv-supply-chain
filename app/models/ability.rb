@@ -22,8 +22,9 @@ class Ability
       cannot :manage, Order
       cannot :manage, Shipment
       cannot :manage, ImportSurv
+    end
 
-    elsif current_user.site?
+    if current_user.site?
 
       can :create, RequisitionReport
       can :read, RequisitionReport
@@ -31,20 +32,30 @@ class Ability
 
       can :create_from_requisition_report, Order
       can :create, Order
+    end
 
 
-    elsif current_user.data_entry? || current_user.data_entry_and_reviewer?
+    if current_user.data_entry? || current_user.data_entry_and_reviewer?
       can :manage, ImportSurv
       can :manage, SurvSite
       can :manage, SurvSiteCommodity
-      can :manage, Order
-      can :export, Order
-      can :tab_order_line, Order
-    
-    elsif current_user.reviewer?
-      can :manage, Order
 
-    elsif current_user.ams?
+      can :crud, Order
+      can :export, Order
+
+      can :tab_order_line, Order
+    end
+
+    if current_user.reviewer? || current_user.data_entry_and_reviewer?
+      can :review, Order
+      can :export, Order
+
+      can :approve, OrderLine
+      can :reject, OrderLine
+      can :approve_all, OrderLine
+    end
+
+    if current_user.ams?
       can :manage, Shipment
       can :create_shipment, :shipments
       can :manage, SmsLog

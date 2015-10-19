@@ -22,7 +22,6 @@ $(function(){
       data: data,
       dataType: 'json',
       success: function(response){
-        console.log(response);
         if(response["code"] == "failed"){
           if(response["arv_type"] == "Drug"){
             $("#error-drug").html(response["error"]);

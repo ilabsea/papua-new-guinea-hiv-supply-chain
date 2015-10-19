@@ -8,21 +8,7 @@ class OrderLineImport
     @order_line_completer = OrderLineCompleter.new(@order)
   end
 
-  def query_number_of_patient surv_sites, commodity, type
-    surv_sites.each do |surv_site|
-      next if surv_site.surv_type != type
-
-      surv_site.surv_site_commodities.each do |surv_site_commodity|
-        if surv_site_commodity.commodity_id == commodity.id
-          return surv_site_commodity.quantity
-        end
-      end
-    end
-    0
-  end
-
   def import
-
     load_arv_req
     load_arv_test
   end

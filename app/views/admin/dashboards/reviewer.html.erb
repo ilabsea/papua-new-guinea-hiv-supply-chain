@@ -3,6 +3,9 @@
  <ul class='dashboard-item-set'>
 <%
   [
+    { :quantity => @total_order_by_status[Order::ORDER_STATUS_APPROVED].to_i, :class => :order_approved,  
+      :type => Order::ORDER_STATUS_APPROVED,  :text => 'Orders approved' },
+
     { :quantity => @total_order_by_status[Order::ORDER_STATUS_TO_BE_REVIEWED] || 0 , :class => :order_in_review, 
       :type => Order::ORDER_STATUS_TO_BE_REVIEWED, :text => 'Orders pending for you to review'},
 

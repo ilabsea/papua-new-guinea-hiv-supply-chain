@@ -1,6 +1,6 @@
 <table class="table  table table-hover" >
   <caption style="text-align: right; padding-bottom: 10px;">
-    <%= link_to "Approve All #{type}", review_all_admin_order_order_lines_path(@order, type: type),
+    <%= link_to "Approve All #{type}", approve_all_admin_order_order_lines_path(@order, type: type),
                          method: :put,
                          class: "btn btn-primary" %>
   </caption>

@@ -4,7 +4,9 @@
     export_options = {}
     export_options[:type] = params[:type]  if !params[:type].blank?   
   %>
-  <%= link_button_download 'Export Orders',  export_admin_orders_path(export_options), :class => 'btn btn-primary' %>  
+  <%= link_button_new 'New Order', new_admin_order_path(export_options), 
+                      :class => 'btn btn-default' if current_user.data_entry? || current_user.data_entry_and_reviewer? %>
+  <%= link_button_download 'Export Orders', export_admin_orders_path(export_options), :class => 'btn btn-primary' %>  
 <% end %>
 
 <% content_for :breadcrumb do %>
@@ -35,7 +37,7 @@
           <% 
              editable = false
              if current_user.data_entry_and_reviewer?
-               editable = true if !order.approved?
+               editable = true if !(order.approved? || order.to_be_revised?)
              elsif current_user.data_entry?
                editable = true if order.pending? || order.to_be_revised?
              end

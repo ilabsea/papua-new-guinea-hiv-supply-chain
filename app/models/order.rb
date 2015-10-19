@@ -19,7 +19,7 @@
 
 
 class Order < ActiveRecord::Base
-  
+  audited
   belongs_to :site
   belongs_to :user_place_order, :class_name => 'User'
   belongs_to :user_data_entry , :class_name => 'User'
