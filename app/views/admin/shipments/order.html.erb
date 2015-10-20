@@ -78,7 +78,7 @@
         <td><%=order_line.commodity.unit.name %></td>
         <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
         <td title="<%= h order_line.updated_at %>" class='<%= klass  %>'>
-          <%= time_ago_in_words order_line.updated_at %></td>
+          <%= show_date order_line.updated_at %></td>
 
         <td class='<%= klass  %>'>
           <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' 

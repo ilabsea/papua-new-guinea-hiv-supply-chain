@@ -8,11 +8,12 @@
     <tr> 
       <th> # </th>
       <th> ID </th>
-      <th class="expand"> Commodity </th>
-      <th class="expand"> Strength </th>
+      <th class="expand">Commodity</th>
+      <th class="expand">Strength</th>
+      <th class="expand">Unit</th>
       <th class="expand" title="# Of Patient on Drug regiment"># Patient</th>
-      <th class="expand" style='width: 65px;' title="Stock on hand" >Stock on hand (unit)</th>
-      <th class="expand"> Monthly use (unit) </th>
+      <th class="expand" style='width: 65px;' title="Stock on hand" >Stock on hand</th>
+      <th class="expand">Monthly use</th>
       <th class="expand" title="System suggestion">System Suggestion</th>
       <th class="expand" title="Quantity Suggested">Quantity suggested</th>
       <th class="expand"> Status</th>
@@ -30,6 +31,7 @@
         <td class="expand td-expand" title="<%= h order_line.commodity.name%>">
           <%= truncate(order_line.commodity.name, :length => 20) %> </td>
         <td><%=order_line.commodity.strength_dosage%></td>
+        <td><%=order_line.commodity.unit.name%></td>
         <td> <%= order_line.number_of_client %></td>
         <td> <%= order_line.stock_on_hand %> </td>
         <td> <%= order_line.monthly_use %></td>

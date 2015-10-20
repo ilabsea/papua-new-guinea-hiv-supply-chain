@@ -47,6 +47,7 @@ class Ability
     end
 
     if current_user.reviewer? || current_user.data_entry_and_reviewer?
+      can :index, Order
       can :review, Order
       can :export, Order
 
