@@ -75,7 +75,18 @@ describe Shipment do
       shipment2.consignment_number = shipment1.consignment_number
       shipment2.save.should be_false
       shipment2.errors.full_messages[0].should eq 'Consignment number has already been taken'
+    end
 
+    it 'should require consignment_number to have length between 1 and 15' do
+      shipment = Shipment.new @attr.merge(:consignment_number  => "1234567890123456" )
+      result = shipment.save
+      result.should be_false
+    end
+
+    it 'should require consignment_number with format alpha numberic characters' do
+      shipment = Shipment.new @attr.merge(:consignment_number  => "12345678-#" )
+      result = shipment.save
+      result.should be_false
     end
 
   end

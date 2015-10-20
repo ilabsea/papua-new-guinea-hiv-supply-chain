@@ -41,6 +41,7 @@ FactoryGirl.define do
     system_suggestion 1
     quantity_suggested 1
     quantity_system_calculation 1
+    number_of_client 10
     
     site
     order_frequency {site.order_frequency}
@@ -48,7 +49,6 @@ FactoryGirl.define do
     test_kit_waste_acceptable {site.test_kit_waste_acceptable}
 
     earliest_expiry "2013-06-25 11:31:27"
-    
 
     user_data_entry_note "Note"
     user_reviewer_note "Note"
