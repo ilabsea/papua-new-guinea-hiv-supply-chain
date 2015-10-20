@@ -50,6 +50,7 @@ namespace :deploy do
   task :symlink_config, roles: :app do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/nuntium.yml  #{release_path}/config/nuntium.yml"
+    run "ln -nfs #{shared_path}/config/application.yml  #{release_path}/config/application.yml"
   end
 end
 
