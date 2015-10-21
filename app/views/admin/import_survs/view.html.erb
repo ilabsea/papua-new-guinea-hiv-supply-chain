@@ -1,14 +1,7 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Survs" => admin_import_survs_path(:type => params[:type])}, "Show" => nil]  %>
 <% end %>  
-
-<style>
-.surv-form tr, .surv-form th, .surv-form td {
-    min-width: 90px;
-    font-weight: normal !important;
-  }
-</style>
-<%= page_header "#{@import_surv.surv_type} for Year: #{@import_surv.year}, Month: #{@import_surv.month}" %>
+<%= page_header "#{@import_surv.surv_type} for #{ImportSurv::MONTHS[@import_surv.month]}, #{@import_surv.year}" %>
 
 <div class='row-fluid form-fixed'  >
   <table class='table table-hover surv-form table-fixed-header ' >
@@ -17,7 +10,7 @@
          <th class='list-no'>#</th>
          <th class='pos-site'>Site</th>
          <% @commodities.each do |commodity| %>
-            <th class='pos-commodity'><%= commodity.name %></th>
+            <th class='expand'><%= commodity.name %></th>
          <% end %>
       </tr>
     </thead>
@@ -26,13 +19,18 @@
       <% @sites.each_with_index do |site, index| %>
         <tr>
             <td class='list-no'> <%= index+1 %> </td>
-            <td class='pos-site' > <%= site.name %> </td>
-            <% 
-              survs = @import_surv.surv_sites.select{|surv_site| surv_site.site == site } 
-              surv = survs[0]
-            %>  
-            <% surv.surv_site_commodities.each do |surv_site_commodity| %>
-              <td class='pos-commodity'><%= surv_site_commodity.quantity.to_i %> </td>
+            <td class='expand' > <%= site.name %> </td>
+            <% surv_site = @import_surv.surv_sites.select{|surv_site| surv_site.site == site }.first %>
+            <% @commodities.each do |commodity| %>
+              <td>
+              <% 
+                 quantity = ''
+                 if surv_site
+                   quantity = surv_site.surv_site_commodities.select{|surv_site_commodity| surv_site_commodity.commodity == commodity}.first.try(:quantity)
+                 end
+              %>
+              <%=quantity %>
+              </td>
             <% end %>
         </tr>
       <% end %>

@@ -10,7 +10,7 @@ module Admin
         elsif (params[:type] == CommodityCategory::TYPES_KIT)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
         end
-        @commodities = @commodities.paginate(paginate_options)
+        @commodities = @commodities.order('commodities.name').paginate(paginate_options)
     end
 
     def new

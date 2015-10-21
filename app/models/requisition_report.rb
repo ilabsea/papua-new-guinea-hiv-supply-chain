@@ -17,7 +17,7 @@ class RequisitionReport < ActiveRecord::Base
 
    belongs_to :site
    belongs_to :user
-   has_one :order
+   has_one :order, :dependent => :destroy
 
    IMPORT_STATUS_FAILED  = 'Failed'
    IMPORT_STATUS_SUCCESS = 'Success'

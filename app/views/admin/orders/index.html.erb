@@ -60,7 +60,7 @@
           <% if (current_user.reviewer? || current_user.data_entry_and_reviewer?) && order.to_be_reviewed? %>
             <%= link_button_review 'Review', review_admin_order_path(order) %> 
 
-          <% elsif (current_user.data_entry? || current_user.data_entry_and_reviewer? ) && order.pending? %>
+          <% elsif (current_user.data_entry? || current_user.data_entry_and_reviewer? ) && !order.approved? %>
             <%= link_button_delete 'Delete', admin_order_path(order), :method => :delete, 
                                              :confirm => 'Are you sure to delete this order ?' %>
 

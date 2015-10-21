@@ -10,9 +10,7 @@ module Admin
     def edit
       @import_surv  = ImportSurv.find params[:id]
       @sites = Site.order('name').all
-      @commodities = Commodity.order('commodities.name')
-                              .includes(:commodity_category, :regimen, :lab_test)
-                              .from_type(@import_surv.arv_type)
+      load_commodity_from_surv(@import_surv)
 
       existing_sites = @import_surv.surv_sites.map(&:site_id)
 
@@ -27,15 +25,23 @@ module Admin
     end
 
     def update
-      @import_surv = ImportSurv.includes(:surv_sites => :surv_site_commodities).find params[:id]
+      @import_surv = ImportSurv.find params[:id]
 
       if(@import_surv.update_attributes(params[:import_surv]))
         redirect_to admin_import_survs_path(:type => @import_surv.surv_type), :notice => 'Surv form has been updated successfully'
       else
         @sites = Site.order('name').all
-        @commodities  = Commodity.order('commodities.name')
-                                 .includes(:commodity_category, :regimen, :lab_test)
-                                 .from_type(@import_surv.arv_type)
+        load_commodity_from_surv(@import_surv)
+        existing_sites = @import_surv.surv_sites.map(&:site_id)
+
+        @sites.each do |site|
+          next if existing_sites.include?(site.id)
+          surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
+          @commodities.each do |commodity|
+            surv_site.surv_site_commodities.build(:commodity => commodity, :quantity => '' )
+          end
+        end
+
         render :edit
       end
     end
@@ -44,9 +50,7 @@ module Admin
       type = params[:type] ||  ImportSurv::TYPES_SURV1
       @import_surv = ImportSurv.new(:surv_type => type)
       @sites = Site.order('name').all
-      @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test)
-                              .from_type(@import_surv.arv_type)
-                              .order('commodities.name')
+      load_commodity_from_surv(@import_surv)
 
       @sites.each do |site|
         surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
@@ -64,9 +68,7 @@ module Admin
         redirect_to admin_import_survs_path(:type =>@import_surv.surv_type), :notice => 'Surv site has been created'
       else 
         @sites = Site.order('name').all
-        @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test)
-                                .from_type(@import_surv.arv_type)
-                                .order('commodities.name')
+        load_commodity_from_surv(@import_surv)
         render :new
       end
     end
@@ -83,8 +85,8 @@ module Admin
 
     def view
       @import_surv = ImportSurv.includes(:surv_sites => [:surv_site_commodities, :site] ).find(params[:id])
-      @sites = Site.all
-      @commodities = Commodity.from_type(@import_surv.arv_type)
+      @sites = Site.order('name').all
+      load_commodity_from_surv(@import_surv)
     end
 
     def import_form
@@ -135,6 +137,12 @@ module Admin
 
       import_surv_params = params[:import_surv]
       filter_params = []
+    end
+
+    def load_commodity_from_surv(import_surv)
+      @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test)
+                              .from_type(import_surv.arv_type)
+                              .order('commodities.name')
     end
 
   end

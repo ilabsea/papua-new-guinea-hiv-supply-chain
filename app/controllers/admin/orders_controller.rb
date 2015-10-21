@@ -80,15 +80,13 @@ module Admin
    end
 
    def destroy
-     begin
+     Order.transaction do
        @order = Order.find params[:id]
-       @order.requisition_report.destroy
+       @order.requisition_report.destroy if @order.requisition_report
        @order.destroy
+     end
 
-       redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
-     rescue Exception => e
-       redirect_to admin_orders_path, :error =>  e.message
-     end  
+     redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
    end
 
    def export

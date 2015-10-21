@@ -15,5 +15,5 @@ class SurvSiteCommodity < ActiveRecord::Base
   belongs_to :surv_site , :counter_cache => true
   belongs_to :site
   belongs_to :commodity
-  validates :quantity, :numericality => true, :allow_blank => true
+  validates :quantity, :numericality => { greater_than_or_equal_to: 0}, :allow_blank => true
 end
