@@ -34,5 +34,8 @@
 // functionalities
 //= require order/form
 //= require order/reviewer-approval
+//= require order/export-order-dialog
+
 //= require import_surv/form
 //= require shipment/form
+//= require shipment/dialog

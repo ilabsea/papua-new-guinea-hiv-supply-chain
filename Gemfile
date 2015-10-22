@@ -24,13 +24,12 @@ gem 'capistrano-rbenv'
 gem 'rails-timeago', '~> 2.0'
 gem "audited-activerecord", "~> 3.0"
 
+gem 'bootstrap-sass', '~> 2.3.0.0'
+gem 'font-awesome-sass', '~> 4.4.0'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass', '~> 2.3.0.0'
-  gem 'font-awesome-sass', '~> 4.4.0'
-
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer' #, :platforms => :ruby
@@ -65,7 +64,7 @@ group :test, :development do
   gem 'rspec-rails', '~> 2.0'
   gem 'capybara', '~> 2.0.2'
   gem 'factory_girl_rails', '~> 4.0'
-  gem 'thin'
+  # gem 'thin'
   gem 'rspec-mocks'
   gem 'jasmine'
   gem 'brakeman', :require => false

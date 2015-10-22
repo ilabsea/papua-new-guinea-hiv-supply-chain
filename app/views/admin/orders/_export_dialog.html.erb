@@ -1,0 +1,36 @@
+<!-- Modal -->
+<%= form_tag export_excel_admin_orders_path, id: 'export-order-form', method: :get do |f| %>
+  <div id="export-order-dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel" class='myModalLabel'>Export Requisition and Order</h3>
+    </div>
+
+    <div class="modal-body">
+      <div id='export-order-message' style='display:none;' class='alert alert-danger' > </div>
+      <p>
+        Please select <strong> Month </strong> and <strong> Year </strong> to download the requistions and orders
+      </p>
+
+      <br/>
+      <table class='import-surv-filter'>
+        <tr>
+          <td>
+            <%=select_tag :month, options_for_select(ImportSurv.month_list), prompt: 'Select month' %>
+          </td>
+
+          <td >
+            <%=select_tag :year ,options_for_select(2009..2040), prompt: 'Select year' %>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+
+    <div class="modal-footer">
+      <%= link_button_cancel ' Cancel ', "javascript:void()", :'aria-hidden' => true, data: {dismiss: :modal, skip_loading: true}  %>
+      <%= link_button_save ' Download now ', 'javascript:void(0)' , id: 'export-order-send' , data: {skip_loading: true} %>
+    </div>
+  </div>
+<% end %>

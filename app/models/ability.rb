@@ -12,7 +12,7 @@ class Ability
     can :update, User, :id => current_user.id
 
     can :change_password?, User do |user|
-        current_user.id == user.id
+      current_user.id == user.id
     end
 
     if current_user.admin?
@@ -50,6 +50,7 @@ class Ability
       can :index, Order
       can :review, Order
       can :export, Order
+      can :export_excel, Order
 
       can :approve, OrderLine
       can :reject, OrderLine

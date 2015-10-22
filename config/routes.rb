@@ -17,7 +17,7 @@ PngHivAids::Application.routes.draw do
     resources :regimen_categories
     resources :lab_tests
     resources :regimens
-    
+
     resources :site_messages do
       collection do
         get 'all'
@@ -71,6 +71,7 @@ PngHivAids::Application.routes.draw do
       collection do
         get 'tab_order_line'
         get 'export'
+        get 'export_excel'
       end
 
       member do

@@ -89,6 +89,18 @@ module Admin
      redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
    end
 
+   def export_excel
+     file = "#{Rails.root}/public/data/orders-#{params[:year]}-#{params[:month]}.xls"
+     @exporter = ExportExcelOrder.new(params[:year], params[:month])
+     @exporter.save_to_file(file)
+
+     send_file(file,
+               type: 'application/xls',
+               disposition: 'attachment',
+               streaming: true,
+               buffer_size: '4096')
+   end
+
    def export
      file =  "#{Rails.root}/public/data/orders.csv"
      Export.order file, params[:type]
