@@ -30,7 +30,6 @@ module Admin
    end
 
    def create
-     raise 'Unable to create order. Only data entry user is able to create order' if !(current_user.data_entry? || current_user.data_entry_and_reviewer?)
      @order = Order.new params[:order]
      @order.user_data_entry = current_user
      @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
@@ -90,9 +89,21 @@ module Admin
    end
 
    def export_excel
-     file = "#{Rails.root}/public/data/orders-#{params[:year]}-#{params[:month]}.xls"
-     @exporter = ExportExcelOrder.new(params[:year], params[:month])
-     @exporter.save_to_file(file)
+     month = params[:month].to_i + 1
+     year = params[:year].to_i
+
+     start_date = Date.new(year, month, 1)
+     end_date   = Date.new(year, month, -1)
+
+     orders = Order.includes(:site, order_lines: [ commodity: [:unit] ])
+                  .where(['orders.order_date BETWEEN ? AND ? ', start_date, end_date ])
+     orders = orders.where(['orders.status = ?', params[:status] ]) if params[:status].present?
+     orders = orders.order('sites.name ASC')
+
+     exporter = ExportExcelOrder.new(orders)
+
+     file = "#{Rails.root}/public/data/orders-#{year}-#{month}.xls"
+     exporter.save_to_file(file)
 
      send_file(file,
                type: 'application/xls',

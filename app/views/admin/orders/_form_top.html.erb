@@ -2,7 +2,7 @@
   <table class="table-order">
     <tr>
       <td>
-        <%= f.input :site_id, :collection => Site.all, :include_blank => 'Select a Site' %>
+        <%= f.input :site_id, :collection => Site.order('sites.name').all, :include_blank => 'Select a Site' %>
       </td>
 
       <td style="vertical-align:center; padding-left: 15px;">

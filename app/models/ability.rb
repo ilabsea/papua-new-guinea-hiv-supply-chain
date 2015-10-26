@@ -42,6 +42,7 @@ class Ability
 
       can :crud, Order
       can :export, Order
+      can :export_excel, Order
 
       can :tab_order_line, Order
     end

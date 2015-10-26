@@ -64,7 +64,7 @@ group :test, :development do
   gem 'rspec-rails', '~> 2.0'
   gem 'capybara', '~> 2.0.2'
   gem 'factory_girl_rails', '~> 4.0'
-  # gem 'thin'
+  gem 'thin'
   gem 'rspec-mocks'
   gem 'jasmine'
   gem 'brakeman', :require => false

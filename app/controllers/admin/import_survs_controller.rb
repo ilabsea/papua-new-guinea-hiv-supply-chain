@@ -69,6 +69,16 @@ module Admin
       else 
         @sites = Site.order('name').all
         load_commodity_from_surv(@import_surv)
+        existing_sites = @import_surv.surv_sites.map(&:site_id)
+
+        @sites.each do |site|
+          next if existing_sites.include?(site.id)
+          surv_site = @import_surv.surv_sites.build(:site => site, :surv_type => @import_surv.surv_type)
+          @commodities.each do |commodity|
+            surv_site.surv_site_commodities.build(:commodity => commodity, :quantity => '' )
+          end
+        end
+
         render :new
       end
     end

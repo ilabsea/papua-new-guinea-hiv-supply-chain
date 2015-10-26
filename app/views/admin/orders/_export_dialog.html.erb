@@ -16,17 +16,27 @@
       <br/>
       <table class='import-surv-filter'>
         <tr>
+          <td>Month</td>
+          <td>Year</td>
+          <td>Order Status</td>
+        </tr>
+        <tr>
           <td>
-            <%=select_tag :month, options_for_select(ImportSurv.month_list), prompt: 'Select month' %>
+            <%=select_tag :month, options_for_select(ImportSurv.month_list), prompt: 'Select month', style: 'width: 120px;' %>
           </td>
 
           <td >
-            <%=select_tag :year ,options_for_select(2009..2040), prompt: 'Select year' %>
+            <%=select_tag :year ,options_for_select(2009..2040), prompt: 'Select year', style: 'width: 120px;' %>
+          </td>
+
+          <td >
+            <%=select_tag :status ,options_for_select(Order::ORDER_STATUSES), prompt: 'All', style: 'width: 120px;' %>
           </td>
         </tr>
       </table>
     </div>
-
+    <br />
+    <br />
 
     <div class="modal-footer">
       <%= link_button_cancel ' Cancel ', "javascript:void()", :'aria-hidden' => true, data: {dismiss: :modal, skip_loading: true}  %>
