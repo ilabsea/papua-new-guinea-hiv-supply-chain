@@ -19,7 +19,7 @@ class ExportExcelOrder
     working_sheet = @book.create_worksheet name: order.site.name
     
     #write table header with [cell_data, cell_width]
-    head_labels = [ ["Commodity", 30], ["Strength", 15], ["Unit", 10] , ["#Patient", 15], 
+    head_labels = [ ["Commodity", 30], ["Pack Size", 15], ["Strength", 15], ["Unit", 10] , ["#Patient", 15], 
                     ["Stock on hand", 20], ["Monthly Use", 20], ["System Suggestion", 30],
                     ["Quantity Suggested", 30], ["Status", 15], ["Data Entry Note", 30], ["Reviewer note", 30] ]
 
@@ -36,18 +36,15 @@ class ExportExcelOrder
 
     #write table body content
     order.order_lines.each_with_index do |order_line, i|
-      index = i + 1
-      working_sheet[index, 0] = order_line.commodity.name
-      working_sheet[index, 1] = order_line.commodity.strength_dosage
-      working_sheet[index, 2] = order_line.commodity.unit.name
-      working_sheet[index, 3] = order_line.number_of_client
-      working_sheet[index, 4] = order_line.stock_on_hand
-      working_sheet[index, 5] = order_line.monthly_use
-      working_sheet[index, 6] = order_line.system_suggestion
-      working_sheet[index, 7] = order_line.quantity_suggested
-      working_sheet[index, 8] = order_line.status
-      working_sheet[index, 9] = order_line.user_data_entry_note
-      working_sheet[index, 10] = order_line.user_reviewer_note
+      row = i + 1
+      data_rows = [ order_line.commodity.name, order_line.commodity.pack_size, order_line.commodity.strength_dosage,
+                    order_line.commodity.unit.name, order_line.number_of_client, order_line.stock_on_hand , 
+                    order_line.monthly_use, order_line.system_suggestion, order_line.quantity_suggested,
+                    order_line.status, order_line.user_data_entry_note, order_line.user_reviewer_note ]
+
+      data_rows.each_with_index do |data, column|
+        working_sheet[row, column] = data
+      end
     end
   end
 

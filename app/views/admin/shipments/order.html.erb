@@ -41,66 +41,69 @@
 <%= render "dialog" %>
 
 <div class='alert alert-error' id='error-shipment' style='display: none;' ></div>
-<table class="table table-hover ">
-  <thead>
-    <tr>
-      <th><%=check_box_tag 'toggle_all', '1', false, :id => 'cb_toggle_all' %></th>
-      <th class="expand">Site</th>
-      <th class="expand">OrderId </th>
-      <th class="expand">Commodity</th>
-      <th class="expand">Unit</th>
-      <th class="expand">Amount</th>
-      <th class="expand">Approved Date</th>
-      <th class="expand">Quantity Dispatch </th>
-      <th class="expand">AMS remark </th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @order_lines.each_with_index do |order_line, index| %>
-      <%  
-          line_session = @shipment_session.find_by_key order_line.id 
-          klass        = line_session.nil?  ? '' : 'row-success' 
-          quantity     = line_session.nil?  ? '' : line_session[:quantity]
-          remark       = line_session.nil?  ? '' : line_session[:remark]
-          checked      = line_session.nil?  ? false : true
-
-      %>
-      <tr id='tr_<%= order_line.id %>'>
-        <td class='<%= klass  %>' > 
-          <%= check_box_tag 'toggle[]', '1', checked, :class => 'cb_items', :id => "toggle_#{order_line.id}", :data => {:id => order_line.id} %> 
-        </td>
-        <td class='<%= klass  %>'><%= order_line.order.site.name %></td>
-        <td class='<%= klass  %>'><%= order_line.order.id %></td>
-        <td title="<%=order_line.commodity.name%>" class=' td-expand <%= klass  %>'>
-          <%= truncate(order_line.commodity.name, length: 20) %>
-        </td>
-        <td><%=order_line.commodity.unit.name %></td>
-        <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
-        <td title="<%= h order_line.updated_at %>" class='<%= klass  %>'>
-          <%= show_date order_line.updated_at %></td>
-
-        <td class='<%= klass  %>'>
-          <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' 
-                 name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> 
-
-          <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>' 
-             data-skip-loading='true' style='display: none;'
-             class='error'
-             data-content="Invalid value. Quantity dispatch must be a number and should be in the same site." data-original-title="" >
-             <i class='icon-exclamation-sign'></i>
-          </a>
-
-        </td>
-
-        <td class='<%= klass  %>'>
-          <input value='<%=remark%>' type='text' data-id='<%= order_line.id %>' class='content' name='order_line[remark]' id='ams_remark_<%= order_line.id %>' /> 
-        </td>
-
+<div class='clearfix'>
+  <table class="table table-hover" style='float:left; position:relative;'>
+    <thead>
+      <tr>
+        <th><%=check_box_tag 'toggle_all', '1', false, :id => 'cb_toggle_all' %></th>
+        <th class="expand">Site</th>
+        <th class="expand">OrderId </th>
+        <th class="expand">Commodity</th>
+        <th class="expand">Pack Size</th>
+        <th class="expand">Unit</th>
+        <th class="expand">Amount</th>
+        <th class="expand">Approved Date</th>
+        <th class="expand">Quantity Dispatch </th>
+        <th class="expand">AMS remark </th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
+    <tbody>
+      <% @order_lines.each_with_index do |order_line, index| %>
+        <%  
+            line_session = @shipment_session.find_by_key order_line.id 
+            klass        = line_session.nil?  ? '' : 'row-success' 
+            quantity     = line_session.nil?  ? '' : line_session[:quantity]
+            remark       = line_session.nil?  ? '' : line_session[:remark]
+            checked      = line_session.nil?  ? false : true
+
+        %>
+        <tr id='tr_<%= order_line.id %>'>
+          <td class='<%= klass  %>' > 
+            <%= check_box_tag 'toggle[]', '1', checked, :class => 'cb_items', :id => "toggle_#{order_line.id}", :data => {:id => order_line.id} %> 
+          </td>
+          <td class='<%= klass  %>'><%= order_line.order.site.name %></td>
+          <td class='<%= klass  %>'><%= order_line.order.id %></td>
+          <td title="<%=order_line.commodity.name%>" class=' td-expand <%= klass  %>'>
+            <%= truncate(order_line.commodity.name, length: 20) %>
+          </td>
+          <td><%=order_line.commodity.pack_size %></td>
+          <td><%=order_line.commodity.unit.name %></td>
+          <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
+          <td title="<%= h order_line.updated_at %>" class='<%= klass  %>'>
+            <%= show_date order_line.updated_at %></td>
+
+          <td class='<%= klass  %>'>
+            <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' 
+                   name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> 
+
+            <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>' 
+               data-skip-loading='true' style='display: none;'
+               class='error'
+               data-content="Invalid value. Quantity dispatch must be a number and should be in the same site." data-original-title="" >
+               <i class='icon-exclamation-sign'></i>
+            </a>
+
+          </td>
+
+          <td class='<%= klass  %>'>
+            <input value='<%=remark%>' type='text' data-id='<%= order_line.id %>' class='content' name='order_line[remark]' id='ams_remark_<%= order_line.id %>' /> 
+          </td>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <%= render_paginate_for @order_lines %>
 
