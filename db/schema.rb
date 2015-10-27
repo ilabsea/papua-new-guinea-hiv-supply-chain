@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151006150105) do
+ActiveRecord::Schema.define(:version => 20151027072306) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -250,8 +250,6 @@ ActiveRecord::Schema.define(:version => 20151006150105) do
 
   create_table "sites", :force => true do |t|
     t.string   "name"
-    t.float    "lat"
-    t.float    "lng"
     t.string   "service_type"
     t.float    "suggestion_order"
     t.integer  "order_frequency"
@@ -270,6 +268,8 @@ ActiveRecord::Schema.define(:version => 20151006150105) do
     t.string   "duration_type"
     t.integer  "sms_alerted",                  :default => 0
     t.integer  "site_messages_count",          :default => 0
+    t.string   "town"
+    t.string   "region"
   end
 
   create_table "sms_logs", :force => true do |t|

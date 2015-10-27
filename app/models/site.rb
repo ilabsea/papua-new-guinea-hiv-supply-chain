@@ -4,8 +4,6 @@
 #
 #  id                           :integer          not null, primary key
 #  name                         :string(255)
-#  lat                          :float
-#  lng                          :float
 #  service_type                 :string(255)
 #  suggestion_order             :float
 #  order_frequency              :integer
@@ -24,6 +22,8 @@
 #  duration_type                :string(255)
 #  sms_alerted                  :integer          default(0)
 #  site_messages_count          :integer          default(0)
+#  town                         :string(255)
+#  region                       :string(255)
 #
 
 class Site < ActiveRecord::Base
@@ -38,7 +38,7 @@ class Site < ActiveRecord::Base
   has_many :site_messages
   belongs_to :province
   attr_accessible :address, :contact_name, :email, :in_every, :duration_type,
-                  :land_line_number, :lat, :lng, :mobile, 
+                  :land_line_number, :region, :town, :mobile, 
                   :name, :number_of_deadline_sumission, :order_frequency, :order_start_at, 
                   :service_type, :suggestion_order, :test_kit_waste_acceptable, :province_id
 
@@ -50,7 +50,8 @@ class Site < ActiveRecord::Base
   validates :suggestion_order, :test_kit_waste_acceptable,  :numericality => {:greater_than_or_equal_to => 0 }   
   validates :in_every, numericality: { greater_than: 0}
 
-  SeviceType = ["ART", 'PMTCT', "VCCT"]
+  SeviceType = ["ART", 'PMTCT', "VCCT", "LOGISTICS UNIT"]
+  Region = ['EHP', 'WHP', 'Momase', 'Southern']
 
   SMS_ALERTED = 1
   SMS_NOT_ALERTED = 0

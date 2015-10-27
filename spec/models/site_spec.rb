@@ -4,8 +4,6 @@
 #
 #  id                           :integer          not null, primary key
 #  name                         :string(255)
-#  lat                          :float
-#  lng                          :float
 #  service_type                 :string(255)
 #  suggestion_order             :float
 #  order_frequency              :integer
@@ -24,6 +22,8 @@
 #  duration_type                :string(255)
 #  sms_alerted                  :integer          default(0)
 #  site_messages_count          :integer          default(0)
+#  town                         :string(255)
+#  region                       :string(255)
 #
 
 require 'spec_helper'

@@ -4,8 +4,6 @@
 #
 #  id                           :integer          not null, primary key
 #  name                         :string(255)
-#  lat                          :float
-#  lng                          :float
 #  service_type                 :string(255)
 #  suggestion_order             :float
 #  order_frequency              :integer
@@ -24,6 +22,8 @@
 #  duration_type                :string(255)
 #  sms_alerted                  :integer          default(0)
 #  site_messages_count          :integer          default(0)
+#  town                         :string(255)
+#  region                       :string(255)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -31,8 +31,6 @@
 FactoryGirl.define do
   factory :site do
     sequence(:name){|index| "Site#{index}"}
-    lat 1.5
-    lng 1.5
     service_type "MyString"
     suggestion_order 1.5
     order_frequency 1
@@ -44,6 +42,7 @@ FactoryGirl.define do
     mobile "MyString"
     land_line_number "MyString"
     email "MyString"
+    town "MyString"
     province
     in_every 3
   end

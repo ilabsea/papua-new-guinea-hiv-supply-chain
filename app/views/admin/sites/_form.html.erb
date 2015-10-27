@@ -1,7 +1,9 @@
 <%= simple_form_for [:admin , @site], :html => { :class => 'form-horizontal site-form' } do |f| %>
   <%= f.input :name %>
-  <%= f.input :lat, :label => 'Latitude' %>
-  <%= f.input :lng, :label => 'Longitude' %>
+  <%= f.input :region, collection: Site::Region %>
+  <%= f.input :town %>
+  <%= f.association :province, :include_blank => 'Select Province' %>
+
   <%= f.input :service_type, :collection => Site::SeviceType, :include_blank => 'Select Service' %>
 
   <%= f.input :suggestion_order, :label => 'Suggestion Order Valid Within(%)' %>
@@ -22,7 +24,7 @@
   <%= f.input :mobile %>
   <%= f.input :land_line_number %>
   <%= f.input :email %>
-  <%= f.association :province, :include_blank => 'Select Province' %>
+
   <div class="form-actions">
     <%= button_save 'Save' %>  
     <%= link_button_cancel 'Cancel' , admin_sites_path %>
