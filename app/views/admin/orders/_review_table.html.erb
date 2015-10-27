@@ -9,6 +9,7 @@
       <th> # </th>
       <th> ID </th>
       <th class="expand">Commodity</th>
+      <th class="expand">Quantity Per Package</th>
       <th class="expand">Pack Size</th>
       <th class="expand">Strength</th>
       <th class="expand">Unit</th>
@@ -31,6 +32,7 @@
         <td> <%= order_line.id %></td>
         <td class="expand td-expand" title="<%= h order_line.commodity.name%>">
           <%= truncate(order_line.commodity.name, :length => 20) %> </td>
+        <td><%=order_line.commodity.quantity_per_packg%></td>
         <td><%=order_line.commodity.pack_size%></td>
         <td><%=order_line.commodity.strength_dosage%></td>
         <td><%=order_line.commodity.unit.name%></td>

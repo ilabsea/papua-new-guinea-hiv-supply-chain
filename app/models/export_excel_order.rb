@@ -19,7 +19,7 @@ class ExportExcelOrder
     working_sheet = @book.create_worksheet name: order.site.name
     
     #write table header with [cell_data, cell_width]
-    head_labels = [ ["Commodity", 30], ["Pack Size", 15], ["Strength", 15], ["Unit", 10] , ["#Patient", 15], 
+    head_labels = [ ["Commodity", 30], ["Quantity Per Package", 30], ["Pack Size", 15], ["Strength", 15], ["Unit", 10] , ["#Patient", 15], 
                     ["Stock on hand", 20], ["Monthly Use", 20], ["System Suggestion", 30],
                     ["Quantity Suggested", 30], ["Status", 15], ["Data Entry Note", 30], ["Reviewer note", 30] ]
 
@@ -37,10 +37,19 @@ class ExportExcelOrder
     #write table body content
     order.order_lines.each_with_index do |order_line, i|
       row = i + 1
-      data_rows = [ order_line.commodity.name, order_line.commodity.pack_size, order_line.commodity.strength_dosage,
-                    order_line.commodity.unit.name, order_line.number_of_client, order_line.stock_on_hand , 
-                    order_line.monthly_use, order_line.system_suggestion, order_line.quantity_suggested,
-                    order_line.status, order_line.user_data_entry_note, order_line.user_reviewer_note ]
+      data_rows = [ order_line.commodity.name,
+                    order_line.commodity.quantity_per_packg,
+                    order_line.commodity.pack_size,
+                    order_line.commodity.strength_dosage,
+                    order_line.commodity.unit.name,
+                    order_line.number_of_client,
+                    order_line.stock_on_hand,
+                    order_line.monthly_use,
+                    order_line.system_suggestion,
+                    order_line.quantity_suggested,
+                    order_line.status,
+                    order_line.user_data_entry_note,
+                    order_line.user_reviewer_note ]
 
       data_rows.each_with_index do |data, column|
         working_sheet[row, column] = data

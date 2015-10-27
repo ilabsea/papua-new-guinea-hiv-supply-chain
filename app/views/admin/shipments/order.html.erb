@@ -49,6 +49,7 @@
         <th class="expand">Site</th>
         <th class="expand">OrderId </th>
         <th class="expand">Commodity</th>
+        <th class="expand">Quantity Per Package</th>
         <th class="expand">Pack Size</th>
         <th class="expand">Unit</th>
         <th class="expand">Amount</th>
@@ -77,6 +78,7 @@
           <td title="<%=order_line.commodity.name%>" class=' td-expand <%= klass  %>'>
             <%= truncate(order_line.commodity.name, length: 20) %>
           </td>
+          <td><%=order_line.commodity.quantity_per_packg %></td>
           <td><%=order_line.commodity.pack_size %></td>
           <td><%=order_line.commodity.unit.name %></td>
           <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
