@@ -8,29 +8,19 @@ module Admin
     def index
       params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
       if(params[:type] == CommodityCategory::TYPES_DRUG)
-        @commodity_categories = CommodityCategory.drug.paginate(paginate_options)
+        @commodity_categories = CommodityCategory.drug.order('name').paginate(paginate_options)
       else
-        @commodity_categories = CommodityCategory.kit.paginate(paginate_options)
+        @commodity_categories = CommodityCategory.kit.order('name').paginate(paginate_options)
       end
-      @app_title = "Commodity Categories"
     end
-
-
-    def show
-      @commodity_category = CommodityCategory.find(params[:id])
-      @app_title = "Category :" + @commodity_category.name
-    end
-
 
     def new
       @commodity_category = CommodityCategory.new(:com_type => params[:type])
-      @app_title = "New Category"
     end
 
 
     def edit
       @commodity_category = CommodityCategory.find(params[:id])
-      @app_title = "Edit: " + @commodity_category.name
     end
 
 

@@ -1,29 +1,4 @@
-<style>
-  
-  .form-horizontal .control-label{
-    width: 240px;
-  }
-  .form-horizontal .controls{
-    margin-left: 260px;
-  }
-
-  .site_in_every, .site_duration_type, .site-label {
-    display: inline;
-    float: left;
-    margin-right: 10px;
-  }
-
-  .site-label {
-    width: 240px;
-  }
-
-  .site_in_every .controls, .site_duration_type .controls {
-    display: inline;
-    margin-left: 10px; 
-  }
-</style>
-
-<%= simple_form_for [:admin , @site], :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for [:admin , @site], :html => { :class => 'form-horizontal site-form' } do |f| %>
   <%= f.input :name %>
   <%= f.input :lat, :label => 'Latitude' %>
   <%= f.input :lng, :label => 'Longitude' %>

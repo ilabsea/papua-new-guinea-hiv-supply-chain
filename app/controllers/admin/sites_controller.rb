@@ -3,7 +3,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @sites = Site.includes(:province).paginate(paginate_options)
+      @sites = Site.includes(:province).order('sites.name').paginate(paginate_options)
       @app_title = "Sites"
     end
 

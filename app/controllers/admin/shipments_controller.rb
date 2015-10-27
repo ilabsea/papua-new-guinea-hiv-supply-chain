@@ -40,7 +40,6 @@ module Admin
       @order_lines = OrderLine.includes(:commodity => :unit, :order => :site )
                               .items(params)
                               .data_filled
-                              .not_shipped
                               .paginate(paginate_options.merge(per_page: 50))
 
 

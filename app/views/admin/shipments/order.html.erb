@@ -45,14 +45,14 @@
   <thead>
     <tr>
       <th><%=check_box_tag 'toggle_all', '1', false, :id => 'cb_toggle_all' %></th>
-      <th>Site</th>
-      <th>OrderId </th>
-      <th>Commodity</th>
-      <th>Unit</th>
-      <th>Amount</th>
-      <th>Approved Date</th>
-      <th>Quantity Dispatch </th>
-      <th>AMS remark </th>
+      <th class="expand">Site</th>
+      <th class="expand">OrderId </th>
+      <th class="expand">Commodity</th>
+      <th class="expand">Unit</th>
+      <th class="expand">Amount</th>
+      <th class="expand">Approved Date</th>
+      <th class="expand">Quantity Dispatch </th>
+      <th class="expand">AMS remark </th>
     </tr>
   </thead>
 
@@ -103,10 +103,4 @@
 </table>
 
 <%= render_paginate_for @order_lines %>
-
-<script>
-
-
-</script>
-
 

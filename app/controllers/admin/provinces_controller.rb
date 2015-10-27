@@ -2,24 +2,20 @@ module Admin
   class ProvincesController < Controller
     load_and_authorize_resource
     def index
-      @provinces = Province.paginate(paginate_options)
-      @app_title = "Provinces"
+      @provinces = Province.order('name').paginate(paginate_options)
     end
 
     def show
       @province = Province.find(params[:id])
-      @app_title = "Province: #{@province.name}"
     end
 
     def new
       @province = Province.new
-      @app_title = "New Province"
     end
 
 
     def edit
       @province  = Province.find(params[:id])
-      @app_title = "Edit: #{@province.name}" 
     end
 
     def create

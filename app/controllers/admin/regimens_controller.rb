@@ -4,7 +4,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @regimens = Regimen.includes(:regimen_category, :unit).paginate(paginate_options)
+      @regimens = Regimen.includes(:regimen_category, :unit).order('name').paginate(paginate_options)
     end
 
     def new

@@ -39,3 +39,7 @@
 //= require import_surv/form
 //= require shipment/form
 //= require shipment/dialog
+//= require shipment/index
+//= require shipment/show
+//= require setting/form
+

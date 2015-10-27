@@ -37,6 +37,9 @@ PngHivAids::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Rails does not reload the change http://stackoverflow.com/questions/18270945/rails-server-needs-restart-every-time-i-make-changes-why
+  config.reload_classes_only_on_change = false
   
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 

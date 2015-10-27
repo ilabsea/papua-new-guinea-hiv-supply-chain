@@ -3,11 +3,6 @@
 <% end %>
 
 <%= page_header "SMS Message Template Setting" %>
-<style>
-  .setting-line input, .setting-line select {
-    margin-bottom: 0px !important ;
-  }
-</style>
 <%= form_for [:admin, Setting.new] do |f| %>
   <div class='setting-line'>
       If site does not confirm package received, send SMS to site every 
@@ -35,22 +30,4 @@
   <% end %>
   <div class="form-actions"> <%= button_save ' Save ' %> </div>
 <% end %>
- 
-
-<style>
-  .template_container {
-    padding-bottom: 10px;
-  }
-</style>
-
-<script type="text/javascript">
-    $(function() {
-      $('.parameter_link').click(function() {
-        var $this = $(this);
-        var $input = $('#' + $this.attr('data-id'));
-        $input.replaceSelection($this.text());
-        return false;
-      });
-  });
-</script>
 

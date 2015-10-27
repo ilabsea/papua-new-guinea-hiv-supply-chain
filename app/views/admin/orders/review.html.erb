@@ -10,7 +10,7 @@
   drug =  @type == CommodityCategory::TYPES_DRUG ? 'active' : '' 
   kit  =  @type == CommodityCategory::TYPES_KIT  ? 'active' : ''
 %>
-<div class="tabbable"> 
+<div class="tabbable" style='position:absolute;'> 
     <ul class="nav nav-tabs">
       <li class="<%= drug %>"  >
         <a href="#drug" data-toggle="tab" data-skip-loading="true" >Drugs</a>

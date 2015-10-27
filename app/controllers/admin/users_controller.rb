@@ -5,7 +5,7 @@ module Admin
     skip_authorize_resource :only =>[:new_password, :change, :profile, :update_profile]
 
     def index
-       @users = User.order('role').includes(:site).paginate paginate_options
+       @users = User.order('user_name').includes(:site).paginate paginate_options
        @app_title = "Users"
     end
 

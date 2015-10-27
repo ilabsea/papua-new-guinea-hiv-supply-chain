@@ -11,7 +11,7 @@
   <%= f.input :email %>
   <%= f.input :display_name %>
   <%= f.input :role, :collection => User::ROLES, :include_blank => "Select a role" %>
-  <%= f.association :site, :include_blank => "Select a site" %>
+  <%= f.input :site, :collection => Site.order('name').all, :include_blank => "Select a site" %>
   
   <div class="form-actions">
     <%= button_save ' Save '  %>

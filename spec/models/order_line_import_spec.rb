@@ -32,10 +32,12 @@ describe OrderLineImport do
 
         order_lines.map{|order_line| order_line.commodity.name}.should =~ @names_test
 
-        monthly_use = [(342/3.0).ceil, (253/3.0).ceil, (876/3.0).ceil, (2341/3.0).ceil, (513/3.0).ceil]
+        # monthly_use = [(342/3.0).ceil, (253/3.0).ceil, (876/3.0).ceil, (2341/3.0).ceil, (513/3.0).ceil]
+        monthly_use = [342, 253, 876, 2341, 513]
         order_lines.map(&:monthly_use).should =~ monthly_use
 
-        stock_on_hand = [ (21/3.0).ceil, (11/3.0).ceil, (4/3.0).ceil, (9/3.0).ceil, (10/3.0).ceil ]
+        # stock_on_hand = [ (21/3.0).ceil, (11/3.0).ceil, (4/3.0).ceil, (9/3.0).ceil, (10/3.0).ceil ]
+        stock_on_hand = [ 21, 11, 4, 9, 10 ]
         order_lines.map(&:stock_on_hand).should =~ stock_on_hand
 
         @order_line_import.missing_commodities.size.should eq 0

@@ -53,10 +53,7 @@ class OrderLineImport
           pack_size = commodity.pack_size == nil ? 1.0 : commodity.pack_size
 
           stock_on_hand = row[2].to_i
-          stock_on_hand = (stock_on_hand/pack_size).ceil
-
           monthly_use   = row[3].to_i
-          monthly_use   = (monthly_use/pack_size).ceil
 
           number_of_client = @order_line_completer.query_number_of_patient(commodity)
 

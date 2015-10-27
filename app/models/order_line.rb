@@ -157,6 +157,14 @@ class OrderLine < ActiveRecord::Base
     self.arv_type == CommodityCategory::TYPES_KIT
   end
 
+  def monthly_use_pack
+    self.drug? ? monthly_use : (monthly_use/pack_size).ceil
+  end
+
+  def stock_on_hand_pack
+    self.drug? ? stock_on_hand : (stock_on_hand/pack_size).ceil
+  end
+
   class << self
     def drug
       where ['arv_type = :type ', :type => CommodityCategory::TYPES_DRUG ]
@@ -167,7 +175,7 @@ class OrderLine < ActiveRecord::Base
     end
 
     def not_shipped
-      where [ 'shipment_status = :shipment_status', :shipment_status => false]
+      where [ 'order_lines.shipment_status = :shipment_status', :shipment_status => false]
     end
 
     def data_filled

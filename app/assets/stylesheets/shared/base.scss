@@ -1,3 +1,9 @@
+.error-code{
+  font-size: 30px;
+  color: red;
+  margin-top: 30px;
+}
+    
 .content-body {
   min-height: 600px;
 }
@@ -9,6 +15,11 @@
     .text-right {text-align:right;}
     .text-left {text-align:left;}
  } 
+
+// .table { 
+//     position: relative; 
+//     float: left;
+// }
 
 .gray {
   color: gray;
@@ -178,9 +189,6 @@ table input{
   display:none !important;
 }
 
-.form-fixed {
-
-}
 .link-thead{
   color: #333;
 }

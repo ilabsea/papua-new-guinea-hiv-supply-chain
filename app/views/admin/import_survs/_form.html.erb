@@ -30,8 +30,8 @@
     <% end %>
 
 <% end %>
-
-  <div class='row-fluid form-fixed'  >
+<div class='row-fluid clearfix' >
+  <div class="form-fixed" style="position:relative;">
     <table class='table table-hover surv-form table-fixed-header' id='tableFixed' >
       <thead class='header' >
         <tr>
@@ -101,6 +101,7 @@
     <%= button_save  " Save " %> 
     <%= link_button_cancel 'Cancel', admin_import_survs_path(:type => @import_surv.surv_type) %>
   </div>
+</div>
 <% end %>
 <input type='hidden' id='site-list' value='<%=@site_list.join(',')%>' />
 <%= render 'copy' %>
