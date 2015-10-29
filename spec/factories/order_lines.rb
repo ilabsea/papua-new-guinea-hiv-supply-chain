@@ -42,8 +42,7 @@ FactoryGirl.define do
     quantity_suggested 1
     quantity_system_calculation 1
     number_of_client 10
-    
-    site
+    site {order.site}
     order_frequency {site.order_frequency}
     suggestion_order {site.suggestion_order}
     test_kit_waste_acceptable {site.test_kit_waste_acceptable}

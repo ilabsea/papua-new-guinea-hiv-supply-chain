@@ -24,9 +24,9 @@ FactoryGirl.define do
     site 
     is_requisition_form false
     date_submittion "2013-06-25 10:58:09"
-    user_place_order { create :user_site}
+    user_place_order { create(:user_site, site: site)}
     order_date "2013-06-25 10:58:09"
-    user_data_entry { create :user_data_entry}
+    user_data_entry {create(:user_data_entry)}
     review_date "2013-06-25 10:58:09"
     review_user { create :user_reviewer }
     requisition_report nil
