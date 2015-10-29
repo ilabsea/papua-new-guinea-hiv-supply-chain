@@ -47,7 +47,7 @@ class OrderLine < ActiveRecord::Base
 
   validates :stock_on_hand, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
   validates :monthly_use, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
-  validates :number_of_client, numericality: {greater_than_or_equal_to: 0}
+  validates :number_of_client, numericality: {greater_than_or_equal_to: 0 }
 
   # validate :validate_requirement
   before_save :calculate_attribute

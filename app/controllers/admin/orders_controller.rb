@@ -39,6 +39,14 @@ module Admin
       @order.update_approval if current_user.data_entry_and_reviewer?
       redirect_to admin_orders_path, :notice => 'Order has been created'
     else
+      errors = {}
+      @order.order_lines.each do |order_line|
+         if order_line.errors.size > 0
+            errors[order_line.errors.full_messages] = order_line.errors.full_messages
+         end
+      end
+
+      flash.now[:alert] = "Failed to save order with errors: " + errors.values.join("\n")
       render :new
     end
    end
@@ -66,14 +74,14 @@ module Admin
        @order.update_approval if current_user.data_entry_and_reviewer?
        redirect_to admin_orders_path, :notice => 'Order has been updated succesfully'
      else
-       errors = []
-       errors += @order.errors.full_messages
+       errors = {}
        @order.order_lines.each do |order_line|
          if order_line.errors.size > 0
-            errors += order_line.errors.full_messages
+            errors[order_line.errors.full_messages] = order_line.errors.full_messages
          end
        end
-       flash.now[:alert] = "Failed to save order with errors: " + errors.join("\n")
+
+       flash.now[:alert] = "Failed to save order with errors: " + errors.values.join("\n")
        render :edit
      end
    end

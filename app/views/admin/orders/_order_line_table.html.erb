@@ -2,7 +2,9 @@
     <thead>
       <tr>
         <th> # </th>
+        <% if order.persisted? %>
         <th> ID </th>
+        <% end %>
         <th class="expand" >Commodity</th>
         <th class="expand" >Quantity Per Package</th>
         <th class="expand" >Pack Size</th>

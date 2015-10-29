@@ -1,12 +1,14 @@
 <% 
   order_line_record = order_line_form.object
   row_ref = order_line_record.commodity.id 
-  error_display = ( order_line_record.errors.full_messages.size > 0 ) ? '' : 'display:none;'
-
+  error_display = ( order_line_record.errors.full_messages.size > 0 ) ? 'visibility:visible' : 'visibility:hidden;'
+  styleError = ( order_line_record.errors.full_messages.size > 0 ) ? 'alert-error' : ''
 %>
-<tr id='tr_<%= row_ref %>'  data-ref="<%= row_ref%>" class='order_line_row'>
+<tr id='tr_<%= row_ref %>'  data-ref="<%= row_ref%>" class='order_line_row <%=styleError%>' style=''>
     <td ><%=index%></td>
-    <td ><%=order_line_record.id%></td>
+    <% if order_line_record.persisted? %>
+      <td ><%=order_line_record.id%></td>
+    <% end %>
     <td class='td-expand no-wrap' title="<%= h order_line_record.commodity.name %>"> 
       
       <%= order_line_form.input :id, :as => 'hidden' %>
@@ -74,7 +76,7 @@
       <td><%= order_line_record.user_reviewer_note %></td>
     <% end %>
     
-    <td class='error-td' > 
+    <td class='error-td expand ' > 
       <%= order_line_form.input :user_data_entry_note, :label=> '&nbsp;' , :as => "string",
           :wrapper_html => {:class => 'inline-div'},
           :input_html   => {:class => :validate_field, :'data-ref' => row_ref, :id => "user_data_entry_note_#{row_ref}" , :style => 'width: 180px;'} , 

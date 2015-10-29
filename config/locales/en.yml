@@ -3,3 +3,15 @@
 
 en:
   hello: "Hello world"
+
+  activerecord:
+    attributes:
+      order_line:
+        number_of_client: "# Patient(Number of Patient on Drug Regimen)"
+
+    errors:
+      models:
+        order_line:
+          attributes:
+            number_of_client:
+              not_a_number: 'is required. you might forget to create a surv form for this order of the same month'
