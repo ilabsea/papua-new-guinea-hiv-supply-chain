@@ -39,6 +39,7 @@
         <td>
           <% 
              editable = false
+
              if current_user.data_entry_and_reviewer?
                editable = true if !(order.approved? || order.to_be_revised?)
              elsif current_user.data_entry?
@@ -53,9 +54,9 @@
         
         <td><%= order.order_date ? show_date(order.order_date) : '' %></td>
         <td title='<%= order.user.phone_number%>'> 
-          <%=order.user_data_entry ? order.user_data_entry.user_name : "" %>
+          <%=order.user_data_entry.try(:user_name) %>
         </td>
-        <td><%= order.review_user ?  order.review_user.user_name : "" %></td>
+        <td><%= order.review_user.try(:user_name) %></td>
         <td><%= order.review_date ? show_date_time(order.review_date) : '' %></td>
         <td><%= order.status %></td>
         
@@ -66,10 +67,9 @@
           <% elsif (current_user.data_entry? || current_user.data_entry_and_reviewer? ) && !order.approved? %>
             <%= link_button_delete 'Delete', admin_order_path(order), :method => :delete, 
                                              :confirm => 'Are you sure to delete this order ?' %>
+          <% end %>
 
-          <% elsif current_user.ams? %>
-            <%= link_button 'icon-briefcase', 'Shipment', admin_order_shipments_path(order)%>
-          <% end %>   
+          <%= link_button("truck", 'Detail ', admin_order_path(order), class: 'btn btn-info') if order.approved? %>
 
         </td>
       </tr>

@@ -125,8 +125,7 @@ module Admin::ApplicationHelper
 
   def link_button type, text, url, options={}
     # options[:class] = options[:class] ? "#{options[:class]}" : ""
-    icon = content_tag "i", " ", :class => "#{type} "
-    link_to (icon + " #{text}".html_safe), url, options
+    link_to(url, options) {icon(type) + " #{text}"}
   end
 
   def link_button_save text, url, options={}

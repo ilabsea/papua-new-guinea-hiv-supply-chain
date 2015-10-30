@@ -45,8 +45,12 @@
                       :id => "quantity_suggested_#{order_line.id}",  
                       :class => :number_text %>  </td>
         <td> <span id='status_<%=order_line.id%>' ><%= status(order_line.status) %> </span> </td>
-        <td> <%= order_line.user_data_entry_note %> </td>
-        <td> <%= text_field_tag :reviewer_note, order_line.user_reviewer_note, :id => "user_reviewer_note_#{order_line.id}" %> </td>
+        <td class="td-expand expand" title="<%= h(order_line.user_data_entry_note)%>">
+          <%= truncate order_line.user_data_entry_note %> </td>
+        <td>
+          <%= text_field_tag :reviewer_note, order_line.user_reviewer_note, :id => "user_reviewer_note_#{order_line.id}" %>
+        </td>
+
         <td style="width: 240px;" id='<%=order_line.id %>' > 
           <%= link_to 'Approve', approve_admin_order_order_line_url(order, order_line), 
                       :title => 'Accept',

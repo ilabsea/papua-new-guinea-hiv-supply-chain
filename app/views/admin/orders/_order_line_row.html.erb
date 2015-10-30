@@ -73,7 +73,9 @@
 
     <% if order.status == Order::ORDER_STATUS_TO_BE_REVISED %>
       <td><%= status(order_line_record.status) %></td>
-      <td><%= order_line_record.user_reviewer_note %></td>
+      <td class="td-expand expand" title='<%= h order_line_record.user_reviewer_note %>' >
+        <%= truncate order_line_record.user_reviewer_note %>
+      </td>
     <% end %>
     
     <td class='error-td expand ' > 

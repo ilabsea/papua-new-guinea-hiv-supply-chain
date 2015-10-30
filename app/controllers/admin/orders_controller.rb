@@ -24,6 +24,10 @@ module Admin
 
    end
 
+   def show
+    @order = Order.find params[:id]
+   end
+
    def review
      @type = params[:type] || CommodityCategory::TYPES_DRUG 
      load_order
