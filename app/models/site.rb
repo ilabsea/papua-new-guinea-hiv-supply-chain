@@ -37,6 +37,7 @@ class Site < ActiveRecord::Base
   has_many :shipments
   has_many :site_messages
   belongs_to :province
+
   attr_accessible :address, :contact_name, :email, :in_every, :duration_type,
                   :land_line_number, :region, :town, :mobile, 
                   :name, :number_of_deadline_sumission, :order_frequency, :order_start_at, 

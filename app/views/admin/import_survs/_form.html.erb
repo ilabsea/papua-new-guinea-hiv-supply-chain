@@ -1,7 +1,7 @@
 <%=simple_form_for [:admin, @import_surv], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
   <%= f.input :surv_type, :as => :hidden %> 
-  <%= render 'form_top', f: f %>
+  <%= render 'form_top', f: f  if @import_surv.new_record? %>
 
   <div class='alert alert-info'>
     <i class='icon-x'></i> Please enter the number of patient in the following form. You can copy from Excel and paste here.
