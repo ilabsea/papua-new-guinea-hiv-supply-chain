@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe OrderLineSuggestion do
   before(:each) do
-    @site1 = FactoryGirl.create(:site)
-    @site2 = FactoryGirl.create(:site)
+    @site1 = FactoryGirl.create(:site, order_frequency: 3)
+    @site2 = FactoryGirl.create(:site, order_frequency: 3)
 
     order1 = FactoryGirl.create(:order, site: @site1)
     order2 = FactoryGirl.create(:order, site: @site2)
 
-    @commodity1 = FactoryGirl.create(:commodity)
+    @commodity1 = FactoryGirl.create(:commodity, )
     @commodity2 = FactoryGirl.create(:commodity)
     @commodity3 = FactoryGirl.create(:commodity)
 
@@ -24,8 +24,21 @@ describe OrderLineSuggestion do
 
 
 
-    @recent_order_line_with_old_history = FactoryGirl.create(:order_line, site: @site1, commodity: @commodity1, order: order1)
-    @recent_order_line_with_out_history = FactoryGirl.create(:order_line, site: @site2, commodity: @commodity1, order: order2)
+    @recent_order_line_with_old_history = FactoryGirl.create(:order_line,
+                                                              site: @site1,
+                                                              commodity:@commodity1,
+                                                              order: order1,
+                                                              order_frequency: @site1.order_frequency,
+                                                              stock_on_hand: 10,
+                                                              monthly_use: 30)
+
+    @recent_order_line_with_out_history = FactoryGirl.create(:order_line,
+                                                             site: @site2,
+                                                             commodity: @commodity1,
+                                                             order: order2,
+                                                             order_frequency: @site2.order_frequency,
+                                                             stock_on_hand: nil,
+                                                             monthly_use: nil)
 
   end
 
@@ -66,6 +79,36 @@ describe OrderLineSuggestion do
     end
   end
 
+  describe '#suggested_value' do
+    context 'average is not nil' do
+      it 'return suggested value for the order_line based on average' do
+        order_line_suggestion = OrderLineSuggestion.new
+        order_line_suggestion.stub(:average).with(@recent_order_line_with_old_history).and_return(10)
 
+        quantity_suggested = order_line_suggestion.suggested_value(@recent_order_line_with_old_history)
+        expect(quantity_suggested).to eq (10 * 3) - 10
+      end
+    end
+
+    context 'average is nil' do
+      it 'return suggested value for the order_line base on monthly_use' do
+        order_line_suggestion = OrderLineSuggestion.new
+        order_line_suggestion.stub(:average).with(@recent_order_line_with_old_history).and_return(nil)
+        quantity_suggested = order_line_suggestion.suggested_value(@recent_order_line_with_old_history)
+        expect(quantity_suggested).to eq (30 * 3) - 10
+      end
+    end
+
+    context 'monthly_use is nil' do
+      it 'return monthly_use' do
+        order_line_suggestion = OrderLineSuggestion.new
+        order_line_suggestion.stub(:average).with(@recent_order_line_with_out_history).and_return(nil)
+        quantity_suggested = order_line_suggestion.suggested_value(@recent_order_line_with_out_history)
+        expect(quantity_suggested).to eq ( (0 * 3) - 0)
+      end
+
+
+    end
+  end
 
 end

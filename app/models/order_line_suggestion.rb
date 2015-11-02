@@ -18,4 +18,11 @@ class OrderLineSuggestion
     nil
   end
 
+  def suggested_value(order_line)
+    everage_per_time =  average(order_line)
+    everage_per_time = everage_per_time ? everage_per_time : order_line.monthly_use.to_i
+    suggested_value = (everage_per_time * order_line.order_frequency) - order_line.stock_on_hand.to_i
+    suggested_value
+  end
+
 end
