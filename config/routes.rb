@@ -108,7 +108,11 @@ PngHivAids::Application.routes.draw do
 
     
     resources :provinces
-    resources :commodities
+    resources :commodities do
+      collection do
+        put :reorder
+      end
+    end
     resources :public_holidays
     resources :settings
     resources :categories

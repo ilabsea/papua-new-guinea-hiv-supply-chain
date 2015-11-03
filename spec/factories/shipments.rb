@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  consignment_number   :string(20)
-#  status               :string(20)
+#  status               :string(25)
 #  shipment_date        :date
 #  received_date        :datetime
 #  user_id              :integer

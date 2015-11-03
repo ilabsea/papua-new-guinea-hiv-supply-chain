@@ -20,7 +20,7 @@
     <thead>
       <tr>
         <th class='nth-table'>#</th>
-        <th><%= link_to 'Site', field_sorted_in_shipments_path_for('sites.name'), :class => 'link-thead' %></th>
+        <th><%= link_to 'Site', field_sorted_in_shipments_path_for('sites.name'), :class => 'link-thead expand' %></th>
         <th><%= link_to 'Consignment', field_sorted_in_shipments_path_for('shipments.consignment_number'), :class => 'link-thead' %> </th>
         <th><%= link_to 'Cost', field_sorted_in_shipments_path_for('shipments.cost') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Carton', field_sorted_in_shipments_path_for('shipments.carton') , :class => 'link-thead'  %> </th>

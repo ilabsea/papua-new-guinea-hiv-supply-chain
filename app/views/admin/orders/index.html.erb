@@ -53,10 +53,10 @@
         <td><%=order.site.name %></td>
         
         <td><%= order.order_date ? show_date(order.order_date) : '' %></td>
-        <td title='<%= order.user.phone_number%>'> 
+        <td title='<%= order.user_data_entry.try(:phone_number)%>'> 
           <%=order.user_data_entry.try(:user_name) %>
         </td>
-        <td><%= order.review_user.try(:user_name) %></td>
+        <td title='<%= order.review_user.try(:phone_number)%>'><%= order.review_user.try(:user_name) %></td>
         <td><%= order.review_date ? show_date_time(order.review_date) : '' %></td>
         <td><%= order.status %></td>
         

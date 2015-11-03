@@ -6,12 +6,10 @@ module Admin
 
     def index
        @users = User.order('user_name').includes(:site).paginate paginate_options
-       @app_title = "Users"
     end
 
     def new
       @user = User.new
-      @app_title = "New User"
     end
 
     def create
@@ -25,7 +23,6 @@ module Admin
 
     def edit
        @user = User.find(params[:id])
-       @app_title = "Edit user: #{@user.user_name}"
     end
 
     def update
@@ -48,7 +45,6 @@ module Admin
     end
 
     def new_password
-      @app_title = 'Change Password'
     end
 
     def change
@@ -61,7 +57,6 @@ module Admin
     end
 
     def profile
-      @app_title = 'Update Profile'
     end
 
     def update_profile
@@ -76,8 +71,6 @@ module Admin
     def reset
       @user = User.find(params[:id])
       @changed_password = @user.reset_random_password!
-
-      @app_title = "Password reset"
 
       if !@changed_password
         redirect_to edit_admin_user_path(@user), :error => "Failed to reset password for this user. Please try again"

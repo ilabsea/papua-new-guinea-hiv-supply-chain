@@ -11,21 +11,20 @@ module Admin
      @date_end   = params[:date_end]
      @orders = Order.includes(:site, :user_data_entry, :review_user)
 
-     if current_user.reviewer?
-        @orders = @orders.where(['status != ?', Order::ORDER_STATUS_PENDING ])
-     end
+     @orders = @orders.where(['status != ?', Order::ORDER_STATUS_PENDING ]) if current_user.reviewer?
 
-     if(!params[:type].blank?)
-       @orders = @orders.of_status(params[:type])
-     end
+     @orders = @orders.of_status(params[:type]) if(!params[:type].blank?)
      
-     @orders = @orders.of_user(current_user).in_between(@date_start, @date_end)
+     @orders = @orders.of_user(current_user)
+                      .in_between(@date_start, @date_end)
+                      .order('id desc')
+
      @orders = @orders.paginate(paginate_options)
 
    end
 
    def show
-    @order = Order.find params[:id]
+     load_order
    end
 
    def review
@@ -139,7 +138,10 @@ module Admin
    private
 
    def load_order
-     @order ||= Order.includes(:order_lines => :commodity).find params[:id]
+     @order = Order.includes(order_lines: [commodity: :unit])
+                   .order('commodities.position, commodities.name')
+                   .find(params[:id])
+     @order
    end
 
    def build_commodity_order_line order, site
@@ -147,7 +149,7 @@ module Admin
        order_line.commodity
      end 
 
-     non_existing_commodities = Commodity.order('name asc')
+     non_existing_commodities = Commodity.order('commodities.position ,commodities.name')
                                          .includes(:commodity_category)
                                          .all
                                          .select{|commodity| !existing_commodities.include?(commodity) }

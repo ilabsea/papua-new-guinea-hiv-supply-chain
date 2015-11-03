@@ -6,7 +6,7 @@ module Admin
     end
 
     def new
-        type = params[:type] || CommodityCategory::TYPES_DRUG 
+      type = params[:type] || CommodityCategory::TYPES_DRUG 
       @surv_site = SurvSite.new :surv_type => type
     end
 

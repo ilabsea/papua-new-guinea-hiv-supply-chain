@@ -3,23 +3,19 @@ module Admin
     load_and_authorize_resource
     def index
       @public_holidays = PublicHoliday.order('date').paginate(paginate_options)
-      @app_title = "Public holidays"
     end
 
     def show
       @public_holiday = PublicHoliday.find(params[:id])
-      @app_title = "Holiday: #{@public_holiday.name}"
     end
 
     def new
       @public_holiday = PublicHoliday.new
-      @app_title = "New Public holiday"
     end
 
     # GET /public_holidays/1/edit
     def edit
       @public_holiday = PublicHoliday.find(params[:id])
-      @app_title = "Holiday: #{@public_holiday.name}"
     end
 
     # POST /public_holidays

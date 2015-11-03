@@ -10,7 +10,7 @@ module Admin
         elsif (params[:type] == CommodityCategory::TYPES_KIT)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
         end
-        @commodities = @commodities.order('commodities.name').paginate(paginate_options)
+        @commodities = @commodities.order('commodities.position, commodities.name').paginate(paginate_options)
     end
 
     def new
@@ -50,9 +50,14 @@ module Admin
         @commodity.destroy
         redirect_to admin_commodities_url(:type => params[:type]), :notice => "Commodity has been removed" 
       rescue Exception => e
-        redirect_to admin_commodities_url, :error => e.message         
+        redirect_to admin_commodities_url(:type => params[:type]), :notice => "Could not remove commodity" 
       end
       
+    end
+
+    def reorder
+      Commodity.reorder(params[:commodity])
+      redirect_to admin_commodities_path(type: params[:type])
     end
   end
 end

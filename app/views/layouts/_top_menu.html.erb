@@ -108,11 +108,6 @@
                   <%= link_icon 'truck', 'Shipment status', admin_shipments_path %>
                 </li>
 
-
-
-
-
-
                 <li class="dropdown">
                   <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                     <%= icon('gift') %> Package
@@ -120,9 +115,17 @@
                   </a>
 
                   <ul class="dropdown-menu">
+
+                  
+                    <li class='<%=nav_status([:shipment]) %>'>
+                      <%= link_to 'Package in progress', admin_shipments_path(:type => Shipment::STATUS_IN_PROGRESS) %>
+                    </li>
+
                     <li class='<%=nav_status([:shipment]) %>'>
                       <%= link_to 'Package lost', admin_shipments_path(:type => Shipment::STATUS_LOST) %>
                     </li>
+
+
 
                     <li class='<%=nav_status([:shipment]) %>'>
                       <%= link_to 'Package partially confirmed',

@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  consignment_number   :string(20)
-#  status               :string(20)
+#  status               :string(25)
 #  shipment_date        :date
 #  received_date        :datetime
 #  user_id              :integer
@@ -50,6 +50,11 @@ class Shipment < ActiveRecord::Base
 
   SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED, STATUS_PARTIALLY_RECEIVED]
 
+
+  def self.with_status status_type
+    status_type.blank? ? where(" shipments.status > '' ") : where(["shipments.status = ?", status_type ])
+  end
+
   def self.alert_for_confirm_status now
       return true if PublicHoliday.is_holiday?(now.to_date)
       shipments = Shipment.includes(:site).in_progress
@@ -73,11 +78,8 @@ class Shipment < ActiveRecord::Base
     translation = setting.str_tr options
 
     #send_via_nuntium message_item
-    Sms.send NuntiumMessagingAdapter.instance do |sms|
-      sms.from  = ShipmentSms::APP_NAME
-      sms.to    = self.site.mobile.with_sms_protocol
-      sms.body  = translation
-    end
+    Sms.instance.send( to:   self.site.mobile.with_sms_protocol,
+                       body: translation )
 
     log = {
       :site       => self.site,

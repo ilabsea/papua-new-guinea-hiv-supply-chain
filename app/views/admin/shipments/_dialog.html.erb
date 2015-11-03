@@ -1,6 +1,6 @@
 
 <!-- Modal -->
-<%= simple_form_for [:admin, @shipment], :html => { :class => 'form-horizontal' }  do |f| %>
+<%= simple_form_for [:admin, @shipment], url: create_shipment_admin_shipments_path , :html => { :class => 'form-horizontal' }  do |f| %>
   <div id="shippement_dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     
     <div class="modal-header">

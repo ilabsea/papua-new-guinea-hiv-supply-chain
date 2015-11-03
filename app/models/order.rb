@@ -10,13 +10,12 @@
 #  user_data_entry_id    :integer
 #  review_date           :datetime
 #  review_user_id        :integer
-#  status                :string(255)
+#  status                :string(15)
 #  requisition_report_id :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  date_submittion       :date
 #
-
 
 class Order < ActiveRecord::Base
   audited

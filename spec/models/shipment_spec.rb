@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  consignment_number   :string(20)
-#  status               :string(20)
+#  status               :string(25)
 #  shipment_date        :date
 #  received_date        :datetime
 #  user_id              :integer
@@ -175,7 +175,7 @@ describe Shipment do
     it 'should alert_deadline' do
       Setting[:message_asking_site] = 'hi {site} Consignment: {consignment} date: {shipment_date}'
 
-      Sms.should_receive(:send)
+      Sms.instance.stub(:send).and_return(true)
 
       @site = FactoryGirl.create :site, name: 'Kampongchame'
       @shipment = FactoryGirl.create :shipment, site: @site, shipment_date: Time.new(2013,9,9)

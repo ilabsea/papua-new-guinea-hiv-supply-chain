@@ -48,7 +48,7 @@ describe Site do
       Setting[:message_deadline] = 'Hi {site} dead line date is : {deadline_date}'
       site = FactoryGirl.create :site, order_start_at: '2013-07-07', order_frequency: 2 , number_of_deadline_sumission: 3, sms_alerted: Site::SMS_ALERTED
 
-      Sms.should_receive(:send)
+      Sms.instance.stub(:send)
       sms_count = SmsLog.count
       site.alert_dead_line
       SmsLog.count.should eq (sms_count + 1)

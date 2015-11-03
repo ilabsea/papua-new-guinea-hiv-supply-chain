@@ -1,10 +1,6 @@
 module Admin::ApplicationHelper
-  def app_name
-    ENV['APP_NAME']
-  end
-  
-  def app_title
-     @app_title.nil? ?  app_name : (@app_title + " &raquo; ").html_safe + app_name
+  def page_title
+    content_for?(:title) ? "#{content_for(:title)} | #{ENV['APP_NAME']}"  : ENV['APP_NAME']
   end
   
   def page_header title, options={},  &block

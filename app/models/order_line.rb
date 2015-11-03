@@ -138,12 +138,12 @@ class OrderLine < ActiveRecord::Base
 
   def self.items options
     order_lines = self.joins("INNER JOIN orders ON order_lines.order_id = orders.id")
-                  .where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
+                      .where([ "order_lines.shipment_status = 0 AND orders.status = ?", Order::ORDER_STATUS_APPROVED])
     
 
-    # order_lines = OrderLine.includes(:commodity, :order => :site ).joins(:order).where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
+    # trick database to use indeices in order table with index(:status, :site_id) 
+    order_lines = options[:site_id].blank? ? order_lines.where( "orders.site_id > -1" ) : order_lines.where(["orders.site_id = ?", options[:site_id]] )
 
-    order_lines = order_lines.where(["orders.site_id = ?", options[:site_id]]) if !options[:site_id].blank?
     order_lines = order_lines.where(["orders.date_submittion <= ?", options[:end] ]) if !options[:end].blank?
     order_lines = order_lines.where(["orders.date_submittion >= ?", options[:start] ]) if !options[:start].blank?
     order_lines

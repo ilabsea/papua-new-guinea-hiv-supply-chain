@@ -51,14 +51,11 @@ describe ImportSurv do
 
          expect{import_surv2.save}.to change{ImportSurv.count}.by(0)
          import_surv2.errors.full_messages.count.should eq 2
-         import_surv2.errors.full_messages[0].should eq "Year #{import_surv1.month}, #{import_surv1.year} has already had surv site"
-         import_surv2.errors.full_messages[1].should eq "Month #{import_surv1.month}, #{import_surv1.year} has already had surv site"
+         import_surv2.errors.full_messages[0].should eq "Year January, #{import_surv1.year} has already been chosen"
+         import_surv2.errors.full_messages[1].should eq "Month January, #{import_surv1.year} has already been chosen"
       end
 
     end
-
-
-
 
   end
 end
