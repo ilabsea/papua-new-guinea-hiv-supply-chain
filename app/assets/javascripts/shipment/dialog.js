@@ -1,3 +1,6 @@
+$(function(){
+ handleSubmitShipment();
+})
 
 function handleSubmitShipment(){
   $("#shipment_save").on('click', function(){
@@ -9,11 +12,12 @@ function handleSubmitShipment(){
       var cost = $("#shipment_cost").val();
 
       var data = $("#new_shipment").serialize();
+      var url  = $("#new_shipment").attr('action');
 
       $.ajax({
         type: 'POST',
         dataType: 'json',
-        url : window.appConfig.url.createShipment,
+        url : url,
         data: data,
 
         success: function(response){
@@ -38,7 +42,3 @@ function handleSubmitShipment(){
 
   });
 }
-
-$(function(){
- handleSubmitShipment();
-})

@@ -24,7 +24,7 @@ class SiteMessage < ActiveRecord::Base
   default_scope order('id DESC')
 
   def to_nuntium
-    {:to => self.from_phone.with_sms_protocol, :body => self.response_message, :from => Sms::APP_NAME}
+    {:to => self.from_phone.with_sms_protocol, :body => self.response_message}
   end
 
   def display_error

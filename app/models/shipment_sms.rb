@@ -16,11 +16,9 @@ class ShipmentSms < Sms
     translation = setting.str_tr options
 
     #send_via_nuntium message_item
-    Sms.send NuntiumMessagingAdapter.instance do |sms|
-      sms.from  = ShipmentSms::APP_NAME
-      sms.to    = @shipment.site.mobile.with_sms_protocol
-      sms.body  = translation
-    end
+    Sms.instance.send(
+                       to: @shipment.site.mobile.with_sms_protocol,
+                       body: translation )
     
 
     log = {

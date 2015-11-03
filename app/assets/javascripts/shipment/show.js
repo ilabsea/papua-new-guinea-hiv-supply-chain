@@ -1,9 +1,9 @@
 $(function(){
-handleSubmitShipment();
+  handleSubmitShipmentShow();
 })
 
-function handleSubmitShipment(){
-  $("#shipment_save").on('click', function(){
+function handleSubmitShipmentShow(){
+  $("#shipment_show_save").on('click', function(){
       var id = $(this).attr('data-id') ;
       var url = $(this).attr('data-url')
       showLoading();

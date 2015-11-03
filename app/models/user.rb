@@ -43,8 +43,8 @@ class User < ActiveRecord::Base
          :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :user_name, :phone_number, :display_name, :role ,
-                  :email, :password, :password_confirmation, :remember_me, :site_id , :current_password
+  attr_accessible :login, :user_name, :phone_number, :display_name, :role , :site_id , :site,
+                  :email, :password, :password_confirmation, :remember_me, :current_password
   # attr_accessible :title, :body
   
   attr_accessor :login, :current_password
