@@ -4,7 +4,7 @@ module Admin
 
     def index
       @type = params[:type] || ImportSurv::TYPES_SURV1
-      @import_survs = current_user.import_survs.of_type(@type).paginate(paginate_options)
+      @import_survs = ImportSurv.of_type(@type).order('year,month').paginate(paginate_options)
     end
 
     def edit

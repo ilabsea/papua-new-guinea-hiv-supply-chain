@@ -1,7 +1,10 @@
+<input type="hidden" value='<%= params[:id]%>' id='table-order-order-id' />
+<input type="hidden" value='<%= tab_order_line_admin_orders_path() %>' id='table-order-tab-order-id' />
 
 <%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
   <%= f.error_notification %>
-  <%= render 'form_top', f: f %>
+
+  <%#= render 'form_top', f: f %>
 
   <div id='order_lines_tab'>
       <%= render 'order_lines', :f => f, :order => @order %> 

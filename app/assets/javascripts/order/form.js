@@ -36,15 +36,16 @@
 
 
   function _loadOrderLinesTab(){
-    site_id = $("#order_site_id").val();
-    date   = $("#order_order_date").val();
-    order_id = '<%=@order.id%>';
+    var site_id = $("#order_site_id").val();
+    var date   = $("#order_order_date").val();
+    var order_id = $("#table-order-order-id").val();
+    var url = $('#table-order-tab-order-id').val();
 
     if(!site_id || !date)
       return ;
     showLoading();
     $.ajax({
-        url    : '<%= tab_order_line_admin_orders_path()%>',
+        url    : url,
         data   : {'site_id' : site_id, 'order_date': date, 'id' : order_id, pp: 'disable'},
         method : 'GET',
         success: function(response){

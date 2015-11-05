@@ -23,9 +23,11 @@
 #  is_set                           :boolean          default(FALSE)
 #  shipment_status                  :boolean          default(FALSE)
 #  completed_order                  :integer          default(0)
-#  order_frequency                  :float
+#  order_frequency                  :integer
 #  site_id                          :integer
 #  pack_size                        :float            default(1.0)
+#  system_suggestion                :integer
+#  suggestion_order                 :float
 #
 
 require 'spec_helper'
@@ -41,6 +43,7 @@ describe OrderLine do
               stock_on_hand:  200,
               monthly_use: 1200,
               quantity_suggested: 600,
+              system_suggestion: 100,
               site: @site,
               commodity: @commodity }
 
@@ -48,21 +51,18 @@ describe OrderLine do
   end
 
   describe '#cal_drug' do
-    it "should return 40% of drug " do
-      @order_line.cal_drug.should eq 40
+    it "should return 83% of drug " do
+      @order_line.cal_drug.should eq 83
     end
   end
 
-  describe '#call_kig' do
+  describe '#call_kit' do
     it 'should return of kit wastage' do
-      @order_line.cal_kit.should eq 20
+      @order_line.cal_kit.should eq 1100
     end
   end
 
   describe 'create order_line' do
-    it 'should create successfull order_line' do
-      @order_line.save.should eq true
-    end
 
     it 'should require stock_on_hand to be a valid positive number' do
       ['xxx', -10, nil].each do |stock_on_hand|
@@ -92,13 +92,6 @@ describe OrderLine do
       @order_line.monthly_use = nil
       @order_line.save.should eq false
       @order_line.errors.full_messages[0].should =~ /Monthly use/
-    end
-
-    it 'should not require monthly_use if type is drug' do
-      @order_line.monthly_use = nil
-      @order_line.arv_type = CommodityCategory::TYPES_DRUG
-      @order_line.save.should eq true
-      @order_line.errors.full_messages.size.should eq 0
     end
 
     it 'should allow [quantity_suggested, stock_on_hand] to be both nil in the same time for type drug' do

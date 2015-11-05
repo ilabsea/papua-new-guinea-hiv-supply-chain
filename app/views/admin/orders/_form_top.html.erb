@@ -1,7 +1,6 @@
 <div class="well">
   <table class="table-order">
     <tr>
-
       <td>
         <%= f.input :site_id, :collection => Site.all, :include_blank => 'Select a Site' %>
       </td>
@@ -20,7 +19,9 @@
                                         %> 
       </td>
 
-      <td style="vertical-align:top; padding-left: 15px;"><%= button_save ' Save ' %></td>
+      <td style="vertical-align:top; padding-left: 15px;">
+        <%= button_save ' Save ' %>
+      </td>
     </tr>
 
   </table>

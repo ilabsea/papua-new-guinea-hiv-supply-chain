@@ -55,7 +55,6 @@ class ImportSurv < ActiveRecord::Base
     attributes['surv_site_commodities_attributes'].each do |key, surv_site_commodities_attributes |
       reject = false if !surv_site_commodities_attributes['quantity'].blank?
     end
-    p "reject: #{reject}"
     return reject
   end
 

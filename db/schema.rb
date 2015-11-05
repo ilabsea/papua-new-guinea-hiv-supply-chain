@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151005012920) do
+ActiveRecord::Schema.define(:version => 20151005100918) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -113,9 +113,11 @@ ActiveRecord::Schema.define(:version => 20151005012920) do
     t.boolean  "is_set",                                                          :default => false
     t.boolean  "shipment_status",                                                 :default => false
     t.integer  "completed_order",                                                 :default => 0
-    t.float    "order_frequency"
+    t.integer  "order_frequency"
     t.integer  "site_id"
     t.float    "pack_size",                                                       :default => 1.0
+    t.integer  "system_suggestion"
+    t.float    "suggestion_order"
   end
 
   add_index "order_lines", ["commodity_id"], :name => "index_order_lines_on_commodity_id"

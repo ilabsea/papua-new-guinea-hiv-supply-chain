@@ -20,7 +20,7 @@
       <%= order_line_form.input :site_id, :as => 'hidden', :input_html => {:class=>'site', :id => "site_#{row_ref}"} %>
 
       <input type='hidden' id='commodity_name_<%=row_ref%>' value="<%= h order_line_record.commodity.name %>" />
-      <%= truncate(order_line_record.commodity.name, :length => 30) %>
+      <%= truncate(order_line_record.commodity.name, :length => 20) %>
     </td>
 
 
@@ -50,7 +50,7 @@
     
     <td > 
       <span id='quantity_system_calculation_<%= row_ref %>' > 
-        <%= order_line_record.calculate_system_suggestion  %> 
+        <%= order_line_record.system_suggestion  %> 
       </span> 
     </td>
     

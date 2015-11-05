@@ -53,8 +53,6 @@ class Order < ActiveRecord::Base
 
   ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_TO_BE_REVIEWED, ORDER_STATUS_APPROVED, ORDER_STATUS_TO_BE_REVISED]
 
-  before_save :order_lines_calculation
-
   def unique_order_in_month_year
     return true if errors.size >0 
     order = Order.where(['site_id = :site_id AND MONTH(order_date)= :month AND YEAR(order_date)= :year ',
@@ -80,14 +78,6 @@ class Order < ActiveRecord::Base
 
   def surv_sites
     @survs ||= SurvSite.find_survs(self.site.id, self.order_date)
-  end
-
-
-  def order_lines_calculation
-    #foreach order_line update field data by current order
-    self.order_lines.each do |order_line|
-      order_line.calculate_quantity_system_suggestion(self)
-    end
   end
 
   def self.create_from_requisition_report requisition_report

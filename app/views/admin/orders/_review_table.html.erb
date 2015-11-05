@@ -3,15 +3,15 @@
     <tr> 
       <th> # </th>
       <th> Commodity </th>
-      <th title="# Of Patient on Drug regiment">No-Patient...</th>
-      <th style='width: 65px;' title="Stock on hand" >Stock...</th>
-      <th> Consumtion</th>
-      <th title="System suggestion">System...</th>
-      <th title="Quantity Suggested">Quantity...</th>
+      <th title="# Of Patient on Drug regiment"># Patient</th>
+      <th style='width: 65px;' title="Stock on hand" >Stock on hand</th>
+      <th> Monthly use</th>
+      <th title="System suggestion">System Suggestion</th>
+      <th title="Quantity Suggested">Quantity suggested</th>
       <th> Status</th>
       <th width="100"> Entry Note</th>
       <th> Reviewer Note</th>
-      <th width='80px;'> Action </th>
+      <th width='120'> Action </th>
 
     </tr>
   </thead>
@@ -20,12 +20,12 @@
     <% order_lines.each_with_index do |order_line, index| %>
       <tr> 
         <td> <%= index+1 %></td>
-        <td title="<%= h order_line.commodity.name%>"> <%= truncate(order_line.commodity.name, :length => 30) %> </td>
+        <td title="<%= h order_line.commodity.name%>"> <%= truncate(order_line.commodity.name, :length => 20) %> </td>
 
         <td> <%= order_line.number_of_client %></td>
         <td> <%= order_line.stock_on_hand %> </td>
         <td> <%= order_line.monthly_use %></td>
-        <td> <%= order_line.calculate_system_suggestion %> </td>
+        <td> <%= order_line.system_suggestion %> </td>
 
         <td> <%= number_field_tag :quantity_suggested, order_line.quantity_suggested, 
                       :id => "quantity_suggested_#{order_line.id}",  
@@ -33,7 +33,7 @@
         <td> <span id='status_<%=order_line.id%>' ><%= status(order_line.status) %> </span> </td>
         <td> <%= order_line.user_data_entry_note %> </td>
         <td> <%= text_field_tag :reviewer_note, order_line.user_reviewer_note, :id => "user_reviewer_note_#{order_line.id}" %> </td>
-        <td id='<%=order_line.id %>' > 
+        <td width="120" id='<%=order_line.id %>' > 
           <%= link_button_tick '', approve_admin_order_order_line_url(order, order_line), 
                       :title => 'Accept',
                       :'data-ref' => order_line.id, 

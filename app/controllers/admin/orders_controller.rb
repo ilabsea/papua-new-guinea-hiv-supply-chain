@@ -20,20 +20,19 @@ module Admin
 
    end
 
-   def new 
-     @order = Order.new(:status => Order::ORDER_STATUS_PENDING)
-     _build_commodity_order_line(@order, nil)
-   end
+   # def new 
+   #   @order = Order.new(:status => Order::ORDER_STATUS_PENDING)
+   #   _build_commodity_order_line(@order, nil)
+   # end
 
-   def tab_order_line
-     # # must eager load order_lines, otherwise each orline from order.order_lines will go to sql query
-     @order =  params[:id].blank? ? Order.new : _order
-     site =  Site.find params[:site_id]
-     @order.site =  site
-     @order.order_date =  params[:order_date]
-     _build_tab(@order, site)
-     render :layout => false
-   end
+   # def tab_order_line
+   #   @order =  params[:id].blank? ? Order.new : _order
+   #   site =  Site.find params[:site_id]
+   #   @order.site =  site
+   #   @order.order_date =  params[:order_date]
+   #   _build_tab(@order, site)
+   #   render :layout => false
+   # end
 
    def create
      raise 'Unable to create order. Only data entry user is able to create order' if !current_user.data_entry?
@@ -105,7 +104,6 @@ module Admin
 
    def _build_tab order, site
      _build_commodity_order_line order, site
-     order.order_lines_calculation
    end
 
    def _build_commodity_order_line order, site
