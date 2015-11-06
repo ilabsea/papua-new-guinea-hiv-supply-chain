@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151027072306) do
+ActiveRecord::Schema.define(:version => 20151106081319) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -42,10 +42,10 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
   end
 
   create_table "commodities", :force => true do |t|
-    t.string   "name"
+    t.string   "name",                  :limit => 50
     t.integer  "commodity_category_id"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
     t.integer  "unit_id"
     t.string   "strength_dosage"
     t.string   "abbreviation"
@@ -53,7 +53,12 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
     t.float    "pack_size"
     t.integer  "regimen_id"
     t.integer  "lab_test_id"
+    t.integer  "position",                            :default => 0
   end
+
+  add_index "commodities", ["lab_test_id"], :name => "index_commodities_on_lab_test_id"
+  add_index "commodities", ["name"], :name => "index_commodities_on_name"
+  add_index "commodities", ["position"], :name => "index_commodities_on_position"
 
   create_table "commodity_categories", :force => true do |t|
     t.string   "name"
@@ -61,6 +66,8 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
     t.datetime "updated_at", :null => false
     t.string   "com_type"
   end
+
+  add_index "commodity_categories", ["com_type"], :name => "index_commodity_categories_on_com_type"
 
   create_table "import_survs", :force => true do |t|
     t.string   "surv_type"
@@ -119,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
   end
 
   add_index "order_lines", ["commodity_id"], :name => "index_order_lines_on_commodity_id"
+  add_index "order_lines", ["order_id", "shipment_status", "completed_order"], :name => "shippable_index"
   add_index "order_lines", ["order_id"], :name => "index_order_lines_on_order_id"
 
   create_table "orders", :force => true do |t|
@@ -129,15 +137,17 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
     t.integer  "user_data_entry_id"
     t.datetime "review_date"
     t.integer  "review_user_id"
-    t.string   "status"
+    t.string   "status",                :limit => 15
     t.integer  "requisition_report_id"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.date     "date_submittion"
   end
 
   add_index "orders", ["requisition_report_id"], :name => "index_orders_on_requisition_report_id"
   add_index "orders", ["site_id"], :name => "index_orders_on_site_id"
+  add_index "orders", ["status", "site_id"], :name => "index_orders_on_status_and_site_id"
+  add_index "orders", ["status"], :name => "index_orders_on_status"
   add_index "orders", ["user_data_entry_id"], :name => "index_orders_on_user_data_entry_id"
   add_index "orders", ["user_place_order_id"], :name => "index_orders_on_user_place_order_id"
 
@@ -214,7 +224,7 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
 
   create_table "shipments", :force => true do |t|
     t.string   "consignment_number",   :limit => 20
-    t.string   "status",               :limit => 20
+    t.string   "status",               :limit => 25
     t.date     "shipment_date"
     t.datetime "received_date"
     t.integer  "user_id"
@@ -230,6 +240,11 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
     t.integer  "carton"
     t.integer  "site_messages_count",                :default => 0
   end
+
+  add_index "shipments", ["carton"], :name => "index_shipments_on_carton"
+  add_index "shipments", ["consignment_number"], :name => "index_shipments_on_consignment_number"
+  add_index "shipments", ["cost"], :name => "index_shipments_on_cost"
+  add_index "shipments", ["status"], :name => "index_shipments_on_status"
 
   create_table "site_messages", :force => true do |t|
     t.text     "message"
@@ -292,6 +307,9 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
     t.datetime "updated_at",                  :null => false
   end
 
+  add_index "surv_site_commodities", ["commodity_id"], :name => "index_surv_site_commodities_on_commodity_id"
+  add_index "surv_site_commodities", ["surv_site_id"], :name => "index_surv_site_commodities_on_surv_site_id"
+
   create_table "surv_sites", :force => true do |t|
     t.integer  "import_surv_id"
     t.integer  "site_id"
@@ -302,6 +320,8 @@ ActiveRecord::Schema.define(:version => 20151027072306) do
     t.integer  "surv_site_commodities_count", :default => 0
     t.string   "surv_type"
   end
+
+  add_index "surv_sites", ["import_surv_id"], :name => "index_surv_sites_on_import_surv_id"
 
   create_table "units", :force => true do |t|
     t.string   "name"

@@ -5,63 +5,67 @@
 
 <%= render 'admin/shared/commodity_tab' %>
 
-<%= page_header("Commodities Listing", :left => 6, :right => 6) do %>
-    <%=link_button_new "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}",
-                       :class => 'btn' %>
-    <%=link_button_export "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ),
-                          :class => 'btn btn-primary' %>
-<% end %>
+<%= form_tag reorder_admin_commodities_path(type: params[:type]), method: :put do %>
+  <%= page_header("Commodities Listing", :left => 6, :right => 6) do %>
+      <%=link_button_new "New #{params[:type]}", new_admin_commodity_path() + "?type=#{params[:type]}",
+                         :class => 'btn' %>
+      <%=link_button_export "Download Excel Template", template_admin_commodity_categories_path(:format => :xls ),
+                            :class => 'btn btn-primary' %>
+      <button class="btn btn-default"> <i class="fa fa-save"> </i> Save Position </button>
+  <% end %>
 
-<table class="table table-hover ">
-  <thead>
-    <tr>
-      <th class='nth-table'>#</th>
-      <th>Name</th>
-      <th>Category</th>
-
-      <% if params[:type] == CommodityCategory::TYPES_DRUG %>
-        <th>Regimen</th>
-        <th>Abbreviation</th>
-        <th>Quantity Per Pack</th>
-      <% else %>
-        <th> LabTest </th>
-      <% end %>
-      <th width="60">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @commodities.each_with_index do |commodity, index| %>
+  <table class="table table-hover ">
+    <thead>
       <tr>
-        <td><%=current_entries + index %></td>
-        <td title='<%= h commodity.name %>' class='td-expand'>
-          <%=link_to truncate(commodity.name), edit_admin_commodity_path(commodity, :type => params[:type]) %>
-        </td>
+        <th class='nth-table'>#</th>
+        <th>Name</th>
+        <th>Category</th>
 
-        <td title='<%= h commodity.commodity_category.name %>' class='td-expand' >
-          <%= truncate commodity.commodity_category.name %>
-        </td>
-
-        <% if params[:type] == CommodityCategory::TYPES_DRUG  %>
-          <td><%=commodity.try(:regimen).try(:name) %></td>
-          <td class='td-expand' title='<%=h commodity.abbreviation %>' >
-            <%= truncate commodity.abbreviation %>
-          </td>
-          <td>
-            <%= commodity.quantity_per_packg %>
-          </td>
+        <% if params[:type] == CommodityCategory::TYPES_DRUG %>
+          <th>Regimen</th>
+          <th>Abbreviation</th>
+          <th>Quantity Per Pack</th>
         <% else %>
-           <td><%= commodity.try(:lab_test).try(:name)%></td>
+          <th> LabTest </th>
         <% end %>
-
-        <td class="last">
-          <%= link_button_delete 'Delete', admin_commodity_path(commodity,
-                                 :type => params[:type]),
-                                 :method => :delete,
-                                 :confirm => 'Are you sure to delete this commodity ?' %>
-        </td>
+        <th>Position</th>
+        <th width="60">Action</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @commodities.each_with_index do |commodity, index| %>
+        <tr>
+          <td><%=current_entries + index %></td>
+          <td title='<%= h commodity.name %>' class='td-expand'>
+            <%=link_to truncate(commodity.name), edit_admin_commodity_path(commodity, :type => params[:type]) %>
+          </td>
+
+          <td title='<%= h commodity.commodity_category.name %>' class='td-expand' >
+            <%= truncate commodity.commodity_category.name %>
+          </td>
+
+          <% if params[:type] == CommodityCategory::TYPES_DRUG  %>
+            <td><%=commodity.try(:regimen).try(:name) %></td>
+            <td class='td-expand' title='<%=h commodity.abbreviation %>' >
+              <%= truncate commodity.abbreviation %>
+            </td>
+            <td>
+              <%= commodity.quantity_per_packg %>
+            </td>
+          <% else %>
+             <td><%= commodity.try(:lab_test).try(:name)%></td>
+          <% end %>
+          <td><%=text_field_tag "commodity[#{commodity.id}]", commodity.position, size: 3, style: 'width: 30px;' %> </td>
+          <td class="last">
+            <%= link_button_delete 'Delete', admin_commodity_path(commodity,
+                                   :type => params[:type]),
+                                   :method => :delete,
+                                   :confirm => 'Are you sure to delete this commodity ?' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
 <%= render_paginate_for @commodities %>
 

@@ -67,8 +67,9 @@ class ImportSurv < ActiveRecord::Base
     import = ImportSurv.where([ 'month = :month AND year = :year and surv_type = :type', 
                                 :month => self.month, :year => self.year, :type => self.surv_type ]).first
     if(!import.nil? && import.id != self.id)
-      errors.add(:year, "#{self.month}, #{self.year} has already had surv site")
-      errors.add(:month, "#{self.month}, #{self.year} has already had surv site")
+      error_msg = "#{ImportSurv::MONTHS[self.month]}, #{self.year} has already been chosen"
+      errors.add(:year, error_msg)
+      errors.add(:month, error_msg)
     end
 
   end

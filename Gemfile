@@ -16,7 +16,7 @@ gem 'bootstrap-datepicker-rails'
 
 gem 'spreadsheet'
 gem 'carrierwave'
-gem 'activerecord-import'
+# gem 'activerecord-import'
 gem 'nuntium_api'
 gem 'whenever', :require => false
 gem 'capistrano-rbenv'

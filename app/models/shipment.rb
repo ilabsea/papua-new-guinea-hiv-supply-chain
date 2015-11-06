@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  consignment_number   :string(20)
-#  status               :string(20)
+#  status               :string(25)
 #  shipment_date        :date
 #  received_date        :datetime
 #  user_id              :integer
@@ -49,6 +49,11 @@ class Shipment < ActiveRecord::Base
   validates :user, :presence => true
 
   SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED, STATUS_PARTIALLY_RECEIVED]
+
+
+  def self.with_status status_type
+    status_type.blank? ? where(" shipments.status > '' ") : where(["shipments.status = ?", status_type ])
+  end
 
   def self.alert_for_confirm_status now
       return true if PublicHoliday.is_holiday?(now.to_date)

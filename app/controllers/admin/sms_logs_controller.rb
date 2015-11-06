@@ -10,7 +10,6 @@ module Admin
         @site = Site.find params[:site_id]
         @sms_logs = @site.sms_logs.of_type(SmsLog::SMS_TYPE_REQUISITION).paginate(paginate_options)
       end
-      @app_title = "Sms logs"
     end
 
     def monitor

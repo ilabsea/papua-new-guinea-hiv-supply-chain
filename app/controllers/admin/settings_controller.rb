@@ -5,7 +5,6 @@ module Admin
     skip_authorize_resource
     
     def index
-        @app_title = "Settings"  
     end
 
     def create

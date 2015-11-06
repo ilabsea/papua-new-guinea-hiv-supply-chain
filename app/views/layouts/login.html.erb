@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>HIV Supply Chain</title>
+  <title><%=page_title %></title>
    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="assets/html5shiv.js"></script>
@@ -23,7 +23,7 @@
             <div>
              <h3><%= image_tag "logo.jpg", :alt => 'Department of Health', :title => 'Department of Health'  %></h3>
             </div>
-            <h2> <%= app_name %> </h2>
+            <h2> <%= ENV['APP_NAME'] %> </h2>
           </div>
       </div>
       

@@ -4,23 +4,19 @@ module Admin
 
     def index
       @sites = Site.includes(:province).order('sites.name').paginate(paginate_options)
-      @app_title = "Sites"
     end
 
     def show
       @site = Site.find(params[:id])
-      @app_title = "Site: #{@site.name}"
     end
 
 
     def new
       @site = Site.new(:in_every => Setting[:hour], :duration_type => Setting[:date_type])
-      @app_title = "New Site"
     end
 
     def edit
       @site = Site.find(params[:id])
-      @app_title = "Edit site : #{@site.name}"
     end
 
 

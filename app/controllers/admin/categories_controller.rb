@@ -4,25 +4,21 @@ module Admin
     
     def index
       @categories = Category.paginate(paginate_options)
-      @app_title = "Categories"
     end
 
 
     def show
       @category = Category.find(params[:id])
-      @app_title = "Category :" + @category.name
     end
 
 
     def new
       @category = Category.new
-      @app_title = "New Category"
     end
 
 
     def edit
       @category = Category.find(params[:id])
-      @app_title = "Edit: " + @category.name
     end
 
 
