@@ -2,4 +2,10 @@
   input {
     width: 180px;
   }
+  input.sm {
+    width: 80px !important;
+  }
+  input.md {
+    width: 120px !important;
+  }
 }

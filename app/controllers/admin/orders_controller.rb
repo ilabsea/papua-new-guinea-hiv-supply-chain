@@ -9,43 +9,19 @@ module Admin
    def index
      @date_start = params[:date_start] 
      @date_end   = params[:date_end]
-     @orders = Order.includes(:site, :user_data_entry)
+     @orders = Order.includes(:site, :user_data_entry, :review_user)
+
+     if current_user.reviewer?
+        @orders = @orders.where(['status != ?', Order::ORDER_STATUS_PENDING ])
+     end
 
      if(!params[:type].blank?)
        @orders = @orders.of_status(params[:type])
      end
      
      @orders = @orders.of_user(current_user).in_between(@date_start, @date_end)
-     @orders = @orders.paginate(paginate_options) 
+     @orders = @orders.paginate(paginate_options)
 
-   end
-
-   # def new 
-   #   @order = Order.new(:status => Order::ORDER_STATUS_PENDING)
-   #   _build_commodity_order_line(@order, nil)
-   # end
-
-   # def tab_order_line
-   #   @order =  params[:id].blank? ? Order.new : _order
-   #   site =  Site.find params[:site_id]
-   #   @order.site =  site
-   #   @order.order_date =  params[:order_date]
-   #   _build_tab(@order, site)
-   #   render :layout => false
-   # end
-
-   def create
-     raise 'Unable to create order. Only data entry user is able to create order' if !current_user.data_entry?
-     @order = Order.new params[:order]
-     @order.user_data_entry = current_user
-     @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
-     @order.is_requisition_form = false
-
-     if @order.save
-       redirect_to admin_orders_path, :notice => 'Order has been created'  
-     else
-       render :new
-     end
    end
 
    def review
@@ -60,10 +36,13 @@ module Admin
 
    def update
      @order = _order
-     @order.user_data_entry = current_user if current_user.data_entry?
-     @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
+     @order.user_data_entry = current_user
+     if current_user.data_entry?
+       @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
+     end
 
      if @order.update_attributes params[:order]
+       @order.update_approval if current_user.data_entry_and_reviewer?
        redirect_to admin_orders_path, :notice => 'Order has been updated succesfully'
      else
        render :edit
@@ -118,7 +97,6 @@ module Admin
        order.order_lines.build :commodity    => commodity, 
                      :site         => site,
                      :arv_type    => commodity.commodity_category.com_type
-                   # :consumption_per_client_per_month => commodity.consumption_per_client_unit  
      end
    end
   end

@@ -31,6 +31,7 @@
 
 
   <% content_for :site_detail do %>
+    <%= render 'tip_data_entry_and_reviewer' if current_user.data_entry_and_reviewer? %>
     <ul>
      <li> Order Frequency(month) : <b>         <%= order.site ? order.site.order_frequency  : '' %> </b> </li>
      <li> Suggestion Order Valid Within(%) <b> <%= order.site ? order.site.suggestion_order : '' %> </b> </li>

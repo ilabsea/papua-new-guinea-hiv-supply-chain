@@ -15,8 +15,11 @@
                                         :data => {:skip_loading=> true, toggle: 'modal'} %>
       </b>
     </li>
-    <li> Number of carton : <b> <%=@shipment.carton %> </b> </li>
+    <li> Number of carton : <b> <%= @shipment.carton %> </b> </li>
     <li> Shipment Date : <b> <%= show_date(@shipment.shipment_date)%> </b> </li>
+    <li> Last notification at : <b> <%= ll(@shipment.last_notified_date) %> </b> </li>
+    <li> Recieved at : <b> <%= ll @shipment.received_date %> </b> </li>
+    <li> Lost at : <b> <%= ll @shipment.lost_date %> </b> </li>
     <li> Total : <b> <%= pluralize(@shipment.shipment_lines_count, 'item') %> </b> </li>
   </ul>  
 </div>

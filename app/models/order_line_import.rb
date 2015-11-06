@@ -131,8 +131,8 @@ class OrderLineImport
 
           params = { :commodity => commodity,
                      :arv_type  => CommodityCategory::TYPES_DRUG,
-                     :stock_on_hand =>  row[5].to_i,
-                     :monthly_use   =>  row[6].to_i,
+                     :stock_on_hand => row[5].to_i,
+                     :monthly_use   => row[6].to_i,
                      :skip_bulk_insert => true,
                      :number_of_client => number_of_client,
                      :site_id => @order.site.id,

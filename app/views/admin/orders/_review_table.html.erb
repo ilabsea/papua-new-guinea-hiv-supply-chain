@@ -11,7 +11,7 @@
       <th> Status</th>
       <th width="100"> Entry Note</th>
       <th> Reviewer Note</th>
-      <th width='120'> Action </th>
+      <th colspan="2"> Action </th>
 
     </tr>
   </thead>
@@ -33,18 +33,19 @@
         <td> <span id='status_<%=order_line.id%>' ><%= status(order_line.status) %> </span> </td>
         <td> <%= order_line.user_data_entry_note %> </td>
         <td> <%= text_field_tag :reviewer_note, order_line.user_reviewer_note, :id => "user_reviewer_note_#{order_line.id}" %> </td>
-        <td width="120" id='<%=order_line.id %>' > 
-          <%= link_button_tick '', approve_admin_order_order_line_url(order, order_line), 
+        <td style="width: 240px;" id='<%=order_line.id %>' > 
+          <%= link_to 'Approve', approve_admin_order_order_line_url(order, order_line), 
                       :title => 'Accept',
                       :'data-ref' => order_line.id, 
                       :method => :put, 
-                      :class => 'approved intercept btn-mini btn-success' %>
-
-          <%= link_button_minus '', reject_admin_order_order_line_url(order, order_line), 
+                      :class => 'approved intercept btn btn-primary' %>
+                      </td>
+        <td>
+          <%= link_to 'Reject', reject_admin_order_order_line_url(order, order_line), 
                       :title => 'Reject',
                       :'data-ref' => order_line.id, 
                       :method => :put, 
-                      :class => 'rejected intercept btn-mini btn-danger' %>
+                      :class => 'rejected intercept btn btn-danger' %>
         </td>
       </tr>
 

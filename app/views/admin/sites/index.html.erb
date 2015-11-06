@@ -12,12 +12,10 @@
       <th class='nth-table'>#</th>
       <th width='150'>Name</th>
       <th>Service</th>
-      <th>Suggestion Order Valid Within(%)</th>
-      <th>Order Frequency(Month)</th>
-      <th>Dead line Summision</th>
+      <th>Order Frequency</th>
       <th>Order at</th>
-      <th>Test kit waste acceptable</th>
       <th>Contact</th>
+      <th>Mobile</th>
       <th width='150'>Province</th>
       <th width="60" >Action</th>
     </tr>
@@ -28,12 +26,10 @@
         <td><%= current_entries + index %></td>
         <td><%= link_to site.name, edit_admin_site_path(site) %></td>
         <td><%= site.service_type %></td>
-        <td><%= site.suggestion_order %></td>
         <td><%= site.order_frequency %></td>
-        <td><%= site.number_of_deadline_sumission %></td>
         <td><%= show_date(site.order_start_at) %></td>
-        <td><%= site.test_kit_waste_acceptable %></td>
         <td><%= site.contact_name %></td>
+        <td><%= site.mobile %></td>
         <td><%= site.province.name if site.province %></td>
         <td>
           <%= link_button_delete 'Delete', admin_site_path(site),:method => :delete,

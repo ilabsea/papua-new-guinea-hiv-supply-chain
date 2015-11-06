@@ -33,7 +33,12 @@
         <td><%= current_entries + index %></td>
         <td>
           <% text = "Order #{l(order.date_submittion)}"
-              editable = (current_user.data_entry? || current_user.data_entry_and_reviewer?) && order.status !=  Order::ORDER_STATUS_APPROVED
+             editable = false
+             if current_user.data_entry_and_reviewer?
+               editable = true if !order.approved?
+             elsif current_user.data_entry?
+               editable = true if order.pending?
+             end
           %>
           <%= editable ? link_to(text, edit_admin_order_path(order)) : text %>
         </td>
@@ -41,17 +46,17 @@
         <td><%= order.id %> </td>
         <td><%= order.order_date ? show_date(order.order_date) : '' %></td>
         <td title='<%= order.user.phone_number%>'> 
-          <%=order.user_data_entry ? order.user_data_entry.user_name : ""  %>
+          <%=order.user_data_entry ? order.user_data_entry.user_name : "" %>
         </td>
         <td><%= order.review_user ?  order.review_user.user_name : "" %></td>
         <td><%= order.review_date ? show_date_time(order.review_date) : '' %></td>
         <td><%= order.status %></td>
         
         <td class="center">
-          <% if current_user.reviewer? %>
-            <%= link_button_review t('Review'), review_admin_order_path(order) %> 
+          <% if (current_user.reviewer? || current_user.data_entry_and_reviewer?) && !order.approved? %>
+            <%= link_button_review 'Review', review_admin_order_path(order) %> 
 
-          <% elsif (current_user.data_entry? || current_user.data_entry_and_reviewer? ) && order.status == Order::ORDER_STATUS_PENDING %>
+          <% elsif (current_user.data_entry? || current_user.data_entry_and_reviewer? ) && order.pending? %>
             <%= link_button_delete 'Delete', admin_order_path(order), :method => :delete, :confirm => 'Are you sure to delete this order ?' %>  
 
           <% elsif current_user.ams? %>

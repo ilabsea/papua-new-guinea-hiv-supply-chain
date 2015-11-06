@@ -27,14 +27,8 @@
         <th><%= link_to 'Status', field_sorted_in_shipments_path_for('shipments.status') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Date Shipped', field_sorted_in_shipments_path_for('shipments.shipment_date') , :class => 'link-thead'   %> </th>
         <th width='90' >
-          <%= link_to 'No SMS...', field_sorted_in_shipments_path_for('shipments.sms_logs_count') , 
+          <%= link_to '# SMS', field_sorted_in_shipments_path_for('shipments.sms_logs_count') , 
                       :class => 'link-thead', title: 'Numbers of sms sent to clinic' %> </th>
-        <th width='120'>
-          <%= link_to 'Last sent at', field_sorted_in_shipments_path_for('shipments.last_notified_date'),
-                      :class =>'link-thead', title: 'Last notified date to clinic at ' %> </th>
-        <th><%= link_to 'Confirmed at', field_sorted_in_shipments_path_for('shipments.received_date') , :class => 'link-thead' %> </th>
-        <th>
-          <%= link_to 'Lost at', field_sorted_in_shipments_path_for('shipments.lost_date') , :class => 'link-thead' %> </th>
         <th width=160>
           <%= link_to 'SMS from site', field_sorted_in_shipments_path_for('shipments.site_messages_count'),
                       :class => 'link-thead' %> </th>
@@ -54,17 +48,6 @@
           <td><%= shipment.status %>
           <td title='<%= show_date(shipment.shipment_date) %>' class='td-expand'> <%= time_ago_tag shipment.shipment_date %> </td>
           <td> <%= link_to badge_value(shipment.sms_logs_count) , admin_shipment_sms_logs_path(shipment) %> </td>
-          <td title="<%= show_date_time(shipment.last_notified_date) %>" class='td-expand'>
-            <%= time_ago_tag shipment.last_notified_date %>
-          </td>
-
-          <td title='<%= show_date_time(shipment.received_date)%>' class='td-expand'>
-             <%= time_ago_tag shipment.received_date %>
-          </td>
-
-          <td title="<%= show_date_time(shipment.lost_date)%>" class='td-expand'>
-            <%= time_ago_tag shipment.lost_date %>
-          </td>
 
           <td>
             <%= link_to badge_value(shipment.site_messages_count), 

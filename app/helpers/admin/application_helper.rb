@@ -135,7 +135,8 @@ module Admin::ApplicationHelper
   end
 
   def link_button_save text, url, options={}
-    link_to text, url, options
+    options[:class] = options[:class].nil? ? "btn btn-primary" : "btn btn-primary #{options[:class] }"
+    link_to(url, options) {icon('check-square') + " #{text}"}
   end
 
   def link_button_edit text, url, options={}
@@ -172,7 +173,10 @@ module Admin::ApplicationHelper
   end
 
   def link_button_review text, url, options={}
-    link_button 'icon-pencil', text, url, options
+    options[:class] = options[:class] ? "btn btn-default #{options[:class] }" : "btn btn-default"
+    link_to url, options do
+      icon('check-square-o') + " #{text}"
+    end
   end
 
   def link_button_export text, url, options={}
@@ -197,11 +201,17 @@ module Admin::ApplicationHelper
   end
 
   def link_button_tick text, url, options={}
-    link_button 'icon-ok', text, url, options
+    options[:class] = options[:class] ? "btn btn-danger #{options[:class] }" : "btn btn-danger"
+    link_to url, options do
+      icon('ban') + " #{text}"
+    end
   end
 
   def link_button_minus text, url, options={}
-    link_button 'icon-minus-sign' , text, url, options
+    options[:class] = options[:class] ? "btn btn-danger #{options[:class] }" : "btn btn-danger"
+    link_to url, options do
+      icon('ban') + " #{text}"
+    end
   end
 
   def link_button_download text, url, options={}
@@ -263,6 +273,10 @@ module Admin::ApplicationHelper
 
   def patch_auto_complete_password
     password_field_tag :_autocomplete_off, nil, style: 'display:none;'
+  end
+
+  def ll date_time
+    date_time ? l(date_time) : ''
   end
 
 end

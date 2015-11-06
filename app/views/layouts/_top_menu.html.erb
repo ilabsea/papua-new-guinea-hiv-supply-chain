@@ -104,16 +104,32 @@
                   <%= link_icon 'truck', 'Shipment status', admin_shipments_path %>
                 </li>
 
-                <li class='<%=nav_status([:shipment]) %>'>
-                  <%= link_icon 'times-circle', 'Package lost', admin_shipments_path(:type => Shipment::STATUS_LOST) %>
-                </li>
 
-                <li class='<%=nav_status([:shipment]) %>'>
-                  <%= link_icon 'clock-o', 'Package partially confirmed', admin_shipments_path(:type => Shipment::STATUS_PARTIALLY_RECEIVED) %>
-                </li>
 
-                <li class='<%=nav_status([:shipment]) %>'>
-                  <%= link_icon 'check', 'Package confirmed', admin_shipments_path(:type => Shipment::STATUS_RECEIVED) %>
+
+
+
+                <li class="dropdown">
+                  <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <%= icon('gift') %> Package
+                    <b class="caret"></b>
+                  </a>
+
+                  <ul class="dropdown-menu">
+                    <li class='<%=nav_status([:shipment]) %>'>
+                      <%= link_to 'Package lost', admin_shipments_path(:type => Shipment::STATUS_LOST) %>
+                    </li>
+
+                    <li class='<%=nav_status([:shipment]) %>'>
+                      <%= link_to 'Package partially confirmed',
+                                    admin_shipments_path(:type => Shipment::STATUS_PARTIALLY_RECEIVED) %>
+                    </li>
+
+                    <li class='<%=nav_status([:shipment]) %>'>
+                      <%= link_to 'Package confirmed',
+                                    admin_shipments_path(:type => Shipment::STATUS_RECEIVED) %>
+                    </li>
+                  </ul>
                 </li>
               <% end %>
 

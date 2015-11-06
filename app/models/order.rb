@@ -53,6 +53,29 @@ class Order < ActiveRecord::Base
 
   ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_TO_BE_REVIEWED, ORDER_STATUS_APPROVED, ORDER_STATUS_TO_BE_REVISED]
 
+  def approved?
+    self.status == Order::ORDER_STATUS_APPROVED
+  end
+
+  def pending?
+    self.status == Order::ORDER_STATUS_PENDING
+  end
+
+  def to_be_reviewed?
+    self.status == Order::ORDER_STATUS_TO_BE_REVIEWED
+  end
+
+  def to_be_revised?
+    self.status == Order::ORDER_STATUS_TO_BE_REVISED
+  end
+
+  def update_approval
+    self.status = Order::ORDER_STATUS_APPROVED
+    if self.save
+      self.order_lines.update_all(status: OrderLine::STATUS_APPROVED)
+    end
+  end
+
   def unique_order_in_month_year
     return true if errors.size >0 
     order = Order.where(['site_id = :site_id AND MONTH(order_date)= :month AND YEAR(order_date)= :year ',
