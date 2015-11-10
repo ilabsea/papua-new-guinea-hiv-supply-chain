@@ -43,14 +43,18 @@
     <td > 
       <%= order_line_form.input :stock_on_hand, :label=> '&nbsp;',
                             :wrapper_html => {:class => 'inline-div'}, 
-                            :input_html   => {:class => 'validate_field number_text stock_on_hand', :'data-ref' => row_ref, :id => "stock_on_hand_#{row_ref}" }, 
+                            :input_html   => {:class => 'validate_field number_text stock_on_hand',
+                                              :'data-ref' => row_ref,
+                                              :id => "stock_on_hand_#{row_ref}" },
                             :label_html   => {:class => 'none'}  %> 
     </td>
     
     <td > 
       <%= order_line_form.input :monthly_use, :label=> '&nbsp;' , 
                             :wrapper_html => {:class => 'inline-div'},
-                            :input_html   => {:class => 'validate_field number_text', :'data-ref' => row_ref, :id => "monthly_use_#{row_ref}"} , 
+                            :input_html   => {:class => 'validate_field number_text monthly_use',
+                                              :'data-ref' => row_ref,
+                                              :id => "monthly_use_#{row_ref}"},
                             :label_html   => {:class => 'none'} %> 
     </td>
     

@@ -52,8 +52,8 @@ class OrderLineImport
         if commodity
           pack_size = commodity.pack_size == nil ? 1.0 : commodity.pack_size
 
-          stock_on_hand = row[2].to_i
-          monthly_use   = row[3].to_i
+          stock_on_hand = row[2]
+          monthly_use   = row[3]
 
           number_of_client = @order_line_completer.query_number_of_patient(commodity)
 
@@ -100,10 +100,13 @@ class OrderLineImport
         if commodity
           number_of_client = @order_line_completer.query_number_of_patient(commodity)
 
+          stock_on_hand = row[5]
+          monthly_use = row[6]
+
           params = { :commodity => commodity,
                      :arv_type  => CommodityCategory::TYPES_DRUG,
-                     :stock_on_hand => row[5].to_i,
-                     :monthly_use   => row[6].to_i,
+                     :stock_on_hand => stock_on_hand ,
+                     :monthly_use   => monthly_use,
                      :skip_bulk_insert => true,
                      :number_of_client => number_of_client,
                      :site_id => @order.site.id,

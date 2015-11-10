@@ -8,10 +8,7 @@ class OrderLineCompleter
 
   def set_quantity_suggested order_line
     quantity_suggested = @order_line_suggestion.suggested_value(order_line)
-    
     order_line.system_suggestion = quantity_suggested.to_f.ceil
-    order_line.quantity_suggested = order_line.system_suggestion
-
   end
 
   def query_number_of_patient commodity

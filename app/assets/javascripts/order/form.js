@@ -1,7 +1,42 @@
 $(function(){
-  handleLoadOrderLinesTab();
-});
+  handleLoadOrderLinesTab()
+  handleToggleEmptyOrderLineRow()
+})
 
+
+function handleToggleEmptyOrderLineRow(){
+  $('.toggle-empty_order-line').on('click', function(){
+    toggleEmptyOrderLineRow()
+  })
+}
+
+function toggleEmptyOrderLineRow() {
+  var $rows = $(".table-order-line-form tbody tr")
+  var count = 0
+
+  $rows.each(function(index, row){
+    var $row = $(row)
+    var $stockOnHand = $row.find('.stock_on_hand')
+    var $monthlyUse  = $row.find('.monthly_use')
+
+    var stockOnHand = ''
+    var monthlyUse = ''
+
+    if($stockOnHand.get(0).tagName.toLowerCase() == 'td') {
+      stockOnHand = $.trim($stockOnHand.text())
+      monthlyUse  = $.trim($monthlyUse.text())
+    }
+    else {
+      stockOnHand = $.trim($stockOnHand.val())
+      monthlyUse  = $.trim($monthlyUse.val())
+    }
+
+    if(stockOnHand == "" && monthlyUse == ""){
+      $row.css('background', "#F4F4F4")
+      $row.toggle(1000)
+    }
+  })
+}
 
 function handleLoadOrderLinesTab(){
   $("#order_site_id").on('change', function(){

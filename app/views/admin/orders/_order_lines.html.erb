@@ -31,12 +31,14 @@
 
 
   <% content_for :site_detail do %>
+  <div class='clearfix'>
     <%= render 'tip_data_entry_and_reviewer' if current_user.data_entry_and_reviewer? %>
     <ul>
      <li> Order Frequency(month) : <b>         <%= order.site ? order.site.order_frequency  : '' %> </b> </li>
      <li> Suggestion Order Valid Within(%) <b> <%= order.site ? order.site.suggestion_order : '' %> </b> </li>
      <li> Test Kit Waste Acceptable(%) <b>     <%= order.site ? order.site.test_kit_waste_acceptable : '' %> </b> </li>
     </ul>
+  </div>
   <% end %>
   <% site_detail = yield(:site_detail) %>
 

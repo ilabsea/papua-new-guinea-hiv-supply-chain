@@ -1,5 +1,9 @@
-<table class="table  table table-hover" >
+<table class="table  table table-hover table-order-line-form" >
   <caption style="text-align: right; padding-bottom: 10px;">
+    <%= link_icon 'eye', "Toggle empty rows", "javascript:void(0)",
+                   method: :put,
+                   class: "btn btn-primary toggle-empty_order-line" %>
+
     <%= link_to "Approve All #{type}", approve_all_admin_order_order_lines_path(@order, type: type),
                          method: :put,
                          class: "btn btn-primary" %>
@@ -37,8 +41,8 @@
         <td><%=order_line.commodity.strength_dosage%></td>
         <td><%=order_line.commodity.unit.name%></td>
         <td> <%= order_line.number_of_client %></td>
-        <td> <%= order_line.stock_on_hand %> </td>
-        <td> <%= order_line.monthly_use %></td>
+        <td class="stock_on_hand"> <%= order_line.stock_on_hand %> </td>
+        <td class="monthly_use"> <%= order_line.monthly_use %></td>
         <td> <%= order_line.system_suggestion %> </td>
 
         <td> <%= number_field_tag :quantity_suggested, order_line.quantity_suggested, 
