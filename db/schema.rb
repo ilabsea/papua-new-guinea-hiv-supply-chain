@@ -58,7 +58,9 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
 
   add_index "commodities", ["lab_test_id"], :name => "index_commodities_on_lab_test_id"
   add_index "commodities", ["name"], :name => "index_commodities_on_name"
+  add_index "commodities", ["position", "name"], :name => "index_commodities_on_position_and_name"
   add_index "commodities", ["position"], :name => "index_commodities_on_position"
+  add_index "commodities", ["regimen_id"], :name => "index_commodities_on_regimen_id"
 
   create_table "commodity_categories", :force => true do |t|
     t.string   "name"
@@ -235,7 +237,7 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
     t.integer  "sms_logs_count",                     :default => 0
     t.integer  "shipment_lines_count",               :default => 0
     t.datetime "last_notified_date"
-    t.datetime "lost_date",                          :default => '2015-10-08 14:13:02'
+    t.datetime "lost_date",                          :default => '2015-11-12 04:57:08'
     t.float    "cost"
     t.integer  "carton"
     t.integer  "site_messages_count",                :default => 0

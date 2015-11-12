@@ -4,8 +4,9 @@
   }
 }
 .table-order {
+  width: 100%;
   label {
-    width: 70px !important;
+    max-width: 120px !important;
   }
 
   select {

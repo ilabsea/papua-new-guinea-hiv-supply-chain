@@ -5,7 +5,7 @@ $(function(){
 
 
 function handleToggleEmptyOrderLineRow(){
-  $('.toggle-empty_order-line').on('click', function(){
+  $(document.body).delegate('.toggle-empty_order-line','click', function(){
     toggleEmptyOrderLineRow()
   })
 }
@@ -47,9 +47,9 @@ function handleLoadOrderLinesTab(){
      loadOrderLinesTab();
   });
 
-  $("#order_date_submittion").on('change', function(){
-    loadOrderLinesTab();
-  })
+  // $("#order_date_submittion").on('change', function(){
+  //   loadOrderLinesTab();
+  // })
 }
 
 

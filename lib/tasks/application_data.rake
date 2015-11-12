@@ -122,8 +122,6 @@ def load_sites
     ].each do |site|
         output_message("Loading Site : #{site[0]}")
         Site.create!(:name => site[0],
-                     :lat => site[1],
-                     :lng => site[2],
                      :service_type => site[3],
                      :suggestion_order => site[4],
                      :order_frequency => 1 + rand(3) + site[5],
