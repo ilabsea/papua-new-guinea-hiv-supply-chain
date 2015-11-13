@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151106081319) do
+ActiveRecord::Schema.define(:version => 20151113041920) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -56,11 +56,13 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
     t.integer  "position",                            :default => 0
   end
 
+  add_index "commodities", ["commodity_category_id"], :name => "commodities_commodity_category_id_fk"
   add_index "commodities", ["lab_test_id"], :name => "index_commodities_on_lab_test_id"
   add_index "commodities", ["name"], :name => "index_commodities_on_name"
   add_index "commodities", ["position", "name"], :name => "index_commodities_on_position_and_name"
   add_index "commodities", ["position"], :name => "index_commodities_on_position"
   add_index "commodities", ["regimen_id"], :name => "index_commodities_on_regimen_id"
+  add_index "commodities", ["unit_id"], :name => "commodities_unit_id_fk"
 
   create_table "commodity_categories", :force => true do |t|
     t.string   "name"
@@ -80,6 +82,8 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
     t.integer  "year"
     t.integer  "month"
   end
+
+  add_index "import_survs", ["user_id"], :name => "import_survs_user_id_fk"
 
   create_table "lab_test_categories", :force => true do |t|
     t.string   "name"
@@ -130,6 +134,7 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
   add_index "order_lines", ["commodity_id"], :name => "index_order_lines_on_commodity_id"
   add_index "order_lines", ["order_id", "shipment_status", "completed_order"], :name => "shippable_index"
   add_index "order_lines", ["order_id"], :name => "index_order_lines_on_order_id"
+  add_index "order_lines", ["site_id"], :name => "order_lines_site_id_fk"
 
   create_table "orders", :force => true do |t|
     t.integer  "site_id"
@@ -195,6 +200,9 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
     t.datetime "updated_at",                        :null => false
   end
 
+  add_index "requisition_reports", ["site_id"], :name => "requisition_reports_site_id_fk"
+  add_index "requisition_reports", ["user_id"], :name => "requisition_reports_user_id_fk"
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
@@ -237,7 +245,7 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
     t.integer  "sms_logs_count",                     :default => 0
     t.integer  "shipment_lines_count",               :default => 0
     t.datetime "last_notified_date"
-    t.datetime "lost_date",                          :default => '2015-11-12 04:57:08'
+    t.datetime "lost_date",                          :default => '2015-11-13 04:37:01'
     t.float    "cost"
     t.integer  "carton"
     t.integer  "site_messages_count",                :default => 0
@@ -263,6 +271,7 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
     t.integer  "shipment_id"
   end
 
+  add_index "site_messages", ["shipment_id"], :name => "site_messages_shipment_id_fk"
   add_index "site_messages", ["site_id"], :name => "index_site_messages_on_site_id"
 
   create_table "sites", :force => true do |t|
@@ -289,6 +298,8 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
     t.string   "region"
   end
 
+  add_index "sites", ["province_id"], :name => "sites_province_id_fk"
+
   create_table "sms_logs", :force => true do |t|
     t.string   "message"
     t.integer  "shipment_id"
@@ -300,6 +311,9 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
     t.string   "guid"
     t.string   "status"
   end
+
+  add_index "sms_logs", ["shipment_id"], :name => "sms_logs_shipment_id_fk"
+  add_index "sms_logs", ["site_id"], :name => "sms_logs_site_id_fk"
 
   create_table "surv_site_commodities", :force => true do |t|
     t.integer  "surv_site_id"
@@ -324,6 +338,7 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
   end
 
   add_index "surv_sites", ["import_surv_id"], :name => "index_surv_sites_on_import_surv_id"
+  add_index "surv_sites", ["site_id"], :name => "surv_sites_site_id_fk"
 
   create_table "units", :force => true do |t|
     t.string   "name"
@@ -353,6 +368,42 @@ ActiveRecord::Schema.define(:version => 20151106081319) do
 
   add_index "users", ["phone_number"], :name => "index_users_on_phone_number", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "users", ["site_id"], :name => "users_site_id_fk"
   add_index "users", ["user_name"], :name => "index_users_on_user_name", :unique => true
+
+  add_foreign_key "commodities", "commodity_categories", name: "commodities_commodity_category_id_fk"
+  add_foreign_key "commodities", "lab_tests", name: "commodities_lab_test_id_fk"
+  add_foreign_key "commodities", "regimen", name: "commodities_regimen_id_fk"
+  add_foreign_key "commodities", "units", name: "commodities_unit_id_fk"
+
+  add_foreign_key "import_survs", "users", name: "import_survs_user_id_fk"
+
+  add_foreign_key "lab_tests", "lab_test_categories", name: "lab_tests_lab_test_category_id_fk"
+  add_foreign_key "lab_tests", "units", name: "lab_tests_unit_id_fk"
+
+  add_foreign_key "order_lines", "commodities", name: "order_lines_commodity_id_fk"
+  add_foreign_key "order_lines", "orders", name: "order_lines_order_id_fk"
+  add_foreign_key "order_lines", "sites", name: "order_lines_site_id_fk"
+
+  add_foreign_key "regimen", "regimen_categories", name: "regimen_regimen_category_id_fk"
+  add_foreign_key "regimen", "units", name: "regimen_unit_id_fk"
+
+  add_foreign_key "requisition_reports", "sites", name: "requisition_reports_site_id_fk"
+  add_foreign_key "requisition_reports", "users", name: "requisition_reports_user_id_fk"
+
+  add_foreign_key "site_messages", "shipments", name: "site_messages_shipment_id_fk"
+  add_foreign_key "site_messages", "sites", name: "site_messages_site_id_fk"
+
+  add_foreign_key "sites", "provinces", name: "sites_province_id_fk"
+
+  add_foreign_key "sms_logs", "shipments", name: "sms_logs_shipment_id_fk"
+  add_foreign_key "sms_logs", "sites", name: "sms_logs_site_id_fk"
+
+  add_foreign_key "surv_site_commodities", "commodities", name: "surv_site_commodities_commodity_id_fk"
+  add_foreign_key "surv_site_commodities", "surv_sites", name: "surv_site_commodities_surv_site_id_fk"
+
+  add_foreign_key "surv_sites", "sites", name: "surv_sites_site_id_fk"
+
+  add_foreign_key "users", "sites", name: "users_site_id_fk"
 
 end

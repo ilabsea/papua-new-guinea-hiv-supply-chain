@@ -13,11 +13,8 @@ class PublicHoliday < ActiveRecord::Base
   attr_accessible :date, :name
   validates :name, :date , :presence => true
 
-  def self.is_holiday? day
-    if day.class == String
-       day = Date.parse day
-    end
-
+  def self.is_holiday? entry_day
+    day = entry_day.class == String ? Date.parse(entry_day) : entry_day
     return true if day.sunday? || day.saturday?
     public_holiday = find_by_date(day)
     public_holiday ? true : false

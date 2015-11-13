@@ -46,11 +46,11 @@ module Admin
         @site = Site.find(params[:id])
         @site.destroy
         redirect_to admin_sites_url, :notice => "Site has been removed"
-      rescue Exception => e
-        redirect_to admin_sites_url, :error =>  e.message
+      rescue ActiveRecord::StatementInvalid => e
+        redirect_to admin_sites_url, :alert =>  e.message
       end
     end
-    #users from the site
+
     def users
        site = Site.find(params[:id])
        render :json => site.users.map{|user| [user.user_name, user.id] }

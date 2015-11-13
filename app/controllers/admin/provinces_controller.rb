@@ -41,8 +41,8 @@ module Admin
         @province = Province.find(params[:id])
         @province.destroy
         redirect_to admin_provinces_url, :notice => "Province has been removed" 
-      rescue Exception => e
-        redirect_to admin_provinces_url, :error =>  e.message 
+      rescue ActiveRecord::StatementInvalid => e
+        redirect_to admin_provinces_url, :alert => e.message
       end
     end
   end

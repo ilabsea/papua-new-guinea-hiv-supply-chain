@@ -99,6 +99,8 @@ GEM
     ffi (1.8.1)
     font-awesome-sass (4.4.0)
       sass (>= 3.2)
+    foreigner (1.7.4)
+      activerecord (>= 3.0.0)
     haml (4.0.3)
       tilt
     highline (1.6.19)
@@ -264,6 +266,7 @@ DEPENDENCIES
   devise
   factory_girl_rails (~> 4.0)
   font-awesome-sass (~> 4.4.0)
+  foreigner
   jasmine
   jquery-rails
   mysql2

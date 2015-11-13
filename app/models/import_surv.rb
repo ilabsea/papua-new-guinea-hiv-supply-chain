@@ -20,7 +20,6 @@ class ImportSurv < ActiveRecord::Base
 
   belongs_to :user
   has_many :surv_sites, :dependent => :destroy
-  # has_one :surv_site
   belongs_to :import_user, :class_name => 'User'
 
   attr_accessor :invalid_fields

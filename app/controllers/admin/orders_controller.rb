@@ -93,9 +93,7 @@ module Admin
      Order.transaction do
        @order = Order.find params[:id]
        @order.requisition_report.destroy if @order.requisition_report
-       @order.destroy
      end
-
      redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
    end
 

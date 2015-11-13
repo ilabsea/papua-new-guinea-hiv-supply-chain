@@ -49,10 +49,9 @@ module Admin
         @commodity = Commodity.find(params[:id])
         @commodity.destroy
         redirect_to admin_commodities_url(:type => params[:type]), :notice => "Commodity has been removed" 
-      rescue Exception => e
-        redirect_to admin_commodities_url(:type => params[:type]), :notice => "Could not remove commodity" 
+      rescue ActiveRecord::StatementInvalid => e
+        redirect_to admin_commodities_url(:type => params[:type]), :alert => e.message
       end
-      
     end
 
     def reorder

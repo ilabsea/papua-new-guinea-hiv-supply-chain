@@ -20,6 +20,7 @@
 class SiteMessage < ActiveRecord::Base
   belongs_to :site, :counter_cache => true
   belongs_to :shipment, :counter_cache => true
+
   attr_accessible :consignment_number, :from_phone, :guid, :message, :status, :site, :response_message, :error, :carton, :shipment
   default_scope order('id DESC')
 

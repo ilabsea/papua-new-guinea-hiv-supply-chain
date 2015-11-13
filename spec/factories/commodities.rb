@@ -14,7 +14,7 @@
 #  pack_size             :float
 #  regimen_id            :integer
 #  lab_test_id           :integer
-#  position              :integer
+#  position              :integer          default(0)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

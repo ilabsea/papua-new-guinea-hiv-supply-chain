@@ -26,7 +26,7 @@ class Order < ActiveRecord::Base
   belongs_to :requisition_report , :class_name => 'RequisitionReport'
 
   has_many :order_lines, :dependent => :destroy
-  has_many :shipments
+  has_many :shipments, dependent: :destroy
 
   validates :site, :order_date,:date_submittion,:site_id , :presence => true
   validates :user_place_order, :presence => true, :if =>  Proc.new{|f| f.is_requisition_form }

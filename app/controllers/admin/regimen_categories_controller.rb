@@ -41,8 +41,8 @@ module Admin
         @category = RegimenCategory.find(params[:id])
         @category.destroy
         redirect_to admin_regimen_categories_path , :notice => 'Regimen Category has been removed'
-      rescue Exception => ex
-        redirect_to admin_regimen_categories_path , :error => ex.message
+      rescue ActiveRecord::StatementInvalid => ex
+        redirect_to admin_regimen_categories_path , :alert => ex.message
       end
     end
 

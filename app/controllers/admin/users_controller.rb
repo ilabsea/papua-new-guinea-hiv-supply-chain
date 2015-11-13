@@ -39,8 +39,8 @@ module Admin
         @user = User.find(params[:id])
           @user.destroy
         redirect_to admin_users_path, :notice => "User has been removed"
-      rescue Exception => e
-        redirect_to admin_users_path, :error => e.message
+      rescue ActiveRecord::StatementInvalid => e
+        redirect_to admin_users_path, :alert => e.message
       end  
     end
 
@@ -64,7 +64,7 @@ module Admin
        if current_user.update_attributes attributes
          redirect_to profile_admin_users_path, :notice => 'Your profile has been updated successfully'
        else
-         render :profile      
+         render :profile
        end
     end
 

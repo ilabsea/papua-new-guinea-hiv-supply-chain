@@ -14,7 +14,7 @@
 #  pack_size             :float
 #  regimen_id            :integer
 #  lab_test_id           :integer
-#  position              :integer
+#  position              :integer          default(0)
 #
 
 class Commodity < ActiveRecord::Base
@@ -30,7 +30,7 @@ class Commodity < ActiveRecord::Base
   belongs_to :regimen
   belongs_to :lab_test
 
-  has_many :order_lines, dependent: :destroy
+  has_many :order_lines
 
   validates :name, :unit_id, :commodity_category_id, presence: true
   validates :name, uniqueness: true

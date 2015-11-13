@@ -14,7 +14,7 @@
 #  pack_size             :float
 #  regimen_id            :integer
 #  lab_test_id           :integer
-#  position              :integer
+#  position              :integer          default(0)
 #
 
 require 'spec_helper'

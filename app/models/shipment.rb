@@ -15,7 +15,7 @@
 #  sms_logs_count       :integer          default(0)
 #  shipment_lines_count :integer          default(0)
 #  last_notified_date   :datetime
-#  lost_date            :datetime         default(2015-10-08 14:13:02 UTC)
+#  lost_date            :datetime         default(2015-11-13 02:47:06 UTC)
 #  cost                 :float
 #  carton               :integer
 #  site_messages_count  :integer          default(0)

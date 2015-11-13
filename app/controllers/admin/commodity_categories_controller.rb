@@ -30,7 +30,7 @@ module Admin
       if @commodity_category.save
         redirect_to admin_commodity_categories_path(:type =>@commodity_category.com_type ), notice: 'Commodity Category has been created successfully.'
       else
-        render action: "new" 
+        render action: "new"
       end
 
     end
@@ -51,8 +51,8 @@ module Admin
         @commodity_category = CommodityCategory.find(params[:id])
         @commodity_category.destroy
         redirect_to admin_commodity_categories_path(:type => params[:type]) , :notice => 'Commodity Category has been removed'
-      rescue Exception => ex
-        redirect_to admin_commodity_categories_path(:type => params[:type]) , :error => ex.message
+      rescue ActiveRecord::StatementInvalid => e
+        redirect_to admin_commodity_categories_path(:type => params[:type]) , :alert => e.message
       end
     end
 
