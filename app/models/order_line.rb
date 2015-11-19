@@ -47,7 +47,7 @@ class OrderLine < ActiveRecord::Base
 
   validates :stock_on_hand, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
   validates :monthly_use, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
-  validates :number_of_client, numericality: {greater_than_or_equal_to: 0 }
+  # validates :number_of_client, numericality: {greater_than_or_equal_to: 0 }
 
   # validate :validate_requirement
   before_save :calculate_attribute
@@ -76,11 +76,12 @@ class OrderLine < ActiveRecord::Base
   end
 
   def calculate_attribute
-    complete_order_line = number_of_client && stock_on_hand && quantity_suggested
+    complete_order_line = (monthly_use || stock_on_hand) && quantity_suggested
 
-    if self.arv_type == CommodityCategory::TYPES_KIT
-      complete_order_line = (complete_order_line && monthly_use)
-    end
+    # complete_order_line = number_of_client && stock_on_hand && quantity_suggested
+    # if self.arv_type == CommodityCategory::TYPES_KIT
+    #   complete_order_line = (complete_order_line && monthly_use)
+    # end
     self.completed_order = complete_order_line ? OrderLine::DATA_COMPLETE : OrderLine::DATA_INCOMPLETE
   end
 
