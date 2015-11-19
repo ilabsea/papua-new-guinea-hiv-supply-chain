@@ -25,6 +25,8 @@ set :repository, "https://channainfo@bitbucket.org/channainfo/papua-new-guinea-h
 set :scm, :git
 set :scm_username, 'channainfo'
 
+set :branch, 'develop'
+
 set :deploy_to, '/var/www/png'
 set :deploy_via, :remote_cache
 
