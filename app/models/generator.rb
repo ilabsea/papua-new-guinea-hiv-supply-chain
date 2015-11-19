@@ -122,7 +122,7 @@ class Generator
 
   def _drug_sheet_data
     #Write Data to Template
-    CommodityCategory.includes(commodities: [:unit]).order('commodities.position, commodities.name').drug.each do |commodity_category|
+    CommodityCategory.includes(commodities: [:unit]).order('commodity_categories.pos, commodities.position, commodities.name').drug.each do |commodity_category|
       draw_table Cell.new(current_row, 0), Cell.new(current_row + 1, self.total_column),{"0_0" =>commodity_category.name}, self.title_format
       self.row_height current_row, 20
       move_next
@@ -295,7 +295,7 @@ class Generator
   end
 
   def _kit_sheet_data
-    CommodityCategory.includes(commodities: [:unit]).order('commodities.position, commodities.name').kit.each do |commodity_category|
+    CommodityCategory.includes(commodities: [:unit]).order('commodity_categories.pos, commodities.position, commodities.name').kit.each do |commodity_category|
 
       merge_cells Cell.new(current_row, 0 ), Cell.new(current_row, self.total_column-1)
       write_cell_title Cell.new(current_row, 0), commodity_category.name

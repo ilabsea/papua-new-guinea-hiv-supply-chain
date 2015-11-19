@@ -119,6 +119,7 @@ PngHivAids::Application.routes.draw do
     resources :commodity_categories do
       collection do
         get 'template'
+        put :reorder
       end
     end
     resources :units

@@ -8,9 +8,9 @@ module Admin
     def index
       params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
       if(params[:type] == CommodityCategory::TYPES_DRUG)
-        @commodity_categories = CommodityCategory.drug.order('name').paginate(paginate_options)
+        @commodity_categories = CommodityCategory.drug.order('pos').paginate(paginate_options)
       else
-        @commodity_categories = CommodityCategory.kit.order('name').paginate(paginate_options)
+        @commodity_categories = CommodityCategory.kit.order('pos').paginate(paginate_options)
       end
     end
 
@@ -32,7 +32,11 @@ module Admin
       else
         render action: "new"
       end
+    end
 
+    def reorder
+      CommodityCategory.reorder(params[:commodity_category])
+      redirect_to admin_commodity_categories_path(type: params[:type])
     end
 
 

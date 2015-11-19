@@ -2,42 +2,48 @@
  <%= breadcrumb [ "Commodity Categoies" => nil] %>
 <% end %>
 
-<%= page_header t("Commodity Categories Listing"), :left => 6, :right => 6 do %>
-  <%=link_button_new "New Commodity Category", new_admin_commodity_category_path(:type => params[:type]) %>
-<%  end %>
+<%= form_tag reorder_admin_commodity_categories_path(type: params[:type]), method: :put do %>
+  <%= page_header t("Commodity Categories Listing"), :left => 6, :right => 6 do %>
+    <div style="margin-top: 10px;">
+      <%=link_button_new "New Commodity Category", new_admin_commodity_category_path(:type => params[:type]) %>
+      <button class="btn btn-default"> <i class="fa fa-save"> </i> Save Position </button>
+    </div>
+  <%  end %>
 
 
 
-<ul class="nav nav-tabs">
-  <li class=" <%= params[:type] == CommodityCategory::TYPES_DRUG ? 'active' : '' %>">
-    <%= link_to CommodityCategory::TYPES_DRUG, admin_commodity_categories_path(:type =>  CommodityCategory::TYPES_DRUG ) %>
-  </li>
-  <li class="<%=params[:type] ==  CommodityCategory::TYPES_KIT ? 'active' : '' %>">
-    <%= link_to CommodityCategory::TYPES_KIT , admin_commodity_categories_path(:type =>  CommodityCategory::TYPES_KIT ) %>
-  </li>
-</ul>
+  <ul class="nav nav-tabs">
+    <li class=" <%= params[:type] == CommodityCategory::TYPES_DRUG ? 'active' : '' %>">
+      <%= link_to CommodityCategory::TYPES_DRUG, admin_commodity_categories_path(:type =>  CommodityCategory::TYPES_DRUG ) %>
+    </li>
+    <li class="<%=params[:type] ==  CommodityCategory::TYPES_KIT ? 'active' : '' %>">
+      <%= link_to CommodityCategory::TYPES_KIT , admin_commodity_categories_path(:type =>  CommodityCategory::TYPES_KIT ) %>
+    </li>
+  </ul>
 
-<table class="table table-hover ">
-  <thead>
-    <tr>
-      <th class='nth-table'>#</th>
-      <th>Name</th>
-      <th>Type</th>
-      <th width="60">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @commodity_categories.each_with_index do |commodity_category, index| %>
+  <table class="table table-hover ">
+    <thead>
       <tr>
-        <td><%= current_entries + index %></td>
-        <td><%= link_to commodity_category.name, edit_admin_commodity_category_path(commodity_category, :type => params[:type]) %></td>
-        <td><%= commodity_category.com_type %></td>
-        <td>
-          <%= link_button_delete 'Delete',  admin_commodity_category_path(commodity_category, :type => params[:type]),
-                :method => :delete, :confirm => 'Are you sure to delete this commodity category?' %>
-        </td>
+        <th class='nth-table'>#</th>
+        <th>Name</th>
+        <th>Position</th>
+
+        <th width="60">Action</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @commodity_categories.each_with_index do |commodity_category, index| %>
+        <tr>
+          <td><%= current_entries + index %></td>
+          <td><%= link_to commodity_category.name, edit_admin_commodity_category_path(commodity_category, :type => params[:type]) %></td>
+          <td><%=text_field_tag "commodity_category[#{commodity_category.id}]", commodity_category.pos, size: 3, style: 'width: 30px;' %> </td>
+          <td>
+            <%= link_button_delete 'Delete',  admin_commodity_category_path(commodity_category, :type => params[:type]),
+                  :method => :delete, :confirm => 'Are you sure to delete this commodity category?' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
 <%= render_paginate_for @commodity_categories %>
