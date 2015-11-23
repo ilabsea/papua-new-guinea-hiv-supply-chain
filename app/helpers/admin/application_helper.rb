@@ -229,6 +229,12 @@ module Admin::ApplicationHelper
     end
   end
 
+  def button_icon icon_name, text, klass=''
+    content_tag :button, :class => "btn btn-primary #{klass}", :'data-system-loading' => true do
+      icon(icon_name) + " #{text}"
+    end
+  end
+
   def breadcrumb options=nil
     content_tag(:ul, breadcrumb_str(options), :class => "breadcrumb")
   end

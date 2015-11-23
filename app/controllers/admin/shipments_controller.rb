@@ -40,6 +40,7 @@ module Admin
       @order_lines = OrderLine.includes(:commodity => :unit, :order => :site )
                               .data_filled
                               .items(params)
+                              .order('quantity_suggested DESC')
                               .paginate(paginate_options.merge(per_page: 50))
 
 

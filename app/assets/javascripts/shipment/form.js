@@ -146,11 +146,11 @@ function removeItem(data){
   return false;
 }
 
-function handleFilterBySite(){
-  $(".order-shipment").on('change', function(){
-     this.form.submit();
-  })
-}
+// function handleFilterBySite(){
+//   $(".order-shipment").on('change', function(){
+//      this.form.submit();
+//   })
+// }
 
 function addItem(data){  
   var url = '/admin/shipments/add_session';

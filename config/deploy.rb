@@ -28,7 +28,7 @@ set :scm_username, 'channainfo'
 set :branch, 'develop'
 
 set :deploy_to, '/var/www/png'
-set :deploy_via, :remote_cache
+# set :deploy_via, :remote_cache
 
 default_environment['TERM'] = ENV['TERM']
 
