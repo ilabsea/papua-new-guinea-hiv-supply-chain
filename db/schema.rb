@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151119034730) do
+ActiveRecord::Schema.define(:version => 20151123040122) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -250,6 +250,7 @@ ActiveRecord::Schema.define(:version => 20151119034730) do
     t.float    "cost"
     t.integer  "carton"
     t.integer  "site_messages_count",                :default => 0
+    t.float    "weight"
   end
 
   add_index "shipments", ["carton"], :name => "index_shipments_on_carton"

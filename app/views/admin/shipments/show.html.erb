@@ -7,6 +7,7 @@
   <ul >
     <li> Site : <b> <%=@shipment.site.name %> </b> </li>
     <li> Consignment number : <b> <%=@shipment.consignment_number%> </b> </li>
+    <li> Weight : <b> <%= pluralize(@shipment.weight, 'Kg') %> </b> </li>
     <li> 
       Cost : 
       <b>  <%= link_to @shipment.cost , '#cost_shippement_dialog',

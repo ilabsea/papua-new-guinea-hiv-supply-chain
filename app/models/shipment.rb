@@ -31,7 +31,7 @@ class Shipment < ActiveRecord::Base
   has_many :sms_logs, :dependent => :destroy
   has_many :site_messages, :dependent => :destroy
 
-  attr_accessible :shipment_date, :consignment_number, :status, :user, :received_date, :lost_date, :cost, :carton
+  attr_accessible :shipment_date, :consignment_number, :status, :user, :received_date, :lost_date, :cost, :carton, :weight
 
   STATUS_LOST = 'Lost'
   STATUS_RECEIVED = 'Received'

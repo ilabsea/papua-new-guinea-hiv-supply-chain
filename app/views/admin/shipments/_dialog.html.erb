@@ -12,6 +12,7 @@
       <div id='shipment_message' style='display:none;' class='alert' > </div>
       <%= f.input :shipment_date, :as => :date_time_picker, :input_html => {:class => 'datepicker-fit date-field'} %>
       <%= f.input :consignment_number %>
+      <%= f.input :weight, label: 'Weight(Kg)' %>
       <%= f.input :cost %>
       <%= f.input :carton %>
     </div>

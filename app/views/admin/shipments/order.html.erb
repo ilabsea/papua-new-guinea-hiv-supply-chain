@@ -96,9 +96,9 @@
           <td title="<%=order_line.commodity.name%>" class=' expand td-expand <%= klass  %>'>
             <%= truncate(order_line.commodity.name, length: 20) %>
           </td>
-          <td><%=order_line.commodity.quantity_per_packg %></td>
-          <td><%=order_line.commodity.pack_size %></td>
-          <td><%=order_line.commodity.unit.name %></td>
+          <td class='<%= klass  %> expand'><%=order_line.commodity.quantity_per_packg %></td>
+          <td class='<%= klass  %> expand'><%=order_line.commodity.pack_size %></td>
+          <td class='<%= klass  %> expand'><%=order_line.commodity.unit.name %></td>
           <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
           <td class='expand <%= klass  %>'><%= show_date order_line.order.date_submittion %></td>
           <td title="<%= h order_line.updated_at %>" class='expand <%= klass  %>'>
