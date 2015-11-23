@@ -30,6 +30,7 @@ describe Shipment do
       :status => Shipment::STATUS_IN_PROGRESS,
       :consignment_number => '0101929100',
       :shipment_date => Time.now,
+      :weight => 1.0,
       :user => @user,
       :cost => 201.29,
       :carton => 10

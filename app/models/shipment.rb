@@ -44,6 +44,7 @@ class Shipment < ActiveRecord::Base
   validates :consignment_number, :uniqueness => true
   validates :consignment_number, format: { with: /^[A-Za-z0-9]+$/}
   validates :consignment_number, length: { in: 1..15 }
+  validates :weight, numericality: {greater_than_or_equal_to: 0 }
 
   validates :cost, :carton , numericality: { greater_than_or_equal_to: 0, message: 'is not a valid number'}
   validates :user, :presence => true

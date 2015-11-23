@@ -30,6 +30,7 @@ FactoryGirl.define do
     order
     user
     site
+    weight 1.0
     sequence(:consignment_number) {|n| (100000000 + n).to_s }
   end
 end
