@@ -2,7 +2,6 @@ $(function(){
   //handleEvent();
   showPopover();
   handleCreateShipment();
-  handleFilterBySite(); // filter by site
   toggleCheckbox();     // handle toggle Cheeck
   checkUpdate();        // handle add/remove shipment item
 });
@@ -144,12 +143,6 @@ function removeItem(data){
       }
   })
   return false;
-}
-
-function handleFilterBySite(){
-  $(".order-shipment").on('change', function(){
-     this.form.submit();
-  })
 }
 
 function addItem(data){  
