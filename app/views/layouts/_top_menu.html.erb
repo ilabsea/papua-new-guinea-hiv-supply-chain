@@ -27,7 +27,7 @@
                 </li>
               <% end %>
 
-              <% if current_user.data_entry? || current_user.reviewer? || current_user.data_entry_and_reviewer? %>
+              <% if current_user.data_entry? || current_user.reviewer? || current_user.data_entry_and_reviewer? || current_user.ams? %>
                 <li class='<%=nav_status([:orders]) %>'>
                   <%= link_icon 'table', 'Requisition and order', admin_orders_path %>
                 </li>

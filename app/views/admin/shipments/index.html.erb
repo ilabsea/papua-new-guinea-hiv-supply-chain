@@ -21,6 +21,7 @@
       <tr>
         <th class='nth-table'>#</th>
         <th><%= link_to 'Site', field_sorted_in_shipments_path_for('sites.name'), :class => 'link-thead expand' %></th>
+        <th><%= link_to 'Order No', field_sorted_in_shipments_path_for('orders.order_number'), :class => 'link-thead expand' %></th>
         <th><%= link_to 'Consignment', field_sorted_in_shipments_path_for('shipments.consignment_number'), :class => 'link-thead' %> </th>
         <th><%= link_to 'Weight(kg)', field_sorted_in_shipments_path_for('shipments.weight') , :class => 'link-thead'  %> </th>
         <th><%= link_to 'Cost', field_sorted_in_shipments_path_for('shipments.cost') , :class => 'link-thead'  %> </th>
@@ -43,6 +44,7 @@
         <tr>
           <td><%= current_entries + index %></td>
           <td><%= shipment.site.name %></td>
+          <td><%= shipment.order.order_number %></td>
           <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
           <td><%= shipment.weight %></td>
           <td><%= shipment.cost %></td>

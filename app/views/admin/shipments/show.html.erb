@@ -6,6 +6,7 @@
 <div class='well no-background' >
   <ul >
     <li> Site : <b> <%=@shipment.site.name %> </b> </li>
+    <li> Order Number : <b> <%=@shipment.order.order_number %> </b> </li>
     <li> Consignment number : <b> <%=@shipment.consignment_number%> </b> </li>
     <li> Weight : <b> <%= pluralize(@shipment.weight, 'Kg') %> </b> </li>
     <li> 

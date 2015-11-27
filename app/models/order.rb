@@ -15,6 +15,7 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  date_submittion       :date
+#  order_number          :string(10)
 #
 
 class Order < ActiveRecord::Base
@@ -31,12 +32,12 @@ class Order < ActiveRecord::Base
   validates :site, :order_date,:date_submittion,:site_id , :presence => true
   validates :user_place_order, :presence => true, :if =>  Proc.new{|f| f.is_requisition_form }
   validates :user_data_entry,  :presence => true, :unless => Proc.new{|f| f.is_requisition_form }
-  validate  :unique_order_in_month_year
+  # validate  :unique_order_in_month_year
 
   attr_accessor :survs
   attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
                   :status, :site_id, :order_lines_attributes,:surv_sites, :site, 
-                  :user_place_order, :user_data_entry, :requisition_report
+                  :user_place_order, :user_data_entry, :requisition_report, :order_number
 
 
   accepts_nested_attributes_for :order_lines
@@ -100,34 +101,34 @@ class Order < ActiveRecord::Base
   end
 
   def self.create_from_requisition_report requisition_report
-    order = Order.new :date_submittion => requisition_report.created_at,
-                       :is_requisition_form => true,
-                       :order_date => Time.zone.now.to_date, 
-                       :status  => Order::ORDER_STATUS_PENDING
+    order_line_import = OrderLineImport.new requisition_report.form.current_path
 
-    site =  requisition_report.site
+    requisition_report.order_number = order_line_import.order_number.strip
+    requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
 
-    order.user_place_order = requisition_report.user
-    order.site = site
-    order.requisition_report = requisition_report
+    if requisition_report.save
+      site =  requisition_report.site
+      order = requisition_report.build_order :date_submittion => requisition_report.created_at,
+                                            :is_requisition_form => true,
+                                            :order_date => Time.zone.now.to_date, 
+                                            :status  => Order::ORDER_STATUS_PENDING,
+                                            :user_place_order => requisition_report.user,
+                                            :site => site,
+                                            order_number: requisition_report.order_number
 
-    if order.save
-
-      requisition_report.status = RequisitionReport::IMPORT_STATUS_SUCCESS
-      requisition_report.save
-
-      site.order_start_at = Time.now.strftime('%Y-%m-%d')
-      site.sms_alerted = Site::SMS_NOT_ALERTED
-      site.save
-
-      order_line_import = OrderLineImport.new order, order.requisition_report.form.current_path
-      order_line_import.import
-
+      if order.save
+        site.order_start_at = Time.zone.now.to_date
+        site.sms_alerted = Site::SMS_NOT_ALERTED
+        site.save
+        order_line_import.import_to(order)
+        true
+      else
+        message = order.errors.full_messages.join("<br />")
+        raise ActiveRecord::Rollback, message
+      end
     else
-      requisition_report.status = RequisitionReport::IMPORT_STATUS_FAILED
-      requisition_report.save
+      false
     end
-    order
   end
 
   def users_from_site

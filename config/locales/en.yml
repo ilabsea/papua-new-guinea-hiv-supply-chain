@@ -9,9 +9,17 @@ en:
       order_line:
         number_of_client: "# Patient(Number of Patient on Drug Regimen)"
 
+      requisition_report:
+        order_number: "Order No in excel template"
+
     errors:
       models:
         order_line:
           attributes:
             number_of_client:
               not_a_number: 'is required. you might forget to create a surv form for this order of the same month'
+
+        requisition_report:
+          attributes:
+            order_number:
+              blank: 'is required. Please fill in Order No in the template and submit again'

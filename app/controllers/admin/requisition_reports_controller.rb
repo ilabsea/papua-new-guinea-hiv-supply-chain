@@ -20,6 +20,7 @@ module Admin
       if @requisition_report.save_nested_order
         redirect_to admin_requisition_reports_path, :notice => 'Order has been created successfully'
       else
+        flash.now[:alert] = @requisition_report.errors.full_messages.join("<br />")
         render :new
       end
     end

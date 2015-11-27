@@ -9,7 +9,8 @@
   <thead>
     <tr>
       <th class='nth-table'> # </th>
-      <th> Submission </th>
+      <th> Order Number </th>
+      <th> File </th>
       <th> Site </th>
       <th> User </th>
       <th> Status </th>
@@ -20,6 +21,9 @@
     <% @requisition_reports.each_with_index do |requisition_report, index| %>
       <tr>
         <td><%=current_entries + index %></td>
+        <td>
+          <%=requisition_report.order_number %>
+        </td>
         <td>
           <%=link_to File.basename(requisition_report.form.current_path) , download_admin_requisition_report_path(requisition_report), :data => {:skip_loading => true} %>
         </td>

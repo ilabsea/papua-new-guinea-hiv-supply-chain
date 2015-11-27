@@ -64,7 +64,8 @@
       <tr>
         <th><%=check_box_tag 'toggle_all', '1', false, :id => 'cb_toggle_all' %></th>
         <th class="expand">Site</th>
-        <th class="expand">OrderId </th>
+        <th class="expand">Order ID</th>
+        <th class="expand">Order No </th>
         <th class="expand">Commodity</th>
         <th class="expand">Quantity Per Package</th>
         <th class="expand">Pack Size</th>
@@ -93,6 +94,7 @@
           </td>
           <td class='<%= klass  %> expand'><%= order_line.order.site.name %></td>
           <td class='<%= klass  %>'><%= order_line.order.id %></td>
+          <td class='<%= klass  %>'><%= order_line.order.order_number %></td>
           <td title="<%=order_line.commodity.name%>" class=' expand td-expand <%= klass  %>'>
             <%= truncate(order_line.commodity.name, length: 20) %>
           </td>

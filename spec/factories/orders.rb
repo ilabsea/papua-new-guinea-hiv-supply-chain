@@ -15,6 +15,7 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  date_submittion       :date
+#  order_number          :string(10)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

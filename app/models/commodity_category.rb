@@ -7,6 +7,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  com_type   :string(255)
+#  pos        :integer          default(0)
 #
 
 class CommodityCategory < ActiveRecord::Base

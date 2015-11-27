@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151123040122) do
+ActiveRecord::Schema.define(:version => 20151127032457) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -150,8 +150,10 @@ ActiveRecord::Schema.define(:version => 20151123040122) do
     t.datetime "created_at",                          :null => false
     t.datetime "updated_at",                          :null => false
     t.date     "date_submittion"
+    t.string   "order_number",          :limit => 10
   end
 
+  add_index "orders", ["order_number"], :name => "index_orders_on_order_number"
   add_index "orders", ["requisition_report_id"], :name => "index_orders_on_requisition_report_id"
   add_index "orders", ["site_id"], :name => "index_orders_on_site_id"
   add_index "orders", ["status", "site_id"], :name => "index_orders_on_status_and_site_id"
@@ -196,11 +198,13 @@ ActiveRecord::Schema.define(:version => 20151123040122) do
     t.string   "form"
     t.integer  "site_id"
     t.integer  "user_id"
-    t.string   "status",     :default => "PENDING"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.string   "status",                     :default => "PENDING"
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
+    t.string   "order_number", :limit => 10
   end
 
+  add_index "requisition_reports", ["order_number"], :name => "index_requisition_reports_on_order_number"
   add_index "requisition_reports", ["site_id"], :name => "requisition_reports_site_id_fk"
   add_index "requisition_reports", ["user_id"], :name => "requisition_reports_user_id_fk"
 

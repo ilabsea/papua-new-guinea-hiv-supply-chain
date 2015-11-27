@@ -144,8 +144,11 @@ class Generator
     merge_cells(Cell.new(current_row ,0), Cell.new(current_row ,4) )
     write_cell_title Cell.new(current_row, 0) , 'ARV and TEST KIT REQUISITION FORM'
 
-    merge_cells(Cell.new(current_row,5), Cell.new(current_row, self.total_column-1) )
+    merge_cells(Cell.new(current_row,5), Cell.new(current_row, 8) )
     write_cell_title Cell.new(current_row, 5), 'Papua New Guinea National Department of Health'
+
+    write_cell_title Cell.new(current_row, 9), 'Order No'
+    write_cell_title Cell.new(current_row, 10), ''
 
     texts = [ '1) Please remember, when submitting orders YOU MUST:', 
           '2) Submit the "Surv 2: Monthly Data Collection Sheet" (including total number of patients on each regimen) when requesting ARVs;', 
@@ -392,7 +395,7 @@ class Generator
     column_width 0, 40
     _kit_sheet_header
     _kit_sheet_data
-    _kit_sheet_footer  
+    _kit_sheet_footer
   end
 
   def self.xls file_name

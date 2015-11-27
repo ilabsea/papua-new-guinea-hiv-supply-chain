@@ -21,13 +21,14 @@
     <tr>
       <th class='nth-table expand'>#</th>
       <th class="expand">ID</th>
+      <th class="expand">Order No</th>
       <th class="expand">Submission</th>
       <th class="expand">Site</th>
-      <th class="expand">Order Creation</th>
       <th class="expand">Entry</th>
       <th class="expand">Reviewer</th>
       <th class="expand">Reviewed Date</th>
       <th class="expand">Status</th>
+      <th class="expand">Excel File</th>
       <th class="expand">Action</th>
     </tr>
   </thead>
@@ -49,18 +50,24 @@
           <%= editable ? link_to(order.id, edit_admin_order_path(order)) : order.id %>
         </td>
 
+        <td><%= order.order_number %></td>
         <td><%= show_date(order.date_submittion) %></td>
         <td><%=order.site.name %></td>
-        
-        <td><%= order.order_date ? show_date(order.order_date) : '' %></td>
+
         <td title='<%= order.user_data_entry.try(:phone_number)%>'> 
           <%=order.user_data_entry.try(:user_name) %>
         </td>
         <td title='<%= order.review_user.try(:phone_number)%>'><%= order.review_user.try(:user_name) %></td>
         <td><%= order.review_date ? show_date_time(order.review_date) : '' %></td>
         <td><%= order.status %></td>
+        <td>
+          <%=link_to truncate(File.basename(order.requisition_report.form.current_path), length: 20), 
+                     download_admin_requisition_report_path(order.requisition_report),
+                     :data => {:skip_loading => true} if order.requisition_report %>
+        </td>
         
         <td class="center">
+
           <% if (current_user.reviewer? || current_user.data_entry_and_reviewer?) && order.to_be_reviewed? %>
             <%= link_button_review 'Review', review_admin_order_path(order) %> 
 

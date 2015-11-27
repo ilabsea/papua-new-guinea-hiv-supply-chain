@@ -2,15 +2,17 @@
 require 'spreadsheet'
 class OrderLineImport 
 
-  def initialize order, file_name
+  def initialize file_name
     @book = Spreadsheet.open(file_name)
-    @order = order
-    @order_line_completer = OrderLineCompleter.new(@order)
   end
 
-  def import
-    load_arv_req
-    load_arv_test
+  def order_line_completer(order)
+    @order_line_completer ||= OrderLineCompleter.new(order)
+  end
+
+  def import_to(order)
+    load_arv_req(order)
+    load_arv_test(order)
   end
 
   def find_commodity_by_name name
@@ -34,7 +36,14 @@ class OrderLineImport
     @missing_commodities << name
   end
 
-  def load_arv_test
+  def order_number
+    sheet_arv_req = @book.worksheet 0
+    first_row     = sheet_arv_req.row 0
+    first_row[10].to_s
+  end
+
+  def load_arv_test(order)
+    completer = order_line_completer(order)
     sheet_arv_test = @book.worksheet 1
     arv_header = 10
     arv_footer = 13
@@ -55,7 +64,7 @@ class OrderLineImport
           stock_on_hand = row[2]
           monthly_use   = row[3]
 
-          number_of_client = @order_line_completer.query_number_of_patient(commodity)
+          number_of_client = completer.query_number_of_patient(commodity)
 
           params = { :commodity => commodity,
                      :pack_size => pack_size,
@@ -64,14 +73,14 @@ class OrderLineImport
                      :monthly_use => monthly_use,
                      :skip_bulk_insert => true,
                      :number_of_client => number_of_client,
-                     :site_id => @order.site.id,
-                     :suggestion_order => @order.site.suggestion_order,
-                     :order_frequency => @order.site.order_frequency,
-                     :test_kit_waste_acceptable => @order.site.test_kit_waste_acceptable
+                     :site_id => order.site.id,
+                     :suggestion_order => order.site.suggestion_order,
+                     :order_frequency => order.site.order_frequency,
+                     :test_kit_waste_acceptable => order.site.test_kit_waste_acceptable
           }
 
-          order_line = @order.order_lines.build(params)
-          @order_line_completer.set_quantity_suggested(order_line)
+          order_line = order.order_lines.build(params)
+          completer.set_quantity_suggested(order_line)
           order_lines << order_line
         else
           info = "Could not find commodity with name:  #{row[0]} at index #{i}"
@@ -83,7 +92,8 @@ class OrderLineImport
     bulk_import order_lines
   end
 
-  def load_arv_req
+  def load_arv_req(order)
+    completer = order_line_completer(order)
     sheet_arv_request = @book.worksheet 0
     arv_header = 10
     arv_footer = 12
@@ -98,7 +108,7 @@ class OrderLineImport
         commodity = find_commodity_by_name(row[0])
 
         if commodity
-          number_of_client = @order_line_completer.query_number_of_patient(commodity)
+          number_of_client = completer.query_number_of_patient(commodity)
 
           stock_on_hand = row[5]
           monthly_use = row[6]
@@ -109,14 +119,14 @@ class OrderLineImport
                      :monthly_use   => monthly_use,
                      :skip_bulk_insert => true,
                      :number_of_client => number_of_client,
-                     :site_id => @order.site.id,
-                     :suggestion_order => @order.site.suggestion_order,
-                     :order_frequency => @order.site.order_frequency,
-                     :test_kit_waste_acceptable => @order.site.test_kit_waste_acceptable
+                     :site_id => order.site.id,
+                     :suggestion_order => order.site.suggestion_order,
+                     :order_frequency => order.site.order_frequency,
+                     :test_kit_waste_acceptable => order.site.test_kit_waste_acceptable
           }
 
-          order_line = @order.order_lines.build(params)
-          @order_line_completer.set_quantity_suggested(order_line)
+          order_line = order.order_lines.build(params)
+          completer.set_quantity_suggested(order_line)
           order_lines << order_line
         else
           info = 'Could not find commodity with name: ' + row[0]

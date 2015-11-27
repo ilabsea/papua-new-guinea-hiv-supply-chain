@@ -6,16 +6,16 @@
       </td>
 
       <td style="vertical-align:center;">
-        <%= f.input :order_date, :as => 'date_time_picker', 
-                                 :label => 'Order Date' ,
-                                 :input_html => {:class => 'datepicker-fit'}
+        <%= f.input :order_date, :as => 'date_time_picker',
+                                 :label => 'false',
+                                 :input_html => {:class => 'datepicker-fit', placeholder: 'Order Date'}
                                  %>   
       </td>
 
       <td style="vertical-align:center;">
           <%= f.input :date_submittion, :as => 'date_time_picker',
                                         :label => 'Sumission Date',
-                                        :input_html => { :class  => 'datepicker-fit'} 
+                                        :input_html => { :class  => 'datepicker-fit', placeholder: 'Sumission Date'} 
                                         %> 
       </td>
     </tr>

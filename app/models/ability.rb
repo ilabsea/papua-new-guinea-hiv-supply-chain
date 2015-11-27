@@ -28,10 +28,12 @@ class Ability
 
       can :create, RequisitionReport
       can :read, RequisitionReport
+      can :download, RequisitionReport
       # can :destroy, RequisitionReport
 
       can :create_from_requisition_report, Order
       can :create, Order
+
     end
 
 
@@ -45,6 +47,8 @@ class Ability
       can :export_excel, Order
 
       can :tab_order_line, Order
+
+      can :download, RequisitionReport
     end
 
     if current_user.reviewer? || current_user.data_entry_and_reviewer?
@@ -56,12 +60,20 @@ class Ability
       can :approve, OrderLine
       can :reject, OrderLine
       can :approve_all, OrderLine
+
+      can :download, RequisitionReport
     end
 
     if current_user.ams?
+      can :read, Order
+      can :export, Order
+      can :export_excel, Order
+
       can :manage, Shipment
       can :create_shipment, :shipments
       can :manage, SmsLog
+
+      can :download, RequisitionReport
     end
     
     # Define abilities for the passed in user here. For example:

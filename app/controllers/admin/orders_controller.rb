@@ -12,6 +12,7 @@ module Admin
      @orders = Order.includes(:site, :user_data_entry, :review_user)
 
      @orders = @orders.where(['status != ?', Order::ORDER_STATUS_PENDING ]) if current_user.reviewer?
+     @orders = @orders.where(['status = ?', Order::ORDER_STATUS_APPROVED ]) if current_user.ams?
 
      @orders = @orders.of_status(params[:type]) if(!params[:type].blank?)
      

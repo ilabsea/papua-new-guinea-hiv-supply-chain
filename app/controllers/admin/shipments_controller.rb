@@ -23,7 +23,7 @@ module Admin
     end
 
     def index
-      @shipments = Shipment.includes(:site)
+      @shipments = Shipment.includes(:site, :order)
                            .with_status(params[:type])
                            .order( "#{order_params[:field]} #{order_params[:order]}" )
       @shipments = @shipments.paginate(paginate_options)

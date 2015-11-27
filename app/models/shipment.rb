@@ -15,10 +15,11 @@
 #  sms_logs_count       :integer          default(0)
 #  shipment_lines_count :integer          default(0)
 #  last_notified_date   :datetime
-#  lost_date            :datetime         default(2015-11-13 02:47:06 UTC)
+#  lost_date            :datetime         default(2015-11-16 04:07:55 UTC)
 #  cost                 :float
 #  carton               :integer
 #  site_messages_count  :integer          default(0)
+#  weight               :float
 #
 
 class Shipment < ActiveRecord::Base
