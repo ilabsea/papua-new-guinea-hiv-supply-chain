@@ -42,11 +42,11 @@ namespace :deploy do
   end
 
   task :symlink_data, :roles => :app do
-    run "ln -nfs #{shared_path}/data #{release_path}/public/data"
+    run "ln -s #{shared_path}/data #{release_path}/public/data"
   end
 
   task :whenever do
-  	run "cd #{release_path} && RAILS_ENV=production bundle exec whenever --update-crontab png-health-system "
+    run "cd #{release_path} && RAILS_ENV=production bundle exec whenever --update-crontab png-health-system "
   end
 
   task :symlink_config, roles: :app do
@@ -62,18 +62,18 @@ namespace :db do
   end
 
   task :seed do
-  	run "cd #{release_path} && bundle exec rake db:seed RAILS_ENV=production"
+    run "cd #{release_path} && bundle exec rake db:seed RAILS_ENV=production"
   end
 
   task :default_data do
-  	run "cd #{release_path} && bundle exec rake png:load_default_data RAILS_ENV=production"
+    run "cd #{release_path} && bundle exec rake png:load_default_data RAILS_ENV=production"
   end
 end
 
 
 namespace :assets do
   task :precompile do
-  	run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=production"
+    run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=production"
   end
 end
 
