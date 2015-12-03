@@ -20,27 +20,34 @@ class ExportExcelOrder
     working_sheet_drug = @book.create_worksheet name: "#{order.site.name}-drug"
     
     #write table header with [cell_data, cell_width]
-    head_labels = [ ["Commodity", 30], ["Quantity Per Package", 30], ["Pack Size", 15], ["Strength", 15], ["Unit", 10] , ["#Patient", 15], 
-                    ["Stock on hand", 20], ["Monthly Use", 20], ["System Suggestion", 30],
-                    ["Quantity Suggested", 30], ["Status", 15], ["Data Entry Note", 30], ["Reviewer note", 30] ]
+    head_labels = [ ["Commodity", 35], ["Quantity Per Package", 22], ["Pack Size", 10], ["Strength", 10], ["Unit", 10] , ["#Patient", 9], 
+                    ["Stock on hand", 15], ["Monthly Use", 15], ["System Suggestion", 20],
+                    ["Quantity Suggested", 20], ["Status", 10], ["Data Entry Note", 18], ["Reviewer note", 15] ]
 
-    format_header = Spreadsheet::Format.new color: :black, weight: :bold, size: 16, border: :thin,
-                                            pattern_fg_color: :silver, pattern: 1 
-    # working_sheet.row(0).default_format = format_header
+    format_header_explain = Spreadsheet::Format.new color: :black, weight: :bold, size: 14, border: :thin,
+                                            pattern_fg_color: :silver, pattern: 1
 
+    format_header_title = Spreadsheet::Format.new color: :black, weight: :bold, size: 12, border: :thin,
+                                            pattern_fg_color: :silver, pattern: 1
 
     [working_sheet_kit, working_sheet_drug].each do |working_sheet|
+
+      working_sheet.row(0).height = 25
+      working_sheet.merge_cells(0, 0, 0, 12)
+      working_sheet.row(0).set_format(0, format_header_explain)
+      working_sheet[0,0] = "Site: #{order.site.name}, Order No: #{order.order_number}, Reviewed at: #{order.review_date.strftime(ENV['DATE_TIME_FORMAT'])}"
+
+      working_sheet.row(1).height = 25
       head_labels.each_with_index do |head_label, i|
-        working_sheet[0,i] = head_label[0]
-        working_sheet.row(0).set_format(i, format_header)
-        working_sheet.row(0).height = 25
+        working_sheet[1,i] = head_label[0]
+        working_sheet.row(1).set_format(i, format_header_title)
         working_sheet.column(i).width = head_label[1]
       end
     end
 
     #write table body content
-    row_kit  = 0
-    row_drug = 0
+    current_row_kit  = 2
+    current_row_drug = 2
 
     order.order_lines.each_with_index do |order_line, i|
       data_rows = [ order_line.commodity.name,
@@ -59,12 +66,12 @@ class ExportExcelOrder
 
       if order_line.kit? 
         working_sheet = working_sheet_kit
-        row_kit += 1 
-        row = row_kit
+        row = current_row_kit
+        current_row_kit += 1
       else
         working_sheet = working_sheet_drug
-        row_drug += 1
-        row = row_drug
+        row = current_row_drug
+        current_row_drug += 1
       end
 
       data_rows.each_with_index do |data, column|
