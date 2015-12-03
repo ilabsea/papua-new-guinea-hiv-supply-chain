@@ -43,13 +43,13 @@
       <% @shipments.each_with_index do |shipment, index| %>
         <tr>
           <td><%= current_entries + index %></td>
-          <td><%= shipment.site.name %></td>
-          <td><%= shipment.order.order_number %></td>
+          <td class="expand"><%= shipment.site.name %></td>
+          <td class="expand"><%= shipment.order.order_number %></td>
           <td><%= link_to shipment.consignment_number, admin_shipment_path(shipment) %></td>
           <td><%= shipment.weight %></td>
           <td><%= shipment.cost %></td>
           <td><%= shipment.carton %></td>
-          <td><%= shipment.status %>
+          <td class="expand"><%= shipment.status %>
           <td title='<%= show_date(shipment.shipment_date) %>' class='td-expand'> <%= time_ago_tag shipment.shipment_date %> </td>
           <td> <%= link_to badge_value(shipment.sms_logs_count) , admin_shipment_sms_logs_path(shipment) %> </td>
 

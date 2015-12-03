@@ -1,9 +1,8 @@
 $(function(){
-  //handleEvent();
   showPopover();
   handleCreateShipment();
-  toggleCheckbox();     // handle toggle Cheeck
-  checkUpdate();        // handle add/remove shipment item
+  // toggleCheckbox();
+  checkUpdate();
 });
 
 function handleCreateShipment(){
@@ -72,11 +71,6 @@ function checkUpdateContent(){
     if(checked){
       addItem(data);
     }
-
-    else{
-      // nothing to do cause it was removed.
-    }
-
   })
 }
 
