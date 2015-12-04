@@ -35,7 +35,7 @@ class ExportExcelOrder
       working_sheet.row(0).height = 25
       working_sheet.merge_cells(0, 0, 0, 12)
       working_sheet.row(0).set_format(0, format_header_explain)
-      working_sheet[0,0] = "Site: #{order.site.name}, Order No: #{order.order_number}, Reviewed at: #{order.review_date.strftime(ENV['DATE_TIME_FORMAT'])}"
+      working_sheet[0,0] = "Site: #{order.site.name}, Order No: #{order.order_number}, Approved at: #{order.udpated_at.strftime(ENV['DATE_TIME_FORMAT'])}"
 
       working_sheet.row(1).height = 25
       head_labels.each_with_index do |head_label, i|
