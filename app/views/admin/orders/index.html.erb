@@ -4,7 +4,7 @@
     export_options[:type] = params[:type]  if !params[:type].blank?   
   %>
   <%= link_button_new 'New Order', new_admin_order_path(export_options), 
-                      :class => 'btn btn-default' if current_user.data_entry? || current_user.data_entry_and_reviewer? %>
+                      :class => 'btn btn-default' if current_user.data_entry? %>
   <%= link_button_download 'Export List', export_admin_orders_path(export_options), :class => 'btn btn-primary' %> 
 
   <%= link_button_download 'Export Requisition and Order', '#export-order-dialog', role: :button, "data-toggle" => :modal,

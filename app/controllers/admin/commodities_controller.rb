@@ -2,7 +2,7 @@ module Admin
   class CommoditiesController < Controller
     load_and_authorize_resource
     def index
-        @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test)
+        @commodities = Commodity.where("1=1")
 
         params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
         if (params[:type] ==  CommodityCategory::TYPES_DRUG)
