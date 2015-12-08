@@ -47,7 +47,7 @@ class OrderLine < ActiveRecord::Base
 
   validates :stock_on_hand, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
   validates :monthly_use, numericality: {greater_than_or_equal_to: 0, allow_blank: true}
-  validates :number_of_client, numericality: {greater_than_or_equal_to: 0}
+  # validates :number_of_client, numericality: {greater_than_or_equal_to: 0 }
 
   # validate :validate_requirement
   before_save :calculate_attribute
@@ -76,11 +76,12 @@ class OrderLine < ActiveRecord::Base
   end
 
   def calculate_attribute
-    complete_order_line = number_of_client && stock_on_hand && quantity_suggested
+    complete_order_line = (monthly_use || stock_on_hand) && quantity_suggested
 
-    if self.arv_type == CommodityCategory::TYPES_KIT
-      complete_order_line = (complete_order_line && monthly_use)
-    end
+    # complete_order_line = number_of_client && stock_on_hand && quantity_suggested
+    # if self.arv_type == CommodityCategory::TYPES_KIT
+    #   complete_order_line = (complete_order_line && monthly_use)
+    # end
     self.completed_order = complete_order_line ? OrderLine::DATA_COMPLETE : OrderLine::DATA_INCOMPLETE
   end
 
@@ -138,14 +139,14 @@ class OrderLine < ActiveRecord::Base
 
   def self.items options
     order_lines = self.joins("INNER JOIN orders ON order_lines.order_id = orders.id")
-                  .where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
+                      .where([ "order_lines.shipment_status = 0 AND orders.status = ?", Order::ORDER_STATUS_APPROVED])
     
 
-    # order_lines = OrderLine.includes(:commodity, :order => :site ).joins(:order).where([ "orders.status = :order_status AND order_lines.shipment_status = 0", :order_status => Order::ORDER_STATUS_APPROVED])
+    # teach database to use indices in order table with index(:status, :site_id) 
+    order_lines = options[:site_id].blank? ? order_lines.where( "orders.site_id > -1" ) : order_lines.where(["orders.site_id = ?", options[:site_id]] )
 
-    order_lines = order_lines.where(["orders.site_id = ?", options[:site_id]]) if !options[:site_id].blank?
-    order_lines = order_lines.where(["orders.date_submittion <= ?", options[:end] ]) if !options[:end].blank?
-    order_lines = order_lines.where(["orders.date_submittion >= ?", options[:start] ]) if !options[:start].blank?
+    order_lines = order_lines.where(["orders.date_submittion <= ?", Date.strptime(options[:end], ENV['DATE_FORMAT']) ]) if !options[:end].blank?
+    order_lines = order_lines.where(["orders.date_submittion >= ?", Date.strptime(options[:start], ENV['DATE_FORMAT']) ]) if !options[:start].blank?
     order_lines
   end
 
@@ -155,6 +156,14 @@ class OrderLine < ActiveRecord::Base
 
   def kit?
     self.arv_type == CommodityCategory::TYPES_KIT
+  end
+
+  def monthly_use_pack
+    self.drug? ? monthly_use : (monthly_use/pack_size).ceil
+  end
+
+  def stock_on_hand_pack
+    self.drug? ? stock_on_hand : (stock_on_hand/pack_size).ceil
   end
 
   class << self
@@ -167,7 +176,7 @@ class OrderLine < ActiveRecord::Base
     end
 
     def not_shipped
-      where [ 'shipment_status = :shipment_status', :shipment_status => false]
+      where [ 'order_lines.shipment_status = :shipment_status', :shipment_status => false]
     end
 
     def data_filled

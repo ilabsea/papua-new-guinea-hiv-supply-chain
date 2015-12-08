@@ -1,0 +1,25 @@
+.site-form{
+  .control-label{
+    width: 240px;
+  }
+  .controls{
+    margin-left: 260px;
+  }
+
+  .site_in_every, .site_duration_type, .site-label {
+    display: inline;
+    float: left;
+    margin-right: 10px;
+  }
+
+  .site-label {
+    width: 240px;
+  }
+
+  .site_in_every .controls, .site_duration_type .controls {
+    display: inline;
+    margin-left: 10px; 
+  }
+}
+
+

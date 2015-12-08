@@ -10,11 +10,12 @@
 #  user_data_entry_id    :integer
 #  review_date           :datetime
 #  review_user_id        :integer
-#  status                :string(255)
+#  status                :string(15)
 #  requisition_report_id :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  date_submittion       :date
+#  order_number          :string(10)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -24,9 +25,9 @@ FactoryGirl.define do
     site 
     is_requisition_form false
     date_submittion "2013-06-25 10:58:09"
-    user_place_order { create :user_site}
+    user_place_order { create(:user_site, site: site)}
     order_date "2013-06-25 10:58:09"
-    user_data_entry { create :user_data_entry}
+    user_data_entry {create(:user_data_entry)}
     review_date "2013-06-25 10:58:09"
     review_user { create :user_reviewer }
     requisition_report nil

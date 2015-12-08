@@ -10,6 +10,8 @@
 #
 
 class RegimenCategory < ActiveRecord::Base
+  has_many :regimen
+
   attr_accessible :description, :name
   validates :name, uniqueness: true
   validates :name, presence: true

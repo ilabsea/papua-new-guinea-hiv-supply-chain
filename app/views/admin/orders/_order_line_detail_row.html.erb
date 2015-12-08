@@ -1,0 +1,26 @@
+
+<tr>
+  <td ><%=index%></td>
+  <td ><%=order_line.id%></td>
+  <td class='td-expand no-wrap' title="<%= h order_line.commodity.name %>"> <%= truncate(order_line.commodity.name)%> </td>
+  <td><%= order_line.commodity.quantity_per_packg%></td>
+  <td><%= order_line.commodity.pack_size%></td>
+  <td><%= order_line.commodity.strength_dosage %></td>
+  <td><%= order_line.commodity.unit.name %></td>
+  <td><%= order_line.number_of_client %></td>
+  <td><%= order_line.stock_on_hand %></td>
+  <td><%= order_line.monthly_use %></td>
+
+  <% if !current_user.data_entry? %>
+    <td><%= order_line.system_suggestion %> </td>
+    <td><%= order_line.quantity_suggested %></td>
+  <% end %>
+
+  <td><%= status(order_line.status) %></td>
+  <td class="td-expand expand" title="<%= h order_line.user_reviewer_note %>"> 
+    <%= truncate order_line.user_reviewer_note %>
+  </td>
+  <td class="td-expand expand" title="<%= h order_line.user_data_entry_note %>" class='error-td expand '>
+    <%= truncate order_line.user_data_entry_note %>
+  </td>
+</tr>

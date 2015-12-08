@@ -1,3 +1,9 @@
+.error-code{
+  font-size: 30px;
+  color: red;
+  margin-top: 30px;
+}
+    
 .content-body {
   min-height: 600px;
 }
@@ -9,6 +15,11 @@
     .text-right {text-align:right;}
     .text-left {text-align:left;}
  } 
+
+// .table { 
+//     position: relative; 
+//     float: left;
+// }
 
 .gray {
   color: gray;
@@ -23,6 +34,14 @@
 
  .table-hover th, .table-hover .header-grid{
    background-color: #ededed;
+   padding: 8px 5px;
+ }
+
+ .table-hover td{
+   padding: 3px 8px;
+   border-top: 1px solid #eee;
+   vertical-align: middle;
+   text-align: left;
  }
 
  .error-td .control-group, .error-td .control{
@@ -178,9 +197,6 @@ table input{
   display:none !important;
 }
 
-.form-fixed {
-
-}
 .link-thead{
   color: #333;
 }
@@ -201,10 +217,7 @@ a.error:hover, a.error:visited {
   color: #ff0101;
   text-decoration: none;
 }
-.header-title {
-  font-size : 18px;
-  color: gray;
-}
+
 .commodity{
   width: 240px;
 }

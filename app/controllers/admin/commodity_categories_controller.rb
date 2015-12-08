@@ -8,29 +8,19 @@ module Admin
     def index
       params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
       if(params[:type] == CommodityCategory::TYPES_DRUG)
-        @commodity_categories = CommodityCategory.drug.paginate(paginate_options)
+        @commodity_categories = CommodityCategory.drug.order('pos').paginate(paginate_options)
       else
-        @commodity_categories = CommodityCategory.kit.paginate(paginate_options)
+        @commodity_categories = CommodityCategory.kit.order('pos').paginate(paginate_options)
       end
-      @app_title = "Commodity Categories"
     end
-
-
-    def show
-      @commodity_category = CommodityCategory.find(params[:id])
-      @app_title = "Category :" + @commodity_category.name
-    end
-
 
     def new
       @commodity_category = CommodityCategory.new(:com_type => params[:type])
-      @app_title = "New Category"
     end
 
 
     def edit
       @commodity_category = CommodityCategory.find(params[:id])
-      @app_title = "Edit: " + @commodity_category.name
     end
 
 
@@ -40,9 +30,13 @@ module Admin
       if @commodity_category.save
         redirect_to admin_commodity_categories_path(:type =>@commodity_category.com_type ), notice: 'Commodity Category has been created successfully.'
       else
-        render action: "new" 
+        render action: "new"
       end
+    end
 
+    def reorder
+      CommodityCategory.reorder(params[:commodity_category])
+      redirect_to admin_commodity_categories_path(type: params[:type])
     end
 
 
@@ -61,8 +55,8 @@ module Admin
         @commodity_category = CommodityCategory.find(params[:id])
         @commodity_category.destroy
         redirect_to admin_commodity_categories_path(:type => params[:type]) , :notice => 'Commodity Category has been removed'
-      rescue Exception => ex
-        redirect_to admin_commodity_categories_path(:type => params[:type]) , :error => ex.message
+      rescue ActiveRecord::StatementInvalid => e
+        redirect_to admin_commodity_categories_path(:type => params[:type]) , :alert => e.message
       end
     end
 

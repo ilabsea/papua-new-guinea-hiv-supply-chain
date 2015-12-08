@@ -14,7 +14,7 @@ class LabTest < ActiveRecord::Base
   belongs_to :lab_test_category
   belongs_to :unit
 
-  has_many :commodities, dependent: :nullify
+  has_many :commodities
 
   attr_accessible :name, :lab_test_category_id, :unit_id
 

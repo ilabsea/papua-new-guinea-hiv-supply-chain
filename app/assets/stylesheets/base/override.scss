@@ -1,3 +1,14 @@
+
+body{
+  padding-top: 50px;
+}
+
+@media(max-width: 979px){
+  body{
+    padding: 0px;
+  }
+}
+
 table{
   .expand {
     vertical-align: middle;
@@ -21,4 +32,7 @@ table{
       border-radius: 4px;
     }
   }
+}
+
+.form-actions {
 }

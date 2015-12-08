@@ -37,8 +37,8 @@ module Admin
         @unit = Unit.find(params[:id])
         @unit.destroy
         redirect_to admin_units_path, :notice => "Unit has been removed"
-      rescue Exception => e
-        redirect_to admin_units_path, :error => e.message
+      rescue ActiveRecord::StatementInvalid => e
+        redirect_to admin_units_path, :alert => e.message
       end
     end
 

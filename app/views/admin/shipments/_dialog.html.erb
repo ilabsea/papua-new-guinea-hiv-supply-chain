@@ -1,6 +1,6 @@
 
 <!-- Modal -->
-<%= simple_form_for [:admin, @shipment], :html => { :class => 'form-horizontal' }  do |f| %>
+<%= simple_form_for [:admin, @shipment], url: create_shipment_admin_shipments_path , :html => { :class => 'form-horizontal' }  do |f| %>
   <div id="shippement_dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     
     <div class="modal-header">
@@ -11,9 +11,10 @@
     <div class="modal-body">
       <div id='shipment_message' style='display:none;' class='alert' > </div>
       <%= f.input :shipment_date, :as => :date_time_picker, :input_html => {:class => 'datepicker-fit date-field'} %>
-      <%= f.input :consignment_number %>
-      <%= f.input :cost %>
-      <%= f.input :carton %>
+      <%= f.input :consignment_number, required: true %>
+      <%= f.input :weight, label: 'Weight(Kg)' %>
+      <%= f.input :cost, required: true %>
+      <%= f.input :carton, required: true %>
     </div>
 
     <div class="modal-footer">
@@ -23,48 +24,3 @@
 
   </div>
 <% end %>
-<script>
-  function handleSubmitShipment(){
-    $("#shipment_save").on('click', function(){
-        url = '<%= create_shipment_admin_shipments_path() %>'
-        showLoading();
-        $("#shipment_message").hide();
-
-        shipment_date = $("#shipment_shipment_date").val()
-        consignment_number = $("#shipment_consignment_number").val();
-        cost = $("#shipment_cost").val();
-
-        data = $("#new_shipment").serialize();
-
-        $.ajax({
-          type: 'POST',
-          dataType: 'json',
-          url : url,
-          data: data,
-
-          success: function(response){
-             hideLoading();
-             if(response["status"] == "failed"){
-                $("#shipment_message").removeClass('alert-success').addClass('alert-error').html(response.message).show();
-              }
-  
-             else{
-                $("#shipment_message").removeClass('alert-error').addClass('alert-success').html(response.message).show();
-                setTimeout(function(){
-                    window.location.href = '<%= admin_shipments_path() %>' ;
-                }, 500);
-   
-              }
-  
-          }
-
-
-        });
-        return false;
-
-    });
-  }
- $(function(){
-  handleSubmitShipment();
- })
-</script>

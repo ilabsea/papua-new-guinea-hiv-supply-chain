@@ -6,7 +6,9 @@
 <div class='well no-background' >
   <ul >
     <li> Site : <b> <%=@shipment.site.name %> </b> </li>
+    <li> Order Number : <b> <%=@shipment.order.order_number %> </b> </li>
     <li> Consignment number : <b> <%=@shipment.consignment_number%> </b> </li>
+    <li> Weight : <b> <%= pluralize(@shipment.weight, 'Kg') %> </b> </li>
     <li> 
       Cost : 
       <b>  <%= link_to @shipment.cost , '#cost_shippement_dialog',
@@ -29,6 +31,7 @@
     <tr>
       <th class='nth-table'>#</th>
       <th>Commodity</th>
+      <th>Pack Size</th>
       <th>Unit</th>
       <th>Quantity Issued</th>
       <th>Quantity Suggested</th>
@@ -41,6 +44,7 @@
       <tr>
         <td><%= current_entries + index %></td>
         <td><%=shipment_line.order_line.commodity.name %></td>
+        <td><%=shipment_line.order_line.commodity.pack_size %></td>
         <td><%=shipment_line.order_line.commodity.unit.name %></td>
         <td><%=shipment_line.quantity_issued %></td>
         <td><%=shipment_line.quantity_suggested %> </td>
@@ -68,52 +72,13 @@
 
     <div class="modal-footer">
       <%= link_button_cancel ' Close ', "javascript:void()", :'aria-hidden' => true, :data=> {'dismiss' => :modal, :skip_loading => true}  %>
-      <%= link_button_save ' Save ', 'javascript:void(0)' , :id => 'shipment_save', :class =>'btn-primary' , :data => {:skip_loading => true} %>
+      <%= link_button_save ' Save ', 'javascript:void(0)' , 
+                            :id => 'shipment_show_save',
+                            :class =>'btn-primary',
+                            :data => {id: @shipment.id, url: update_cost_admin_shipment_path(@shipment), :skip_loading => true} %>
     </div>
 
   </div>
 <% end %>
-
-<script>
-  function handleSubmitShipment(){
-    $("#shipment_save").on('click', function(){
-        var id = <%= @shipment.id %> ;
-        url = '<%= update_cost_admin_shipment_path(@shipment) %>'
-        showLoading();
-        $("#shipment_message").hide();
-
-        cost = $("#shipment_cost").val();
-
-        data = { id : id, cost : cost };
-
-        $.ajax({
-          type: 'POST',
-          dataType: 'json',
-          url : url,
-          data: data,
-
-          success: function(response){
-             hideLoading();
-             if(response["status"] == "failed"){
-                $("#shipment_message").removeClass('alert-success').addClass('alert-error').html(response.message).show();
-              }
-  
-             else{
-                $("#shipment_message").removeClass('alert-error').addClass('alert-success').html(response.message).show();
-                setTimeout(function(){
-                    window.location.href = '<%= admin_shipment_path(@shipment) %>' ;
-                }, 500);
-   
-              }
-          }
-        });
-        return false;
-    });
-  }
-
- $(function(){
-  handleSubmitShipment();
- })
-</script>
 
 

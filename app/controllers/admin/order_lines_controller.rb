@@ -7,9 +7,7 @@ module Admin
         @order_lines = @order.order_lines.drug.paginate(paginate_options)
       else params[:type] == CommodityCategory::TYPES_KIT
         @order_lines = @order.order_lines.kit.paginate(paginate_options)  
-      end  
-
-      @app_title = "Order lines"
+      end
     end
 
     def approve_all

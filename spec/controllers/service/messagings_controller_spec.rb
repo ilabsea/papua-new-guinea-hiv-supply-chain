@@ -13,16 +13,15 @@ describe Service::MessagingsController do
    end
 
     it "should be successful with valid auth and params" do
-      nuntium_config = NuntiumMessagingAdapter.instance.config
 
-      user = nuntium_config['incoming_username']
-      pwd  = nuntium_config['incoming_password']  
+      user = ENV['NUNTIUM_INCOMING_USER']
+      pwd  = ENV['NUNTIUM_INCOMING_PWD']
 
       basic_auth(user, pwd)
 
       post :nuntium, @attrs
       response.status.should eq 200
-      response.body.should eq '{"to":"sms://85597666666","body":"you have successfully reported","from":"Health supply chain"}'  
+      response.body.should eq '{"to":"sms://85597666666","body":"you have successfully reported"}'  
     end
 
     it "should be failed with invalid auth" do

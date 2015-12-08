@@ -7,7 +7,6 @@
 <%= page_header 'Requisition Form Submission' %>
 
 <%=simple_form_for [:admin,@requisition_report], :html => {:class => 'form-horizontal' , :multipart => true} do |f|%>
-  <%= f.error_notification %>
   <%= f.input :form, :as =>:file %>
 
   <div class="form-actions">

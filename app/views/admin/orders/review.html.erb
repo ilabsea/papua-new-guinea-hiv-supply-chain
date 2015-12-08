@@ -10,7 +10,7 @@
   drug =  @type == CommodityCategory::TYPES_DRUG ? 'active' : '' 
   kit  =  @type == CommodityCategory::TYPES_KIT  ? 'active' : ''
 %>
-<div class="tabbable"> 
+<div class="tabbable" style='position:absolute;'> 
     <ul class="nav nav-tabs">
       <li class="<%= drug %>"  >
         <a href="#drug" data-toggle="tab" data-skip-loading="true" >Drugs</a>
@@ -25,11 +25,6 @@
         <div class="clearfix">
            <h4 class="pull-left"> Drug Commodities </h4>
            <div class='pull-right'>
-             <!--  
-             <%= link_to 'Approve All Drug', approve_all_admin_order_order_lines_path(@order, type: CommodityCategory::TYPES_DRUG),
-                         method: :put,
-                         class: "btn btn-primary" %>
-              -->
            </div>
          </div>
 
@@ -46,11 +41,6 @@
          <div class="clearfix">
            <h4 class="pull-left"> Kit Commodities </h4>
            <div class='pull-right'>
-             <!-- 
-             <%= link_to 'Approve All Kit', approve_all_admin_order_order_lines_path(@order, type: CommodityCategory::TYPES_KIT),
-                         method: :put,
-                         class: "btn btn-primary" %>
-              -->
            </div>
          </div>
          <div class='alert alert-error' id='error-kit' style='display: none;' ></div>

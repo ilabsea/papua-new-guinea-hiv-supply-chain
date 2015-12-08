@@ -3,17 +3,18 @@
 # Table name: commodities
 #
 #  id                    :integer          not null, primary key
-#  name                  :string(255)
+#  name                  :string(50)
 #  commodity_category_id :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  unit_id               :integer
+#  strength_dosage       :string(255)
 #  abbreviation          :string(255)
 #  quantity_per_packg    :string(255)
 #  pack_size             :float
 #  regimen_id            :integer
 #  lab_test_id           :integer
-#  unit_id               :integer
-#  strength_dosage       :string(255)
+#  position              :integer          default(0)
 #
 
 class Commodity < ActiveRecord::Base
@@ -29,7 +30,7 @@ class Commodity < ActiveRecord::Base
   belongs_to :regimen
   belongs_to :lab_test
 
-  has_many :order_lines, dependent: :destroy
+  has_many :order_lines
 
   validates :name, :unit_id, :commodity_category_id, presence: true
   validates :name, uniqueness: true
@@ -49,6 +50,12 @@ class Commodity < ActiveRecord::Base
   #     errors.add(:lab_test_id, "can't be blank") if self.lab_test_id.blank?
   #   end
   # end
+
+  def self.reorder attrs
+    attrs.each do |id, position|
+      self.where(['id = ?', id]).update_all(position: position)
+    end
+  end
 
   def ref_name
     names = []

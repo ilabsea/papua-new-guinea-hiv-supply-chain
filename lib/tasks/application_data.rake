@@ -46,7 +46,6 @@ end
 
 
 def load_provinces
-    ActiveRecord::Base.connection.execute("TRUNCATE sites")
     output_message "Loading provinces to database"
     [
       [ 'PG-NCD' ,  'National Capital District' ],
@@ -77,7 +76,6 @@ def load_provinces
 end
 
 def load_sites
-    ActiveRecord::Base.connection.execute("TRUNCATE sites")
     provinces = Province.all
     output_message "Loading sites to database"
     [
@@ -122,8 +120,6 @@ def load_sites
     ].each do |site|
         output_message("Loading Site : #{site[0]}")
         Site.create!(:name => site[0],
-                     :lat => site[1],
-                     :lng => site[2],
                      :service_type => site[3],
                      :suggestion_order => site[4],
                      :order_frequency => 1 + rand(3) + site[5],
@@ -142,7 +138,6 @@ def load_sites
 end
 
 def load_categories
-    ActiveRecord::Base.connection.execute("TRUNCATE categories") 
     output_message("Loading Category") 
     [ 
       ["Drugs", "HIV/AIDS Drugs"],
@@ -157,7 +152,6 @@ def load_categories
 end
 
 def load_commodity_categories
-  ActiveRecord::Base.connection.execute("TRUNCATE commodity_categories")
   output_message("Loading Commodity Category")
   [
     ["ARV Adult 1st Line", CommodityCategory::TYPES_DRUG ],
@@ -179,7 +173,6 @@ def load_commodity_categories
 end
 
 def load_units
-  ActiveRecord::Base.connection.execute("TRUNCATE units")
   output_message("Loading Unit")
   [
     ["Bott"],
@@ -217,7 +210,6 @@ def load_setting_messages
 end
 
 def load_commodities
-  ActiveRecord::Base.connection.execute("TRUNCATE commodities")
   output_message("Loading Commodities")
 
 

@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   ROLES_SITE = "Site"
   ROLES_AMS  = "AMS"
 
-  ROLES = [ ROLES_ADMIN, ROLES_REVIEWER, ROLES_DATA_ENTRY_AND_REVIEWER, ROLES_DATA_ENTRY, ROLES_SITE , ROLES_AMS]
+  ROLES = [ ROLES_ADMIN, ROLES_SITE, ROLES_DATA_ENTRY, ROLES_DATA_ENTRY_AND_REVIEWER, ROLES_REVIEWER, ROLES_AMS ]
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -43,8 +43,8 @@ class User < ActiveRecord::Base
          :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :user_name, :phone_number, :display_name, :role ,
-                  :email, :password, :password_confirmation, :remember_me, :site_id , :current_password
+  attr_accessible :login, :user_name, :phone_number, :display_name, :role , :site_id , :site,
+                  :email, :password, :password_confirmation, :remember_me, :current_password
   # attr_accessible :title, :body
   
   attr_accessor :login, :current_password
@@ -55,10 +55,10 @@ class User < ActiveRecord::Base
   validates :role, :presence => true
   validates :site, :presence => true, :if => :site_role?
 
+  has_many :requisition_reports
   has_many :orders
   has_many :import_survs
   belongs_to :site 
-  has_many :import_survs
 
   def site_role?
      self.site?

@@ -1,25 +1,26 @@
 module Admin
   class RequisitionReportsController < Controller
-    before_filter :_load_requistion_reports, :only => :index #overide load_resource
+    before_filter :load_requistion_reports, :only => :index #overide load_resource
     load_and_authorize_resource
     skip_authorize_resource :only => [:download]
 
     def index
-      _load_requistion_reports
+      load_requistion_reports
     end
 
     def new
       # @requisition_report = RequisitionReport.new
-      _fill_attribute
+      fill_attribute
     end
 
     def create
       @requisition_report = RequisitionReport.new params[:requisition_report]
-      _fill_attribute
+      fill_attribute
 
       if @requisition_report.save_nested_order
         redirect_to admin_requisition_reports_path, :notice => 'Order has been created successfully'
       else
+        flash.now[:alert] = @requisition_report.errors.full_messages.join("<br />")
         render :new
       end
     end
@@ -44,7 +45,7 @@ module Admin
       end
     end
 
-    def _fill_attribute
+    def fill_attribute
       @requisition_report.site = current_user.site
       @requisition_report.user = current_user
     end
@@ -61,9 +62,9 @@ module Admin
       end
     end
 
-    def _load_requistion_reports
+    def load_requistion_reports
       if current_user.site?
-      @requisition_reports = current_user.site.requisition_reports.paginate(paginate_options)
+        @requisition_reports = current_user.site.requisition_reports.paginate(paginate_options)
       elsif current_user.admin?
         @requisition_reports = RequisitionReport.paginate(paginate_options)  
       end

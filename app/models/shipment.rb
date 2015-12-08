@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  consignment_number   :string(20)
-#  status               :string(20)
+#  status               :string(25)
 #  shipment_date        :date
 #  received_date        :datetime
 #  user_id              :integer
@@ -15,10 +15,11 @@
 #  sms_logs_count       :integer          default(0)
 #  shipment_lines_count :integer          default(0)
 #  last_notified_date   :datetime
-#  lost_date            :datetime         default(2015-09-30 03:11:51 UTC)
+#  lost_date            :datetime         default(2015-11-16 04:07:55 UTC)
 #  cost                 :float
 #  carton               :integer
 #  site_messages_count  :integer          default(0)
+#  weight               :float
 #
 
 class Shipment < ActiveRecord::Base
@@ -31,7 +32,7 @@ class Shipment < ActiveRecord::Base
   has_many :sms_logs, :dependent => :destroy
   has_many :site_messages, :dependent => :destroy
 
-  attr_accessible :shipment_date, :consignment_number, :status, :user, :received_date, :lost_date, :cost, :carton
+  attr_accessible :shipment_date, :consignment_number, :status, :user, :received_date, :lost_date, :cost, :carton, :weight
 
   STATUS_LOST = 'Lost'
   STATUS_RECEIVED = 'Received'
@@ -42,13 +43,19 @@ class Shipment < ActiveRecord::Base
 
   validates :consignment_number, :shipment_date, :presence => true
   validates :consignment_number, :uniqueness => true
-  validates :consignment_number, numericality: true
-  validates :consignment_number, length: { in: 9..10 }
+  validates :consignment_number, format: { with: /^[A-Za-z0-9]+$/}
+  validates :consignment_number, length: { in: 1..15 }
+  validates :weight, numericality: {greater_than_or_equal_to: 0 }
 
   validates :cost, :carton , numericality: { greater_than_or_equal_to: 0, message: 'is not a valid number'}
   validates :user, :presence => true
 
   SHIPMENT_STATUSES = [STATUS_IN_PROGRESS, STATUS_LOST, STATUS_RECEIVED, STATUS_PARTIALLY_RECEIVED]
+
+
+  def self.with_status status_type
+    status_type.blank? ? where(" shipments.status > '' ") : where(["shipments.status = ?", status_type ])
+  end
 
   def self.alert_for_confirm_status now
       return true if PublicHoliday.is_holiday?(now.to_date)
@@ -73,11 +80,8 @@ class Shipment < ActiveRecord::Base
     translation = setting.str_tr options
 
     #send_via_nuntium message_item
-    Sms.send NuntiumMessagingAdapter.instance do |sms|
-      sms.from  = ShipmentSms::APP_NAME
-      sms.to    = self.site.mobile.with_sms_protocol
-      sms.body  = translation
-    end
+    Sms.instance.send( to:   self.site.mobile.with_sms_protocol,
+                       body: translation )
 
     log = {
       :site       => self.site,

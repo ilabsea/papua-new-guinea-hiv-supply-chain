@@ -3,5 +3,9 @@
     dateFormat: "<%= ENV['DATE_FORMAT_JS'] %>",
     typeDrug: "<%= CommodityCategory::TYPES_DRUG %>",
     typeKit: "<%= CommodityCategory::TYPES_KIT %>",
+    url: {
+      createShipment: "<%= create_shipment_admin_shipments_path() %>",
+      shipmentList: "<%= admin_shipments_path() %>"
+    }
   }
 </script>

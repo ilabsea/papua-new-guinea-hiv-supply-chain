@@ -7,6 +7,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  com_type   :string(255)
+#  pos        :integer          default(0)
 #
 
 class CommodityCategory < ActiveRecord::Base
@@ -20,6 +21,14 @@ class CommodityCategory < ActiveRecord::Base
   TYPES_KIT  = 'Kit'
 
   TYPES = [TYPES_DRUG, TYPES_KIT ]
+
+  def self.reorder attrs
+    p "------------"
+    p attrs
+    attrs.each do |id, position|
+      self.where(['id = ?', id]).update_all(pos: position)
+    end
+  end
 
   def kit?
     self.com_type == CommodityCategory::TYPES_KIT

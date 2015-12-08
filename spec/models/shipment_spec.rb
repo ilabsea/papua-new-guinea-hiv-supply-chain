@@ -4,7 +4,7 @@
 #
 #  id                   :integer          not null, primary key
 #  consignment_number   :string(20)
-#  status               :string(20)
+#  status               :string(25)
 #  shipment_date        :date
 #  received_date        :datetime
 #  user_id              :integer
@@ -15,10 +15,11 @@
 #  sms_logs_count       :integer          default(0)
 #  shipment_lines_count :integer          default(0)
 #  last_notified_date   :datetime
-#  lost_date            :datetime         default(2015-09-30 03:11:51 UTC)
+#  lost_date            :datetime         default(2015-11-16 04:07:55 UTC)
 #  cost                 :float
 #  carton               :integer
 #  site_messages_count  :integer          default(0)
+#  weight               :float
 #
 
 require 'spec_helper'
@@ -30,6 +31,7 @@ describe Shipment do
       :status => Shipment::STATUS_IN_PROGRESS,
       :consignment_number => '0101929100',
       :shipment_date => Time.now,
+      :weight => 1.0,
       :user => @user,
       :cost => 201.29,
       :carton => 10
@@ -75,7 +77,18 @@ describe Shipment do
       shipment2.consignment_number = shipment1.consignment_number
       shipment2.save.should be_false
       shipment2.errors.full_messages[0].should eq 'Consignment number has already been taken'
+    end
 
+    it 'should require consignment_number to have length between 1 and 15' do
+      shipment = Shipment.new @attr.merge(:consignment_number  => "1234567890123456" )
+      result = shipment.save
+      result.should be_false
+    end
+
+    it 'should require consignment_number with format alpha numberic characters' do
+      shipment = Shipment.new @attr.merge(:consignment_number  => "12345678-#" )
+      result = shipment.save
+      result.should be_false
     end
 
   end
@@ -164,7 +177,7 @@ describe Shipment do
     it 'should alert_deadline' do
       Setting[:message_asking_site] = 'hi {site} Consignment: {consignment} date: {shipment_date}'
 
-      Sms.should_receive(:send)
+      Sms.instance.stub(:send).and_return(true)
 
       @site = FactoryGirl.create :site, name: 'Kampongchame'
       @shipment = FactoryGirl.create :shipment, site: @site, shipment_date: Time.new(2013,9,9)

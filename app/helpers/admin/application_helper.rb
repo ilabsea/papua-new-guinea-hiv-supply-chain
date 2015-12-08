@@ -1,30 +1,21 @@
 module Admin::ApplicationHelper
-  def app_name
-    ENV['APP_NAME']
-  end
-  
-  def app_title
-     @app_title.nil? ?  app_name : (@app_title + " &raquo; ").html_safe + app_name
+  def page_title
+    content_for?(:title) ? "#{content_for(:title)} | #{ENV['APP_NAME']}"  : ENV['APP_NAME']
   end
   
   def page_header title, options={},  &block
-     left_size  = options[:left] || 8
-     right_size = options[:right] || (12 - left_size) 
-    
-     content_tag :div,:class => "row-fluid list-header" do
+     content_tag :div,:class => "row-fluid list-header clearfix" do
         if block_given? 
-            content_title = content_tag :div, :class => "span#{left_size} left" do
+            content_title = content_tag :div, :class => "pull-left" do
               content_tag(:h3, title, :class => "header-title")
             end
 
             output = with_output_buffer(&block)
-            content_link = content_tag(:div, output, {:class => "span#{right_size} right top-15"})
+            content_link = content_tag(:div, output, {:class => "pull-right"})
             content_title + content_link
         else
-            content_tag :div , :class => "row-fluid" do 
-               content_tag(:h3, title, :class => "header-title")
-            end
-        end 
+          content_tag(:h3, title, :class => "header-title")
+        end
      end
   end
 
@@ -130,8 +121,7 @@ module Admin::ApplicationHelper
 
   def link_button type, text, url, options={}
     # options[:class] = options[:class] ? "#{options[:class]}" : ""
-    icon = content_tag "i", " ", :class => "#{type} "
-    link_to (icon + " #{text}".html_safe), url, options
+    link_to(url, options) {icon(type) + " #{text}"}
   end
 
   def link_button_save text, url, options={}
@@ -236,6 +226,12 @@ module Admin::ApplicationHelper
   def button_save text, klass=''
     content_tag :button, :class => "btn btn-primary #{klass}", :'data-system-loading' => true do
       icon('check-square') + " #{text}"
+    end
+  end
+
+  def button_icon icon_name, text, klass=''
+    content_tag :button, :class => "btn btn-primary #{klass}", :'data-system-loading' => true do
+      icon(icon_name) + " #{text}"
     end
   end
 

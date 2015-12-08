@@ -14,7 +14,7 @@
 class Regimen < ActiveRecord::Base
   belongs_to :regimen_category
   belongs_to :unit
-  has_many :commodities, dependent: :nullify
+  has_many :commodities
 
   attr_accessible :name, :strength_dosage, :regimen_category_id, :unit_id
 

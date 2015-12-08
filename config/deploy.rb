@@ -25,8 +25,10 @@ set :repository, "https://channainfo@bitbucket.org/channainfo/papua-new-guinea-h
 set :scm, :git
 set :scm_username, 'channainfo'
 
+set :branch, 'develop'
+
 set :deploy_to, '/var/www/png'
-set :deploy_via, :remote_cache
+# set :deploy_via, :remote_cache
 
 default_environment['TERM'] = ENV['TERM']
 
@@ -40,16 +42,18 @@ namespace :deploy do
   end
 
   task :symlink_data, :roles => :app do
-    run "ln -nfs #{shared_path}/data #{release_path}/public/data"
+    run "ln -s #{shared_path}/data #{release_path}/public/data"
+    run "ln -s #{shared_path}/uploads #{release_path}/public/uploads"
   end
 
   task :whenever do
-  	run "cd #{release_path} && RAILS_ENV=production bundle exec whenever --update-crontab png-health-system "
+    run "cd #{release_path} && RAILS_ENV=production bundle exec whenever --update-crontab png-health-system "
   end
 
   task :symlink_config, roles: :app do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-    run "ln -nfs #{shared_path}/config/nuntium.yml  #{release_path}/config/nuntium.yml"
+    # run "ln -nfs #{shared_path}/config/nuntium.yml  #{release_path}/config/nuntium.yml"
+    run "ln -nfs #{shared_path}/config/application.yml  #{release_path}/config/application.yml"
   end
 end
 
@@ -59,18 +63,18 @@ namespace :db do
   end
 
   task :seed do
-  	run "cd #{release_path} && bundle exec rake db:seed RAILS_ENV=production"
+    run "cd #{release_path} && bundle exec rake db:seed RAILS_ENV=production"
   end
 
   task :default_data do
-  	run "cd #{release_path} && bundle exec rake png:load_default_data RAILS_ENV=production"
+    run "cd #{release_path} && bundle exec rake png:load_default_data RAILS_ENV=production"
   end
 end
 
 
 namespace :assets do
   task :precompile do
-  	run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=production"
+    run "cd #{release_path} && bundle exec rake assets:precompile RAILS_ENV=production"
   end
 end
 

@@ -1,0 +1,107 @@
+<%= content_for :breadcrumb do %>
+  <%= breadcrumb [{'Orders' => admin_orders_path}, {'Detail' => false}] %>
+<% end %>
+
+<%= page_header 'Order Detail' %>
+
+<% 
+  @kit = 1
+  @drug = 1
+%>
+
+<% @order.order_lines.each do |order_line| %>
+  <% if order_line.drug? %>
+      <%=content_for :drug do  %>
+        <%= render "order_line_detail_row", order_line: order_line, index: @drug %>
+        <% @drug += 1 %>
+      <% end %>
+
+  <% else %>
+      <%=content_for :kit do %>
+        <%= render "order_line_detail_row", order_line: order_line, index: @kit %>
+      <% end %>
+      <% @kit += 1 %> 
+  <% end %>
+<% end %>
+
+
+<div class="tabbable" style="position:relative;float:left;"> 
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#drug" data-toggle="tab" data-skip-loading='true'>Drugs</a>
+      </li>
+      <li> 
+        <a href="#kit" data-toggle="tab" data-skip-loading='true'>Kits</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" id="drug">
+        <table class='table table-hover table-order-line-form' >
+          <thead>
+            <tr>
+              <th> # </th>
+              <th> ID </th>
+              <th class="expand" >Commodity</th>
+              <th class="expand" >Quantity Per Package</th>
+              <th class="expand" >Pack Size</th>
+              <th class="expand" >Strength</th>
+              <th class="expand">Unit</th>
+              <th class="expand" title="# Of Patient on Drug regiment"># Patient</th>
+              <th class="expand" title="Stock on hand">Stock on hand</th>
+              <th class="expand" title="Monthly use">Monthly use</th>
+              <% if !current_user.data_entry? %>
+                <th class="expand" title="System Suggestion">Suggestion</th>
+                <th class="expand" title="Quantity Suggested">Quantity Suggested</th>
+              <% end %>
+
+              <th class="expand" >Status</th>
+              <th class="expand" >Reviewer Note</th>
+
+              <th class="expand" style='width:220px;' title="Entry Note">Entry Note</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= yield(:drug) %>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="tab-pane" id="kit">
+        <table class='table table-hover table-order-line-form' >
+          <thead>
+            <tr>
+              <th> # </th>
+              <th> ID </th>
+              <th class="expand" >Commodity</th>
+              <th class="expand" >Quantity Per Package</th>
+              <th class="expand" >Pack Size</th>
+              <th class="expand" >Strength</th>
+              <th class="expand">Unit</th>
+              <th class="expand" title="# Of Patient on Drug regiment"># Patient</th>
+              <th class="expand" title="Stock on hand">Stock on hand</th>
+              <th class="expand" title="Monthly use">Monthly use</th>
+
+              <% if !current_user.data_entry? %>
+                <th class="expand" title="System Suggestion">Suggestion</th>
+                <th class="expand" title="Quantity Suggested">Quantity Suggested</th>
+              <% end %>
+
+              <th class="expand" >Status</th>
+              <th class="expand" >Reviewer Note</th>
+
+              <th class="expand" style='width:220px;' title="Entry Note">Entry Note</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= yield(:kit) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+

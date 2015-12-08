@@ -23,24 +23,24 @@ module Admin
     end
 
     def index
-      @shipments = Shipment.includes(:sites).unscoped.joins("LEFT OUTER JOIN sites ON sites.id = shipments.site_id").order( "#{order_params[:field]} #{order_params[:order]}" )
-      @shipments = @shipments.where(["status =:status", :status => params[:type] ]) if params[:type]
+      @shipments = Shipment.includes(:site, :order)
+                           .with_status(params[:type])
+                           .order( "#{order_params[:field]} #{order_params[:order]}" )
       @shipments = @shipments.paginate(paginate_options)
     end 
 
     def new
       @order = Order.find params[:order_id]
       @shipment = @order.shipments.build()
-      @app_title = "Create new shipment"  
     end
 
     def order
       @shipment_session = ShipmentSession.new(session)
 
       @order_lines = OrderLine.includes(:commodity => :unit, :order => :site )
-                              .items(params)
                               .data_filled
-                              .not_shipped
+                              .items(params)
+                              .order('quantity_suggested DESC')
                               .paginate(paginate_options.merge(per_page: 50))
 
 
@@ -48,9 +48,9 @@ module Admin
 
       @shipment = Shipment.new
 
-      @orders = Order.includes(:site).approved
-      @orders.each do |order|
-      site_item = [order.site.name, order.site.id ]
+      orders = Order.joins(:site).approved
+      orders.each do |order|
+        site_item = [order.site.name, order.site.id ]
         @sites << site_item if !@sites.include?(site_item)
       end
     end
@@ -121,8 +121,8 @@ module Admin
     end
 
     def show
-      @app_title = "Shipment detail"
-      @shipment = Shipment.includes(:shipment_lines => {:order_line => :commodity}).find params[:id]
+      @shipment = Shipment.includes(shipment_lines: [ order_line:  :commodity])
+                          .order('commodities.position, commodities.name').find params[:id]
       @shipment_lines = @shipment.shipment_lines.paginate paginate_options
     end
 

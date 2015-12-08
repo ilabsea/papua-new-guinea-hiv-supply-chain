@@ -3,7 +3,7 @@ $(function(){
 })
 
 
- function handleButton(){
+function handleButton(){
   $(".intercept").on('click', function(e){ 
     $elm = $(this);
     id = $elm.attr("data-ref");
@@ -57,4 +57,4 @@ $(function(){
     });
     return false;
   });
- }
+}

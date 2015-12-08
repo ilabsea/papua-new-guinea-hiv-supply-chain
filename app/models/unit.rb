@@ -9,8 +9,11 @@
 #
 
 class Unit < ActiveRecord::Base
+  has_many :commodities
+  has_many :regimen
+  has_many :lab_tests
+
   attr_accessible :name
   validates :name, :presence => true
   validates :name, :uniqueness => true
-  has_many :commodities
 end

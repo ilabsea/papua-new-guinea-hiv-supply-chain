@@ -2,13 +2,10 @@
 <input type="hidden" value='<%= tab_order_line_admin_orders_path() %>' id='table-order-tab-order-id' />
 
 <%= simple_form_for [:admin, @order], :html => { :class => 'form-horizontal', :id => 'form_order' } do |f| %>
-  <%= f.error_notification %>
-
   <%= render 'form_top', f: f if @order.new_record? %>
-  <div id='order_lines_tab'>
+  <div id='order_lines_tab' class="clearfix">
     <%= render 'order_lines', :f => f, :order => @order %>
   </div>
-
   <div class="form-actions">
     <%= button_save ' Save '%>
     <%= link_button_cancel 'Cancel', admin_orders_path %>

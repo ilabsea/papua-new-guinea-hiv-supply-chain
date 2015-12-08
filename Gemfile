@@ -16,7 +16,7 @@ gem 'bootstrap-datepicker-rails'
 
 gem 'spreadsheet'
 gem 'carrierwave'
-gem 'activerecord-import'
+# gem 'activerecord-import'
 gem 'nuntium_api'
 gem 'whenever', :require => false
 gem 'capistrano-rbenv'
@@ -28,6 +28,7 @@ gem "audited-activerecord", "~> 3.0"
 # in production environments by default.
 gem 'bootstrap-sass', '~> 2.3.0.0'
 gem 'font-awesome-sass', '~> 4.4.0'
+gem 'foreigner'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

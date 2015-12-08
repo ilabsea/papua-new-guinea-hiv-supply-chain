@@ -2,7 +2,7 @@ module Admin
   class DashboardsController < Controller
     def index
       if current_user.admin?
-        redirect_to admin_settings_path()
+        redirect_to monitor_admin_sms_logs_path(:type => SmsLog::SMS_TYPE_REQUISITION )
       elsif current_user.site?
         redirect_to admin_requisition_reports_path()
       else

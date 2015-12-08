@@ -41,8 +41,8 @@ module Admin
         @category = LabTestCategory.find(params[:id])
         @category.destroy
         redirect_to admin_lab_test_categories_path , :notice => 'Lab Test Category has been removed'
-      rescue Exception => ex
-        redirect_to admin_lab_test_categories_path , :error => ex.message
+      rescue ActiveRecord::StatementInvalid => ex
+        redirect_to admin_lab_test_categories_path , :alert => ex.message
       end
     end
 

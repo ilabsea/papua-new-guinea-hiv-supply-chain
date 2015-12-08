@@ -1,21 +1,21 @@
-<div class="well">
+<div>
   <table class="table-order">
     <tr>
       <td>
-        <%= f.input :site_id, :collection => Site.all, :include_blank => 'Select a Site' %>
+        <%= f.input :site_id, :collection => Site.order('sites.name').all, :include_blank => 'Select a Site' %>
       </td>
 
-      <td style="vertical-align:center; padding-left: 15px;">
-        <%= f.input :order_date, :as => 'date_time_picker', 
-                                 :label => 'Created' ,
-                                 :input_html => {:class => 'datepicker-fit'}
+      <td style="vertical-align:center;">
+        <%= f.input :order_date, :as => 'date_time_picker',
+                                 :label => false,
+                                 :input_html => {:class => 'datepicker-fit', placeholder: 'Order Date'}
                                  %>   
       </td>
 
-      <td style="vertical-align:center; padding-left: 15px;">
+      <td style="vertical-align:center;">
           <%= f.input :date_submittion, :as => 'date_time_picker',
-                                        :label => 'Received',
-                                        :input_html => { :class  => 'datepicker-fit'} 
+                                        :label => 'Sumission Date',
+                                        :input_html => { :class  => 'datepicker-fit', placeholder: 'Sumission Date'} 
                                         %> 
       </td>
     </tr>

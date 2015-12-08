@@ -11,17 +11,21 @@ module Admin
      @date_end   = params[:date_end]
      @orders = Order.includes(:site, :user_data_entry, :review_user)
 
-     if current_user.reviewer?
-        @orders = @orders.where(['status != ?', Order::ORDER_STATUS_PENDING ])
-     end
+     @orders = @orders.where(['status != ?', Order::ORDER_STATUS_PENDING ]) if current_user.reviewer?
+     @orders = @orders.where(['status = ?', Order::ORDER_STATUS_APPROVED ]) if current_user.ams?
 
-     if(!params[:type].blank?)
-       @orders = @orders.of_status(params[:type])
-     end
+     @orders = @orders.of_status(params[:type]) if(!params[:type].blank?)
      
-     @orders = @orders.of_user(current_user).in_between(@date_start, @date_end)
+     @orders = @orders.of_user(current_user)
+                      .in_between(@date_start, @date_end)
+                      .order('id desc')
+
      @orders = @orders.paginate(paginate_options)
 
+   end
+
+   def show
+     load_order
    end
 
    def review
@@ -30,7 +34,6 @@ module Admin
    end
 
    def create
-     raise 'Unable to create order. Only data entry user is able to create order' if !(current_user.data_entry? || current_user.data_entry_and_reviewer?)
      @order = Order.new params[:order]
      @order.user_data_entry = current_user
      @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
@@ -40,6 +43,14 @@ module Admin
       @order.update_approval if current_user.data_entry_and_reviewer?
       redirect_to admin_orders_path, :notice => 'Order has been created'
     else
+      errors = {}
+      @order.order_lines.each do |order_line|
+         if order_line.errors.size > 0
+            errors[order_line.errors.full_messages] = order_line.errors.full_messages
+         end
+      end
+
+      flash.now[:alert] = "Failed to save order with errors: " + errors.values.join("\n")
       render :new
     end
    end
@@ -67,28 +78,48 @@ module Admin
        @order.update_approval if current_user.data_entry_and_reviewer?
        redirect_to admin_orders_path, :notice => 'Order has been updated succesfully'
      else
-       errors = []
-       errors += @order.errors.full_messages
+       errors = {}
        @order.order_lines.each do |order_line|
          if order_line.errors.size > 0
-            errors += order_line.errors.full_messages
+            errors[order_line.errors.full_messages] = order_line.errors.full_messages
          end
        end
-       flash.now[:alert] = "Failed to save order with errors: " + errors.join("\n")
+
+       flash.now[:alert] = "Failed to save order with errors: " + errors.values.join("\n")
        render :edit
      end
    end
 
    def destroy
-     begin
+     Order.transaction do
        @order = Order.find params[:id]
-       @order.requisition_report.destroy
-       @order.destroy
+       @order.requisition_report.destroy if @order.requisition_report
+     end
+     redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
+   end
 
-       redirect_to admin_orders_path, :notice => 'Order has been deleted succesfully'
-     rescue Exception => e
-       redirect_to admin_orders_path, :error =>  e.message
-     end  
+   def export_excel
+     month = params[:month].to_i + 1
+     year = params[:year].to_i
+
+     start_date = Date.new(year, month, 1)
+     end_date   = Date.new(year, month, -1)
+
+     orders = Order.includes(:site, order_lines: [ commodity: [:unit] ])
+                  .where(['orders.order_date BETWEEN ? AND ? ', start_date, end_date ])
+     orders = orders.where(['orders.status = ?', params[:status] ]) if params[:status].present?
+     orders = orders.order('sites.name ASC')
+
+     exporter = ExportExcelOrder.new(orders)
+
+     file = "#{Rails.root}/public/data/orders-#{year}-#{month}.xls"
+     exporter.save_to_file(file)
+
+     send_file(file,
+               type: 'application/xls',
+               disposition: 'attachment',
+               streaming: true,
+               buffer_size: '4096')
    end
 
    def export
@@ -106,7 +137,10 @@ module Admin
    private
 
    def load_order
-     @order ||= Order.includes(:order_lines => :commodity).find params[:id]
+     @order = Order.includes(order_lines: [commodity: :unit])
+                   .order('commodities.position, commodities.name')
+                   .find(params[:id])
+     @order
    end
 
    def build_commodity_order_line order, site
@@ -114,7 +148,7 @@ module Admin
        order_line.commodity
      end 
 
-     non_existing_commodities = Commodity.order('name asc')
+     non_existing_commodities = Commodity.order('commodities.position ,commodities.name')
                                          .includes(:commodity_category)
                                          .all
                                          .select{|commodity| !existing_commodities.include?(commodity) }

@@ -2,7 +2,7 @@ module Admin
   class CommoditiesController < Controller
     load_and_authorize_resource
     def index
-        @commodities = Commodity.includes(:commodity_category, :regimen, :lab_test)
+        @commodities = Commodity.where("1=1")
 
         params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
         if (params[:type] ==  CommodityCategory::TYPES_DRUG)
@@ -10,7 +10,7 @@ module Admin
         elsif (params[:type] == CommodityCategory::TYPES_KIT)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
         end
-        @commodities = @commodities.paginate(paginate_options)
+        @commodities = @commodities.order('commodities.position, commodities.name').paginate(paginate_options)
     end
 
     def new
@@ -49,10 +49,14 @@ module Admin
         @commodity = Commodity.find(params[:id])
         @commodity.destroy
         redirect_to admin_commodities_url(:type => params[:type]), :notice => "Commodity has been removed" 
-      rescue Exception => e
-        redirect_to admin_commodities_url, :error => e.message         
+      rescue ActiveRecord::StatementInvalid => e
+        redirect_to admin_commodities_url(:type => params[:type]), :alert => e.message
       end
-      
+    end
+
+    def reorder
+      Commodity.reorder(params[:commodity])
+      redirect_to admin_commodities_path(type: params[:type])
     end
   end
 end

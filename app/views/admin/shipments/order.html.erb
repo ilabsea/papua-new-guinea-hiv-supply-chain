@@ -8,105 +8,125 @@
 
 <%= page_header "Orders pending for dispatch" %>
 
-<div class='row-fluid clearfix' >
-  <div class='pull-left' >
+<div class='well row-fluid clearfix' >
+    <h4> Filter orders </h4>
     <%= form_tag order_admin_shipments_path(request.query_parameters), :method => 'GET', :style => 'display:inline;' do |f| %>
+      <table>
+        <tr>
+          <td valign="top">
+            <span> Site </span>
+            <%= select_tag :site_id, options_for_select(@sites, params[:site_id]), 
+                           :id => :order_site_id , class: 'order-shipment',
+                           :prompt => "Select a site" %>
+          </td>
 
-      <span> Site </span>
-      <%= select_tag :site_id, options_for_select(@sites, params[:site_id]), 
-                     :id => :order_site_id , class: 'order-shipment',
-                     :prompt => "Select a site" %>
+          <td valign="top">
+            <span style='margin-left: 20px;'> Between </span>
+            <div class="input-append date datepicker">
+              <%= text_field_tag :start, params[:start],
+                     placeholder: 'Submission date',
+                     class: "datepicker-input date_time_picker required datepicker-fit date-field order-shipment md" %>
+              <span class="add-on"><i class="icon-calendar"> </i></span>
+            </div>
+          </td>
 
-      <span style='margin-left: 20px;'> From </span>
-      <div class="input-append date datepicker">
-        <%= text_field_tag :start, params[:start],
-               class: "datepicker-input date_time_picker required datepicker-fit date-field order-shipment md" %>
-        <span class="add-on"><i class="icon-calendar"> </i></span>
-      </div>
+          <td valign="top">
+            <span style='margin-left: 20px;'> and </span>
+            <div class="input-append date datepicker">
+              <%= text_field_tag :end, params[:end],
+                     placeholder: 'Submission date',
+                     class: "datepicker-input date_time_picker required datepicker-fit date-field order-shipment md" %>
+              <span class="add-on"><i class="icon-calendar"> </i></span>
+            </div>
+          </td>
 
-      <span style='margin-left: 20px;'> To </span>
-      <div class="input-append date datepicker">
-        <%= text_field_tag :end, params[:end],
-               class: "datepicker-input date_time_picker required datepicker-fit date-field order-shipment md" %>
-        <span class="add-on"><i class="icon-calendar"> </i></span>
-      </div>
+          <td valign="top" style="padding-left: 20px;">
+            <%= button_icon 'search', 'Filter' %>
+          </td>
+
+        </tr>
+
+      </table>
     <% end %>
   </div>
 
-   <div class='pull-right text-right'>
-     <%= link_button_new 'Create Shipment', '#shippement_dialog', :id => 'create_shippement', :data => {:skip_loading=> true}  %>
-   </div>
 </div>
 
 <%= render "dialog" %>
 
 <div class='alert alert-error' id='error-shipment' style='display: none;' ></div>
-<table class="table table-hover ">
-  <thead>
-    <tr>
-      <th><%=check_box_tag 'toggle_all', '1', false, :id => 'cb_toggle_all' %></th>
-      <th>Site</th>
-      <th>OrderId </th>
-      <th>Commodity</th>
-      <th>Unit</th>
-      <th>Amount</th>
-      <th>Approved Date</th>
-      <th>Quantity Dispatch </th>
-      <th>AMS remark </th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @order_lines.each_with_index do |order_line, index| %>
-      <%  
-          line_session = @shipment_session.find_by_key order_line.id 
-          klass        = line_session.nil?  ? '' : 'row-success' 
-          quantity     = line_session.nil?  ? '' : line_session[:quantity]
-          remark       = line_session.nil?  ? '' : line_session[:remark]
-          checked      = line_session.nil?  ? false : true
-
-      %>
-      <tr id='tr_<%= order_line.id %>'>
-        <td class='<%= klass  %>' > 
-          <%= check_box_tag 'toggle[]', '1', checked, :class => 'cb_items', :id => "toggle_#{order_line.id}", :data => {:id => order_line.id} %> 
-        </td>
-        <td class='<%= klass  %>'><%= order_line.order.site.name %></td>
-        <td class='<%= klass  %>'><%= order_line.order.id %></td>
-        <td title="<%=order_line.commodity.name%>" class=' td-expand <%= klass  %>'>
-          <%= truncate(order_line.commodity.name, length: 20) %>
-        </td>
-        <td><%=order_line.commodity.unit.name %></td>
-        <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
-        <td title="<%= h order_line.updated_at %>" class='<%= klass  %>'>
-          <%= time_ago_in_words order_line.updated_at %></td>
-
-        <td class='<%= klass  %>'>
-          <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' 
-                 name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> 
-
-          <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>' 
-             data-skip-loading='true' style='display: none;'
-             class='error'
-             data-content="Invalid value. Quantity dispatch must be a number and should be in the same site." data-original-title="" >
-             <i class='icon-exclamation-sign'></i>
-          </a>
-
-        </td>
-
-        <td class='<%= klass  %>'>
-          <input value='<%=remark%>' type='text' data-id='<%= order_line.id %>' class='content' name='order_line[remark]' id='ams_remark_<%= order_line.id %>' /> 
-        </td>
-
+<div class='clearfix'>
+  <table class="table table-hover" style='float:left; position:relative;'>
+    <caption style="text-align: left; padding: 10px 0px;">
+      <%= link_button_new 'Create Shipment', '#shippement_dialog', :id => 'create_shippement', :data => {:skip_loading=> true}  %>
+    </caption>
+    <thead>
+      <tr>
+        <th> <!-- <%=check_box_tag 'toggle_all', '1', false, :id => 'cb_toggle_all' %> --> </th>
+        <th class="expand">Site</th>
+        <th class="expand">Order ID</th>
+        <th class="expand">Order No </th>
+        <th class="expand">Commodity</th>
+        <th class="expand">Quantity Per Package</th>
+        <th class="expand">Pack Size</th>
+        <th class="expand">Unit</th>
+        <th class="expand">Amount</th>
+        <th class="expand">Submission</th>
+        <th class="expand">Approved at</th>
+        <th class="expand">Quantity Dispatch </th>
+        <th class="expand">AMS remark </th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
+    <tbody>
+      <% @order_lines.each_with_index do |order_line, index| %>
+        <%  
+            line_session = @shipment_session.find_by_key order_line.id 
+            klass        = line_session.nil?  ? '' : 'row-success' 
+            quantity     = line_session.nil?  ? '' : line_session[:quantity]
+            remark       = line_session.nil?  ? '' : line_session[:remark]
+            checked      = line_session.nil?  ? false : true
+
+        %>
+        <tr id='tr_<%= order_line.id %>'>
+          <td class='<%= klass  %>' > 
+            <%= check_box_tag 'toggle[]', '1', checked, :class => 'cb_items', :id => "toggle_#{order_line.id}", :data => {:id => order_line.id} %> 
+          </td>
+          <td class='<%= klass  %> expand'><%= order_line.order.site.name %></td>
+          <td class='<%= klass  %>'><%= order_line.order.id %></td>
+          <td class='<%= klass  %> expand'><%= order_line.order.order_number %></td>
+          <td title="<%=order_line.commodity.name%>" class=' expand td-expand <%= klass  %>'>
+            <%= truncate(order_line.commodity.name, length: 20) %>
+          </td>
+          <td class='<%= klass  %> expand'><%=order_line.commodity.quantity_per_packg %></td>
+          <td class='<%= klass  %> expand'><%=order_line.commodity.pack_size %></td>
+          <td class='<%= klass  %> expand'><%=order_line.commodity.unit.name %></td>
+          <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
+          <td class='expand <%= klass  %>'><%= show_date order_line.order.date_submittion %></td>
+          <td title="<%= h order_line.updated_at %>" class='expand <%= klass  %>'>
+            <%= show_date_time order_line.updated_at %></td>
+
+          <td class='<%= klass  %>'>
+            <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' 
+                   name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> 
+
+            <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>' 
+               data-skip-loading='true' style='display: none;'
+               class='error'
+               data-content="Invalid value. Quantity dispatch must be a number and should be in the same site." data-original-title="" >
+               <i class='icon-exclamation-sign'></i>
+            </a>
+
+          </td>
+
+          <td class='<%= klass  %>'>
+            <input value='<%=remark%>' type='text' data-id='<%= order_line.id %>' class='content' name='order_line[remark]' id='ams_remark_<%= order_line.id %>' /> 
+          </td>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <%= render_paginate_for @order_lines %>
-
-<script>
-
-
-</script>
-
 
