@@ -2,12 +2,14 @@ module Admin
   class CommoditiesController < Controller
     load_and_authorize_resource
     def index
-        @commodities = Commodity.where("1=1")
+        @commodities = Commodity.includes(:commodity_category, :unit)
 
         params[:type] = params[:type] || CommodityCategory::TYPES_DRUG
         if (params[:type] ==  CommodityCategory::TYPES_DRUG)
+          @commodities = @commodities.includes(:regimen)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_DRUG)
         elsif (params[:type] == CommodityCategory::TYPES_KIT)
+          @commodities = @commodities.includes(:lab_test)
           @commodities = @commodities.where("commodity_categories.com_type = ?", CommodityCategory::TYPES_KIT)
         end
         @commodities = @commodities.order('commodities.position, commodities.name').paginate(paginate_options)
