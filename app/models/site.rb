@@ -58,7 +58,11 @@ class Site < ActiveRecord::Base
   SMS_NOT_ALERTED = 0
 
   def deadline_date
-    self.order_start_at + self.order_frequency.months + self.number_of_deadline_sumission.days
+    number_of_month = self.order_frequency.to_i
+    number_of_day   = ((self.order_frequency - number_of_month) * 30).to_i
+
+    next_order = self.order_start_at + number_of_month.month + number_of_day.day 
+    next_order + self.number_of_deadline_sumission.days
   end
 
 
