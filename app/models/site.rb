@@ -51,7 +51,7 @@ class Site < ActiveRecord::Base
   validates :suggestion_order, :test_kit_waste_acceptable,  :numericality => {:greater_than_or_equal_to => 0 }   
   validates :in_every, numericality: { greater_than: 0}
 
-  SeviceType = ["ART", 'PMTCT', "VCCT", "LOGISTICS UNIT"]
+  SeviceType = ["ART", "HCT", "LOGISTICS UNIT", "Provincial Laboratory", 'PTTCT']
   Region = ['EHP', 'WHP', 'Momase', 'Southern']
 
   SMS_ALERTED = 1
