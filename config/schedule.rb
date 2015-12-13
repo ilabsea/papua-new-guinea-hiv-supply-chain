@@ -26,7 +26,7 @@ require File.expand_path('../environment', __FILE__)
 # p "Regenerate cron for #{number}(#{date_type})"
 
 every 1.hour do
-	rake "png:alert"
+  rake "png:alert"
 end
 
 # if date_type == Setting::DURATION_TYPE_HOUR
