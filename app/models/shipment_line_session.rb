@@ -7,7 +7,7 @@ class ShipmentLineSession
   attr_accessor :quantity, :remark, :order_line_id, :shipment_session
 
   validates :quantity, :presence => true
-  validates :quantity, :order_line_id, :numericality => { :greater_than_or_equal_to => 0 }
+  validates :quantity, :numericality => { :greater_than_or_equal_to => 0 }
   validate  :in_same_order
 
   def initialize(attributes={})
@@ -25,7 +25,7 @@ class ShipmentLineSession
         line2 = OrderLine.find order_line_id
         errors.add(:order_line_id, "can not be added to shipment of different order") if line1.order_id != line2.order_id
       end
-    rescue Exception => ex
+    rescue ActiveRecord::RecordNotFound => ex
       errors.add(:order_line_id, "invalid commodity order. Please try again")
     end
 

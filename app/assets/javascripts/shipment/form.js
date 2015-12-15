@@ -42,7 +42,7 @@ function validShipmentLines(){
 }
 
 function isDataValid(data){
-  return $.isNumeric(data.quantity) && parseInt(data.quantity) > 0
+  return $.isNumeric(data.quantity) && parseInt(data.quantity) >= 0
 }
 
 function checkUpdateCb(){

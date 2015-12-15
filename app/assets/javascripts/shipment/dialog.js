@@ -7,6 +7,7 @@ function handleSubmitShipment(){
       showLoading();
 
       $("#shipment_message").hide();
+
       var shipment_date = $("#shipment_shipment_date").val()
       var consignment_number = $("#shipment_consignment_number").val();
       var cost = $("#shipment_cost").val();
@@ -29,13 +30,11 @@ function handleSubmitShipment(){
            else{
               $("#shipment_message").removeClass('alert-error').addClass('alert-success').html(response.message).show();
               setTimeout(function(){
-                  window.location.href = window.appConfig.url.shipmentList ;
-              }, 500);
- 
+                $("#shipment_message").html("Your browser is being redirected to shipment status, Please wait!")
+                window.location.href = window.appConfig.url.shipmentList ;
+              }, 300);
             }
-
         }
-
 
       });
       return false;

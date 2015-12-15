@@ -1,8 +1,18 @@
 $(function(){
   handleLoadOrderLinesTab()
   handleToggleEmptyOrderLineRow()
+  confirmFormSubmission()
 })
 
+function confirmFormSubmission() {
+  $("#form_order").on('submit', function(e){
+    if(!confirm("Are you sure to save the order ?")){
+      e.preventDefault()
+      systemLoading().hide()
+      return false
+    }
+  })
+}
 
 function handleToggleEmptyOrderLineRow(){
   $(document.body).delegate('.toggle-empty_order-line','click', function(){
