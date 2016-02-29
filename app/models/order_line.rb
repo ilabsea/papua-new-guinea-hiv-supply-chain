@@ -87,9 +87,9 @@ class OrderLine < ActiveRecord::Base
 
 
   def validate_requirement
-    if arv_type == CommodityCategory::TYPES_DRUG 
+    if arv_type == CommodityCategory::TYPES_DRUG
       return true if stock_on_hand.nil? && quantity_suggested.nil?
-      validate_quantity_suggested_value 
+      validate_quantity_suggested_value
     else
       return true if stock_on_hand.nil? && quantity_suggested.nil?
       validate_quantity_suggested_value
@@ -122,10 +122,10 @@ class OrderLine < ActiveRecord::Base
     return true
   end
 
-  def validate_quantity_wastage_value 
+  def validate_quantity_wastage_value
     if(cal_kit > self.test_kit_waste_acceptable.to_f)
-      message = "<b>" + self.commodity.name + "</b>: Monthly use declared by site is greater than " + filter(self.test_kit_waste_acceptable)  + " of acceptable wastage" 
-      errors.add(:monthly_use, message) 
+      message = "<b>" + self.commodity.name + "</b>: Monthly use declared by site is greater than " + filter(self.test_kit_waste_acceptable)  + " of acceptable wastage"
+      errors.add(:monthly_use, message)
       return false
     end
     return true
@@ -135,16 +135,17 @@ class OrderLine < ActiveRecord::Base
      value = (self.system_suggestion - self.quantity_suggested).abs
      max = self.system_suggestion > self.quantity_suggested ? self.system_suggestion : self.quantity_suggested
      (100*value)/max
-  end 
+  end
 
   def self.items options
     order_lines = self.joins("INNER JOIN orders ON order_lines.order_id = orders.id")
                       .where([ "order_lines.shipment_status = 0 AND orders.status = ?", Order::ORDER_STATUS_APPROVED])
-    
 
-    # teach database to use indices in order table with index(:status, :site_id) 
+
+    # teach database to use indices in order table with index(:status, :site_id)
     order_lines = options[:site_id].blank? ? order_lines.where( "orders.site_id > -1" ) : order_lines.where(["orders.site_id = ?", options[:site_id]] )
 
+    order_lines = order_lines.where(["orders.order_number = ?", options[:order_number]]) if !options[:order_number].blank?
     order_lines = order_lines.where(["orders.date_submittion <= ?", Date.strptime(options[:end], ENV['DATE_FORMAT']) ]) if !options[:end].blank?
     order_lines = order_lines.where(["orders.date_submittion >= ?", Date.strptime(options[:start], ENV['DATE_FORMAT']) ]) if !options[:start].blank?
     order_lines
@@ -182,6 +183,6 @@ class OrderLine < ActiveRecord::Base
     def data_filled
       where ['completed_order = :completed', :completed => OrderLine::DATA_COMPLETE]
     end
-  end  
+  end
 
 end

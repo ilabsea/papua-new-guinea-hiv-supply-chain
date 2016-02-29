@@ -15,13 +15,18 @@
         <tr>
           <td valign="top">
             <span> Site </span>
-            <%= select_tag :site_id, options_for_select(@sites, params[:site_id]), 
-                           :id => :order_site_id , class: 'order-shipment',
+            <%= select_tag :site_id, options_for_select(@sites, params[:site_id]),
+                           :id => :order_site_id , class: 'order-shipment', class: 'input-short ',
                            :prompt => "Select a site" %>
           </td>
 
           <td valign="top">
-            <span style='margin-left: 20px;'> Between </span>
+            <span style='margin-left: 10px;'> Order No </span>
+            <%= text_field_tag :order_number, params[:order_number], placeholder: 'Order Number', class: 'input-short' %>
+          </td>
+
+          <td valign="top">
+            <span style='margin-left: 10px;'> Between </span>
             <div class="input-append date datepicker">
               <%= text_field_tag :start, params[:start],
                      placeholder: 'Submission date',
@@ -67,7 +72,7 @@
         <th class="expand">Order ID</th>
         <th class="expand">Order No </th>
         <th class="expand">Commodity</th>
-        <th class="expand">Quantity Per Package</th>
+        <th class="expand">Per Package</th>
         <th class="expand">Pack Size</th>
         <th class="expand">Unit</th>
         <th class="expand">Amount</th>
@@ -80,17 +85,17 @@
 
     <tbody>
       <% @order_lines.each_with_index do |order_line, index| %>
-        <%  
-            line_session = @shipment_session.find_by_key order_line.id 
-            klass        = line_session.nil?  ? '' : 'row-success' 
+        <%
+            line_session = @shipment_session.find_by_key order_line.id
+            klass        = line_session.nil?  ? '' : 'row-success'
             quantity     = line_session.nil?  ? '' : line_session[:quantity]
             remark       = line_session.nil?  ? '' : line_session[:remark]
             checked      = line_session.nil?  ? false : true
 
         %>
         <tr id='tr_<%= order_line.id %>'>
-          <td class='<%= klass  %>' > 
-            <%= check_box_tag 'toggle[]', '1', checked, :class => 'cb_items', :id => "toggle_#{order_line.id}", :data => {:id => order_line.id} %> 
+          <td class='<%= klass  %>' >
+            <%= check_box_tag 'toggle[]', '1', checked, :class => 'cb_items', :id => "toggle_#{order_line.id}", :data => {:id => order_line.id} %>
           </td>
           <td class='<%= klass  %> expand'><%= order_line.order.site.name %></td>
           <td class='<%= klass  %>'><%= order_line.order.id %></td>
@@ -107,10 +112,10 @@
             <%= show_date_time order_line.updated_at %></td>
 
           <td class='<%= klass  %>'>
-            <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text' 
-                   name='order_line[dispatch]' id='quantity_<%= order_line.id %>' /> 
+            <input value='<%=quantity%>' type='number' data-id='<%= order_line.id %>' class= 'content number_text'
+                   name='order_line[dispatch]' id='quantity_<%= order_line.id %>' />
 
-            <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>' 
+            <a href="javascript:void(0)" rel="popover" data-id='<%= order_line.id %>' id='error_<%= order_line.id%>'
                data-skip-loading='true' style='display: none;'
                class='error'
                data-content="Invalid value. Quantity dispatch must be a number and should be in the same site." data-original-title="" >
@@ -120,7 +125,7 @@
           </td>
 
           <td class='<%= klass  %>'>
-            <input value='<%=remark%>' type='text' data-id='<%= order_line.id %>' class='content' name='order_line[remark]' id='ams_remark_<%= order_line.id %>' /> 
+            <input value='<%=remark%>' type='text' data-id='<%= order_line.id %>' class='content' name='order_line[remark]' id='ams_remark_<%= order_line.id %>' />
           </td>
 
         </tr>
@@ -129,4 +134,3 @@
   </table>
 </div>
 <%= render_paginate_for @order_lines %>
-
