@@ -1,5 +1,5 @@
 PngHivAids::Application.routes.draw do
-  
+
   match "/401", to: "errors#unauthorized_401"
   match "/404", to: "errors#not_found_404"
   match "/500", to: "errors#error_500"
@@ -8,7 +8,7 @@ PngHivAids::Application.routes.draw do
     resource :messagings do
       post 'nuntium'
     end
-    
+
   end
 
   namespace :admin do
@@ -23,7 +23,7 @@ PngHivAids::Application.routes.draw do
         get 'all'
       end
     end
-    
+
     resources :import_survs do
       resources :surv_sites
       member do
@@ -49,8 +49,8 @@ PngHivAids::Application.routes.draw do
           get 'shipment_messages'
         end
       end
-      resources :sms_logs 
-      
+      resources :sms_logs
+
       collection do
         get 'download'
         get 'order'
@@ -63,7 +63,7 @@ PngHivAids::Application.routes.draw do
       member do
         post 'update_cost'
       end
-      
+
     end
 
     resources :orders do
@@ -76,6 +76,8 @@ PngHivAids::Application.routes.draw do
 
       member do
         get 'review'
+        put 'reject'
+        put 'unreject'
       end
 
       resources :order_lines do
@@ -97,7 +99,7 @@ PngHivAids::Application.routes.draw do
     end
 
     resources :home
-    
+
     resources :sites do
       resources :requisition_reports
       resources :site_messages
@@ -106,7 +108,7 @@ PngHivAids::Application.routes.draw do
       end
     end
 
-    
+
     resources :provinces
     resources :commodities do
       collection do
@@ -150,7 +152,7 @@ PngHivAids::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
   resources :homes
-  
+
   root  :to => "homes#index"
 
   # Sample of regular route:

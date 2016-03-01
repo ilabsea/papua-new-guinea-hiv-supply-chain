@@ -3,21 +3,25 @@ module Admin
    load_and_authorize_resource
 
    skip_load_resource :only => [:tab_order_line] # must skip loading resource by cancan
-   skip_authorize_resource :only => [:tab_order_line] 
+   skip_authorize_resource :only => [:tab_order_line]
 
 
    def index
-     @date_start = params[:date_start] 
+     @date_start = params[:date_start]
      @date_end   = params[:date_end]
      @orders = Order.includes(:site, :user_data_entry, :review_user)
 
-     @orders = @orders.where(['status != ?', Order::ORDER_STATUS_PENDING ]) if current_user.reviewer?
-     @orders = @orders.where(['status = ?', Order::ORDER_STATUS_APPROVED ]) if current_user.ams?
+     if current_user.reviewer?
+       @orders = @orders.where(['status != ?', Order::ORDER_STATUS_PENDING ])
+     elsif current_user.ams?
+       @orders = @orders.where(['status = ?', Order::ORDER_STATUS_APPROVED ])
+     elsif !params[:type].blank?
+       @orders = @orders.of_status(params[:type])
+     end
 
-     @orders = @orders.of_status(params[:type]) if(!params[:type].blank?)
-     
      @orders = @orders.of_user(current_user)
                       .in_between(@date_start, @date_end)
+                      .embed_total_shipped
                       .order('id desc')
 
      @orders = @orders.paginate(paginate_options)
@@ -29,8 +33,30 @@ module Admin
    end
 
    def review
-     @type = params[:type] || CommodityCategory::TYPES_DRUG 
+     @type = params[:type] || CommodityCategory::TYPES_DRUG
      load_order
+   end
+
+   def reject
+    #  order = Order.find(params[:id])
+     swicth_order = SwitchOrder.new(@order)
+
+     if(swicth_order.reject)
+       redirect_to admin_orders_path, notice: "Order has been rejected"
+     else
+       redirect_to admin_orders_path, notice: "Failed to reject order #{@order.try(:id)}-#{@order.try(:order_number)} with reason #{swicth_order.error}"
+     end
+   end
+
+   def unreject
+    #  order = Order.find(params[:id])
+     swicth_order = SwitchOrder.new(@order)
+
+     if(swicth_order.unreject)
+       redirect_to admin_orders_path, notice: "Order has been approved from rejected"
+     else
+       redirect_to admin_orders_path, notice: "Failed to approved the rejected order #{@order.try(:id)}-#{@order.try(:order_number)} with reason #{swicth_order.error}"
+     end
    end
 
    def create
@@ -144,9 +170,9 @@ module Admin
    end
 
    def build_commodity_order_line order, site
-     existing_commodities = order.order_lines.map do |order_line| 
+     existing_commodities = order.order_lines.map do |order_line|
        order_line.commodity
-     end 
+     end
 
      non_existing_commodities = Commodity.order('commodities.position ,commodities.name')
                                          .includes(:commodity_category)
@@ -156,7 +182,7 @@ module Admin
 
      order_line_completer = OrderLineCompleter.new(order)
 
-     non_existing_commodities.each do |commodity| 
+     non_existing_commodities.each do |commodity|
        order.order_lines.build :commodity => commodity,
                                :pack_size => commodity.pack_size,
                                :arv_type => commodity.commodity_category.com_type,

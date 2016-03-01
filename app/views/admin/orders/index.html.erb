@@ -1,11 +1,11 @@
 <%= page_header "Requisition and order"  do  %>
-  <% 
+  <%
     export_options = {}
-    export_options[:type] = params[:type]  if !params[:type].blank?   
+    export_options[:type] = params[:type]  if !params[:type].blank?
   %>
-  <%= link_button_new 'New Order', new_admin_order_path(export_options), 
+  <%= link_button_new 'New Order', new_admin_order_path(export_options),
                       :class => 'btn btn-default' if current_user.data_entry? %>
-  <%= link_button_download 'Export List', export_admin_orders_path(export_options), :class => 'btn btn-primary' %> 
+  <%= link_button_download 'Export List', export_admin_orders_path(export_options), :class => 'btn btn-primary' %>
 
   <%= link_button_download 'Export Requisition and Order', '#export-order-dialog', role: :button, "data-toggle" => :modal,
                            id: 'export-order-btn', class: 'btn btn-primary', data: {skip_loading: true} %>
@@ -29,7 +29,7 @@
       <th class="expand">Reviewed Date</th>
       <th class="expand">Status</th>
       <th class="expand">Excel File</th>
-      <th class="expand">Action</th>
+      <th class="expand" style="text-align: right;">Action</th>
     </tr>
   </thead>
 
@@ -38,7 +38,7 @@
       <tr>
         <td><%= current_entries + index %></td>
         <td>
-          <% 
+          <%
              editable = false
 
              if current_user.data_entry_and_reviewer?
@@ -54,26 +54,37 @@
         <td><%= show_date(order.date_submittion) %></td>
         <td><%=order.site.name %></td>
 
-        <td title='<%= order.user_data_entry.try(:phone_number)%>'> 
+        <td title='<%= order.user_data_entry.try(:phone_number)%>'>
           <%=order.user_data_entry.try(:user_name) %>
         </td>
         <td title='<%= order.review_user.try(:phone_number)%>'><%= order.review_user.try(:user_name) %></td>
         <td><%= order.review_date ? show_date_time(order.review_date) : '' %></td>
         <td><%= order.status %></td>
         <td>
-          <%=link_to truncate(File.basename(order.requisition_report.form.current_path), length: 20), 
+          <%=link_to truncate(File.basename(order.requisition_report.form.current_path), length: 20),
                      download_admin_requisition_report_path(order.requisition_report),
                      :data => {:skip_loading => true} if order.requisition_report %>
         </td>
-        
-        <td class="center">
+
+        <td style="text-align: right;">
 
           <% if (current_user.reviewer? || current_user.data_entry_and_reviewer?) && order.to_be_reviewed? %>
-            <%= link_button_review 'Review', review_admin_order_path(order) %> 
+            <%= link_button_review 'Review', review_admin_order_path(order) %>
 
           <% elsif (current_user.data_entry? || current_user.data_entry_and_reviewer? ) && !order.approved? %>
-            <%= link_button_delete 'Delete', admin_order_path(order), :method => :delete, 
+            <%= link_button_delete 'Delete', admin_order_path(order), :method => :delete,
                                              :confirm => 'Are you sure to delete this order ?' %>
+          <% elsif current_user.data_entry_and_reviewer? && order.approved? && order.total_shipped.nil? %>
+            <%= link_to "Reject", reject_admin_order_path(order),
+                                  :class => "btn btn-danger",
+                                  :method => :put,
+                                  :confirm => 'Are you sure to reject this order ?' %>
+          <% end %>
+          <% if current_user.data_entry_and_reviewer? && order.rejected? %>
+              <%= link_to "Approve back", unreject_admin_order_path(order),
+                                    :class => "btn btn-danger",
+                                    :method => :put,
+                                    :confirm => 'Are you sure to approve this rejected order ?' %>
           <% end %>
 
           <%= link_button("truck", 'Detail ', admin_order_path(order), class: 'btn btn-info') if order.approved? %>
@@ -85,6 +96,3 @@
 </table>
 <%= render_paginate_for @orders %>
 <%= render 'export_dialog' %>
-
-
-

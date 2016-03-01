@@ -139,7 +139,7 @@ class OrderLine < ActiveRecord::Base
 
   def self.items options
     order_lines = self.joins("INNER JOIN orders ON order_lines.order_id = orders.id")
-                      .where([ "order_lines.shipment_status = 0 AND orders.status = ?", Order::ORDER_STATUS_APPROVED])
+                      .where(["order_lines.shipment_status = 0 AND orders.status = ?", Order::ORDER_STATUS_APPROVED])
 
 
     # teach database to use indices in order table with index(:status, :site_id)

@@ -35,8 +35,8 @@ class Order < ActiveRecord::Base
   # validate  :unique_order_in_month_year
 
   attr_accessor :survs
-  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,  
-                  :status, :site_id, :order_lines_attributes,:surv_sites, :site, 
+  attr_accessible :date_submittion, :is_requisition_form, :order_date, :review_date,
+                  :status, :site_id, :order_lines_attributes,:surv_sites, :site,
                   :user_place_order, :user_data_entry, :requisition_report, :order_number
 
 
@@ -46,9 +46,14 @@ class Order < ActiveRecord::Base
   ORDER_STATUS_TO_BE_REVIEWED = 'To Be Reviewed'
   ORDER_STATUS_APPROVED = 'Approved'
   ORDER_STATUS_TO_BE_REVISED = 'To Be Revised'
+  ORDER_STATUS_REJECTED = "Rejected"
 
 
   ORDER_STATUSES = [ ORDER_STATUS_PENDING, ORDER_STATUS_TO_BE_REVIEWED, ORDER_STATUS_APPROVED, ORDER_STATUS_TO_BE_REVISED]
+
+  def rejected?
+    self.status == Order::ORDER_STATUS_REJECTED
+  end
 
   def approved?
     self.status == Order::ORDER_STATUS_APPROVED
@@ -74,7 +79,7 @@ class Order < ActiveRecord::Base
   end
 
   def unique_order_in_month_year
-    return true if errors.size >0 
+    return true if errors.size >0
     order = Order.where(['site_id = :site_id AND MONTH(order_date)= :month AND YEAR(order_date)= :year ',
                    :site_id => self.site.id, :month => self.order_date.month, :year => self.order_date.year
       ]).first
@@ -90,10 +95,34 @@ class Order < ActiveRecord::Base
     where(['status = :status', :status => status])
   end
 
+  def rejectable?
+    return false if !approved?
+    !shipped?
+  end
+
+  def shipped?
+    order_lines.where(['shipment_status = ?', true]).first != nil
+  end
+
+  def unrejectable?
+    return false if !rejected?
+    !shipped?
+  end
+
   def self.of_user(user)
     return where("1=1") if user.admin? || user.data_entry? || user.reviewer? || user.data_entry_and_reviewer?
     return where(['site_id = :site_id', {:site_id => user.site.id}]) if user.site?
     return where('status = :status', :status => ORDER_STATUS_APPROVED) if user.ams?
+  end
+
+  def self.embed_total_shipped
+    shipped = OrderLine.select('order_lines.order_id, count(*) as total_shipped ')
+                             .data_filled
+                             .where(["order_lines.shipment_status =?", true])
+                             .group("order_lines.order_id").to_sql
+
+    orders = self.select("orders.*, shipped.total_shipped").joins("LEFT JOIN (#{shipped}) as shipped ON shipped.order_id = id")
+    orders
   end
 
   def surv_sites
@@ -110,7 +139,7 @@ class Order < ActiveRecord::Base
       site =  requisition_report.site
       order = requisition_report.build_order :date_submittion => requisition_report.created_at,
                                             :is_requisition_form => true,
-                                            :order_date => Time.zone.now.to_date, 
+                                            :order_date => Time.zone.now.to_date,
                                             :status  => Order::ORDER_STATUS_PENDING,
                                             :user_place_order => requisition_report.user,
                                             :site => site,
