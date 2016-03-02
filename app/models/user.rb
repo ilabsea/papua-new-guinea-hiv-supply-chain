@@ -31,22 +31,23 @@ class User < ActiveRecord::Base
   ROLES_SITE = "Site"
   ROLES_AMS  = "AMS"
 
-  ROLES = [ ROLES_ADMIN, ROLES_SITE, ROLES_DATA_ENTRY, ROLES_DATA_ENTRY_AND_REVIEWER, ROLES_REVIEWER, ROLES_AMS ]
+  # ROLES = [ ROLES_ADMIN, ROLES_SITE, ROLES_DATA_ENTRY, ROLES_DATA_ENTRY_AND_REVIEWER, ROLES_REVIEWER, ROLES_AMS ]
+  ROLES = [ ROLES_ADMIN, ROLES_SITE, ROLES_DATA_ENTRY_AND_REVIEWER, ROLES_AMS ]
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable,  
+  devise :database_authenticatable,
          #:registerable,
-         :recoverable, 
-         :rememberable, 
-         :trackable , 
+         :recoverable,
+         :rememberable,
+         :trackable ,
          :validatable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :user_name, :phone_number, :display_name, :role , :site_id , :site,
                   :email, :password, :password_confirmation, :remember_me, :current_password
   # attr_accessible :title, :body
-  
+
   attr_accessor :login, :current_password
 
   validates :user_name, :phone_number, :display_name, :presence => true
@@ -58,7 +59,7 @@ class User < ActiveRecord::Base
   has_many :requisition_reports
   has_many :orders
   has_many :import_survs
-  belongs_to :site 
+  belongs_to :site
 
   def site_role?
      self.site?
@@ -103,11 +104,11 @@ class User < ActiveRecord::Base
   def self.child_word
     file_name =  "#{Rails.root}/public/protected/words.txt"
     content = File.open(file_name){|f| f.read}.split
-    self.child_word_from content 
+    self.child_word_from content
   end
 
   def self.child_word_from content
-    word_index = rand(content.size - 1) 
+    word_index = rand(content.size - 1)
     word = content[word_index]
     "#{word}#{rand(9)}#{rand(9)}#{rand(9)}"
   end
@@ -123,7 +124,7 @@ class User < ActiveRecord::Base
       if !self.valid_password? self.current_password
         self.password = params[:password]
         self.password_confirmation = params[:password_confirmation]
-        self.errors.add(:current_password, "is not correct") 
+        self.errors.add(:current_password, "is not correct")
         return false
       else
         self.password = params[:password]
