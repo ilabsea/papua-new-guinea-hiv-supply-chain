@@ -18,9 +18,9 @@ class ExportExcelOrder
     #create a sheet with site name
     working_sheet_kit  = @book.create_worksheet name: "#{order.site.name}-kit"
     working_sheet_drug = @book.create_worksheet name: "#{order.site.name}-drug"
-    
+
     #write table header with [cell_data, cell_width]
-    head_labels = [ ["Commodity", 35], ["Quantity Per Package", 22], ["Pack Size", 10], ["Strength", 10], ["Unit", 10] , ["#Patient", 9], 
+    head_labels = [ ["Commodity", 35], ["Quantity Per Package", 22], ["Pack Size", 10], ["Strength", 10], ["Unit", 10],
                     ["Stock on hand", 15], ["Monthly Use", 15], ["System Suggestion", 20],
                     ["Quantity Suggested", 20], ["Status", 10], ["Data Entry Note", 18], ["Reviewer note", 15] ]
 
@@ -55,7 +55,6 @@ class ExportExcelOrder
                     order_line.commodity.pack_size,
                     order_line.commodity.strength_dosage,
                     order_line.commodity.unit.name,
-                    order_line.number_of_client,
                     order_line.stock_on_hand,
                     order_line.monthly_use,
                     order_line.system_suggestion,
@@ -64,7 +63,7 @@ class ExportExcelOrder
                     order_line.user_data_entry_note,
                     order_line.user_reviewer_note ]
 
-      if order_line.kit? 
+      if order_line.kit?
         working_sheet = working_sheet_kit
         row = current_row_kit
         current_row_kit += 1

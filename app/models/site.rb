@@ -6,7 +6,7 @@
 #  name                         :string(255)
 #  service_type                 :string(255)
 #  suggestion_order             :float
-#  order_frequency              :integer
+#  order_frequency              :float
 #  number_of_deadline_sumission :integer
 #  order_start_at               :date
 #  test_kit_waste_acceptable    :float

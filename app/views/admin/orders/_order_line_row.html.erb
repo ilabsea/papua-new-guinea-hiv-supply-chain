@@ -1,6 +1,6 @@
-<% 
+<%
   order_line_record = order_line_form.object
-  row_ref = order_line_record.commodity.id 
+  row_ref = order_line_record.commodity.id
   error_display = ( order_line_record.errors.full_messages.size > 0 ) ? 'visibility:visible' : 'visibility:hidden;'
   styleError = ( order_line_record.errors.full_messages.size > 0 ) ? 'alert-error' : ''
 %>
@@ -9,13 +9,13 @@
     <% if order_line_record.persisted? %>
       <td ><%=order_line_record.id%></td>
     <% end %>
-    <td class='td-expand expand' title="<%= order_line_record.commodity.name %>" > 
-      
+    <td class='td-expand expand' title="<%= order_line_record.commodity.name %>" >
+
       <%= order_line_form.input :id, :as => 'hidden' %>
       <%= order_line_form.input :status, :as => 'hidden', :input_html => {:value =>''} %>
       <%= order_line_form.input :arv_type, :as => 'hidden', :input_html => {
-                            :class=>'validate_field', 
-                            :'data-ref'=> row_ref, 
+                            :class=>'validate_field',
+                            :'data-ref'=> row_ref,
                             :id => "arv_type_#{row_ref}" } %>
 
 
@@ -30,47 +30,50 @@
     <td><%=order_line_record.commodity.strength_dosage %></td>
     <td><%= order_line_record.commodity.unit.name %></td>
 
+    <!-- Disable since surv1 and surv2 are out of date -->
+    <!--
     <td>
       <%= order_line_record.number_of_client %>
-      <div style="display:none;"> 
-        <%= order_line_form.input :number_of_client, :as => :hidden, :input_html => { 
+      <div style="display:none;">
+        <%= order_line_form.input :number_of_client, :as => :hidden, :input_html => {
                            :class => 'validate_field number_text',
-                           :id => "number_of_client_#{row_ref}", 
+                           :id => "number_of_client_#{row_ref}",
                            :'data-ref' => row_ref } %>
       </div>
     </td>
+    -->
 
-    <td > 
+    <td >
       <%= order_line_form.input :stock_on_hand, :label=> '&nbsp;',
-                            :wrapper_html => {:class => 'inline-div'}, 
+                            :wrapper_html => {:class => 'inline-div'},
                             :input_html   => {:class => 'validate_field number_text stock_on_hand',
                                               :'data-ref' => row_ref,
                                               :id => "stock_on_hand_#{row_ref}" },
-                            :label_html   => {:class => 'none'}  %> 
+                            :label_html   => {:class => 'none'}  %>
     </td>
-    
-    <td > 
-      <%= order_line_form.input :monthly_use, :label=> '&nbsp;' , 
+
+    <td >
+      <%= order_line_form.input :monthly_use, :label=> '&nbsp;' ,
                             :wrapper_html => {:class => 'inline-div'},
                             :input_html   => {:class => 'validate_field number_text monthly_use',
                                               :'data-ref' => row_ref,
                                               :id => "monthly_use_#{row_ref}"},
-                            :label_html   => {:class => 'none'} %> 
+                            :label_html   => {:class => 'none'} %>
     </td>
-    
+
     <% if !current_user.data_entry? %>
-    <td > 
-      <span id='quantity_system_calculation_<%= row_ref %>' > 
-        <%= order_line_record.system_suggestion  %> 
-      </span> 
-    </td>
-    
     <td >
-      <%= order_line_form.input :quantity_suggested, :label=> '&nbsp;' , 
+      <span id='quantity_system_calculation_<%= row_ref %>' >
+        <%= order_line_record.system_suggestion  %>
+      </span>
+    </td>
+
+    <td >
+      <%= order_line_form.input :quantity_suggested, :label=> '&nbsp;' ,
           :wrapper_html => {:class => 'inline-div'},
-          :input_html   => {:class => 'validate_field number_text', :'data-ref' => row_ref, :id => "quantity_suggested_#{row_ref}" } , 
+          :input_html   => {:class => 'validate_field number_text', :'data-ref' => row_ref, :id => "quantity_suggested_#{row_ref}" } ,
           :label_html   => {:class => 'none'}
-      %> 
+      %>
     </td>
 
     <% end %>
@@ -81,16 +84,16 @@
         <%= truncate order_line_record.user_reviewer_note %>
       </td>
     <% end %>
-    
-    <td class='error-td expand ' > 
+
+    <td class='error-td expand ' >
       <%= order_line_form.input :user_data_entry_note, :label=> '&nbsp;' , :as => "string",
           :wrapper_html => {:class => 'inline-div'},
-          :input_html   => {:class => :validate_field, :'data-ref' => row_ref, :id => "user_data_entry_note_#{row_ref}" , :style => 'width: 180px;'} , 
+          :input_html   => {:class => :validate_field, :'data-ref' => row_ref, :id => "user_data_entry_note_#{row_ref}" , :style => 'width: 180px;'} ,
           :label_html   => {:class => 'none'}
       %>
 
       <a href="javascript:void(0)" class="order_popover error" id='error_<%= row_ref %>' style='<%= error_display %>'
-         data-skip-loading='true' data-ref='<%= row_ref %>' data-html = 'true' data-placement='left'>  
+         data-skip-loading='true' data-ref='<%= row_ref %>' data-html = 'true' data-placement='left'>
            <i class='icon-exclamation-sign'></i>
       </a>
 

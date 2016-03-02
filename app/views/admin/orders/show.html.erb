@@ -4,7 +4,7 @@
 
 <%= page_header 'Order Detail' %>
 
-<% 
+<%
   @kit = 1
   @drug = 1
 %>
@@ -20,17 +20,17 @@
       <%=content_for :kit do %>
         <%= render "order_line_detail_row", order_line: order_line, index: @kit %>
       <% end %>
-      <% @kit += 1 %> 
+      <% @kit += 1 %>
   <% end %>
 <% end %>
 
 
-<div class="tabbable" style="position:relative;float:left;"> 
+<div class="tabbable" style="position:relative;float:left;">
     <ul class="nav nav-tabs">
       <li class="active">
         <a href="#drug" data-toggle="tab" data-skip-loading='true'>Drugs</a>
       </li>
-      <li> 
+      <li>
         <a href="#kit" data-toggle="tab" data-skip-loading='true'>Kits</a>
       </li>
     </ul>
@@ -44,11 +44,12 @@
               <th> # </th>
               <th> ID </th>
               <th class="expand" >Commodity</th>
-              <th class="expand" >Quantity Per Package</th>
+              <th class="expand" >Per Package</th>
               <th class="expand" >Pack Size</th>
               <th class="expand" >Strength</th>
               <th class="expand">Unit</th>
-              <th class="expand" title="# Of Patient on Drug regiment"># Patient</th>
+              <!-- Disable since surv1 and surv2 are out of date -->
+              <!-- <th class="expand" title="# Of Patient on Drug regiment"># Patient</th> -->
               <th class="expand" title="Stock on hand">Stock on hand</th>
               <th class="expand" title="Monthly use">Monthly use</th>
               <% if !current_user.data_entry? %>
@@ -77,11 +78,12 @@
               <th> # </th>
               <th> ID </th>
               <th class="expand" >Commodity</th>
-              <th class="expand" >Quantity Per Package</th>
+              <th class="expand" >Per Package</th>
               <th class="expand" >Pack Size</th>
               <th class="expand" >Strength</th>
               <th class="expand">Unit</th>
-              <th class="expand" title="# Of Patient on Drug regiment"># Patient</th>
+              <!-- Disable since surv1 and surv2 are out of date -->
+              <!-- <th class="expand" title="# Of Patient on Drug regiment"># Patient</th> -->
               <th class="expand" title="Stock on hand">Stock on hand</th>
               <th class="expand" title="Monthly use">Monthly use</th>
 
@@ -104,4 +106,3 @@
       </div>
     </div>
 </div>
-

@@ -16,6 +16,10 @@
 #  updated_at            :datetime         not null
 #  date_submittion       :date
 #  order_number          :string(10)
+#  rejected_at           :datetime
+#  unrejected_at         :datetime
+#  approved_at           :datetime
+#  approved_user_id      :integer
 #
 
 class Order < ActiveRecord::Base
@@ -24,6 +28,7 @@ class Order < ActiveRecord::Base
   belongs_to :user_place_order, :class_name => 'User'
   belongs_to :user_data_entry , :class_name => 'User'
   belongs_to :review_user , :class_name => 'User'
+  belongs_to :approved_user, :class_name => 'User'
   belongs_to :requisition_report , :class_name => 'RequisitionReport'
 
   has_many :order_lines, :dependent => :destroy
@@ -73,6 +78,7 @@ class Order < ActiveRecord::Base
 
   def update_approval
     self.status = Order::ORDER_STATUS_APPROVED
+    self.approved_at = Time.zone.now
     if self.save
       self.order_lines.update_all(status: OrderLine::STATUS_APPROVED)
     end

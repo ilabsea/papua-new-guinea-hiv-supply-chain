@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160301022237) do
+ActiveRecord::Schema.define(:version => 20160302024403) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -153,6 +153,8 @@ ActiveRecord::Schema.define(:version => 20160301022237) do
     t.string   "order_number",          :limit => 10
     t.datetime "rejected_at"
     t.datetime "unrejected_at"
+    t.datetime "approved_at"
+    t.integer  "approved_user_id"
   end
 
   add_index "orders", ["order_number"], :name => "index_orders_on_order_number"

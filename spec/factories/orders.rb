@@ -16,6 +16,10 @@
 #  updated_at            :datetime         not null
 #  date_submittion       :date
 #  order_number          :string(10)
+#  rejected_at           :datetime
+#  unrejected_at         :datetime
+#  approved_at           :datetime
+#  approved_user_id      :integer
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl

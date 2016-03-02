@@ -7,7 +7,9 @@
   <td><%= order_line.commodity.pack_size%></td>
   <td><%= order_line.commodity.strength_dosage %></td>
   <td><%= order_line.commodity.unit.name %></td>
-  <td><%= order_line.number_of_client %></td>
+  <!-- Disable since surv1 and surv2 are out of date -->
+  <!-- <td><%= order_line.number_of_client %></td> -->
+
   <td><%= order_line.stock_on_hand %></td>
   <td><%= order_line.monthly_use %></td>
 
@@ -17,7 +19,7 @@
   <% end %>
 
   <td><%= status(order_line.status) %></td>
-  <td class="td-expand expand" title="<%= h order_line.user_reviewer_note %>"> 
+  <td class="td-expand expand" title="<%= h order_line.user_reviewer_note %>">
     <%= truncate order_line.user_reviewer_note %>
   </td>
   <td class="td-expand expand" title="<%= h order_line.user_data_entry_note %>" class='error-td expand '>

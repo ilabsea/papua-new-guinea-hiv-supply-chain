@@ -95,9 +95,12 @@ module Admin
 
    def update
      load_order
-     @order.user_data_entry = current_user
+
      if current_user.data_entry?
+       @order.user_data_entry = current_user
        @order.status = Order::ORDER_STATUS_TO_BE_REVIEWED
+     elsif current_user.data_entry_and_reviewer?
+       @order.approved_user = current_user
      end
 
      if @order.update_attributes params[:order]

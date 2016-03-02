@@ -24,9 +24,14 @@
       <th class="expand">Order No</th>
       <th class="expand">Submission</th>
       <th class="expand">Site</th>
+      <!-- No Data entry user and Reviewer user
       <th class="expand">Entry</th>
       <th class="expand">Reviewer</th>
       <th class="expand">Reviewed Date</th>
+       -->
+      <th class="expand">Approved by</th>
+      <th class="expand">Approved at</th>
+
       <th class="expand">Status</th>
       <th class="expand">Excel File</th>
       <th class="expand" style="text-align: right;">Action</th>
@@ -54,11 +59,15 @@
         <td><%= show_date(order.date_submittion) %></td>
         <td><%=order.site.name %></td>
 
+        <!--
         <td title='<%= order.user_data_entry.try(:phone_number)%>'>
           <%=order.user_data_entry.try(:user_name) %>
         </td>
         <td title='<%= order.review_user.try(:phone_number)%>'><%= order.review_user.try(:user_name) %></td>
         <td><%= order.review_date ? show_date_time(order.review_date) : '' %></td>
+        -->
+        <td> <%= order.approved_user.try(:user_name) %></td>
+        <td> <%= show_date_time(order.approved_at) %></td>
         <td><%= order.status %></td>
         <td>
           <%=link_to truncate(File.basename(order.requisition_report.form.current_path), length: 20),

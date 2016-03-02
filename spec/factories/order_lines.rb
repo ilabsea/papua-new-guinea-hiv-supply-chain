@@ -23,7 +23,7 @@
 #  is_set                           :boolean          default(FALSE)
 #  shipment_status                  :boolean          default(FALSE)
 #  completed_order                  :integer          default(0)
-#  order_frequency                  :integer
+#  order_frequency                  :float
 #  site_id                          :integer
 #  pack_size                        :float            default(1.0)
 #  system_suggestion                :integer
