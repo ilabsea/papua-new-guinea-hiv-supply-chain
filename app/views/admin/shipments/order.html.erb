@@ -7,56 +7,7 @@
 <% end %>
 
 <%= page_header "Orders pending for dispatch" %>
-
-<div class='well row-fluid clearfix' >
-    <h4> Filter orders </h4>
-    <%= form_tag order_admin_shipments_path(request.query_parameters), :method => 'GET', :style => 'display:inline;' do |f| %>
-      <table>
-        <tr>
-          <td valign="top">
-            <span> Site </span>
-            <%= select_tag :site_id, options_for_select(@sites, params[:site_id]),
-                           :id => :order_site_id , class: 'order-shipment', class: 'input-short ',
-                           :prompt => "Select a site" %>
-          </td>
-
-          <td valign="top">
-            <span style='margin-left: 10px;'> Order No </span>
-            <%= text_field_tag :order_number, params[:order_number], placeholder: 'Order Number', class: 'input-short' %>
-          </td>
-
-          <td valign="top">
-            <span style='margin-left: 10px;'> Between </span>
-            <div class="input-append date datepicker">
-              <%= text_field_tag :start, params[:start],
-                     placeholder: 'Submission date',
-                     class: "datepicker-input date_time_picker required datepicker-fit date-field order-shipment md" %>
-              <span class="add-on"><i class="icon-calendar"> </i></span>
-            </div>
-          </td>
-
-          <td valign="top">
-            <span style='margin-left: 20px;'> and </span>
-            <div class="input-append date datepicker">
-              <%= text_field_tag :end, params[:end],
-                     placeholder: 'Submission date',
-                     class: "datepicker-input date_time_picker required datepicker-fit date-field order-shipment md" %>
-              <span class="add-on"><i class="icon-calendar"> </i></span>
-            </div>
-          </td>
-
-          <td valign="top" style="padding-left: 20px;">
-            <%= button_icon 'search', 'Filter' %>
-          </td>
-
-        </tr>
-
-      </table>
-    <% end %>
-  </div>
-
-</div>
-
+<%= render 'filter_order' %>
 <%= render "dialog" %>
 
 <div class='alert alert-error' id='error-shipment' style='display: none;' ></div>
@@ -99,7 +50,7 @@
           </td>
           <td class='<%= klass  %> expand'><%= order_line.order.site.name %></td>
           <td class='<%= klass  %>'><%= order_line.order.id %></td>
-          <td class='<%= klass  %> expand'><%= order_line.order.order_number %></td>
+          <td class='<%= klass  %> expand'><%= highlight(order_line.order.order_number, params[:order_number]) %></td>
           <td title="<%=order_line.commodity.name%>" class=' expand td-expand <%= klass  %>'>
             <%= truncate(order_line.commodity.name, length: 20) %>
           </td>

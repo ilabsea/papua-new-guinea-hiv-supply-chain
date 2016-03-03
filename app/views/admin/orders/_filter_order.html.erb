@@ -1,0 +1,28 @@
+<div class='filter-box clearfix' >
+    <h4> Filter orders </h4>
+    <%= form_tag admin_orders_path(request.query_parameters), :method => 'GET', :style => 'display:inline;' do |f| %>
+      <table>
+        <tr>
+          <td valign="top">
+            <span> Site </span>
+            <%= select_tag :site_id, options_for_select(@orders.map{|order| [order.site.name, order.site.id]}.uniq, params[:id]),
+                           :id => :order_site_id , class: 'order-shipment', class: 'input-short ',
+                           :prompt => "Select a site" %>
+          </td>
+
+          <td valign="top">
+            <span style='margin-left: 10px;'> Order No </span>
+            <%= text_field_tag :order_number, params[:order_number], placeholder: 'Order Number', class: 'input-short' %>
+          </td>
+
+          <td valign="top" style="padding-left: 20px;">
+            <%= button_icon 'search', 'Filter' %>
+          </td>
+
+        </tr>
+
+      </table>
+    <% end %>
+  </div>
+
+</div>

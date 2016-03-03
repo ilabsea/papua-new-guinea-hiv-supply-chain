@@ -145,7 +145,7 @@ class OrderLine < ActiveRecord::Base
     # teach database to use indices in order table with index(:status, :site_id)
     order_lines = options[:site_id].blank? ? order_lines.where( "orders.site_id > -1" ) : order_lines.where(["orders.site_id = ?", options[:site_id]] )
 
-    order_lines = order_lines.where(["orders.order_number = ?", options[:order_number]]) if !options[:order_number].blank?
+    order_lines = order_lines.where(["orders.order_number like ? ", "#{options[:order_number]}%" ]) if !options[:order_number].blank?
     order_lines = order_lines.where(["orders.date_submittion <= ?", Date.strptime(options[:end], ENV['DATE_FORMAT']) ]) if !options[:end].blank?
     order_lines = order_lines.where(["orders.date_submittion >= ?", Date.strptime(options[:start], ENV['DATE_FORMAT']) ]) if !options[:start].blank?
     order_lines

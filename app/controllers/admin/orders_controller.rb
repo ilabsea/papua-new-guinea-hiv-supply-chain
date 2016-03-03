@@ -19,6 +19,9 @@ module Admin
        @orders = @orders.of_status(params[:type])
      end
 
+     @orders = @orders.where(["orders.site_id =? ", params[:site_id]]) if params[:site_id].present?
+     @orders = @orders.where(["orders.order_number like ? ", "#{params[:order_number]}%" ]) if params[:order_number].present?
+
      @orders = @orders.of_user(current_user)
                       .in_between(@date_start, @date_end)
                       .embed_total_shipped
