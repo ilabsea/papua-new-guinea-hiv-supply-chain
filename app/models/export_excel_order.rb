@@ -16,26 +16,33 @@ class ExportExcelOrder
 
   def create_order_worksheet(order)
     #create a sheet with site name
-    working_sheet_kit  = @book.create_worksheet name: "#{order.site.name}-kit"
-    working_sheet_drug = @book.create_worksheet name: "#{order.site.name}-drug"
+    working_sheet_kit  = @book.create_worksheet name: "#{order.site.name}kit"
+    working_sheet_drug = @book.create_worksheet name: "#{order.site.name}drug"
 
     #write table header with [cell_data, cell_width]
-    head_labels = [ ["Commodity", 35], ["Quantity Per Package", 22], ["Pack Size", 10], ["Strength", 10], ["Unit", 10],
-                    ["Stock on hand", 15], ["Monthly Use", 15], ["System Suggestion", 20],
-                    ["Quantity Suggested", 20], ["Status", 10], ["Data Entry Note", 18], ["Reviewer note", 15] ]
+    head_labels = [ ["Commodity", 35], ["Qty Per Package", 20], ["Pack Size", 12], ["Strength", 20], ["Unit", 12],
+                    ["Stock on hand", 20], ["Monthly Use", 15], ["System Suggestion", 25],
+                    ["Quantity Suggested", 25], ["Status", 10] ]
 
-    format_header_explain = Spreadsheet::Format.new color: :black, weight: :bold, size: 14, border: :thin,
-                                            pattern_fg_color: :silver, pattern: 1
+    format_header_explain = Spreadsheet::Format.new color: :black, weight: :bold, size: 14, border: :thin, align: :center,
+                                            pattern_fg_color: :white, pattern: 1, horizontal_align: :centre
 
-    format_header_title = Spreadsheet::Format.new color: :black, weight: :bold, size: 12, border: :thin,
-                                            pattern_fg_color: :silver, pattern: 1
+    format_header_title = Spreadsheet::Format.new color: :red, weight: :bold, size: 14, border: :thin,
+                                            pattern_fg_color: :white, pattern: 1
 
     [working_sheet_kit, working_sheet_drug].each do |working_sheet|
 
       working_sheet.row(0).height = 25
-      working_sheet.merge_cells(0, 0, 0, 12)
+      working_sheet.merge_cells(0, 0, 0, 9)
       working_sheet.row(0).set_format(0, format_header_explain)
-      working_sheet[0,0] = "Site: #{order.site.name}, Order No: #{order.order_number}"
+      #Site: xx with order no: xxx from address: xxx contact person: xxx with phone number: xxxx submitted on : xxx.
+      working_sheet[0,0] =  "Site: #{order.site.name}, " +
+                            "order no: #{order.order_number}, " +
+                            "address: #{order.site.address}, " +
+                            "contact person: #{order.site.contact_name}, " +
+                            "phone number: #{order.site.mobile}, " +
+                            "submitted on: #{order.date_submittion}."
+
 
       working_sheet.row(1).height = 25
       head_labels.each_with_index do |head_label, i|
@@ -59,9 +66,7 @@ class ExportExcelOrder
                     order_line.monthly_use,
                     order_line.system_suggestion,
                     order_line.quantity_suggested,
-                    order_line.status,
-                    order_line.user_data_entry_note,
-                    order_line.user_reviewer_note ]
+                    order_line.status]
 
       if order_line.kit?
         working_sheet = working_sheet_kit
