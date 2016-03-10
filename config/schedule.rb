@@ -29,12 +29,16 @@ every 1.hour do
   rake "png:alert"
 end
 
+every 1.day do
+  rake "png:backup_db"
+end
+
 # if date_type == Setting::DURATION_TYPE_HOUR
 # 	every number.hours do
 # 	  rake "png_job:alert"
 # 	end
 
-# elsif date_type == Setting::DURATION_TYPE_DAY	
+# elsif date_type == Setting::DURATION_TYPE_DAY
 # 	every number.days do
 # 	  rake "png_job:alert"
 # 	end
