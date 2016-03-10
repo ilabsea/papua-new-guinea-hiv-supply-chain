@@ -20,20 +20,21 @@ class ExportExcelOrder
     working_sheet_drug = @book.create_worksheet name: "#{order.site.name} drug"
 
     #write table header with [cell_data, cell_width]
-    head_labels = [ ["Commodity", 35], ["Strength", 20], ["Qty Per Pack", 20],
-                    ["Issue Unit", 18], ["Stock on hand", 20], ["Monthly Use", 15],
-                    ["Approved Quantity", 25], ["Comment", 35]]
+    head_labels = [ ["Commodity", 45], ["Strength", 12], ["Quantity Per Pack", 11],
+                    ["Issue Unit", 10], ["Stock on hand", 12], ["Monthly Use", 12],
+                    ["Approved Quantity", 15], ["Quantity Issued", 11], ["Comment", 45]]
 
     format_header_explain = Spreadsheet::Format.new color: :black, weight: :bold, size: 14, border: :thin, align: :center,
                                             pattern_fg_color: :white, pattern: 1, horizontal_align: :centre
 
     format_header_title = Spreadsheet::Format.new color: :red, weight: :bold, size: 14, border: :thin,
-                                            pattern_fg_color: :white, pattern: 1
+                                            pattern_fg_color: :white, pattern: 1, text_wrap: true, vertical_align: :centre
 
     [working_sheet_kit, working_sheet_drug].each do |working_sheet|
 
       working_sheet.row(0).height = 25
-      working_sheet.merge_cells(0, 0, 0, 7)
+
+      working_sheet.merge_cells(0, 0, 0, 8)
       working_sheet.row(0).set_format(0, format_header_explain)
       #Site: xx with order no: xxx from address: xxx contact person: xxx with phone number: xxxx submitted on : xxx.
       working_sheet[0,0] =  "Site: #{order.site.name}, " +
@@ -44,7 +45,7 @@ class ExportExcelOrder
                             "submitted on: #{order.date_submittion}."
 
 
-      working_sheet.row(1).height = 25
+      working_sheet.row(1).height = 40
       head_labels.each_with_index do |head_label, i|
         working_sheet[1,i] = head_label[0]
         working_sheet.row(1).set_format(i, format_header_title)
@@ -64,6 +65,7 @@ class ExportExcelOrder
                     order_line.stock_on_hand,
                     order_line.monthly_use,
                     order_line.quantity_suggested,
+                    "",
                     order_line.user_data_entry_note]
 
       if order_line.kit?

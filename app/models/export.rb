@@ -1,20 +1,21 @@
 # encoding: utf-8
 require 'csv'
-class Export 
+class Export
   def self.order file, type
     CSV.open(file, "wb") do |csv|
-      headers = ['Summition', 'Site',  'Id', 'Order Creation','Entry', 'Reviewer', 'Reviewed Date', 'Status']
+      headers = ['ID', 'Order No', 'Sumbission', 'Site', 'Approved by', 'Approved at', 'Status', 'Excel']
       csv << headers
       orders = type.blank? ? Order : Order.of_status(type)
       orders.find_each do |order|
-        csv << [ order.date_submittion, 
-             order.site.name,
+        csv << [
              order.id,
-             show_date(order.order_date),
-             order.user_data_entry ? order.user_data_entry.user_name : "",
-             order.review_user ?  order.review_user.user_name : "",
-             show_date_time(order.review_date),
-             order.status 
+             order.order_number,
+             order.date_submittion,
+             order.site.name,
+             order.approved_user.try(:user_name),
+             show_date_time(order.approved_at),
+             order.status,
+             File.basename(order.requisition_report.form.current_path)
         ]
       end
     end
