@@ -9,8 +9,8 @@
     <li> Order Number : <b> <%=@shipment.order.order_number %> </b> </li>
     <li> Consignment number : <b> <%=@shipment.consignment_number%> </b> </li>
     <li> Weight : <b> <%= pluralize(@shipment.weight, 'Kg') %> </b> </li>
-    <li> 
-      Cost : 
+    <li>
+      Cost :
       <b>  <%= link_to @shipment.cost , '#cost_shippement_dialog',
                                         :id => 'update_cost',
                                         :title => 'Click to update the cost of shipment',
@@ -23,7 +23,7 @@
     <li> Recieved at : <b> <%= ll @shipment.received_date %> </b> </li>
     <li> Lost at : <b> <%= ll @shipment.lost_date %> </b> </li>
     <li> Total : <b> <%= pluralize(@shipment.shipment_lines_count, 'item') %> </b> </li>
-  </ul>  
+  </ul>
 </div>
 
 <table class="table table-hover ">
@@ -33,8 +33,8 @@
       <th>Commodity</th>
       <th>Pack Size</th>
       <th>Unit</th>
-      <th>Quantity Issued</th>
-      <th>Quantity Suggested</th>
+      <th>Qty Issued</th>
+      <th>Qty Suggested</th>
       <th>Remark</th>
     </tr>
   </thead>
@@ -48,7 +48,7 @@
         <td><%=shipment_line.order_line.commodity.unit.name %></td>
         <td><%=shipment_line.quantity_issued %></td>
         <td><%=shipment_line.quantity_suggested %> </td>
-        <td><%=shipment_line.remark %></td>  
+        <td><%=shipment_line.remark %></td>
       </tr>
     <% end %>
   </tbody>
@@ -59,7 +59,7 @@
 
 <%= simple_form_for [:admin, @shipment], :html => { :class => 'form-horizontal' }  do |f| %>
   <div id="cost_shippement_dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    
+
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
       <h3 class="myModalLabel">Update shipment cost</h3>
@@ -72,7 +72,7 @@
 
     <div class="modal-footer">
       <%= link_button_cancel ' Close ', "javascript:void()", :'aria-hidden' => true, :data=> {'dismiss' => :modal, :skip_loading => true}  %>
-      <%= link_button_save ' Save ', 'javascript:void(0)' , 
+      <%= link_button_save ' Save ', 'javascript:void(0)' ,
                             :id => 'shipment_show_save',
                             :class =>'btn-primary',
                             :data => {id: @shipment.id, url: update_cost_admin_shipment_path(@shipment), :skip_loading => true} %>
@@ -80,5 +80,3 @@
 
   </div>
 <% end %>
-
-

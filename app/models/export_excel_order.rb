@@ -16,13 +16,13 @@ class ExportExcelOrder
 
   def create_order_worksheet(order)
     #create a sheet with site name
-    working_sheet_kit  = @book.create_worksheet name: "#{order.site.name}kit"
-    working_sheet_drug = @book.create_worksheet name: "#{order.site.name}drug"
+    working_sheet_kit  = @book.create_worksheet name: "#{order.site.name} kit"
+    working_sheet_drug = @book.create_worksheet name: "#{order.site.name} drug"
 
     #write table header with [cell_data, cell_width]
-    head_labels = [ ["Commodity", 35], ["Qty Per Package", 20], ["Pack Size", 12], ["Strength", 20], ["Unit", 12],
-                    ["Stock on hand", 20], ["Monthly Use", 15], ["System Suggestion", 25],
-                    ["Quantity Suggested", 25], ["Status", 10] ]
+    head_labels = [ ["Commodity", 35], ["Strength", 20], ["Qty Per Pack", 20],
+                    ["Issue Unit", 18], ["Stock on hand", 20], ["Monthly Use", 15],
+                    ["Approved Quantity", 25], ["Comment", 35]]
 
     format_header_explain = Spreadsheet::Format.new color: :black, weight: :bold, size: 14, border: :thin, align: :center,
                                             pattern_fg_color: :white, pattern: 1, horizontal_align: :centre
@@ -33,7 +33,7 @@ class ExportExcelOrder
     [working_sheet_kit, working_sheet_drug].each do |working_sheet|
 
       working_sheet.row(0).height = 25
-      working_sheet.merge_cells(0, 0, 0, 9)
+      working_sheet.merge_cells(0, 0, 0, 7)
       working_sheet.row(0).set_format(0, format_header_explain)
       #Site: xx with order no: xxx from address: xxx contact person: xxx with phone number: xxxx submitted on : xxx.
       working_sheet[0,0] =  "Site: #{order.site.name}, " +
@@ -58,15 +58,13 @@ class ExportExcelOrder
 
     order.order_lines.each_with_index do |order_line, i|
       data_rows = [ order_line.commodity.name,
-                    order_line.commodity.quantity_per_packg,
-                    order_line.commodity.pack_size,
                     order_line.commodity.strength_dosage,
+                    order_line.commodity.quantity_per_packg,
                     order_line.commodity.unit.name,
                     order_line.stock_on_hand,
                     order_line.monthly_use,
-                    order_line.system_suggestion,
                     order_line.quantity_suggested,
-                    order_line.status]
+                    order_line.user_data_entry_note]
 
       if order_line.kit?
         working_sheet = working_sheet_kit

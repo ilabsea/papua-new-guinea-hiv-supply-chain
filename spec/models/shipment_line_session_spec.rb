@@ -31,13 +31,13 @@ describe ShipmentLineSession do
         shipment_line_session.valid?.should eq false
         shipment_line_session.errors.full_messages[0].should eq "Quantity is not a number"
       end
-    
+
 
       it "should require order_line_id to be numeric" do
         shipment_line_session = ShipmentLineSession.new @attr.merge(:order_line_id => "yyy")
         shipment_line_session.valid?.should eq false
-        shipment_line_session.errors.full_messages.should =~ ["Order line is not a number", "Order line invalid commodity order. Please try again"]
-      end  
+        shipment_line_session.errors.full_messages.should =~ ["Order line invalid commodity order. Please try again"]
+      end
 
       it "should require order_line_id in the same order of shipment_session" do
         shipment_line_session1 = ShipmentLineSession.new(@attr)
@@ -48,7 +48,7 @@ describe ShipmentLineSession do
         shipment_line_session2.errors.full_messages =~ ["Order line can not be added to shipment of different order"]
       end
       end
-      
+
       describe 'with valid attribute' do
         it "should validate successfully with quantity and order_line_id as number" do
           shipment_line_session = ShipmentLineSession.new @attr
@@ -62,7 +62,7 @@ describe ShipmentLineSession do
           shipment_line_session2 = ShipmentLineSession.new @attr.merge(:order_line_id => @order_line_12.id)
           shipment_line_session2.valid?.should be_true
         end
-      end  
+      end
 
   end
 end
