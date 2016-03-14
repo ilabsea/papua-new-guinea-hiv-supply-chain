@@ -57,7 +57,7 @@
           <td class='<%= klass  %> expand'><%=order_line.commodity.quantity_per_packg %></td>
           <td class='<%= klass  %> expand'><%=order_line.commodity.pack_size %></td>
           <td class='<%= klass  %> expand'><%=order_line.commodity.unit.name %></td>
-          <td class='<%= klass  %>'><%= order_line.quantity_suggested %></td>
+          <td class='<%= klass  %>'><b><%= order_line.quantity_suggested %></b></td>
           <td class='expand <%= klass  %>'><%= show_date order_line.order.date_submittion %></td>
           <td title="<%= h order_line.updated_at %>" class='expand <%= klass  %>'>
             <%= show_date_time order_line.updated_at %></td>
