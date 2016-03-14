@@ -56,7 +56,7 @@
           <%= editable ? link_to(order.id, edit_admin_order_path(order)) : order.id %>
         </td>
 
-        <td><%= highlight(order.order_number, params[:order_number]) %></td>
+        <td><%= highlight(order.order_number, params[:order_number]) if order.order_number %></td>
         <td><%= show_date(order.date_submittion) %></td>
         <td><%=order.site.name %></td>
 

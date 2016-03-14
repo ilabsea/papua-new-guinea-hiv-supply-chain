@@ -6,9 +6,10 @@
 %>
 <tr id='tr_<%= row_ref %>'  data-ref="<%= row_ref%>" class='order_line_row <%=styleError%>'>
     <td ><%=index%></td>
-    <% if order_line_record.persisted? %>
-      <td ><%=order_line_record.id%></td>
+    <% if order.persisted? %>
+    <td ><%=order_line_record.id%></td>
     <% end %>
+
     <td class='td-expand expand' title="<%= order_line_record.commodity.name %>" >
 
       <%= order_line_form.input :id, :as => 'hidden' %>

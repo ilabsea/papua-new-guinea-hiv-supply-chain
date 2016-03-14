@@ -1,4 +1,4 @@
-<% 
+<%
   @kit  = 1
   @drug = 1
 %>
@@ -22,7 +22,7 @@
                     :index => @kit
           %>
         <% end %>
-        <% @kit += 1 %> 
+        <% @kit += 1 %>
     <% end %>
   <% end %>
   <input type='hidden' id='order_frequency' value="<%= order.site ?  order.site.order_frequency   : '' %>" />
@@ -42,12 +42,12 @@
   <% end %>
   <% site_detail = yield(:site_detail) %>
 
-  <div class="tabbable" style="position:relative;float:left;"> 
+  <div class="tabbable" style="position:relative;"> 
     <ul class="nav nav-tabs">
       <li class="active">
         <a href="#drug" data-toggle="tab" data-skip-loading='true'>Drugs</a>
       </li>
-      <li> 
+      <li>
         <a href="#kit" data-toggle="tab" data-skip-loading='true'>Kits</a>
       </li>
     </ul>
