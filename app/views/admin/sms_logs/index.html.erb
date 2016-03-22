@@ -8,6 +8,7 @@
   <thead>
     <tr>
       <th class='nth-table'>#</th>
+      <th>ID</th>
       <th>Site</th>
       <th>To</th>
       <th>Message</th>
@@ -18,6 +19,7 @@
     <% @sms_logs.each_with_index do |sms_log, index| %>
       <tr>
         <td><%= current_entries + index %></td>
+        <td><%= sms_log.id %></td>
         <td><%= sms_log.site.name %></td>
         <td><%= sms_log.to %></td>
         <td class='td-expand' title="<%=h sms_log.message %>"><%= truncate sms_log.message, :length => 160 %></td>

@@ -22,7 +22,7 @@ class SmsLog < ActiveRecord::Base
   SMS_TYPE_SHIPMENT = 'Shipment'
   SMS_TYPE_REQUISITION = 'Requisition'
   SMS_TYPE_ASK_CONFIRM  = 'Ask for confirmation'
-  
+
   SMS_TYPES = [SMS_TYPE_SHIPMENT, SMS_TYPE_REQUISITION, SMS_TYPE_ASK_CONFIRM]
 
   def self.shipment
@@ -35,5 +35,10 @@ class SmsLog < ActiveRecord::Base
 
   def self.of_type type
     where ['sms_type = :sms_type', :sms_type => type ]
+  end
+
+  def self.search(q)
+    like = "%#{q}%"
+    where(['sms_logs.message  LIKE ? OR sms_logs.to LIKE ?', like, like])
   end
 end

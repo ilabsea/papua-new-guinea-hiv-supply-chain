@@ -2,13 +2,23 @@
 <% content_for :breadcrumb do %>
   <%= breadcrumb [{"Sms Logs" => nil}]  %>
 <% end %>
-
-<%= page_header("SMS Logs")%>
+<div class='filter-box'>
+  <%= page_header("SMS Logs") do %>
+    <%= form_tag monitor_admin_sms_logs_path(), method: :get, style: 'margin: 0px;' do %>
+      <div style='margin-top: 10px;'>
+        <%= text_field_tag :q, params[:q], placeholder: 'Enter to search' %>
+        <%= hidden_field_tag :type, params[:type], placeholder: 'Enter to search' %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<br />
 <%= render 'sms_type_tab', :type => @type %>
 <table class="table table-hover ">
   <thead>
     <tr>
       <th class='nth-table'>#</th>
+      <th>ID</th>
       <th>Site</th>
       <th>To</th>
       <th>Message</th>
@@ -19,9 +29,12 @@
     <% @sms_logs.each_with_index do |sms_log, index| %>
       <tr>
         <td><%= current_entries + index %></td>
+        <td><%= sms_log.id %></td>
         <td><%= sms_log.site.name %></td>
-        <td><%= sms_log.to %></td>
-        <td class='td-expand' title="<%=h sms_log.message %>"   > <%= truncate sms_log.message, :length => 160 %></td>
+        <td><%= highlight(sms_log.to, params[:q]) %></td>
+        <td class='td-expand' title="<%=h sms_log.message %>"   >
+           <%= highlight(sms_log.message, params[:q]) %>
+        </td>
         <td class='td-expand' title="<%= sms_log.created_at %>" > <%= show_date_time(sms_log.created_at) %></td>
       </tr>
     <% end %>
