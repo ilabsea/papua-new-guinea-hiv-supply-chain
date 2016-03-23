@@ -1,0 +1,10 @@
+<div class='filter-box'>
+  <%= page_header("SMS Logs") do %>
+    <%= form_tag monitor_admin_sms_logs_path(), method: :get, style: 'margin: 0px;' do %>
+      <div style='margin-top: 10px;'>
+        <%= text_field_tag :q, params[:q], placeholder: 'Enter to search' %>
+        <%= hidden_field_tag :type, params[:type], placeholder: 'Enter to search' %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

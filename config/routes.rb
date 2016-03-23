@@ -18,6 +18,8 @@ PngHivAids::Application.routes.draw do
     resources :lab_tests
     resources :regimens
 
+    resources :order_status, only: [:index]
+
     resources :site_messages do
       collection do
         get 'all'

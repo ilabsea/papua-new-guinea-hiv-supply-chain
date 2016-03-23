@@ -1,0 +1,9 @@
+<div class='filter-box'>
+  <%= page_header("My Orders Listing") do %>
+    <%= form_tag admin_order_status_path(), method: :get, style: 'margin: 0px;' do %>
+      <div style='margin-top: 10px;'>
+        <%= text_field_tag :order_number, params[:order_number], placeholder: 'Search Order Number' %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

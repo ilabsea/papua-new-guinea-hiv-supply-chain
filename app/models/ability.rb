@@ -17,7 +17,6 @@ class Ability
 
     if current_user.admin?
       can :manage, :all
-
       cannot :create, RequisitionReport
       cannot :manage, Order
       cannot :manage, Shipment
@@ -25,7 +24,6 @@ class Ability
     end
 
     if current_user.site?
-
       can :create, RequisitionReport
       can :read, RequisitionReport
       can :download, RequisitionReport

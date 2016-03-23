@@ -1,3 +1,6 @@
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Requisition Report" => nil}]  %>
+<% end %>
 <%= page_header("Requisition Report form", :left => 6, :right => 6) do %>
   <% if current_user.site? %>
     <%= link_button_new 'New Requisition Report', new_admin_requisition_report_path, :class => 'btn' %>
@@ -32,7 +35,7 @@
         <td><%=requisition_report.status %></td>
         <td><%= time_ago_tag(requisition_report.created_at) %></td>
 
-    <% 
+    <%
        confirm_warning = 'The form has already been imported. Are you sure to reimport it ? [Warning] Re impport the form will automatically delete the previouse imported data '
        confirm_import  =  'Are you sure to import the form'
        msg = (requisition_report.status == RequisitionReport::IMPORT_STATUS_SUCCESS) ? confirm_warning  : confirm_import

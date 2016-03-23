@@ -1,0 +1,53 @@
+<%= render 'filter_order' %>
+
+<% content_for :breadcrumb do %>
+  <%= breadcrumb [{"Orders" => nil}]  %>
+<% end %>
+
+<table class="table table-hover ">
+  <thead>
+    <tr>
+      <th class='nth-table expand'>#</th>
+      <th class="expand">ID</th>
+      <th class="expand">Order No</th>
+      <th class="expand">Submission</th>
+      <th class="expand">Site</th>
+      <th class="expand">Approved by</th>
+      <th class="expand">Approved at</th>
+      <th class="expand">Status</th>
+      <th class="expand">Shipment</th>
+      <th class="expand">Excel File</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each_with_index do |order, index| %>
+      <tr>
+        <td><%= current_entries + index %></td>
+        <td><%= order.id %></td>
+
+        <td><%= highlight(order.order_number, params[:order_number]) if order.order_number %></td>
+        <td><%= show_date(order.date_submittion) %></td>
+        <td><%=order.site.name %></td>
+        <td>
+          <% if order.approved_user %>
+             <%= order.approved_user.display_name %>
+             (<%= order.approved_user.phone_number %>)
+
+          <% end %>
+        </td>
+        <td style='font-weight: bold;'> <%= show_date_time(order.approved_at) %></td>
+        <td><span class='badge badge-info'><%= order.status %> </span></td>
+        <td>
+          <%= order.total_shipped.nil? ? "Not Yet" : "Shipped" %>
+        </td>
+        <td>
+          <%=link_to truncate(File.basename(order.requisition_report.form.current_path), length: 20),
+                     download_admin_requisition_report_path(order.requisition_report),
+                     :data => {:skip_loading => true} if order.requisition_report %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render_paginate_for @orders %>
