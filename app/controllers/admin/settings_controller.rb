@@ -3,29 +3,30 @@ module Admin
     load_and_authorize_resource
     skip_load_resource
     skip_authorize_resource
-    
+
     def index
     end
 
     def create
-      keys =  [ 
+      keys =  [
         :message_alerting_site_for_shipment,
+        :message_alerting_site_for_approved_order,
         :message_asking_site,
         :message_deadline,
         :hour,
         :date_type,
-        :site_message_success, 
-        :site_message_error_syntax, 
-        :site_message_invalid_consignment_number, 
-        :site_message_invalid_status, 
-        :site_message_invalid_carton_format, 
+        :site_message_success,
+        :site_message_error_syntax,
+        :site_message_invalid_consignment_number,
+        :site_message_invalid_status,
+        :site_message_invalid_carton_format,
         :site_message_invalid_sender
       ]
 
       keys.each do |key|
         Setting[key] = params[:setting][key]
       end
-      redirect_to admin_settings_path, notice: 'Setting has been updated successfully.' 
+      redirect_to admin_settings_path, notice: 'Setting has been updated successfully.'
 
     end
 

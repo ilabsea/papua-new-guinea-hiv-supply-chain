@@ -11,7 +11,7 @@
 #
 
 class Setting < ActiveRecord::Base
- 
+
   attr_accessible :value, :name, :hour
 
   DURATION_TYPE_HOUR = "Hour(s)"
@@ -24,47 +24,52 @@ class Setting < ActiveRecord::Base
   }
 
   MESSAGE_KEYS = [
-    { name: :message_alerting_site_for_shipment, 
+    { name: :message_alerting_site_for_shipment,
       label: "Message notification of package deliver to site" ,
       params: %w(site consignment shipment_date carton_number, order_number)
     } ,
-    { name: :message_asking_site, 
-      label: "Message check for confirmation of receiving package to site", 
-      params: %w(site consignment shipment_date)  
+    { name: :message_asking_site,
+      label: "Message check for confirmation of receiving package to site",
+      params: %w(site consignment shipment_date)
     },
-    { name: :message_deadline, 
-      label: "Message reminder to site who did not submit requisition form by deadline", 
-      params: %w(site deadline_date)  
-    },
-
-    { name: :site_message_success, 
-      label: "Acknowledgment message: Message has been sent to system successfully", 
-      params: %w(original_message consignment status phone_number carton_number)  
+    { name: :message_deadline,
+      label: "Message reminder to site who did not submit requisition form by deadline",
+      params: %w(site deadline_date)
     },
 
-    { name: :site_message_error_syntax, 
-      label: "Acknowledgment message: Message syntax error ", 
-      params: %w(original_message phone_number)  
+    { name: :message_alerting_site_for_approved_order,
+      label: "Message alert to site when order approved by reviewer",
+      params: %w(order_number site submission_date approved_by approved_at)
     },
 
-    { name: :site_message_invalid_consignment_number, 
-      label: "Acknowledgment message: Consignment number is invalid", 
-      params: %w(original_message phone_number)  
+    { name: :site_message_success,
+      label: "Acknowledgment message: Message has been sent to system successfully",
+      params: %w(original_message consignment status phone_number carton_number)
     },
 
-    { name: :site_message_invalid_status, 
-      label: "Acknowledgment message: Status is invalid", 
-      params: %w(original_message consignment phone_number)  
+    { name: :site_message_error_syntax,
+      label: "Acknowledgment message: Message syntax error ",
+      params: %w(original_message phone_number)
     },
 
-    { name: :site_message_invalid_carton_format, 
-      label: "Acknowledgment message: Invalid carton format", 
-      params: %w(original_message consignment status phone_number)  
+    { name: :site_message_invalid_consignment_number,
+      label: "Acknowledgment message: Consignment number is invalid",
+      params: %w(original_message phone_number)
     },
 
-    { name: :site_message_invalid_sender, 
-      label: "Acknowledgment message: Phone number is not allowed to report", 
-      params: %w(original_message phone_number)  
+    { name: :site_message_invalid_status,
+      label: "Acknowledgment message: Status is invalid",
+      params: %w(original_message consignment phone_number)
+    },
+
+    { name: :site_message_invalid_carton_format,
+      label: "Acknowledgment message: Invalid carton format",
+      params: %w(original_message consignment status phone_number)
+    },
+
+    { name: :site_message_invalid_sender,
+      label: "Acknowledgment message: Phone number is not allowed to report",
+      params: %w(original_message phone_number)
     }
 
   ]
@@ -73,7 +78,7 @@ class Setting < ActiveRecord::Base
     setting = get_setting name
     setting ? setting.value.to_s : ''
   end
-  
+
   def self.get_setting name
      @settings ||= Setting.all
      @settings.select{|s| s.name.to_s == name.to_s }.first

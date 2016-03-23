@@ -81,6 +81,8 @@ class Order < ActiveRecord::Base
     self.approved_at = Time.zone.now
     if self.save
       self.order_lines.update_all(status: OrderLine::STATUS_APPROVED)
+      order_sms = OrderSms.new(self)
+      order_sms.alert
     end
   end
 
