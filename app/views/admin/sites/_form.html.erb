@@ -24,9 +24,10 @@
   <%= f.input :mobile %>
   <%= f.input :land_line_number %>
   <%= f.input :email %>
+  <%= f.input :max_alert_deadline, label: 'Max number of deadline alert' %>
 
   <div class="form-actions">
-    <%= button_save 'Save' %>  
+    <%= button_save 'Save' %>
     <%= link_button_cancel 'Cancel' , admin_sites_path %>
   </div>
 <% end %>

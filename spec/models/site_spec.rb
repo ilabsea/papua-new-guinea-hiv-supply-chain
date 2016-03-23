@@ -24,6 +24,7 @@
 #  site_messages_count          :integer          default(0)
 #  town                         :string(255)
 #  region                       :string(255)
+#  max_alert_deadline           :integer          default(3)
 #
 
 require 'spec_helper'
@@ -45,23 +46,37 @@ describe Site do
   end
 
   describe '#alert_dead_line' do
-    it 'should alert to site and set sms_alerted to  alerted status' do
+    it 'should alert to site and inform_alert deadline' do
       Setting[:message_deadline] = 'Hi {site} dead line date is : {deadline_date}'
-      site = FactoryGirl.create :site, order_start_at: '2013-07-07', order_frequency: 0.5 , number_of_deadline_sumission: 3, sms_alerted: Site::SMS_ALERTED
+      site = FactoryGirl.create :site, order_start_at: '2013-07-07',
+                                order_frequency: 0.5 ,
+                                number_of_deadline_sumission: 3,
+                                sms_alerted: 0
 
       Sms.instance.stub(:send)
       sms_count = SmsLog.count
       site.alert_dead_line
       SmsLog.count.should eq (sms_count + 1)
-      site.sms_alerted.should eq Site::SMS_ALERTED
+      site.sms_alerted.should eq 1
+    end
+  end
+
+  describe ".alertable" do
+    it "should return alertable sites" do
+      site1 = FactoryGirl.create :site, sms_alerted: 3, max_alert_deadline: 3
+      site2 = FactoryGirl.create :site, sms_alerted: 2, max_alert_deadline: 3
+      site3 = FactoryGirl.create :site, sms_alerted: 1, max_alert_deadline: 1
+      site4 = FactoryGirl.create :site, sms_alerted: 0, max_alert_deadline: 1
+      sites = Site.alertable
+      sites.should eq [site2, site4]
     end
 
   end
 
   describe '#deadline?' do
     it 'should return false for #deadline that has requisition_report' do
-      time = DateTime.strptime('2013-07-16', '%Y-%m-%d')  
-      now  = DateTime.strptime('2013-09-15', '%Y-%m-%d') 
+      time = DateTime.strptime('2013-07-16', '%Y-%m-%d')
+      now  = DateTime.strptime('2013-09-15', '%Y-%m-%d')
 
       @requisition.created_at = time
       @requisition.save
@@ -71,8 +86,8 @@ describe Site do
     end
 
     it 'should also return false for #deadline that has passed the deadline time' do
-      time = DateTime.strptime('2013-07-16', '%Y-%m-%d')  
-      now  = DateTime.strptime('2013-09-10', '%Y-%m-%d') 
+      time = DateTime.strptime('2013-07-16', '%Y-%m-%d')
+      now  = DateTime.strptime('2013-09-10', '%Y-%m-%d')
 
       @requisition.created_at = time
       @requisition.save
@@ -90,5 +105,5 @@ describe Site do
       deadline = @site.deadline_for? now
       deadline.should eq true
     end
-  end  
+  end
 end

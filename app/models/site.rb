@@ -24,6 +24,7 @@
 #  site_messages_count          :integer          default(0)
 #  town                         :string(255)
 #  region                       :string(255)
+#  max_alert_deadline           :integer          default(3)
 #
 
 class Site < ActiveRecord::Base
@@ -39,36 +40,33 @@ class Site < ActiveRecord::Base
   belongs_to :province
 
   attr_accessible :address, :contact_name, :email, :in_every, :duration_type,
-                  :land_line_number, :region, :town, :mobile, 
-                  :name, :number_of_deadline_sumission, :order_frequency, :order_start_at, 
+                  :land_line_number, :region, :town, :mobile,
+                  :name, :number_of_deadline_sumission, :order_frequency, :order_start_at,
                   :service_type, :suggestion_order, :test_kit_waste_acceptable, :province_id
 
-  
-  validates :contact_name,:land_line_number, :mobile, :name, :number_of_deadline_sumission, :order_frequency, :order_start_at, 
+
+  validates :contact_name,:land_line_number, :mobile, :name, :number_of_deadline_sumission, :order_frequency, :order_start_at,
             :service_type, :suggestion_order, :test_kit_waste_acceptable, :province_id , :presence   =>  true
 
-  validates :order_frequency, :number_of_deadline_sumission, :numericality => {:greater_than => 0}    
-  validates :suggestion_order, :test_kit_waste_acceptable,  :numericality => {:greater_than_or_equal_to => 0 }   
+  validates :order_frequency, :number_of_deadline_sumission, :numericality => {:greater_than => 0}
+  validates :suggestion_order, :test_kit_waste_acceptable,  :numericality => {:greater_than_or_equal_to => 0 }
   validates :in_every, numericality: { greater_than: 0}
 
   SeviceType = ["ART", "HCT", "LOGISTICS UNIT", "Provincial Laboratory", 'PTTCT']
   Region = ['EHP', 'WHP', 'Momase', 'Southern']
 
-  SMS_ALERTED = 1
-  SMS_NOT_ALERTED = 0
-
   def deadline_date
     number_of_month = self.order_frequency.to_i
     number_of_day   = ((self.order_frequency - number_of_month) * 30).to_i
 
-    next_order = self.order_start_at + number_of_month.month + number_of_day.day 
+    next_order = self.order_start_at + number_of_month.month + number_of_day.day
     next_order + self.number_of_deadline_sumission.days
   end
 
 
   def deadline_for? now
     if(now > self.deadline_date )
-      requisitions = self.requisition_reports.where(["requisition_reports.created_at BETWEEN :start AND :deadline", 
+      requisitions = self.requisition_reports.where(["requisition_reports.created_at BETWEEN :start AND :deadline",
                                                      :start => self.order_start_at.beginning_of_day, :deadline => self.deadline_date.end_of_day])
       return true if requisitions.size == 0
     end
@@ -79,28 +77,28 @@ class Site < ActiveRecord::Base
     return true if PublicHoliday.is_holiday?(now)
 
     Rails.logger.info "\nInfo requisitions #{now} ******* "
-    sites = Site.not_alerted
+    sites = Site.alertable
     sites.each do |site|
       if site.deadline_for? now
         Rails.logger.info "\tAlert requisitions to site: #{site.name} @ #{now} "
         site.alert_dead_line
-      else 
-        Rails.logger.info "\tSite: #{site.name} is not in deadline @ #{now} "  
+      else
+        Rails.logger.info "\tSite: #{site.name} is not in deadline @ #{now} "
       end
     end
     Rails.logger.info "End\n"
 
   end
 
-  def self.not_alerted
-    where ["sms_alerted = :sms_alerted", :sms_alerted => Site::SMS_NOT_ALERTED ]
+  def self.alertable
+    where("sms_alerted < max_alert_deadline")
   end
 
   def alert_dead_line
 
     options = {
-      :site => self.name, 
-      :deadline_date => self.deadline_date , 
+      :site => self.name,
+      :deadline_date => self.deadline_date ,
     }
 
     setting = Setting[:message_deadline]
@@ -110,7 +108,7 @@ class Site < ActiveRecord::Base
     Sms.instance.send(
                       to: self.mobile.with_sms_protocol,
                       body: translation)
-    
+
     log = {
       :site       => self,
       :shipment   => nil,
@@ -119,8 +117,18 @@ class Site < ActiveRecord::Base
       :sms_type   => SmsLog::SMS_TYPE_REQUISITION
     }
     SmsLog.create log
-    self.sms_alerted = Site::SMS_ALERTED
+    self.inform_alert_deadline
+  end
+
+  def inform_alert_deadline
+    self.sms_alerted = self.sms_alerted + 1
     self.save(:validate => false)
+  end
+
+  def inform_new_order
+    self.order_start_at = Time.zone.now.to_date
+    self.sms_alerted    = 0
+    self.save
   end
 
 end

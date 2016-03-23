@@ -152,9 +152,7 @@ class Order < ActiveRecord::Base
                                             order_number: requisition_report.order_number
 
       if order.save
-        site.order_start_at = Time.zone.now.to_date
-        site.sms_alerted = Site::SMS_NOT_ALERTED
-        site.save
+        site.inform_new_order
         order_line_import.import_to(order)
         true
       else

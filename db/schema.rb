@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160310083903) do
+ActiveRecord::Schema.define(:version => 20160323023239) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -312,6 +312,7 @@ ActiveRecord::Schema.define(:version => 20160310083903) do
     t.integer  "site_messages_count",          :default => 0
     t.string   "town"
     t.string   "region"
+    t.integer  "max_alert_deadline",           :default => 3
   end
 
   add_index "sites", ["province_id"], :name => "sites_province_id_fk"

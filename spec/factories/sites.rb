@@ -24,6 +24,7 @@
 #  site_messages_count          :integer          default(0)
 #  town                         :string(255)
 #  region                       :string(255)
+#  max_alert_deadline           :integer          default(3)
 #
 
 # Read about factories at https://github.com/thoughtbot/factory_girl
@@ -45,5 +46,7 @@ FactoryGirl.define do
     town "MyString"
     province
     in_every 3
+    sms_alerted 3
+    max_alert_deadline 3
   end
 end
