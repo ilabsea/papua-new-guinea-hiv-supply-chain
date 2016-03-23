@@ -42,7 +42,8 @@ class Site < ActiveRecord::Base
   attr_accessible :address, :contact_name, :email, :in_every, :duration_type,
                   :land_line_number, :region, :town, :mobile,
                   :name, :number_of_deadline_sumission, :order_frequency, :order_start_at,
-                  :service_type, :suggestion_order, :test_kit_waste_acceptable, :province_id
+                  :service_type, :suggestion_order, :test_kit_waste_acceptable, :province_id,
+                  :max_alert_deadline, :sms_alerted
 
 
   validates :contact_name,:land_line_number, :mobile, :name, :number_of_deadline_sumission, :order_frequency, :order_start_at,

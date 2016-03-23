@@ -11,6 +11,7 @@
     <tr>
       <th class='nth-table'>#</th>
       <th class='expand'>Name</th>
+      <th>Orders</th>
       <th class='expand'>Service</th>
       <th class='expand'>Order Frequency</th>
       <th class='expand'>Order at</th>
@@ -25,7 +26,8 @@
     <% @sites.each_with_index do |site, index| %>
       <tr>
         <td><%= current_entries + index %></td>
-        <td><%= link_to site.name, edit_admin_site_path(site) %></td>
+        <td><%= link_to site.name, edit_admin_site_path(site)%></td>
+        <td><%= site.orders_count%></td>
         <td><%= site.service_type %></td>
         <td><%= site.order_frequency %></td>
         <td><%= show_date(site.order_start_at) %></td>
@@ -42,4 +44,3 @@
   </tbody>
 </table>
 <%= render_paginate_for @sites %>
-

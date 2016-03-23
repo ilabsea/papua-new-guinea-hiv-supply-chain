@@ -14,4 +14,12 @@ namespace :png do
   task backup_db: :environment do
     BackupDb.process
   end
+
+  desc "Update total order"
+  task total_order: :environment do
+    Site.all.each do |site|
+      site.orders_count = site.orders.length
+      site.save
+    end
+  end
 end

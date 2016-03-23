@@ -25,6 +25,7 @@
   <%= f.input :land_line_number %>
   <%= f.input :email %>
   <%= f.input :max_alert_deadline, label: 'Max number of deadline alert' %>
+  <%= f.input :sms_alerted, label: 'Number of deadline alert', input_html: {readonly: :readonly} %>
 
   <div class="form-actions">
     <%= button_save 'Save' %>
