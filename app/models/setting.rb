@@ -20,7 +20,7 @@ class Setting < ActiveRecord::Base
 
 
   MESSAGE_HEADERS = {
-    3 => 'Acknowledgment message to site after sending message to the system'
+    4 => 'Acknowledgment message to site after sending message to the system'
   }
 
   MESSAGE_KEYS = [
