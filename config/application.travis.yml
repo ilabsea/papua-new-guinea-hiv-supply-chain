@@ -19,6 +19,7 @@ default: &default
   NUNTIUM_INCOMING_USER: ''
   NUNTIUM_INCOMING_PWD: ''
 
+  CODECLIMATE_REPO_TOKEN: 'e2b07f62cbb989061adf6e2c903f94b6171212a29744602b2c3f9d3703005517'
 
 development:
   <<: *default

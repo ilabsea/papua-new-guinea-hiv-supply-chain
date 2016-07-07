@@ -19,6 +19,7 @@ default: &default
   NUNTIUM_INCOMING_USER: ''
   NUNTIUM_INCOMING_PWD: ''
 
+  CODECLIMATE_REPO_TOKEN: ''
 
 development:
   <<: *default

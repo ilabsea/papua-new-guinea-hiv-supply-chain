@@ -4,6 +4,10 @@ cache: bundler
 rvm:
 - 1.9.3
 
+addons:
+  code_climate:
+    repo_token: e2b07f62cbb989061adf6e2c903f94b6171212a29744602b2c3f9d3703005517
+
 before_script:
 - cp config/application.travis.yml config/application.yml
 - mysql -e 'create database png_hiv_test'
