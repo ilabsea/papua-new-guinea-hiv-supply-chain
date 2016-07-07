@@ -1,0 +1,30 @@
+default: &default
+
+  APP_NAME: "HIV Supply Chain"
+  TIME_ZONE: 'Port Moresby'
+  MAX_DB_COPY: '2'
+
+  DATE_FORMAT: '%d-%m-%Y'
+  DATE_FORMAT_JS: 'dd-mm-yyyy'
+
+  DATE_TIME_FORMAT: '%d-%m-%Y, %H:%M:%S'
+
+  DATABASE_USER: 'root'
+  DATABASE_NAME: ''
+
+  NUNTIUM_URL: 'http://nuntium.instedd.org'
+  NUNTIUM_ACCOUNT: ''
+  NUNTIUM_APP_NAME: ''
+  NUNTIUM_APP_PWD: ''
+  NUNTIUM_INCOMING_USER: ''
+  NUNTIUM_INCOMING_PWD: ''
+
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

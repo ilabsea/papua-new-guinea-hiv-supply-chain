@@ -1,0 +1,14 @@
+language: ruby
+cache: bundler
+
+rvm:
+- 1.9.3
+
+before_script:
+- cp config/application.travis.yml config/application.yml
+- mysql -e 'create database png_hiv_test'
+
+script:
+- RAILS_ENV=test bundle exec rake db:migrate --trace
+- bundle exec rake db:test:prepare
+- bundle exec rspec spec
