@@ -3,9 +3,6 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.13'
 gem 'jquery-rails'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'mysql2'
 gem 'simple_form'
 gem 'devise'
@@ -37,29 +34,12 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-#gem 'rack-mini-profiler'
-
-
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'
-
 group :development do
   gem 'annotate'
   gem 'pry'
 end
+
+gem "codeclimate-test-reporter", group: :test, require: nil
 
 group :test, :development do
   gem 'rspec-rails', '~> 2.0'
